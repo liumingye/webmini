@@ -19,7 +19,7 @@ if (process.platform === "win32") app.setAppUserModelId(app.getName());
 const isDev = !app.isPackaged;
 const URL = isDev
   ? `http://${process.env["VITE_DEV_SERVER_HOST"]}:${process.env["VITE_DEV_SERVER_PORT"]}`
-  : `file://${join(app.getAppPath(), "dist/render/index.html")}`;
+  : `file://${join(app.getAppPath(), "dist/renderer/index.html")}`;
 
 let mainWindow: BrowserWindow | null = null; // 主窗口
 let selectPartWindow: BrowserWindow | null; // 分p窗口

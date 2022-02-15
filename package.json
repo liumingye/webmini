@@ -6,7 +6,9 @@
   "license": "MIT",
   "scripts": {
     "dev": "node scripts/watch.mjs",
-    "build": "vue-tsc --project packages/renderer/tsconfig.json --noEmit && node scripts/build.mjs && electron-builder",
+    "prebuild": "vue-tsc --project packages/renderer/tsconfig.json --noEmit && node scripts/build.mjs",
+    "build": "electron-builder",
+    "debug": "yarn prebuild && vite ./packages/renderer",
     "mac": "yarn build -m",
     "win32": "yarn build -w --ia32",
     "win64": "yarn build -w --x64",
