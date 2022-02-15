@@ -111,15 +111,15 @@ const turnOff = () => {
         class="top-btn"
         @click="showFeed"
       ></button>
-      <span
+      <!-- <span
         id="app-config"
         title="设置"
         class="top-btn"
         alt="toggleConfig"
-      ></span>
-      <span id="app-about" title="关于" class="top-btn" @click="showAbout">
+      ></span> -->
+      <button id="app-about" title="关于" class="top-btn" @click="showAbout">
         ?
-      </span>
+      </button>
       <button id="app-close" title="退出" class="top-btn" @click="turnOff">
         x
       </button>

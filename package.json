@@ -2,11 +2,15 @@
   "name": "bilimini",
   "version": "1.0.0",
   "main": "dist/main/index.cjs",
-  "author": "草鞋没号 <308487730@qq.com>",
+  "author": "liumingye",
   "license": "MIT",
   "scripts": {
     "dev": "node scripts/watch.mjs",
-    "build": "vue-tsc --project packages/renderer/tsconfig.json --noEmit && node scripts/build.mjs && electron-builder"
+    "build": "vue-tsc --project packages/renderer/tsconfig.json --noEmit && node scripts/build.mjs && electron-builder",
+    "mac": "yarn build -m",
+    "win32": "yarn build -w --ia32",
+    "win64": "yarn build -w --x64",
+    "linux": "yarn build -l"
   },
   "engines": {
     "node": ">=14.17.0"
@@ -34,6 +38,7 @@
     "PORT": 3344
   },
   "keywords": [
+    "bilibili",
     "vite",
     "electron",
     "vue3",

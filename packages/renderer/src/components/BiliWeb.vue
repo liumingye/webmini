@@ -2,7 +2,7 @@
 import { ref, onMounted, computed } from "vue";
 import { useAppStore } from "@/store";
 import { resizeMainWindow } from "@/utils";
-import { getVid, getPartOfBangumi, getPartOfVideo } from "@/utils";
+import { getVid, getVidWithP, getPartOfBangumi, getPartOfVideo } from "@/utils";
 import { userAgent } from "@/utils/constant";
 
 const ipc = window.ipcRenderer;
@@ -76,9 +76,16 @@ onMounted(() => {
   ipc.on("select-bangumi-part", (ev, ep) => {
     appStore.goBangumiPart(ep);
   });
-
   ipc.on("openWebviewDevTools", () => {
     webview.value.openDevTools();
+  });
+  // 用户按↑、↓键时，把事件传递到webview里去实现修改音量功能
+  ipc.on("change-volume", (ev, arg) => {
+    webview.value.send("change-volume", arg);
+  });
+  // 按下ESC键
+  ipc.on("press-esc", (ev) => {
+    webview.value.goBack();
   });
 });
 </script>

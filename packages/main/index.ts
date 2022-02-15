@@ -168,7 +168,6 @@ const createMenu = () => {
 };
 
 app.on("window-all-closed", () => {
-  mainWindow = null;
   if (process.platform !== "darwin") app.quit();
 });
 

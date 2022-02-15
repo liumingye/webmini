@@ -26,35 +26,29 @@ window.addEventListener("load", function () {
         ) {
           mutation.addedNodes[0].click();
           removeStyle();
-          // document.querySelector("#bilimini")?.remove();
+          // 从app层面把 上、下 按键传进来，方便播放器控制音量
+          ipc.on("change-volume", (ev, arg) => {
+            const event = new KeyboardEvent("keydown", {
+              keyCode: arg === "up" ? 38 : 40,
+              bubbles: true,
+            });
+            document.dispatchEvent(event);
+          });
+          // 用户按了老板键，停止播放视频
+          ipc.on("hide-hide-hide", () => {
+            const player = document.querySelector(".bilibili-player-video");
+            const playButton = document.querySelector(
+              ".bilibili-player-video-btn-start"
+            );
+            // 只有当视频处在播放状态时才click一下来停止播放，如果本来就停止了就别点了
+            if (
+              player &&
+              !Array.from(playButton.classList).includes("video-state-pause")
+            ) {
+              player.click();
+            }
+          });
           observer.disconnect();
-          // ipc.on("change-volume", (ev, arg) => {
-          //   let event = new KeyboardEvent("keydown", {
-          //     bubbles: true,
-          //   });
-          //   // 傻逼玩意儿which和keycode因为deprecated变成只读了，替代的属性又还没通用，搞条毛？
-          //   Object.defineProperties(event, {
-          //     keyCode: { writeable: true, value: arg == "up" ? 38 : 40 },
-          //   });
-          //   let volume = document.querySelector(
-          //     ".bilibili-player-iconfont-volume-max"
-          //   );
-          //   volume.dispatchEvent(event);
-          // });
-          // // 用户按了老板键，停止播放视频
-          // ipc.on("hide-hide-hide", () => {
-          //   const player = document.querySelector(".bilibili-player-video");
-          //   const playButton = document.querySelector(
-          //     ".bilibili-player-video-btn-start"
-          //   );
-          //   // 只有当视频处在播放状态时才click一下来停止播放，如果本来就停止了就别点了
-          //   if (
-          //     player &&
-          //     !Array.from(playButton.classList).includes("video-state-pause")
-          //   ) {
-          //     player.click();
-          //   }
-          // });
         }
       });
     });
