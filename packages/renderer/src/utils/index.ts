@@ -12,15 +12,14 @@ export const resizeMainWindow = () => {
   const targetWindowType = ref<windowType>();
   const url = appStore.webview.getURL();
   if (
-    url.indexOf("/video/") > -1 ||
-    url.indexOf("html5player.html") > -1 ||
-    /\/\/live\.bilibili\.com\/blanc\/\d+/.test(url) ||
-    url.indexOf("bangumi/play/") > -1
+    /(\/video\/(av|BV)|\/bangumi\/play\/|\/\/live\.bilibili\.com\/blanc\/\d+)/.test(
+      url
+    )
   ) {
     targetWindowType.value = "windowSizeMini";
-  } else if (url.indexOf("passport.bilibili.com/login") > -1) {
+  } else if (url.indexOf("://passport.bilibili.com/login") > -1) {
     targetWindowType.value = "windowSizeLogin";
-  } else if (url.indexOf("t.bilibili.com/") > -1) {
+  } else if (url.indexOf("://t.bilibili.com/?tab") > -1) {
     targetWindowType.value = "windowSizeFeed";
   } else {
     targetWindowType.value = "windowSizeDefault";
@@ -66,10 +65,12 @@ export const resizeMainWindow = () => {
   // ipc.send("main-window-resized", targetPosition, targetSize);
 };
 
-export const getVidWithP = (url: string) => {
-  const m = /video\/((av|BV)\d+(?:\/?\?p=\d+)?)/.exec(url);
+export function getVidWithP(url: string) {
+  const m =
+    /video\/(av\d+(?:\/?\?p=\d+)?)/.exec(url) ||
+    /video\/(BV\w+(?:\/?\?p=\d+)?)/.exec(url);
   return m ? m[1] : null;
-};
+}
 
 export const getVid = (url: string) => {
   const m = /video\/(av\d+)/.exec(url) || /video\/(BV\w+)/.exec(url);
@@ -113,7 +114,7 @@ export const getPartOfBangumi = (url: string) => {
       console.log(`解析番剧分p失败：${err}`, json);
       return false;
     }
-    console.log(`获取番剧 ${url} 的分P数据成功`);
+    console.log(`获取番剧 ${url} 的分P数据成功`, parts);
     if (parts.length) {
       if (!appStore.windowID.selectPartWindow) return;
       ipc.sendTo(appStore.windowID.selectPartWindow, "update-bangumi-part", {

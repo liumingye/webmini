@@ -44,6 +44,7 @@ ipc.on("update-part", (ev, arg) => {
 });
 // 番剧分p
 ipc.on("update-bangumi-part", (ev, data) => {
+  console.log("update-bangumi-part", data);
   currentPartId.value = data.currentPartId;
   partList.value = null;
   bangumiPartList.value = data.parts;

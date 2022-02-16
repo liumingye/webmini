@@ -8,11 +8,10 @@
     "dev": "node scripts/watch.mjs",
     "prebuild": "vue-tsc --project packages/renderer/tsconfig.json --noEmit && node scripts/build.mjs",
     "build": "electron-builder",
-    "debug": "yarn prebuild && vite ./packages/renderer",
-    "mac": "yarn build -m",
-    "win32": "yarn build -w --ia32",
-    "win64": "yarn build -w --x64",
-    "linux": "yarn build -l"
+    "build:mac": "yarn build -m",
+    "build:win32": "yarn build -w --ia32",
+    "build:win64": "yarn build -w --x64",
+    "build:linux": "yarn build -l"
   },
   "engines": {
     "node": ">=14.17.0"

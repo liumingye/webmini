@@ -1,6 +1,6 @@
 export const is = {
   video: (pathname: string) =>
-    /^(\/video\/av|\/video\/BV|\/bangumi\/play\/)/.test(pathname),
+    /^(\/video\/(av|BV)|\/bangumi\/play\/)/.test(pathname),
   trends: (href: string) => /^http(s|):\/\/t\.bilibili\.com/.test(href),
   live: (href: string) => /\/\/live\.bilibili\.com\/blanc\/\d+/.test(href),
   login: (href: string) => /passport\.bilibili.com\/login/.test(href),

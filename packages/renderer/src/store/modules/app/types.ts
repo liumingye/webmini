@@ -1,6 +1,5 @@
 export interface AppStateTypes {
   webview: Electron.WebviewTag;
-  lastLoadedUrl: string;
   lastTarget: string;
   windowSizeMini: [number, number];
   windowSizeFeed: [number, number];
