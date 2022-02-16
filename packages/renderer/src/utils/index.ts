@@ -65,28 +65,30 @@ export const resizeMainWindow = () => {
   // ipc.send("main-window-resized", targetPosition, targetSize);
 };
 
-export function getVidWithP(url: string) {
-  const m =
-    /video\/(av\d+(?:\/?\?p=\d+)?)/.exec(url) ||
-    /video\/(BV\w+(?:\/?\?p=\d+)?)/.exec(url);
+export const getVidWithP = (url: string) => {
+  const m = /\/video\/([av\d+|BV\w+](?:\/?\?p=\d+)?)/.exec(url);
   return m ? m[1] : null;
-}
+};
 
 export const getVid = (url: string) => {
-  const m = /video\/(av\d+)/.exec(url) || /video\/(BV\w+)/.exec(url);
+  const m = /\/video\/(av\d+)/.exec(url) || /video\/(BV\w+)/.exec(url);
   return m ? m[1] : null;
 };
 
 // ajax
 export const ajax = {
-  get: function (url: string, success: any, mode?: "desktop" | "mobile") {
-    var r = new XMLHttpRequest();
+  get: (
+    url: string,
+    success: (res: string) => void,
+    mode?: "desktop" | "mobile"
+  ) => {
+    const r = new XMLHttpRequest();
     r.open("GET", url, true);
     if (mode && mode in userAgent) {
       r.setRequestHeader("userAgent", userAgent[mode || "desktop"]);
     }
-    r.onreadystatechange = function () {
-      if (r.readyState != 4 || r.status != 200) return;
+    r.onreadystatechange = () => {
+      if (r.readyState !== 4 || r.status !== 200) return;
       success(r.responseText);
     };
     r.send();
@@ -122,7 +124,7 @@ export const getPartOfBangumi = (url: string) => {
         parts: parts.map((p: any) => {
           return {
             epid: p.i,
-            aid: p.aid,
+            // aid: p.aid,
             bvid: p.bvid,
             title: p.longTitle,
           };

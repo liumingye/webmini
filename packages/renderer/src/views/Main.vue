@@ -1,17 +1,16 @@
 <script setup lang="ts">
 import TopBar from "@/components/TopBar.vue";
 import BiliWeb from "@/components/BiliWeb.vue";
-import Loading from "@/components/Loading.vue";
 import GotoTarget from "@/components/GoTarget.vue";
 import About from "@/components/About.vue";
 
 import { useAppStore } from "@/store";
-import { ref, onMounted, computed } from "vue";
+import { ref, onMounted, computed, watch } from "vue";
 import { currentWindowType } from "@/utils";
 import { debounce } from "@/utils/debounce";
 
 const appStore = useAppStore();
-const showTopBar = ref(false);
+const showTopBar = ref(true);
 const mounted = ref(false);
 const showGotoTarget = computed(() => appStore.showGotoTarget);
 const showAbout = computed(() => appStore.showAbout);
@@ -20,36 +19,47 @@ const app = window.app;
 
 // windows下frameless window没法正确检测到mouseout事件，只能根据光标位置做个dirtyCheck了
 const initMouseStateDirtyCheck = () => {
-  const getMousePosition = app.remote.screen.getCursorScreenPoint;
-  let lastStatus = "OUT";
-  setInterval(function () {
-    let mousePos = getMousePosition(),
+  const lastStatus = ref<"OUT" | "IN">();
+  const timeout = ref();
+  const Fn = () => {
+    const getMousePosition = app.remote.screen.getCursorScreenPoint,
+      mousePos = getMousePosition(),
       windowPos = app.currentWindow.getPosition(),
       windowSize = app.currentWindow.getSize();
-    function getTriggerAreaWidth() {
-      return 0;
-      // return lastStatus == "IN" ? 0 : 16;
-    }
-    function getTriggerAreaHeight() {
+    const getTriggerAreaWidth = () => {
+      return lastStatus.value == "IN" ? 0 : 16;
+    };
+    const getTriggerAreaHeight = () => {
       let h = 0.1 * windowSize[1],
-        minHeight = lastStatus == "IN" ? 120 : 36;
+        minHeight = lastStatus.value == "IN" ? 120 : 36;
       return h > minHeight ? h : minHeight;
-    }
+    };
     if (
       mousePos.x > windowPos[0] &&
       mousePos.x < windowPos[0] + windowSize[0] - getTriggerAreaWidth() &&
       mousePos.y > windowPos[1] &&
       mousePos.y < windowPos[1] + getTriggerAreaHeight()
     ) {
-      if (lastStatus == "OUT") {
+      if (lastStatus.value == "OUT") {
         showTopBar.value = true;
-        lastStatus = "IN";
+        lastStatus.value = "IN";
       }
-    } else if (lastStatus == "IN") {
-      lastStatus = "OUT";
-      showTopBar.value = false;
+      return;
     }
-  }, 200);
+    lastStatus.value = "OUT";
+    showTopBar.value = false;
+  };
+  watch(
+    () => appStore.autoHideBar,
+    (autoHideBar) => {
+      if (autoHideBar) {
+        timeout.value = setInterval(Fn, 200);
+        return;
+      }
+      clearInterval(timeout.value);
+      showTopBar.value = true;
+    }
+  );
 };
 
 // 当用户缩放窗口时保存窗口尺寸
@@ -70,7 +80,7 @@ const saveWindowSizeOnResize = () => {
       appStore.saveSelfToLocalStorage();
     }
   }, 300);
-  window.addEventListener("resize", function () {
+  window.addEventListener("resize", () => {
     debounced();
   });
 };
@@ -90,7 +100,6 @@ onMounted(() => {
     </keep-alive>
     <BiliWeb />
     <GotoTarget v-if="showGotoTarget" />
-    <Loading />
   </div>
 </template>
 

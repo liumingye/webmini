@@ -3,7 +3,7 @@ import { defineConfig, Plugin } from "vite";
 import vue from "@vitejs/plugin-vue";
 import resolve from "vite-plugin-resolve";
 import pkg from "../../package.json";
-import { join } from "path";
+import path from "path";
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -32,7 +32,17 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      "@": join(__dirname, "src"),
+      "@": path.resolve(__dirname, "src"),
+    },
+  },
+  css: {
+    preprocessorOptions: {
+      less: {
+        additionalData: `@import "${path.resolve(
+          __dirname,
+          "src/assets/css/css-variables.less"
+        )}";`,
+      },
     },
   },
 });

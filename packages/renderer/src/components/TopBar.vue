@@ -132,7 +132,7 @@ const turnOff = () => {
   user-select: none;
   display: flex;
   justify-content: space-between;
-  background: #f25d8e;
+  background: @color-bg-pink;
   line-height: 36px;
   height: 36px;
   padding: 0 1em;
@@ -146,29 +146,32 @@ const turnOff = () => {
   gap: 6px;
   display: flex;
   align-items: center;
-  line-height: 15px;
 }
 .top-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   -webkit-app-region: no-drag;
   border-radius: 100%;
   font-size: 7px;
   width: 15px;
   height: 15px;
   text-align: center;
-  background: #f89fb4;
-  color: #f25d8e;
+  background: @color-bg-white;
+  opacity: 0.5;
+  color: @color-bg-pink;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: opacity 0.2s ease;
   background-position: 2px 2px;
   background-repeat: no-repeat;
   background-size: 11px;
 
   &[disabled] {
-    opacity: 0.5;
+    opacity: 0.2;
   }
 
   &:not([disabled]):hover {
-    background-color: #fff;
+    opacity: 1;
   }
 }
 #navi-back {

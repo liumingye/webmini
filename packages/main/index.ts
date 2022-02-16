@@ -8,13 +8,15 @@ import {
 } from "electron";
 import { release } from "os";
 import { join } from "path";
-import remote from "@electron/remote/main";
+import { initialize, enable } from "@electron/remote/main";
 
 // Disable GPU Acceleration for Windows 7
 if (release().startsWith("6.1")) app.disableHardwareAcceleration();
 
 // Set application name for Windows 10+ notifications
 if (process.platform === "win32") app.setAppUserModelId(app.getName());
+
+initialize();
 
 const isDev = !app.isPackaged;
 const URL = isDev
@@ -41,12 +43,11 @@ async function createWindow() {
       nativeWindowOpen: false,
       webSecurity: false,
     },
-    autoHideMenuBar: !isDev,
   });
 
   mainWindow.loadURL(URL);
 
-  remote.enable(mainWindow.webContents); // 渲染进程中使用remote
+  enable(mainWindow.webContents); // 渲染进程中使用remote
 
   // Test active push message to Renderer-process
   // mainWindow.webContents.on("did-finish-load", () => {
@@ -75,6 +76,8 @@ async function createWindow() {
     if (url.startsWith("https:")) shell.openExternal(url);
     return { action: "deny" };
   });
+
+  // mainWindow.on("mouse-enter", () => {});
 }
 
 const createMenu = () => {
@@ -83,15 +86,15 @@ const createMenu = () => {
     {
       label: app.name,
       submenu: [
-        { role: 'about' },
-        { type: 'separator' },
-        { role: 'services' },
-        { type: 'separator' },
-        { role: 'hide' },
-        { role: 'hideOthers' },
-        { role: 'unhide' },
-        { type: 'separator' },
-        { role: 'quit' }
+        { role: "about" },
+        { type: "separator" },
+        { role: "services" },
+        { type: "separator" },
+        { role: "hide" },
+        { role: "hideOthers" },
+        { role: "unhide" },
+        { type: "separator" },
+        { role: "quit" },
       ],
     },
     {
@@ -213,7 +216,7 @@ const createSelectPartWindow = () => {
 
   selectPartWindow.loadURL(`${URL}#/select-part`);
 
-  remote.enable(selectPartWindow.webContents); // 渲染进程中使用remote
+  enable(selectPartWindow.webContents); // 渲染进程中使用remote
 
   selectPartWindow.setAlwaysOnTop(true, "modal-panel");
   selectPartWindow.on("closed", () => {
@@ -249,7 +252,6 @@ app
   .whenReady()
   .then(() => {
     // 初始化 remote
-    remote.initialize();
     createWindow();
     createMenu();
     createSelectPartWindow();

@@ -5,10 +5,10 @@ export interface AppStateTypes {
   windowSizeFeed: [number, number];
   windowSizeDefault: [number, number];
   windowSizeLogin: [number, number];
-  showLoding: boolean;
   showGotoTarget: boolean;
   showAbout: boolean;
   disablePartButton: boolean;
   disableDanmakuButton: boolean;
+  autoHideBar: boolean;
   windowID: { mainWindow?: number; selectPartWindow?: number };
 }

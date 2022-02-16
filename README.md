@@ -22,9 +22,10 @@ yarn dev
 使用electron-builder打包：
 
 ```
-yarn win64
-yarn win32
-yarn mac
+yarn build:mac
+yarn build:win32
+yarn build:win64
+yarn build:linux
 ```
 
 

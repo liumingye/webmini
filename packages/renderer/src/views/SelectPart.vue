@@ -3,6 +3,7 @@ import { computed, ref, nextTick } from "vue";
 import { toRaw } from "@vue/reactivity";
 import { useAppStore } from "@/store";
 
+const app = window.app;
 const ipc = window.ipcRenderer;
 const partList = ref();
 const bangumiPartList = ref();
@@ -21,7 +22,7 @@ const selectBangumiPart = (part: { epid: number }) => {
   ipc.sendTo(mainWindowID.value, "select-bangumi-part", toRaw(part));
 };
 const closeWindow = () => {
-  window.app.currentWindow.hide();
+  app.currentWindow.hide();
 };
 // 当前part滚动到可视范围
 const scrollIntoView = () => {
@@ -33,7 +34,7 @@ const scrollIntoView = () => {
 // 更新分p列表
 ipc.on("update-part", (ev, arg) => {
   if (!arg) {
-    window.app.currentWindow.hide();
+    app.currentWindow.hide();
   }
   currentPartId.value = 0;
   partList.value = arg;
@@ -66,15 +67,15 @@ ipc.on("url-changed", (ev, url) => {
   }
 });
 
-window.onerror = function (err, f, line) {
-  // var id = f.split("/");
-  // utils.error(`${id[id.length - 1]} : Line ${line}\n> ${err}`);
-};
+// window.onerror = function (err, f, line) {
+// var id = f.split("/");
+// utils.error(`${id[id.length - 1]} : Line ${line}\n> ${err}`);
+// };
 </script>
 
 <template>
   <div id="selectPart">
-    <span id="close" @click="closeWindow">x</span>
+    <button id="close" @click="closeWindow">x</button>
     <div class="list-title">视频分Part</div>
     <div class="row">
       <div
@@ -106,63 +107,57 @@ window.onerror = function (err, f, line) {
 <style lang="less" scoped>
 #selectPart {
   user-select: none;
-  background: #f25d8e;
-  color: #ffacbf;
-  font-size: 12px;
-  line-height: 1.7em;
-  margin: 0;
-  display: flex;
-  height: 100vh;
-  flex-direction: column;
+  background: @color-bg-pink;
+  color: #fff;
+  height: 100%;
 
   #close {
-    background: #fb93ab;
+    background: @color-bg-white;
+    color: @color-bg-pink;
+    opacity: 0.6;
     border-radius: 14px;
-    color: #f25d8e;
     cursor: pointer;
-    display: inline-block;
-    font-size: 11px;
-    line-height: 13px;
-    vertical-align: middle;
-    margin-right: 2px;
+    font-size: 12px;
     text-align: center;
-    transition: all 0.2s ease;
-    width: 14px;
-    height: 14px;
+    transition: opacity 0.2s ease;
+    width: 15px;
+    height: 15px;
+    line-height: 15px;
     position: absolute;
-    top: 10px;
-    right: 5px;
+    top: 12px;
+    right: 10px;
   }
   #close:hover {
-    background: #fff;
+    opacity: 1;
   }
 
   .row {
-    padding: 5px;
-    flex: 1;
+    padding: 0 5px;
     overflow-y: auto;
 
     .item {
-      overflow-y: auto;
-      border-radius: 3px;
+      overflow: hidden;
+      border-radius: 4px;
       cursor: pointer;
-      display: block;
       line-height: 2.4em;
       text-overflow: ellipsis;
       white-space: nowrap;
       padding: 0 5px;
+      opacity: 0.6;
       &.current-ep {
-        color: #fff;
+        opacity: 1;
         font-weight: bold;
       }
       &:hover {
-        background: #ea8aa1;
-        color: #fff;
+        opacity: 1;
+        background: rgba(255, 255, 255, 0.16);
       }
     }
   }
   .list-title {
-    padding: 6px 10px 6px;
+    padding-left: 10px;
+    height: 36px;
+    line-height: 36px;
     color: #fff;
     font-weight: bold;
     margin-right: 24px;

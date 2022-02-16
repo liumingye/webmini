@@ -13,11 +13,11 @@ export const useAppStore = defineStore("app", {
     windowSizeFeed: [650, 760],
     windowSizeDefault: [376, 500],
     windowSizeLogin: [490, 394],
-    showLoding: false,
     showGotoTarget: false,
     showAbout: false,
     disablePartButton: true,
     disableDanmakuButton: true,
+    autoHideBar: false,
     windowID: {},
   }),
   actions: {
@@ -47,17 +47,15 @@ export const useAppStore = defineStore("app", {
       });
       localStorage.setItem("app", JSON.stringify(Array.from(map.entries())));
     },
-    changeUrl(url: string) {
+    changeUrl() {
       // 防止重复加载同页面
+      const url = this.webview.getURL();
       if (url === this.lastTarget) {
-        // utils.log(`代码尝试重复加载页面：${target}`);
+        console.log(`代码尝试重复加载页面：${url}`);
         return false;
       }
       this.lastTarget = url;
       console.log("changeUrl", url);
-
-      // 显示loading mask
-      this.showLoding = true;
 
       const vid = getVidWithP(url);
       if (vid) {
@@ -65,40 +63,44 @@ export const useAppStore = defineStore("app", {
           userAgent: userAgent.desktop,
         });
         this.disableDanmakuButton = false;
+        this.autoHideBar = true;
         if (this.windowID.selectPartWindow) {
           ipc.sendTo(this.windowID.selectPartWindow, "url-changed", url);
         }
         return;
       }
 
-      if (url.indexOf("bangumi/play/") > -1) {
+      if (url.indexOf("/bangumi/play/") > -1) {
         this.webview.setUserAgent(userAgent.desktop);
         this.disableDanmakuButton = false;
+        this.autoHideBar = true;
         return;
       }
 
-      const live = /live\.bilibili\.com\/(h5\/||blanc\/)?(\d+).*/.exec(url);
-      if (live) {
+      if (/live\.bilibili\.com\/(h5\/||blanc\/)?(\d+).*/.test(url)) {
         this.webview.setUserAgent(userAgent.desktop);
         this.disableDanmakuButton = false;
+        this.autoHideBar = true;
         return;
       }
 
       if (url.indexOf("passport.bilibili.com/login") > -1) {
         this.webview.setUserAgent(userAgent.desktop);
         this.disableDanmakuButton = true;
+        this.autoHideBar = false;
         return;
       }
-
-      this.webview.loadURL(url, {
-        userAgent: userAgent.mobile,
-      });
+      this.webview.setUserAgent(userAgent.mobile);
+      // this.webview.loadURL(url, {
+      //   userAgent: userAgent.mobile,
+      // });
       // 清除分p
       if (this.windowID.selectPartWindow) {
         ipc.sendTo(this.windowID.selectPartWindow, "update-part", null);
       }
       this.disablePartButton = true;
       this.disableDanmakuButton = true;
+      this.autoHideBar = false;
     },
     go(url: string) {
       console.log("go", url);
@@ -107,6 +109,7 @@ export const useAppStore = defineStore("app", {
       });
     },
     goPart(pid: number) {
+      console.log("goPart", pid);
       const vid = getVid(this.webview.getURL());
       if (vid) {
         let url = `${videoUrlPrefix}${vid}/?p=${pid}`;
@@ -118,7 +121,7 @@ export const useAppStore = defineStore("app", {
       }
     },
     goBangumiPart(ep: { bvid: number }) {
-      console.log(`路由：选择番剧分p`);
+      console.log("goBangumiPart", ep);
       this.go(videoUrlPrefix + ep.bvid);
     },
   },
