@@ -1,7 +1,6 @@
 import { AppStateTypes } from "./types";
 import { defineStore } from "pinia";
 import { getVidWithP, getVid } from "@/utils";
-import { useRoute } from "vue-router";
 import { userAgent, videoUrlPrefix } from "@/utils/constant";
 
 const ipc = window.ipcRenderer;
@@ -9,7 +8,7 @@ const ipc = window.ipcRenderer;
 export const useAppStore = defineStore("app", {
   state: (): AppStateTypes => ({
     webview: null as unknown as Electron.WebviewTag,
-    lastTarget: "", // 这是最后一次传入go方法的url
+    lastTarget: "", // 这是最后一次传入changeUrl方法的url
     windowPosition: null,
     windowSizeMini: [300, 170],
     windowSizeFeed: [650, 760],
@@ -32,22 +31,6 @@ export const useAppStore = defineStore("app", {
           // @ts-ignore
           this.$state[key] = value;
         });
-        // 恢复窗口尺寸和位置
-        const route = useRoute();
-        if (route.name !== "Home") return;
-        const position: Record<string, number> = {};
-        if (this.windowPosition !== null) {
-          position.x = this.windowPosition[0];
-          position.y = this.windowPosition[1];
-        }
-        window.app.currentWindow.setBounds(
-          {
-            width: this.windowSizeDefault[0],
-            height: this.windowSizeDefault[1],
-            ...position,
-          },
-          true
-        );
       } catch (e) {
         localStorage.removeItem("app");
       }

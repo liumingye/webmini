@@ -64,7 +64,7 @@ function watchInject(server) {
     mode: "development",
     plugins: [
       {
-        name: "electron-preload-watcher2",
+        name: "electron-inject-watcher",
         writeBundle() {
           server.ws.send({ type: "full-reload" });
         },

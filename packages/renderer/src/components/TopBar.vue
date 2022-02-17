@@ -18,9 +18,17 @@ const canGoBack = ref(false);
 const canGoForward = ref(false);
 const disableDanmakuButton = computed(() => appStore.disableDanmakuButton);
 const disablePartButton = computed(() => appStore.disablePartButton);
+const title = ref("");
 
 webview.value.addEventListener("did-finish-load", () => updateNavState());
 webview.value.addEventListener("did-navigate-in-page", () => updateNavState());
+webview.value.addEventListener("page-title-updated", ({ title }) => {
+  updateTitle(title);
+});
+
+const updateTitle = (_title: string) => {
+  title.value = _title;
+};
 
 const updateNavState = () => {
   canGoBack.value = webview.value.canGoBack();
@@ -41,10 +49,6 @@ const toggleDanmaku = () => {
   );
 };
 const toggleSelectPartWindow = () => {
-  console.log(disablePartButton.value);
-  // if (this.disablePartButton) {
-  // return false;
-  // }
   console.log("主窗口：点击P");
   ipc.send("toggle-select-part-window");
 };
@@ -65,7 +69,6 @@ const turnOff = () => {
       <button
         id="navi-back"
         title="后退"
-        class="top-btn"
         :disabled="!canGoBack"
         @click="goBack"
       >
@@ -74,34 +77,23 @@ const turnOff = () => {
       <button
         id="navi-forward"
         title="前进"
-        class="top-btn"
         :disabled="!canGoForward"
         @click="goForward"
       >
         <Right />
       </button>
-      <button
-        id="navi-home"
-        title="返回首页"
-        class="top-btn"
-        @click="naviGoHome"
-      >
+      <button id="navi-home" title="返回首页" @click="naviGoHome">
         <Home />
       </button>
-      <button
-        id="navi-goto"
-        title="前往..."
-        class="top-btn"
-        @click="naviGotoShow"
-      >
-        av
-      </button>
+      <button id="navi-goto" title="前往..." @click="naviGotoShow">av</button>
+    </div>
+    <div class="title">
+      {{ title }}
     </div>
     <div class="button-group">
       <button
         id="app-danmaku"
         title="开/关弹幕"
-        class="top-btn"
         @click="toggleDanmaku"
         :disabled="disableDanmakuButton"
       >
@@ -110,25 +102,24 @@ const turnOff = () => {
       <button
         id="app-part"
         title="分P列表"
-        class="top-btn"
         @click="toggleSelectPartWindow"
         :disabled="disablePartButton"
       >
         P
       </button>
-      <button id="app-feed" title="动态" class="top-btn" @click="showFeed">
+      <button title="动态" @click="showFeed">
         <Windmill />
       </button>
       <!-- <span
         id="app-config"
         title="设置"
-        class="top-btn"
+        
         alt="toggleConfig"
       ></span> -->
-      <button id="app-about" title="关于" class="top-btn" @click="showAbout">
+      <button title="关于" @click="showAbout">
         <Help />
       </button>
-      <button id="app-close" title="退出" class="top-btn" @click="turnOff">
+      <button title="退出" @click="turnOff">
         <CloseSmall />
       </button>
     </div>
@@ -148,68 +139,80 @@ const turnOff = () => {
   width: 100%;
   z-index: 9;
   -webkit-app-region: drag;
-}
-.button-group {
-  grid-gap: 6px;
-  gap: 6px;
-  display: flex;
-  align-items: center;
-}
-.top-btn {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  -webkit-app-region: no-drag;
-  border-radius: 100%;
-  width: 15px;
-  height: 15px;
-  background: @color-bg-white;
-  opacity: 0.5;
-  color: @color-bg-pink;
-  cursor: pointer;
-  transition: opacity 0.2s ease;
 
-  &[disabled] {
-    opacity: 0.2;
+  .title {
+    flex: 1;
+    padding: 0 10px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    color: @color-bg-white;
+    text-align: center;
   }
 
-  &:not([disabled]):hover {
-    opacity: 1;
-  }
-
-  span {
+  .button-group {
+    grid-gap: 6px;
+    gap: 6px;
     display: flex;
-    justify-content: center;
     align-items: center;
-    :deep(svg) {
-      width: 0.95em;
-      height: 0.95em;
-    }
-  }
-}
-#navi-back {
-  span {
-    :deep(svg) {
-      margin-left: -2px;
-    }
-  }
-}
-#navi-forward {
-  span {
-    :deep(svg) {
-      margin-left: 1px;
-    }
-  }
-}
 
-#navi-goto {
-  border-radius: 3px;
-  font-size: 14px;
-  padding: 0 5px;
-  width: auto;
-}
-#app-danmaku,
-#app-part {
-  font-size: 10px;
+    button {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      -webkit-app-region: no-drag;
+      border-radius: 100%;
+      width: 15px;
+      height: 15px;
+      background: @color-bg-white;
+      opacity: 0.5;
+      color: @color-bg-pink;
+      cursor: pointer;
+      transition: opacity 0.2s ease;
+
+      &[disabled] {
+        opacity: 0.2;
+      }
+
+      &:not([disabled]):hover {
+        opacity: 1;
+      }
+
+      span {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        :deep(svg) {
+          width: 0.95em;
+          height: 0.95em;
+        }
+      }
+
+      &#navi-back {
+        span {
+          :deep(svg) {
+            margin-left: -2px;
+          }
+        }
+      }
+      &#navi-forward {
+        span {
+          :deep(svg) {
+            margin-left: 1px;
+          }
+        }
+      }
+      &#navi-goto {
+        border-radius: 3px;
+        font-size: 14px;
+        padding: 0 5px;
+        width: auto;
+      }
+      &#app-danmaku,
+      &#app-part {
+        font-size: 10px;
+      }
+    }
+  }
 }
 </style>

@@ -7,7 +7,7 @@ import About from "@/components/About.vue";
 import { useAppStore } from "@/store";
 import { ref, onMounted, computed, watch } from "vue";
 import { currentWindowType } from "@/utils";
-import { debounce } from "@/utils/debounce";
+import debounce from "@/utils/debounce";
 
 const appStore = useAppStore();
 const showTopBar = ref(true);
@@ -22,8 +22,7 @@ const initMouseStateDirtyCheck = () => {
   const lastStatus = ref<"OUT" | "IN">();
   const timeout = ref();
   const Fn = () => {
-    const getMousePosition = app.remote.screen.getCursorScreenPoint,
-      mousePos = getMousePosition(),
+    const mousePos = app.remote.screen.getCursorScreenPoint(),
       windowPos = app.currentWindow.getPosition(),
       windowSize = app.currentWindow.getSize();
     const getTriggerAreaWidth = () => {
@@ -62,8 +61,21 @@ const initMouseStateDirtyCheck = () => {
   );
 };
 
-// 当用户缩放窗口时保存窗口尺寸和位置
 const saveWindowSizeOnResize = () => {
+  // 恢复窗口尺寸和位置
+  const position: Record<string, number> = {};
+  if (appStore.windowPosition !== null) {
+    position.x = appStore.windowPosition[0];
+    position.y = appStore.windowPosition[1];
+  }
+  window.app.currentWindow.setBounds(
+    {
+      width: appStore.windowSizeDefault[0],
+      height: appStore.windowSizeDefault[1],
+      ...position,
+    },
+    true
+  );
   window.app.currentWindow.on("resized", () => {
     console.log("resized");
     const currentSize = appStore[currentWindowType.value];
@@ -84,9 +96,9 @@ const saveWindowSizeOnResize = () => {
 };
 
 onMounted(() => {
-  mounted.value = true;
-  initMouseStateDirtyCheck();
   saveWindowSizeOnResize();
+  initMouseStateDirtyCheck();
+  mounted.value = true;
 });
 </script>
 

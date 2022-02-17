@@ -50,14 +50,6 @@ async function createWindow() {
 
   enable(mainWindow.webContents); // 渲染进程中使用remote
 
-  // Test active push message to Renderer-process
-  // mainWindow.webContents.on("did-finish-load", () => {
-  //   mainWindow?.webContents.send(
-  //     "main-process-message",
-  //     new Date().toLocaleString()
-  //   );
-  // });
-
   mainWindow.on("closed", () => {
     mainWindow = null;
     console.log("主窗口：已关闭");
@@ -170,6 +162,7 @@ const createMenu = () => {
 };
 
 app.on("window-all-closed", () => {
+  console.log("主线程：所有窗口关闭");
   if (process.platform !== "darwin") app.quit();
 });
 

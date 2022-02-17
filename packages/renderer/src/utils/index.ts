@@ -2,6 +2,7 @@ import { useAppStore } from "@/store";
 import { ref } from "vue";
 import { windowType } from "./types";
 import { userAgent, videoUrlPrefix } from "@/utils/constant";
+import { debounce } from "@/utils/debounce";
 
 const ipc = window.ipcRenderer;
 
