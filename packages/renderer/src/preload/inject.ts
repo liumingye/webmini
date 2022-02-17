@@ -1,5 +1,6 @@
 import { is, addStyle } from "./utils";
 import search from "./modules/search";
+import removeAd from "./modules/removeAd";
 
 declare global {
   interface Window {
@@ -15,7 +16,9 @@ if (liveId) {
 }
 
 const applyStyle = () => {
-  console.log('applyStyle')
+  console.log("脚本注入成功！！！");
+  removeAd.stop();
+  removeAd.start();
   search.stop();
   // 普通视频页：自动最大化播放器
   if (is.video(window.location.pathname)) {
@@ -119,14 +122,9 @@ const applyStyle = () => {
   }
 };
 
-window.addEventListener('DOMContentLoaded', function() {
+window.addEventListener("DOMContentLoaded", () => {
   applyStyle();
   ipc.on("load-commit", () => {
     applyStyle();
   });
-})
-
-window.addEventListener("load", function () {
-  // 移除app广告
-  addStyle(`.launch-app-btn,.bili-app-link-container{display:none}`);
 });

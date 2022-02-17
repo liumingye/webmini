@@ -16,9 +16,9 @@ const searchObserver = new MutationObserver((mutations) => {
   });
 });
 
-const fn = {
+const module = {
   start: () => {
-    fn.stop();
+    module.stop();
     // 打开app弹窗自动点击取消
     removeStyle = addStyle(".v-dialog{display: none!important}");
     searchObserver.observe(document.body, {
@@ -33,4 +33,4 @@ const fn = {
   },
 };
 
-export default fn;
+export default module;

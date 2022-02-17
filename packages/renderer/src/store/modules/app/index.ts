@@ -1,7 +1,8 @@
 import { AppStateTypes } from "./types";
 import { defineStore } from "pinia";
 import { getVidWithP, getVid } from "@/utils";
-import { liveUrlPrefix, userAgent, videoUrlPrefix } from "@/utils/constant";
+import { useRoute } from "vue-router";
+import { userAgent, videoUrlPrefix } from "@/utils/constant";
 
 const ipc = window.ipcRenderer;
 
@@ -32,6 +33,8 @@ export const useAppStore = defineStore("app", {
           this.$state[key] = value;
         });
         // 恢复窗口尺寸和位置
+        const route = useRoute();
+        if (route.name !== "Home") return;
         const position: Record<string, number> = {};
         if (this.windowPosition !== null) {
           position.x = this.windowPosition[0];
