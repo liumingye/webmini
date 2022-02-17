@@ -1,5 +1,12 @@
-// @ts-nocheck
 import { is, addStyle } from "./utils";
+import search from "./modules/search";
+
+declare global {
+  interface Window {
+    EmbedPlayer: any;
+  }
+}
+
 const ipc = require("electron").ipcRenderer;
 
 const liveId = /\/\/live\.bilibili\.com\/(\d+)/.exec(window.location.href);
@@ -7,7 +14,9 @@ if (liveId) {
   window.location.href = `https://live.bilibili.com/blanc/${liveId[1]}?liteVersion=true`;
 }
 
-window.addEventListener("DOMContentLoaded", function () {
+const applyStyle = () => {
+  console.log('applyStyle')
+  search.stop();
   // 普通视频页：自动最大化播放器
   if (is.video(window.location.pathname)) {
     // 预先加载全屏样式
@@ -22,15 +31,15 @@ window.addEventListener("DOMContentLoaded", function () {
     document.body.style.overflow = "hidden";
     // 监控全屏按钮出现
     const observer = new MutationObserver((mutations) => {
-      mutations.forEach((mutation) => {
+      mutations.forEach(({ addedNodes }) => {
+        if (addedNodes.length === 0) return;
+        const node = addedNodes[0] as HTMLElement;
         if (
-          mutation.addedNodes.length > 0 &&
           /(bilibili-player-video-web-fullscreen|squirtle-video-pagefullscreen)/.test(
-            mutation.addedNodes[0].className
+            node.className
           )
         ) {
-          mutation.addedNodes[0].click();
-          // removeStyle();
+          node.click();
           // 从app层面把 上、下 按键传进来，方便播放器控制音量
           ipc.on("change-volume", (ev, arg) => {
             const event = new KeyboardEvent("keydown", {
@@ -40,32 +49,31 @@ window.addEventListener("DOMContentLoaded", function () {
             document.dispatchEvent(event);
           });
           // 用户按了老板键，停止播放视频
-          ipc.on("hide-hide-hide", () => {
-            const player = document.querySelector(".bilibili-player-video");
-            const playButton = document.querySelector(
-              ".bilibili-player-video-btn-start"
-            );
-            // 只有当视频处在播放状态时才click一下来停止播放，如果本来就停止了就别点了
-            if (
-              player &&
-              !Array.from(playButton.classList).includes("video-state-pause")
-            ) {
-              player.click();
-            }
-          });
+          // ipc.on("hide-hide-hide", () => {
+          //   const player = document.querySelector(".bilibili-player-video");
+          //   const playButton = document.querySelector(
+          //     ".bilibili-player-video-btn-start"
+          //   );
+          //   // 只有当视频处在播放状态时才click一下来停止播放，如果本来就停止了就别点了
+          //   if (
+          //     player &&
+          //     !Array.from(playButton.classList).includes("video-state-pause")
+          //   ) {
+          //     player.click();
+          //   }
+          // });
           observer.disconnect();
         }
       });
     });
-    observer.observe(
-      document.querySelector(
-        ".bilibili-player-video-control-wrap,#bilibili-player"
-      ),
-      {
+    const target = document.querySelector(
+      ".bilibili-player-video-control-wrap,#bilibili-player"
+    );
+    target &&
+      observer.observe(target, {
         childList: true,
         subtree: true,
-      }
-    );
+      });
   }
 
   // 动态页重做样式
@@ -107,50 +115,18 @@ window.addEventListener("DOMContentLoaded", function () {
       "#internationalHeader,.international-footer,.top-banner,.qrcode-tips,.title-line{display: none!important}"
     );
   } else if (is.search(window.location.href)) {
-    // 打开app弹窗自动点击取消
-    const style = document.createElement("style");
-    style.innerHTML = ".v-dialog{display: none!important}";
-    document.head.appendChild(style);
-    const observer = new MutationObserver((mutations) => {
-      mutations.forEach((mutation) => {
-        if (
-          mutation.addedNodes.length > 0 &&
-          mutation.addedNodes[0].className === "v-dialog"
-        ) {
-          document.querySelector(".open-app-dialog-btn.cancel").click();
-          observer.disconnect();
-        }
-      });
-    });
-    observer.observe(document.body, {
-      childList: true,
-    });
+    search.start();
   }
-});
+};
+
+window.addEventListener('DOMContentLoaded', function() {
+  applyStyle();
+  ipc.on("load-commit", () => {
+    applyStyle();
+  });
+})
 
 window.addEventListener("load", function () {
-  // 番剧页：获取播放器iframe地址并转跳
-  // else if (/anime\/\d+\/play/.test(window.location.href)) {
-  //   var playerInitCheck = setInterval(() => {
-  //       let ifr;
-  //       if ((ifr = document.querySelector("iframe"))) {
-  //         if (ifr.src.indexOf("iframemessage.html") == -1) {
-  //           window.location.href = ifr.src;
-  //           clearInterval(playerInitCheck);
-  //         }
-  //       } else if (++checkCount > 400) {
-  //         clearInterval(playerInitCheck);
-  //       }
-  //     }, 50),
-  //     checkCount = 0;
-  // }
-
   // 移除app广告
-  const removeAppAd = () => {
-    const appAdNode = document.querySelectorAll('[class*="launch-app-btn" i]');
-    appAdNode.forEach((node) => {
-      node.remove();
-    });
-  };
-  removeAppAd();
+  addStyle(`.launch-app-btn,.bili-app-link-container{display:none}`);
 });

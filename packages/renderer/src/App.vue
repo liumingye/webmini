@@ -6,20 +6,6 @@ window.ipcRenderer.on("windowID", (_event, items) => {
 });
 // Store Init
 appStore.loadSelfFromLocalStorage();
-// appStore.$onAction(
-//   ({
-//     name, // name of the action
-//     after, // hook after the action returns or resolves
-//   }) => {
-//     console.log(name);
-//     if (["saveSelfToLocalStorage"].includes(name)) {
-//       return;
-//     }
-//     after(() => {
-//       appStore.saveSelfToLocalStorage();
-//     });
-//   }
-// );
 </script>
 
 <template>

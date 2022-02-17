@@ -2,6 +2,15 @@
 import { ref, computed } from "vue";
 import { useAppStore } from "@/store";
 
+import {
+  Home,
+  Left,
+  Right,
+  Windmill,
+  CloseSmall,
+  Help,
+} from "@/components/Icon";
+
 const ipc = window.ipcRenderer;
 const appStore = useAppStore();
 const webview = computed(() => appStore.webview);
@@ -60,7 +69,7 @@ const turnOff = () => {
         :disabled="!canGoBack"
         @click="goBack"
       >
-        ◀
+        <Left />
       </button>
       <button
         id="navi-forward"
@@ -69,14 +78,16 @@ const turnOff = () => {
         :disabled="!canGoForward"
         @click="goForward"
       >
-        ▶
+        <Right />
       </button>
       <button
         id="navi-home"
         title="返回首页"
         class="top-btn"
         @click="naviGoHome"
-      ></button>
+      >
+        <Home />
+      </button>
       <button
         id="navi-goto"
         title="前往..."
@@ -105,12 +116,9 @@ const turnOff = () => {
       >
         P
       </button>
-      <button
-        id="app-feed"
-        title="动态"
-        class="top-btn"
-        @click="showFeed"
-      ></button>
+      <button id="app-feed" title="动态" class="top-btn" @click="showFeed">
+        <Windmill />
+      </button>
       <!-- <span
         id="app-config"
         title="设置"
@@ -118,10 +126,10 @@ const turnOff = () => {
         alt="toggleConfig"
       ></span> -->
       <button id="app-about" title="关于" class="top-btn" @click="showAbout">
-        ?
+        <Help />
       </button>
       <button id="app-close" title="退出" class="top-btn" @click="turnOff">
-        x
+        <CloseSmall />
       </button>
     </div>
   </div>
@@ -153,18 +161,13 @@ const turnOff = () => {
   align-items: center;
   -webkit-app-region: no-drag;
   border-radius: 100%;
-  font-size: 7px;
   width: 15px;
   height: 15px;
-  text-align: center;
   background: @color-bg-white;
   opacity: 0.5;
   color: @color-bg-pink;
   cursor: pointer;
   transition: opacity 0.2s ease;
-  background-position: 2px 2px;
-  background-repeat: no-repeat;
-  background-size: 11px;
 
   &[disabled] {
     opacity: 0.2;
@@ -173,22 +176,32 @@ const turnOff = () => {
   &:not([disabled]):hover {
     opacity: 1;
   }
+
+  span {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    :deep(svg) {
+      width: 0.95em;
+      height: 0.95em;
+    }
+  }
 }
 #navi-back {
-  text-indent: -1px;
+  span {
+    :deep(svg) {
+      margin-left: -2px;
+    }
+  }
 }
 #navi-forward {
-  text-indent: 1px;
+  span {
+    :deep(svg) {
+      margin-left: 1px;
+    }
+  }
 }
-#navi-home {
-  background-image: url("@/assets/images/home.png");
-}
-#app-feed {
-  background-image: url("@/assets/images/feed.png");
-}
-#app-config {
-  background-image: url("@/assets/images/config.png");
-}
+
 #navi-goto {
   border-radius: 3px;
   font-size: 14px;
@@ -198,12 +211,5 @@ const turnOff = () => {
 #app-danmaku,
 #app-part {
   font-size: 10px;
-}
-#app-about {
-  font-size: 12px;
-}
-#app-close {
-  font-size: 13px;
-  line-height: 12px;
 }
 </style>

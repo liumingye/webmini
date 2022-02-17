@@ -9,6 +9,7 @@ export const useAppStore = defineStore("app", {
   state: (): AppStateTypes => ({
     webview: null as unknown as Electron.WebviewTag,
     lastTarget: "", // 这是最后一次传入go方法的url
+    windowPosition: null,
     windowSizeMini: [300, 170],
     windowSizeFeed: [650, 760],
     windowSizeDefault: [376, 500],
@@ -30,6 +31,20 @@ export const useAppStore = defineStore("app", {
           // @ts-ignore
           this.$state[key] = value;
         });
+        // 恢复窗口尺寸和位置
+        const position: Record<string, number> = {};
+        if (this.windowPosition !== null) {
+          position.x = this.windowPosition[0];
+          position.y = this.windowPosition[1];
+        }
+        window.app.currentWindow.setBounds(
+          {
+            width: this.windowSizeDefault[0],
+            height: this.windowSizeDefault[1],
+            ...position,
+          },
+          true
+        );
       } catch (e) {
         localStorage.removeItem("app");
       }
@@ -37,6 +52,7 @@ export const useAppStore = defineStore("app", {
     saveSelfToLocalStorage() {
       const map = new Map();
       const whiteList = [
+        "windowPosition",
         "windowSizeMini",
         "windowSizeFeed",
         "windowSizeDefault",
@@ -56,7 +72,8 @@ export const useAppStore = defineStore("app", {
       }
       this.lastTarget = url;
       console.log("changeUrl", url);
-
+      // 通知webview加载脚本
+      this.webview.send("load-commit");
       const vid = getVidWithP(url);
       if (vid) {
         this.webview.loadURL(url, {

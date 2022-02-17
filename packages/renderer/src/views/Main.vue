@@ -62,26 +62,24 @@ const initMouseStateDirtyCheck = () => {
   );
 };
 
-// 当用户缩放窗口时保存窗口尺寸
+// 当用户缩放窗口时保存窗口尺寸和位置
 const saveWindowSizeOnResize = () => {
-  const debounced = debounce(() => {
-    const _currentWindowType = currentWindowType.value;
-    if (
-      !["windowSizeMini", "windowSizeFeed", "windowSizeDefault"].includes(
-        _currentWindowType
-      )
-    ) {
-      return;
-    }
-    const currentSize = appStore[_currentWindowType];
-    const newSize: [number, number] = [window.innerWidth, window.innerHeight];
+  window.app.currentWindow.on("resized", () => {
+    console.log("resized");
+    const currentSize = appStore[currentWindowType.value];
+    const newSize: number[] = [window.innerWidth, window.innerHeight];
     if (currentSize !== newSize) {
-      appStore[_currentWindowType] = newSize;
+      appStore[currentWindowType.value] = newSize;
       appStore.saveSelfToLocalStorage();
     }
-  }, 300);
-  window.addEventListener("resize", () => {
-    debounced();
+  });
+  const moved = debounce(() => {
+    console.log("moved");
+    appStore.windowPosition = window.app.currentWindow.getPosition();
+    appStore.saveSelfToLocalStorage();
+  }, 500);
+  window.app.currentWindow.on("moved", () => {
+    moved();
   });
 };
 

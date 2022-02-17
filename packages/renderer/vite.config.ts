@@ -4,6 +4,7 @@ import vue from "@vitejs/plugin-vue";
 import resolve from "vite-plugin-resolve";
 import pkg from "../../package.json";
 import path from "path";
+import vueJsx from "@vitejs/plugin-vue-jsx";
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -12,6 +13,7 @@ export default defineConfig({
   plugins: [
     vue(),
     resolveElectron(),
+    vueJsx(),
     /**
      * Here you can specify other modules
      * 🚧 You have to make sure that your module is in `dependencies` and not in the` devDependencies`,

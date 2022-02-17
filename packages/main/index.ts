@@ -33,10 +33,11 @@ if (!app.requestSingleInstanceLock()) {
 
 async function createWindow() {
   mainWindow = new BrowserWindow({
-    // title: "Main window", // 标题，默认为"Electron"。如果由loadURL()加载的HTML文件中含有标签<title>，此属性将被忽略
     width: 375,
     height: 500,
     frame: false, // 是否有边框
+    maximizable: false,
+    alwaysOnTop: true,
     webPreferences: {
       webviewTag: true,
       preload: join(__dirname, "../preload/index.cjs"), // 预先加载指定的脚本
@@ -56,8 +57,6 @@ async function createWindow() {
   //     new Date().toLocaleString()
   //   );
   // });
-
-  mainWindow.setAlwaysOnTop(true, "torn-off-menu");
 
   mainWindow.on("closed", () => {
     mainWindow = null;
@@ -144,13 +143,13 @@ const createMenu = () => {
             selectPartWindow?.webContents.openDevTools();
           },
         },
-        {
-          label: "Inspect Config Window",
-          accelerator: "CmdOrCtrl+3",
-          click() {
-            // mainWindow?.webContents.send("test", 123);
-          },
-        },
+        // {
+        //   label: "Inspect Config Window",
+        //   accelerator: "CmdOrCtrl+3",
+        //   click() {
+        //     // mainWindow?.webContents.send("test", 123);
+        //   },
+        // },
         {
           label: "Inspect Webview",
           accelerator: "CmdOrCtrl+4",
@@ -205,10 +204,12 @@ const createSelectPartWindow = () => {
   console.log("选p窗口：开始创建");
 
   selectPartWindow = new BrowserWindow({
+    show: false,
     width: 200,
     height: 300,
     frame: false,
-    show: false,
+    maximizable: false,
+    alwaysOnTop: true,
     webPreferences: {
       preload: join(__dirname, "../preload/index.cjs"), // 预先加载指定的脚本
     },
@@ -218,7 +219,6 @@ const createSelectPartWindow = () => {
 
   enable(selectPartWindow.webContents); // 渲染进程中使用remote
 
-  selectPartWindow.setAlwaysOnTop(true, "modal-panel");
   selectPartWindow.on("closed", () => {
     selectPartWindow = null;
     console.log("选p窗口：已关闭");

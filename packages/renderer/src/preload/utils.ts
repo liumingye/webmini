@@ -4,7 +4,7 @@ export const is = {
   trends: (href: string) => /^http(s|):\/\/t\.bilibili\.com/.test(href),
   live: (href: string) => /\/\/live\.bilibili\.com\/blanc\/\d+/.test(href),
   login: (href: string) => /passport\.bilibili.com\/login/.test(href),
-  search: (href: string) => /m\.bilibili\.com\/search/.test(href),
+  search: (href: string) => /m\.bilibili\.com\/search\?/.test(href),
 };
 
 /**

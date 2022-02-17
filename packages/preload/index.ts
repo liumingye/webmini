@@ -34,6 +34,7 @@ contextBridge.exposeInMainWorld("app", {
     getPosition: currentWindow.getPosition,
     getSize: currentWindow.getSize,
     hide: currentWindow.hide,
+    on: currentWindow.on,
   },
 });
 
