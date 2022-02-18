@@ -19,21 +19,13 @@ onMounted(() => {
   appStore.webview = _webview.value!;
   const webview = computed(() => appStore.webview);
 
-  webview.value.addEventListener("new-window", (e) => {
-    console.log(`触发 new-window 事件，目标: ${e.url}`);
-    appStore.go(e.url);
+  webview.value.addEventListener("new-window", ({ url }) => {
+    console.log(`触发 new-window 事件，目标: ${url}`);
+    appStore.go(url);
   });
 
   let lastVid: string;
   let lastLoadedUrl: string;
-
-  webview.value.addEventListener("did-stop-loading", () => {
-    NProgress.done();
-  });
-
-  webview.value.addEventListener("did-start-loading", () => {
-    NProgress.start().inc();
-  });
 
   webview.value.addEventListener("load-commit", () => {
     const url = webview.value.getURL();
@@ -53,6 +45,14 @@ onMounted(() => {
     } else if (url.indexOf("www.bilibili.com/bangumi/play/") > -1) {
       getPartOfBangumi(url);
     }
+  });
+
+  webview.value.addEventListener("did-stop-loading", () => {
+    NProgress.done();
+  });
+
+  webview.value.addEventListener("did-start-loading", () => {
+    NProgress.start().inc();
   });
 
   // 收到选p消息时跳p

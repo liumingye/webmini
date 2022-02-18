@@ -14,6 +14,7 @@ const showTopBar = ref(true);
 const mounted = ref(false);
 const showGotoTarget = computed(() => appStore.showGotoTarget);
 const showAbout = computed(() => appStore.showAbout);
+const autoHideBar = computed(() => appStore.autoHideBar);
 
 const app = window.app;
 
@@ -49,9 +50,9 @@ const initMouseStateDirtyCheck = () => {
     showTopBar.value = false;
   };
   watch(
-    () => appStore.autoHideBar,
-    (autoHideBar) => {
-      if (autoHideBar) {
+    () => autoHideBar.value,
+    (value) => {
+      if (value) {
         timeout.value = setInterval(Fn, 200);
         return;
       }
@@ -61,14 +62,14 @@ const initMouseStateDirtyCheck = () => {
   );
 };
 
-const saveWindowSizeOnResize = () => {
+const loadWindowSize = () => {
   // 恢复窗口尺寸和位置
   const position: Record<string, number> = {};
   if (appStore.windowPosition !== null) {
     position.x = appStore.windowPosition[0];
     position.y = appStore.windowPosition[1];
   }
-  window.app.currentWindow.setBounds(
+  app.currentWindow.setBounds(
     {
       width: appStore.windowSizeDefault[0],
       height: appStore.windowSizeDefault[1],
@@ -76,7 +77,9 @@ const saveWindowSizeOnResize = () => {
     },
     true
   );
-  window.app.currentWindow.on("resized", () => {
+};
+const saveWindowSize = () => {
+  app.currentWindow.on("resized", () => {
     console.log("resized");
     const currentSize = appStore[currentWindowType.value];
     const newSize: number[] = [window.innerWidth, window.innerHeight];
@@ -87,23 +90,24 @@ const saveWindowSizeOnResize = () => {
   });
   const moved = debounce(() => {
     console.log("moved");
-    appStore.windowPosition = window.app.currentWindow.getPosition();
+    appStore.windowPosition = app.currentWindow.getPosition();
     appStore.saveSelfToLocalStorage();
   }, 500);
-  window.app.currentWindow.on("moved", () => {
+  app.currentWindow.on("moved", () => {
     moved();
   });
 };
 
 onMounted(() => {
-  saveWindowSizeOnResize();
+  loadWindowSize();
+  saveWindowSize();
   initMouseStateDirtyCheck();
   mounted.value = true;
 });
 </script>
 
 <template>
-  <div id="main" :class="{ showTopBar, showAbout }">
+  <div id="main" :class="{ showTopBar, showAbout, flex: !autoHideBar }">
     <TopBar v-if="mounted" />
     <keep-alive>
       <About v-if="showAbout" />
@@ -118,9 +122,16 @@ onMounted(() => {
   transition: all 0.2s ease;
   height: 100%;
   margin-top: -36px;
+
+  &.flex {
+    display: flex;
+    flex-direction: column;
+  }
+
   &.showTopBar {
     margin-top: 0;
   }
+
   &.showAbout {
     margin-top: 176px;
   }

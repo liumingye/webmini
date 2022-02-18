@@ -60,11 +60,14 @@ export const useAppStore = defineStore("app", {
       console.log("changeUrl", url);
       // 通知webview加载脚本
       this.webview.send("load-commit");
+      this.disablePartButton = true;
       const vid = getVidWithP(url);
       if (vid) {
         this.webview.loadURL(url, {
           userAgent: userAgent.desktop,
         });
+        // this.webview.setUserAgent(userAgent.desktop);
+        console.log("m,", url);
         this.disableDanmakuButton = false;
         this.autoHideBar = true;
         if (this.windowID.selectPartWindow) {
@@ -93,15 +96,21 @@ export const useAppStore = defineStore("app", {
         this.autoHideBar = false;
         return;
       }
+
+      if (/m\.bilibili\.com\/search\?/.test(url)) {
+        this.webview.loadURL(url, {
+          userAgent: userAgent.mobile,
+        });
+        this.disableDanmakuButton = true;
+        this.autoHideBar = false;
+        return;
+      }
+
       this.webview.setUserAgent(userAgent.mobile);
-      // this.webview.loadURL(url, {
-      //   userAgent: userAgent.mobile,
-      // });
       // 清除分p
       if (this.windowID.selectPartWindow) {
         ipc.sendTo(this.windowID.selectPartWindow, "update-part", null);
       }
-      this.disablePartButton = true;
       this.disableDanmakuButton = true;
       this.autoHideBar = false;
     },
