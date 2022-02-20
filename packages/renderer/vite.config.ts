@@ -12,8 +12,8 @@ export default defineConfig({
   root: __dirname,
   plugins: [
     vue(),
-    resolveElectron(),
     vueJsx(),
+    // resolveElectron(),
     /**
      * Here you can specify other modules
      * 🚧 You have to make sure that your module is in `dependencies` and not in the` devDependencies`,
@@ -53,73 +53,71 @@ export default defineConfig({
  * For usage of Electron and NodeJS APIs in the Renderer process
  * @see https://github.com/caoxiemeihao/electron-vue-vite/issues/52
  */
-export function resolveElectron(
-  resolves: Parameters<typeof resolve>[0] = {}
-): Plugin {
-  const builtins = builtinModules.filter((t) => !t.startsWith("_"));
+// function resolveElectron(resolves: Parameters<typeof resolve>[0] = {}): Plugin {
+//   const builtins = builtinModules.filter((t) => !t.startsWith("_"));
 
-  /**
-   * @see https://github.com/caoxiemeihao/vite-plugins/tree/main/packages/resolve#readme
-   */
-  return resolve({
-    electron: electronExport(),
-    ...builtinModulesExport(builtins),
-    ...resolves,
-  });
+//   /**
+//    * @see https://github.com/caoxiemeihao/vite-plugins/tree/main/packages/resolve#readme
+//    */
+//   return resolve({
+//     electron: electronExport(),
+//     ...builtinModulesExport(builtins),
+//     ...resolves,
+//   });
 
-  function electronExport() {
-    return `
-/**
- * For all exported modules see https://www.electronjs.org/docs/latest/api/clipboard -> Renderer Process Modules
- */
-const electron = require("electron");
-const {
-  clipboard,
-  nativeImage,
-  shell,
-  contextBridge,
-  crashReporter,
-  ipcRenderer,
-  webFrame,
-  desktopCapturer,
-  deprecate,
-} = electron;
+//   function electronExport() {
+//     return `
+// /**
+//  * For all exported modules see https://www.electronjs.org/docs/latest/api/clipboard -> Renderer Process Modules
+//  */
+// const electron = require("electron");
+// const {
+//   clipboard,
+//   nativeImage,
+//   shell,
+//   contextBridge,
+//   crashReporter,
+//   ipcRenderer,
+//   webFrame,
+//   desktopCapturer,
+//   deprecate,
+// } = electron;
 
-export {
-  electron as default,
-  clipboard,
-  nativeImage,
-  shell,
-  contextBridge,
-  crashReporter,
-  ipcRenderer,
-  webFrame,
-  desktopCapturer,
-  deprecate,
-}
-`;
-  }
+// export {
+//   electron as default,
+//   clipboard,
+//   nativeImage,
+//   shell,
+//   contextBridge,
+//   crashReporter,
+//   ipcRenderer,
+//   webFrame,
+//   desktopCapturer,
+//   deprecate,
+// }
+// `;
+//   }
 
-  function builtinModulesExport(modules: string[]) {
-    return modules
-      .map((moduleId) => {
-        const nodeModule = require(moduleId);
-        const requireModule = `const M = require("${moduleId}");`;
-        const exportDefault = `export default M;`;
-        const exportMembers =
-          Object.keys(nodeModule)
-            .map((attr) => `export const ${attr} = M.${attr}`)
-            .join(";\n") + ";";
-        const nodeModuleCode = `
-${requireModule}
+//   function builtinModulesExport(modules: string[]) {
+//     return modules
+//       .map((moduleId) => {
+//         const nodeModule = require(moduleId);
+//         const requireModule = `const M = require("${moduleId}");`;
+//         const exportDefault = `export default M;`;
+//         const exportMembers =
+//           Object.keys(nodeModule)
+//             .map((attr) => `export const ${attr} = M.${attr}`)
+//             .join(";\n") + ";";
+//         const nodeModuleCode = `
+// ${requireModule}
 
-${exportDefault}
+// ${exportDefault}
 
-${exportMembers}
-`;
+// ${exportMembers}
+// `;
 
-        return { [moduleId]: nodeModuleCode };
-      })
-      .reduce((memo, item) => Object.assign(memo, item), {});
-  }
-}
+//         return { [moduleId]: nodeModuleCode };
+//       })
+//       .reduce((memo, item) => Object.assign(memo, item), {});
+//   }
+// }

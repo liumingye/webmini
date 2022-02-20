@@ -109,10 +109,10 @@ onMounted(() => {
 
 <template>
   <div id="main" :class="{ showTopBar, showAbout, autoHideBar }">
-    <TopBar v-if="mounted" />
     <keep-alive>
       <About v-if="showAbout" />
     </keep-alive>
+    <TopBar v-if="mounted" />
     <BiliWeb />
     <GotoTarget v-if="showGotoTarget" />
   </div>

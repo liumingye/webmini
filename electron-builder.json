@@ -1,33 +1,26 @@
 {
-  "appId": "YouAppID@qq.com",
+  "appId": "org.electron.bilimini",
   "asar": true,
+  "artifactName": "${name}-${version}-${os}-${arch}.${ext}",
   "directories": {
     "output": "release/${version}"
   },
-  "files": [
-    "dist"
-  ],
+  "files": ["dist"],
+  "linux": {
+    "target": ["deb", "tar.gz", "appimage", "rpm"]
+  },
   "mac": {
-    "artifactName": "${productName}_${version}.${ext}",
-    "target": [
-      "dmg"
-    ]
+    "category": "public.app-category.video",
+    "target": ["zip", "dmg"],
+    "darkModeSupport": true
   },
   "win": {
-    "target": [
-      {
-        "target": "nsis",
-        "arch": [
-          "x64"
-        ]
-      }
-    ],
-    "artifactName": "${productName}_${version}.${ext}"
+    "target": ["nsis", "zip"]
   },
   "nsis": {
     "oneClick": false,
     "perMachine": false,
     "allowToChangeInstallationDirectory": true,
-    "deleteAppDataOnUninstall": false
+    "deleteAppDataOnUninstall": true
   }
 }

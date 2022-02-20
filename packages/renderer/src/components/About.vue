@@ -4,8 +4,8 @@ const versions = window.app.versions;
 
 <template>
   <transition name="delayDisplayNone">
-    <div class="bg">
-      <div id="about">
+    <div class="about">
+      <div class="row">
         <div class="flex-1">
           <div class="logo"><img src="@/assets/images/icon.png" /></div>
           <p>藏起来！哔哩哔哩</p>
@@ -31,7 +31,7 @@ const versions = window.app.versions;
 .delayDisplayNone-leave-active {
   transition: 0.2s;
 }
-.bg {
+.about {
   position: absolute;
   width: 100%;
   background: @color-bg-pink;
@@ -43,34 +43,35 @@ const versions = window.app.versions;
   text-align: center;
   padding: 10px;
   line-height: 1.3em;
-}
-#about {
-  display: flex;
-  max-width: 400px;
-  margin: 0 auto;
-  .flex-1 {
-    flex: 1;
-  }
-  .item {
+
+  .row {
     display: flex;
-    margin-top: 6px;
-    .name {
-      margin-right: 6px;
-    }
-    .value {
-      font-weight: bold;
-    }
-  }
-  .logo {
-    width: 60px;
+    max-width: 400px;
     margin: 0 auto;
-    img {
-      width: 100%;
-      height: 100%;
+    .flex-1 {
+      flex: 1;
     }
-  }
-  a {
-    color: #fff;
+    .item {
+      display: flex;
+      margin-top: 6px;
+      .name {
+        margin-right: 6px;
+      }
+      .value {
+        font-weight: bold;
+      }
+    }
+    .logo {
+      width: 60px;
+      margin: 0 auto;
+      img {
+        width: 100%;
+        height: 100%;
+      }
+    }
+    a {
+      color: #fff;
+    }
   }
 }
 </style>
