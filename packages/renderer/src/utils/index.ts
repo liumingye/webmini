@@ -67,12 +67,13 @@ export const resizeMainWindow = () => {
 };
 
 export const getVidWithP = (url: string) => {
-  const m = /\/video\/([av\d+|BV\w+](?:\/?\?p=\d+)?)/.exec(url);
-  return m ? m[1] : null;
+  const m = /video\/((av\d+|BV\w+)(?:\/?\?p=\d+)?)/.exec(url);
+  return m ? m[2] : null;
 };
 
 export const getVid = (url: string) => {
-  const m = /\/video\/(av\d+)/.exec(url) || /video\/(BV\w+)/.exec(url);
+  const m = /video\/(av\d+|BV\w+)/.exec(url);
+  console.log("getVid", url, m);
   return m ? m[1] : null;
 };
 
@@ -94,7 +95,7 @@ export const getPartOfBangumi = async (url: string) => {
       let currentPartId = 0;
       try {
         parts = json.epList;
-        currentPartId = json.epInfo.i;
+        currentPartId = Number(json.epInfo.i);
       } catch (err) {
         console.log(`解析番剧分p失败：${err}`, json);
         return false;
@@ -127,6 +128,7 @@ export const getPartOfBangumi = async (url: string) => {
 };
 
 export const getPartOfVideo = (vid: string) => {
+  console.log("getPartOfVideo", vid);
   const appStore = useAppStore();
   const net = window.app.net;
   net.fetch(videoUrlPrefix + vid).then((res) => {
@@ -157,11 +159,7 @@ export const getPartOfVideo = (vid: string) => {
         );
         // 有超过1p时自动开启分p窗口
         if (parts.length > 1) {
-          if (!appStore.windowID.selectPartWindow) return;
-          ipc.sendTo(
-            appStore.windowID.selectPartWindow,
-            "show-select-part-window"
-          );
+          ipc.send("show-select-part-window");
           appStore.disablePartButton = false;
         }
       } else {

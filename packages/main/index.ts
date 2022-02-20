@@ -9,6 +9,8 @@ import {
 import { release } from "os";
 import { join } from "path";
 import { initialize, enable } from "@electron/remote/main";
+import updateElectronApp from "update-electron-app";
+import installExtension, { VUEJS3_DEVTOOLS } from "electron-devtools-installer";
 
 // Disable GPU Acceleration for Windows 7
 if (release().startsWith("6.1")) app.disableHardwareAcceleration();
@@ -77,40 +79,40 @@ const createMenu = () => {
     {
       label: app.name,
       submenu: [
-        { role: "about" },
+        { label: `关于 ${app.name}`, role: "about" },
         { type: "separator" },
-        { role: "services" },
+        { label: "服务", role: "services" },
         { type: "separator" },
-        { role: "hide" },
-        { role: "hideOthers" },
-        { role: "unhide" },
+        { label: `隐藏 ${app.name}`, role: "hide" },
+        { label: "隐藏其他", role: "hideOthers" },
+        { label: "全部显示", role: "unhide" },
         { type: "separator" },
-        { role: "quit" },
+        { label: `退出 ${app.name}`, role: "quit" },
       ],
     },
     {
-      label: "Shortcuts",
+      label: "编辑",
       submenu: [
-        { role: "copy" },
-        { role: "paste" },
-        { role: "delete" },
-        { role: "selectAll" },
+        { label: "拷贝", role: "copy" },
+        { label: "粘贴", role: "paste" },
+        { label: "删除", role: "delete" },
+        { label: "全选", role: "selectAll" },
         {
-          label: "Backward",
+          label: "返回",
           accelerator: "Esc",
           click() {
             mainWindow?.webContents.send("press-esc");
           },
         },
         {
-          label: "Volume+",
+          label: "提高音量",
           accelerator: "Up",
           click() {
             mainWindow?.webContents.send("change-volume", "up");
           },
         },
         {
-          label: "Volume-",
+          label: "降低音量",
           accelerator: "Down",
           click() {
             mainWindow?.webContents.send("change-volume", "down");
@@ -119,7 +121,7 @@ const createMenu = () => {
       ],
     },
     {
-      label: "Debug",
+      label: "开发",
       submenu: [
         {
           label: "Inspect Main Window",
@@ -152,8 +154,12 @@ const createMenu = () => {
       ],
     },
     {
+      label: "窗口",
       role: "window",
-      submenu: [{ role: "minimize" }, { role: "close" }],
+      submenu: [
+        { label: "最小化", role: "minimize" },
+        { label: "关闭", role: "close" },
+      ],
     },
   ];
 
@@ -162,6 +168,8 @@ const createMenu = () => {
 };
 
 app.on("window-all-closed", () => {
+  // On macOS it is common for applications and their menu bar
+  // to stay active until the user quits explicitly with Cmd + Q
   console.log("主线程：所有窗口关闭");
   if (process.platform !== "darwin") app.quit();
 });
@@ -247,6 +255,9 @@ app
     // 初始化 remote
     createWindow();
     createMenu();
+    installExtension(VUEJS3_DEVTOOLS.id)
+      .then((name) => console.log(`Added Extension:  ${name}`))
+      .catch((err) => console.log("An error occurred: ", err));
     createSelectPartWindow();
   })
   .then(() => {
@@ -259,5 +270,8 @@ app
       mainWindow?.webContents.send("windowID", {
         selectPartWindow: selectPartWindow?.id,
       });
+    });
+    updateElectronApp({
+      updateInterval: "1 hour",
     });
   });

@@ -1,21 +1,8 @@
-// import fs from "fs";
-import { contextBridge, ipcRenderer, Session } from "electron";
+import { contextBridge, ipcRenderer } from "electron";
 import remote from "@electron/remote";
 import { domReady } from "./utils";
 import { useLoading } from "./loading";
 import path from "path";
-
-interface FetchOptions {
-  method: string;
-  body: string | null;
-  headers: { [key: string]: string } | null;
-}
-
-const DEFAULT_FETCH_CONFIG: FetchOptions = {
-  method: "GET",
-  body: null,
-  headers: null,
-};
 
 const { appendLoading, removeLoading } = useLoading();
 
@@ -25,22 +12,33 @@ const { appendLoading, removeLoading } = useLoading();
 })();
 
 // --------- Expose some API to the Renderer process. ---------
-const currentWindow = remote.getCurrentWindow();
-
-// contextBridge.exposeInMainWorld("fs", fs);
 contextBridge.exposeInMainWorld("removeLoading", removeLoading);
 contextBridge.exposeInMainWorld("ipcRenderer", withPrototype(ipcRenderer));
+
+export interface FetchOptions {
+  method: string;
+  body: string | null;
+  headers: { [key: string]: string } | null;
+}
+const DEFAULT_FETCH_CONFIG: FetchOptions = {
+  method: "GET",
+  body: null,
+  headers: null,
+};
+const currentWindow = remote.getCurrentWindow();
 contextBridge.exposeInMainWorld("app", {
-  remote: {
-    app: {
-      getVersion: remote.app.getVersion,
-    },
-    screen: {
-      ...withPrototype(remote.screen),
-    },
+  versions: {
+    App: remote.app.getVersion(),
+    "Vue.js": require("vue").version,
+    Electron: process.versions.electron,
+    Node: process.versions.node,
+    Chrome: process.versions.chrome,
+    Platform: require("os").platform(),
   },
-  preload:
-    "file://" + path.resolve(__dirname, "../renderer/preload/inject.cjs"),
+  screen: {
+    ...withPrototype(remote.screen),
+  },
+  preload: "file://" + path.resolve(__dirname, "../inject/index.cjs"),
   currentWindow: {
     setBounds: currentWindow.setBounds,
     getPosition: currentWindow.getPosition,
@@ -60,7 +58,7 @@ contextBridge.exposeInMainWorld("app", {
       text: () => Promise<string>;
       json: () => Promise<T>;
     }> => {
-      let config = {
+      const config = {
         ...DEFAULT_FETCH_CONFIG,
         ...options,
       };
@@ -71,7 +69,7 @@ contextBridge.exposeInMainWorld("app", {
           useSessionCookies: true,
         });
         if (config.headers instanceof Object) {
-          for (let [header, value] of Object.entries(config.headers)) {
+          for (const [header, value] of Object.entries(config.headers)) {
             request.setHeader(header, value);
           }
         }

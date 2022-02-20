@@ -1,23 +1,28 @@
 <script setup lang="ts">
-const version = window.app.remote.app.getVersion();
+const versions = window.app.versions;
 </script>
 
 <template>
   <transition name="delayDisplayNone">
-    <div id="about">
-      <div class="logo"><img src="@/assets/images/icon.png" /></div>
-      <div id="about-title">藏起来！哔哩哔哩 v{{ version }}</div>
-      <p>Tip：按Ctrl+e（ Mac下Option+w ）可以快速隐藏此程序</p>
-      <p>
-        Made by
-        <a href="https://weibo.com/chitosai" target="_blank">@千歳</a>
-        with LOVE
-      </p>
-      <p>
-        代码开源于<a href="https://github.com/chitosai/bilimini" target="_blank"
-          >Github</a
-        >
-      </p>
+    <div class="bg">
+      <div id="about">
+        <div class="flex-1">
+          <div class="logo"><img src="@/assets/images/icon.png" /></div>
+          <p>藏起来！哔哩哔哩</p>
+          <!-- <p>Tip：按Ctrl+e（ Mac下Option+w ）可以快速隐藏此程序</p> -->
+          <p>
+            <a href="https://github.com/liumingye/bilimini" target="_blank"
+              >Github</a
+            >
+          </p>
+        </div>
+        <div class="flex-1">
+          <div class="item" v-for="(value, key) in versions" :key="key">
+            <div class="name">{{ key }}:</div>
+            <div class="value">{{ value }}</div>
+          </div>
+        </div>
+      </div>
     </div>
   </transition>
 </template>
@@ -26,18 +31,36 @@ const version = window.app.remote.app.getVersion();
 .delayDisplayNone-leave-active {
   transition: 0.2s;
 }
-#about {
-  user-select: none;
+.bg {
+  position: absolute;
+  width: 100%;
   background: @color-bg-pink;
+  margin-top: -150px;
+  height: 150px;
+  user-select: none;
   color: #fff;
   box-sizing: border-box;
   text-align: center;
   padding: 10px;
-  position: absolute;
-  margin-top: -180px;
-  width: 100%;
-  height: 180px;
   line-height: 1.3em;
+}
+#about {
+  display: flex;
+  max-width: 400px;
+  margin: 0 auto;
+  .flex-1 {
+    flex: 1;
+  }
+  .item {
+    display: flex;
+    margin-bottom: 6px;
+    .name {
+      margin-right: 6px;
+    }
+    .value {
+      font-weight: bold;
+    }
+  }
   .logo {
     width: 60px;
     margin: 0 auto;

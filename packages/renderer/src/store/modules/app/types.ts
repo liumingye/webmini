@@ -1,7 +1,7 @@
 export interface AppStateTypes {
   webview: Electron.WebviewTag;
-  canGoBack: boolean;
-  canGoForward: boolean;
+  // canGoBack: boolean;
+  // canGoForward: boolean;
   title: string;
   lastTarget: string;
   windowPosition: number[] | null;
@@ -15,4 +15,5 @@ export interface AppStateTypes {
   disableDanmakuButton: boolean;
   autoHideBar: boolean;
   windowID: { mainWindow?: number; selectPartWindow?: number };
+  lastNavigation: number;
 }

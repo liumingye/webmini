@@ -60,7 +60,7 @@ function watchPreload(server) {
  */
 function watchInject(server) {
   return build({
-    configFile: "packages/renderer/src/preload/vite.config.ts",
+    configFile: "packages/renderer/src/inject/vite.config.ts",
     mode: "development",
     plugins: [
       {

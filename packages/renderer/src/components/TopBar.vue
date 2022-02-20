@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, computed } from "vue";
-import { useAppStore } from "@/store";
+import { useAppStore, useHistoryStore } from "@/store";
 
 import {
   Home,
@@ -10,17 +10,25 @@ import {
   CloseSmall,
   Help,
 } from "@/components/Icon";
+import { userAgent } from "@/utils/constant";
 
 const ipc = window.ipcRenderer;
 const appStore = useAppStore();
+const historyStore = useHistoryStore();
 const webview = computed(() => appStore.webview);
-const canGoBack = computed(() => appStore.canGoBack);
-const canGoForward = computed(() => appStore.canGoForward);
+const canGoBack = computed(() => historyStore.canGoBack);
+const canGoForward = computed(() => historyStore.canGoForward);
 const disableDanmakuButton = computed(() => appStore.disableDanmakuButton);
 const disablePartButton = computed(() => appStore.disablePartButton);
 const title = computed(() => appStore.title);
-const goBack = () => webview.value.goBack();
-const goForward = () => webview.value.goForward();
+const go = (delta: number) => {
+  appStore.lastNavigation = 1;
+  historyStore.go(delta);
+};
+historyStore.listen((to, from) => {
+  webview.value.setUserAgent(userAgent.mobile);
+  webview.value.loadURL(to);
+});
 const naviGoHome = () => {
   appStore.go("https://m.bilibili.com/index.html");
 };
@@ -54,7 +62,7 @@ const turnOff = () => {
         id="navi-back"
         title="后退"
         :disabled="!canGoBack"
-        @click="goBack"
+        @click="go(-1)"
       >
         <Left />
       </button>
@@ -62,7 +70,7 @@ const turnOff = () => {
         id="navi-forward"
         title="前进"
         :disabled="!canGoForward"
-        @click="goForward"
+        @click="go(1)"
       >
         <Right />
       </button>

@@ -32,26 +32,26 @@ const scrollIntoView = () => {
   });
 };
 // 更新分p列表
-ipc.on("update-part", (ev, arg) => {
-  if (!arg) {
+ipc.on("update-part", (ev, data) => {
+  console.log("update-part", data);
+  if (!data) {
     app.currentWindow.hide();
   }
-  currentPartId.value = 0;
-  partList.value = arg;
   bangumiPartList.value = null;
-  nextTick(() => {
-    scrollIntoView();
-  });
+  partList.value = data;
+  currentPartId.value = 0;
 });
 // 番剧分p
 ipc.on("update-bangumi-part", (ev, data) => {
   console.log("update-bangumi-part", data);
-  currentPartId.value = data.currentPartId;
   partList.value = null;
   bangumiPartList.value = data.parts;
-  nextTick(() => {
-    scrollIntoView();
-  });
+  if (currentPartId.value !== data.currentPartId) {
+    currentPartId.value = data.currentPartId;
+    nextTick(() => {
+      scrollIntoView();
+    });
+  }
 });
 // 监听webview url改变
 // https://github.com/chitosai/bilimini/issues/66
@@ -66,7 +66,6 @@ ipc.on("url-changed", (ev, url) => {
     currentPartId.value = 0;
   }
 });
-
 // window.onerror = function (err, f, line) {
 // var id = f.split("/");
 // utils.error(`${id[id.length - 1]} : Line ${line}\n> ${err}`);

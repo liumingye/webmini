@@ -5,9 +5,9 @@ import pkg from '../../../../package.json'
 export default defineConfig({
   root: __dirname,
   build: {
-    outDir: '../../../../dist/renderer/preload',
+    outDir: '../../../../dist/inject',
     lib: {
-      entry: 'inject.ts',
+      entry: 'index.ts',
       formats: ['cjs'],
       fileName: () => '[name].cjs',
     },

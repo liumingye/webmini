@@ -2,14 +2,15 @@ import { AppStateTypes } from "./types";
 import { defineStore } from "pinia";
 import { getVidWithP, getVid } from "@/utils";
 import { userAgent, videoUrlPrefix } from "@/utils/constant";
+import { useHistoryStore } from "@/store";
 
 const ipc = window.ipcRenderer;
 
 export const useAppStore = defineStore("app", {
   state: (): AppStateTypes => ({
     webview: null as unknown as Electron.WebviewTag,
-    canGoBack: false,
-    canGoForward: false,
+    // canGoBack: false,
+    // canGoForward: false,
     title: "",
     lastTarget: "", // 这是最后一次传入changeUrl方法的url
     windowPosition: null,
@@ -23,6 +24,7 @@ export const useAppStore = defineStore("app", {
     disableDanmakuButton: true,
     autoHideBar: false,
     windowID: {},
+    lastNavigation: 0,
   }),
   actions: {
     loadSelfFromLocalStorage() {
@@ -53,22 +55,31 @@ export const useAppStore = defineStore("app", {
       localStorage.setItem("app", JSON.stringify(Array.from(map.entries())));
     },
     updateURL() {
+      const historyStore = useHistoryStore();
       // 防止重复加载同页面
       const url = this.webview.getURL();
       if (url === this.lastTarget) {
-        console.log(`代码尝试重复加载页面：${url}`);
+        // console.log(`代码尝试重复加载页面：${url}`);
         return false;
       }
       this.lastTarget = url;
-      console.log("updateURL", url);
+      if (this.lastNavigation > 0) {
+        this.lastNavigation--;
+      } else {
+        if (!["m.bilibili.com/video/"].includes(url)) {
+          historyStore.push(url);
+        }
+      }
+      console.log("historyStore", historyStore.$state);
+      // console.log("updateURL", url);
       // 通知webview加载脚本
       this.webview.send("load-commit");
       const vid = getVidWithP(url);
       if (vid) {
-        this.webview.loadURL(url, {
+        this.lastNavigation = 1;
+        this.webview.loadURL(videoUrlPrefix + vid, {
           userAgent: userAgent.desktop,
         });
-        // this.webview.setUserAgent(userAgent.desktop);
         this.disableDanmakuButton = false;
         this.autoHideBar = true;
         if (this.windowID.selectPartWindow) {
@@ -78,20 +89,20 @@ export const useAppStore = defineStore("app", {
       }
 
       if (url.indexOf("/bangumi/play/") > -1) {
+        this.lastNavigation = 1;
         this.webview.loadURL(url, {
           userAgent: userAgent.desktop,
         });
-        // this.webview.setUserAgent(userAgent.desktop);
         this.disableDanmakuButton = false;
         this.autoHideBar = true;
         return;
       }
 
       if (/live\.bilibili\.com\/(h5\/||blanc\/)?(\d+).*/.test(url)) {
+        this.lastNavigation = 1;
         this.webview.loadURL(url, {
           userAgent: userAgent.desktop,
         });
-        // this.webview.setUserAgent(userAgent.desktop);
         this.disableDanmakuButton = false;
         this.disablePartButton = true;
         this.autoHideBar = true;
@@ -99,25 +110,21 @@ export const useAppStore = defineStore("app", {
       }
 
       if (url.indexOf("passport.bilibili.com/login") > -1) {
+        this.lastNavigation = 1;
         this.webview.loadURL(url, {
           userAgent: userAgent.desktop,
         });
-        // this.webview.setUserAgent(userAgent.desktop);
         this.disableDanmakuButton = true;
         this.disablePartButton = true;
         this.autoHideBar = false;
         return;
       }
 
-      if (/m\.bilibili\.com\/search\?/.test(url)) {
-        this.webview.loadURL(url, {
-          userAgent: userAgent.mobile,
-        });
-        this.disableDanmakuButton = true;
-        this.disablePartButton = true;
-        this.autoHideBar = false;
-        return;
-      }
+      // if (/m\.bilibili\.com\/search\?/.test(url)) {
+      //   this.webview.loadURL(url, {
+      //     userAgent: userAgent.mobile,
+      //   });
+      // }
 
       this.webview.setUserAgent(userAgent.mobile);
       // 清除分p
@@ -128,15 +135,19 @@ export const useAppStore = defineStore("app", {
       this.disablePartButton = true;
       this.autoHideBar = false;
     },
-    updateNavigationState() {
-      this.canGoBack = this.webview.canGoBack();
-      this.canGoForward = this.webview.canGoForward();
-    },
+    // updateNavigationState() {
+    //   if (!this.webview) return;
+    //   this.canGoBack = this.webview.canGoBack();
+    //   this.canGoForward = this.webview.canGoForward();
+    // },
     updateTitle(title: string) {
       this.title = title;
     },
     go(url: string) {
       console.log("go", url);
+      const historyStore = useHistoryStore();
+      historyStore.push(url);
+      // console.log("historyStore", historyStore.$state);
       this.webview.loadURL(url, {
         userAgent: userAgent.mobile,
       });
@@ -157,10 +168,5 @@ export const useAppStore = defineStore("app", {
       console.log("goBangumiPart", ep);
       this.go(videoUrlPrefix + ep.bvid);
     },
-  },
-  getters: {
-    // canGoBack(state) {
-    //   return state.webview.canGoBack();
-    // },
   },
 });

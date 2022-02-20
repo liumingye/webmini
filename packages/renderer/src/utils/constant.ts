@@ -6,3 +6,4 @@ export const userAgent = {
 };
 export const liveUrlPrefix = "https://live.bilibili.com/blanc/";
 export const videoUrlPrefix = "https://www.bilibili.com/video/";
+export const START = "https://m.bilibili.com/index.html";

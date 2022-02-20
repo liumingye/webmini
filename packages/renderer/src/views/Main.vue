@@ -4,12 +4,22 @@ import BiliWeb from "@/components/BiliWeb.vue";
 import GotoTarget from "@/components/GoTarget.vue";
 import About from "@/components/About.vue";
 
-import { useAppStore } from "@/store";
+import { useAppStore, useHistoryStore } from "@/store";
 import { ref, onMounted, computed, watch } from "vue";
 import { currentWindowType } from "@/utils";
 import debounce from "@/utils/debounce";
 
 const appStore = useAppStore();
+// const historyStore = useHistoryStore();
+
+// historyStore.push('https://www.baidu.com')
+// historyStore.push('https://www.baidu.com/1')
+// historyStore.push('https://www.baidu.com/2')
+// historyStore.go(-1)
+// historyStore.go(-1)
+// historyStore.go(1)
+// console.log(historyStore.$state)
+
 const showTopBar = ref(true);
 const mounted = ref(false);
 const showGotoTarget = computed(() => appStore.showGotoTarget);
@@ -23,7 +33,7 @@ const initMouseStateDirtyCheck = () => {
   const lastStatus = ref<"OUT" | "IN">();
   const timeout = ref();
   const Fn = () => {
-    const mousePos = app.remote.screen.getCursorScreenPoint(),
+    const mousePos = app.screen.getCursorScreenPoint(),
       windowPos = app.currentWindow.getPosition(),
       windowSize = app.currentWindow.getSize();
     const getTriggerAreaWidth = () => {
@@ -107,7 +117,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div id="main" :class="{ showTopBar, showAbout, flex: !autoHideBar }">
+  <div id="main" :class="{ showTopBar, showAbout, autoHideBar }">
     <TopBar v-if="mounted" />
     <keep-alive>
       <About v-if="showAbout" />
@@ -119,13 +129,14 @@ onMounted(() => {
 
 <style lang="less" scoped>
 #main {
+  display: flex;
+  flex-direction: column;
   transition: all 0.2s ease;
   height: 100%;
   margin-top: -36px;
 
-  &.flex {
-    display: flex;
-    flex-direction: column;
+  &.autoHideBar {
+    display: block;
   }
 
   &.showTopBar {
@@ -133,7 +144,7 @@ onMounted(() => {
   }
 
   &.showAbout {
-    margin-top: 180px;
+    margin-top: 150px;
   }
 }
 </style>

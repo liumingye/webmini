@@ -3,7 +3,7 @@ import { ref, onMounted, computed } from "vue";
 import { useAppStore } from "@/store";
 import { resizeMainWindow } from "@/utils";
 import { getVid, getPartOfBangumi, getPartOfVideo } from "@/utils";
-import { userAgent } from "@/utils/constant";
+import { userAgent, START } from "@/utils/constant";
 import NProgress from "nprogress"; // progress bar
 
 const ipc = window.ipcRenderer;
@@ -47,25 +47,29 @@ onMounted(() => {
     }
   };
 
-  webview.value.addEventListener("did-start-navigation", () => {
-    appStore.updateNavigationState();
-    finish();
-  });
+  // webview.value.addEventListener("did-finish-load", () => {
+  //   console.log("did-finish-load");
+  // });
 
-  webview.value.addEventListener("did-start-loading", () => {
-    NProgress.start().inc();
-    appStore.updateNavigationState();
-    finish();
-  });
+  webview.value.addEventListener("dom-ready", () => {
+    webview.value.addEventListener("load-commit", () => {
+      console.log("load-commit");
+      finish();
+    });
 
-  webview.value.addEventListener("did-stop-loading", () => {
-    NProgress.done();
-    appStore.updateNavigationState();
-    finish();
-  });
+    webview.value.addEventListener("did-start-loading", () => {
+      console.log("did-start-loading");
+      NProgress.start().inc();
+      // finish();
+    });
 
-  webview.value.addEventListener("page-title-updated", ({ title }) => {
-    appStore.updateTitle(title);
+    webview.value.addEventListener("did-stop-loading", () => {
+      NProgress.done();
+    });
+
+    webview.value.addEventListener("page-title-updated", ({ title }) => {
+      appStore.updateTitle(title);
+    });
   });
 
   // 收到选p消息时跳p
@@ -93,7 +97,7 @@ onMounted(() => {
   <component
     ref="_webview"
     is="webview"
-    src="https://m.bilibili.com/index.html"
+    :src="START"
     :useragent="userAgent.mobile"
     :preload="preload"
     webpreferences="nativeWindowOpen=no"

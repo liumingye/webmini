@@ -1,23 +1,20 @@
-export {};
-
-interface FetchOptions {
-  method: string;
-  body: string | null;
-  headers: { [key: string]: string } | null;
-}
+import { FetchOptions } from "../../preload";
 
 declare global {
   interface Window {
     // Expose some Api through preload script
-    ipcRenderer: import("electron").IpcRenderer;
-    // remote: import("@electron/remote");
+    ipcRenderer: Electron.IpcRenderer;
+    removeLoading: () => void;
     app: {
-      remote: {
-        app: {
-          getVersion(): string;
-        };
-        screen: Electron.Screen;
+      versions: {
+        App: string;
+        Chrome: string;
+        Electron: string;
+        Node: string;
+        Platform: string;
+        "Vue.js": string;
       };
+      screen: Electron.Screen;
       preload: string;
       cookie: string;
       currentWindow: Electron.BrowserWindow;
@@ -35,6 +32,5 @@ declare global {
         }>;
       };
     };
-    removeLoading: () => void;
   }
 }
