@@ -1,5 +1,1 @@
-export type windowType =
-  | "windowSizeMini"
-  | "windowSizeFeed"
-  | "windowSizeDefault"
-  | "windowSizeLogin";
+export type windowType = "mini" | "feed" | "default" | "login";

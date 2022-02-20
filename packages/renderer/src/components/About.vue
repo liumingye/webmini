@@ -53,7 +53,7 @@ const versions = window.app.versions;
   }
   .item {
     display: flex;
-    margin-bottom: 6px;
+    margin-top: 6px;
     .name {
       margin-right: 6px;
     }

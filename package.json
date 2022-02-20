@@ -1,6 +1,6 @@
 {
   "name": "bilimini",
-  "version": "0.9.9",
+  "version": "1.0.0",
   "main": "dist/main/index.cjs",
   "author": "liumingye",
   "license": "MIT",

@@ -60,15 +60,11 @@ onMounted(() => {
     webview.value.addEventListener("did-start-loading", () => {
       console.log("did-start-loading");
       NProgress.start().inc();
-      // finish();
+      finish();
     });
 
     webview.value.addEventListener("did-stop-loading", () => {
       NProgress.done();
-    });
-
-    webview.value.addEventListener("page-title-updated", ({ title }) => {
-      appStore.updateTitle(title);
     });
   });
 

@@ -121,7 +121,15 @@ const createMenu = () => {
       ],
     },
     {
-      label: "开发",
+      label: "窗口",
+      role: "window",
+      submenu: [
+        { label: "最小化", role: "minimize" },
+        { label: "关闭", role: "close" },
+      ],
+    },
+    {
+      label: "DEBUG",
       submenu: [
         {
           label: "Inspect Main Window",
@@ -151,14 +159,6 @@ const createMenu = () => {
             mainWindow?.webContents.send("openWebviewDevTools");
           },
         },
-      ],
-    },
-    {
-      label: "窗口",
-      role: "window",
-      submenu: [
-        { label: "最小化", role: "minimize" },
-        { label: "关闭", role: "close" },
       ],
     },
   ];
@@ -255,9 +255,6 @@ app
     // 初始化 remote
     createWindow();
     createMenu();
-    installExtension(VUEJS3_DEVTOOLS.id)
-      .then((name) => console.log(`Added Extension:  ${name}`))
-      .catch((err) => console.log("An error occurred: ", err));
     createSelectPartWindow();
   })
   .then(() => {
@@ -271,6 +268,11 @@ app
         selectPartWindow: selectPartWindow?.id,
       });
     });
+    if (isDev) {
+      installExtension(VUEJS3_DEVTOOLS.id)
+        .then((name) => console.log(`Added Extension:  ${name}`))
+        .catch((err) => console.log("An error occurred: ", err));
+    }
     updateElectronApp({
       updateInterval: "1 hour",
     });

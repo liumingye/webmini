@@ -20,36 +20,52 @@ const canGoBack = computed(() => historyStore.canGoBack);
 const canGoForward = computed(() => historyStore.canGoForward);
 const disableDanmakuButton = computed(() => appStore.disableDanmakuButton);
 const disablePartButton = computed(() => appStore.disablePartButton);
-const title = computed(() => appStore.title);
+const title = ref('');
+
+webview.value.addEventListener("dom-ready", () => {
+  webview.value.addEventListener("page-title-updated", (event) => {
+    title.value = event.title;
+  });
+  title.value = webview.value.getTitle()
+});
+
 const go = (delta: number) => {
   appStore.lastNavigation = 1;
   historyStore.go(delta);
 };
+
 historyStore.listen((to, from) => {
   webview.value.setUserAgent(userAgent.mobile);
   webview.value.loadURL(to);
 });
+
 const naviGoHome = () => {
   appStore.go("https://m.bilibili.com/index.html");
 };
+
 const naviGotoShow = () => {
   appStore.showGotoTarget = true;
 };
+
 const toggleDanmaku = () => {
   webview.value.executeJavaScript(
     `document.querySelector('.bilibili-player-video-danmaku-switch .bui-switch-input').click()`
   );
 };
+
 const toggleSelectPartWindow = () => {
   console.log("主窗口：点击P");
   ipc.send("toggle-select-part-window");
 };
+
 const showFeed = () => {
   appStore.go("https://t.bilibili.com/?tab=8");
 };
+
 const showAbout = () => {
   appStore.showAbout = !appStore.showAbout;
 };
+
 const turnOff = () => {
   ipc.send("close-main-window");
 };

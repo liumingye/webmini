@@ -1,14 +1,12 @@
 export interface AppStateTypes {
   webview: Electron.WebviewTag;
-  // canGoBack: boolean;
-  // canGoForward: boolean;
-  title: string;
-  lastTarget: string;
   windowPosition: number[] | null;
-  windowSizeMini: number[];
-  windowSizeFeed: number[];
-  windowSizeDefault: number[];
-  windowSizeLogin: number[];
+  windowSize: {
+    mini: number[];
+    feed: number[];
+    default: number[];
+    login: number[];
+  };
   showGotoTarget: boolean;
   showAbout: boolean;
   disablePartButton: boolean;

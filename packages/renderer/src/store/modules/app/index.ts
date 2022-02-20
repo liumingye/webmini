@@ -1,7 +1,7 @@
 import { AppStateTypes } from "./types";
 import { defineStore } from "pinia";
 import { getVidWithP, getVid } from "@/utils";
-import { userAgent, videoUrlPrefix } from "@/utils/constant";
+import { userAgent, videoUrlPrefix, liveUrlPrefix } from "@/utils/constant";
 import { useHistoryStore } from "@/store";
 
 const ipc = window.ipcRenderer;
@@ -9,15 +9,13 @@ const ipc = window.ipcRenderer;
 export const useAppStore = defineStore("app", {
   state: (): AppStateTypes => ({
     webview: null as unknown as Electron.WebviewTag,
-    // canGoBack: false,
-    // canGoForward: false,
-    title: "",
-    lastTarget: "", // 这是最后一次传入changeUrl方法的url
     windowPosition: null,
-    windowSizeMini: [300, 170],
-    windowSizeFeed: [650, 760],
-    windowSizeDefault: [376, 500],
-    windowSizeLogin: [490, 394],
+    windowSize: {
+      mini: [300, 170],
+      feed: [650, 760],
+      default: [376, 500],
+      login: [490, 394],
+    },
     showGotoTarget: false,
     showAbout: false,
     disablePartButton: true,
@@ -42,12 +40,7 @@ export const useAppStore = defineStore("app", {
     },
     saveSelfToLocalStorage() {
       const map = new Map();
-      const whiteList = [
-        "windowPosition",
-        "windowSizeMini",
-        "windowSizeFeed",
-        "windowSizeDefault",
-      ];
+      const whiteList = ["windowPosition", "windowSize"];
       whiteList.forEach((value) => {
         // @ts-ignore
         map.set(value, this[value]);
@@ -58,11 +51,7 @@ export const useAppStore = defineStore("app", {
       const historyStore = useHistoryStore();
       // 防止重复加载同页面
       const url = this.webview.getURL();
-      if (url === this.lastTarget) {
-        // console.log(`代码尝试重复加载页面：${url}`);
-        return false;
-      }
-      this.lastTarget = url;
+      console.log("updateURL", url);
       if (this.lastNavigation > 0) {
         this.lastNavigation--;
       } else {
@@ -70,10 +59,9 @@ export const useAppStore = defineStore("app", {
           historyStore.push(url);
         }
       }
-      console.log("historyStore", historyStore.$state);
-      // console.log("updateURL", url);
       // 通知webview加载脚本
       this.webview.send("load-commit");
+
       const vid = getVidWithP(url);
       if (vid) {
         this.lastNavigation = 1;
@@ -98,9 +86,10 @@ export const useAppStore = defineStore("app", {
         return;
       }
 
-      if (/live\.bilibili\.com\/(h5\/||blanc\/)?(\d+).*/.test(url)) {
+      const live = /live\.bilibili\.com\/(h5\/||blanc\/)?(\d+).*/.exec(url);
+      if (live) {
         this.lastNavigation = 1;
-        this.webview.loadURL(url, {
+        this.webview.loadURL(liveUrlPrefix + live[2], {
           userAgent: userAgent.desktop,
         });
         this.disableDanmakuButton = false;
@@ -120,12 +109,6 @@ export const useAppStore = defineStore("app", {
         return;
       }
 
-      // if (/m\.bilibili\.com\/search\?/.test(url)) {
-      //   this.webview.loadURL(url, {
-      //     userAgent: userAgent.mobile,
-      //   });
-      // }
-
       this.webview.setUserAgent(userAgent.mobile);
       // 清除分p
       if (this.windowID.selectPartWindow) {
@@ -135,19 +118,10 @@ export const useAppStore = defineStore("app", {
       this.disablePartButton = true;
       this.autoHideBar = false;
     },
-    // updateNavigationState() {
-    //   if (!this.webview) return;
-    //   this.canGoBack = this.webview.canGoBack();
-    //   this.canGoForward = this.webview.canGoForward();
-    // },
-    updateTitle(title: string) {
-      this.title = title;
-    },
     go(url: string) {
       console.log("go", url);
       const historyStore = useHistoryStore();
       historyStore.push(url);
-      // console.log("historyStore", historyStore.$state);
       this.webview.loadURL(url, {
         userAgent: userAgent.mobile,
       });

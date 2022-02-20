@@ -4,21 +4,12 @@ import BiliWeb from "@/components/BiliWeb.vue";
 import GotoTarget from "@/components/GoTarget.vue";
 import About from "@/components/About.vue";
 
-import { useAppStore, useHistoryStore } from "@/store";
+import { useAppStore } from "@/store";
 import { ref, onMounted, computed, watch } from "vue";
 import { currentWindowType } from "@/utils";
 import debounce from "@/utils/debounce";
 
 const appStore = useAppStore();
-// const historyStore = useHistoryStore();
-
-// historyStore.push('https://www.baidu.com')
-// historyStore.push('https://www.baidu.com/1')
-// historyStore.push('https://www.baidu.com/2')
-// historyStore.go(-1)
-// historyStore.go(-1)
-// historyStore.go(1)
-// console.log(historyStore.$state)
 
 const showTopBar = ref(true);
 const mounted = ref(false);
@@ -81,8 +72,8 @@ const loadWindowSize = () => {
   }
   app.currentWindow.setBounds(
     {
-      width: appStore.windowSizeDefault[0],
-      height: appStore.windowSizeDefault[1],
+      width: appStore.windowSize.default[0],
+      height: appStore.windowSize.default[1],
       ...position,
     },
     true
@@ -91,10 +82,10 @@ const loadWindowSize = () => {
 const saveWindowSize = () => {
   app.currentWindow.on("resized", () => {
     console.log("resized");
-    const currentSize = appStore[currentWindowType.value];
+    const currentSize = appStore.windowSize[currentWindowType.value];
     const newSize: number[] = [window.innerWidth, window.innerHeight];
     if (currentSize !== newSize) {
-      appStore[currentWindowType.value] = newSize;
+      appStore.windowSize[currentWindowType.value] = newSize;
       appStore.saveSelfToLocalStorage();
     }
   });

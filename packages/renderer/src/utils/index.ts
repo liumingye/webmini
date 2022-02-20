@@ -6,7 +6,7 @@ import { debounce } from "@/utils/debounce";
 
 const ipc = window.ipcRenderer;
 
-export const currentWindowType = ref<windowType>("windowSizeDefault");
+export const currentWindowType = ref<windowType>("default");
 
 export const resizeMainWindow = () => {
   const appStore = useAppStore();
@@ -17,13 +17,13 @@ export const resizeMainWindow = () => {
       url
     )
   ) {
-    targetWindowType.value = "windowSizeMini";
+    targetWindowType.value = "mini";
   } else if (url.indexOf("://passport.bilibili.com/login") > -1) {
-    targetWindowType.value = "windowSizeLogin";
+    targetWindowType.value = "login";
   } else if (url.indexOf("://t.bilibili.com/?tab") > -1) {
-    targetWindowType.value = "windowSizeFeed";
+    targetWindowType.value = "feed";
   } else {
-    targetWindowType.value = "windowSizeDefault";
+    targetWindowType.value = "default";
   }
   if (targetWindowType.value === currentWindowType.value) {
     return;
@@ -36,7 +36,7 @@ export const resizeMainWindow = () => {
       leftTopPosition[0] + currentSize[0],
       leftTopPosition[1] + currentSize[1],
     ],
-    targetSize = appStore[targetWindowType.value],
+    targetSize = appStore.windowSize[targetWindowType.value],
     targetPosition = [
       rightBottomPosition[0] - targetSize[0],
       rightBottomPosition[1] - targetSize[1],
