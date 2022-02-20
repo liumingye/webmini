@@ -3,6 +3,7 @@ import remote from "@electron/remote";
 import { domReady } from "./utils";
 import { useLoading } from "./loading";
 import path from "path";
+import { version } from "vue";
 
 const { appendLoading, removeLoading } = useLoading();
 
@@ -29,7 +30,7 @@ const currentWindow = remote.getCurrentWindow();
 contextBridge.exposeInMainWorld("app", {
   versions: {
     App: remote.app.getVersion(),
-    "Vue.js": require("vue").version,
+    "Vue.js": version,
     Electron: process.versions.electron,
     Node: process.versions.node,
     Chrome: process.versions.chrome,
