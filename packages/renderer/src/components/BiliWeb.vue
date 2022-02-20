@@ -27,12 +27,12 @@ onMounted(() => {
   let lastVid: string;
   let lastLoadedUrl: string;
 
-  webview.value.addEventListener("load-commit", () => {
+  const finish = () => {
     const url = webview.value.getURL();
-    console.log(`触发 load-commit 事件，当前url是: ${url}`);
     if (lastLoadedUrl === url) return;
     lastLoadedUrl = url;
-    appStore.changeUrl();
+    console.log(`触发 load-commit 事件，当前url是: ${url}`);
+    appStore.updateURL();
     // 改变窗口尺寸
     resizeMainWindow();
     const vid = getVid(url);
@@ -45,14 +45,27 @@ onMounted(() => {
     } else if (url.indexOf("www.bilibili.com/bangumi/play/") > -1) {
       getPartOfBangumi(url);
     }
-  });
+  };
 
-  webview.value.addEventListener("did-stop-loading", () => {
-    NProgress.done();
+  webview.value.addEventListener("did-start-navigation", () => {
+    appStore.updateNavigationState();
+    finish();
   });
 
   webview.value.addEventListener("did-start-loading", () => {
     NProgress.start().inc();
+    appStore.updateNavigationState();
+    finish();
+  });
+
+  webview.value.addEventListener("did-stop-loading", () => {
+    NProgress.done();
+    appStore.updateNavigationState();
+    finish();
+  });
+
+  webview.value.addEventListener("page-title-updated", ({ title }) => {
+    appStore.updateTitle(title);
   });
 
   // 收到选p消息时跳p

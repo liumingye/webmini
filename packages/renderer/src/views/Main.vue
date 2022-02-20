@@ -133,7 +133,7 @@ onMounted(() => {
   }
 
   &.showAbout {
-    margin-top: 176px;
+    margin-top: 180px;
   }
 }
 </style>

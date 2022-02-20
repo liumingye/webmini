@@ -224,8 +224,8 @@ const createSelectPartWindow = () => {
       return;
     }
     var p = mainWindow.getPosition(),
-      s = mainWindow.getSize(),
-      pos = [p[0] + s[0] + 10, p[1]];
+      s = selectPartWindow.getSize(),
+      pos = [p[0] - s[0], p[1]];
     selectPartWindow.setPosition(pos[0], pos[1]);
     selectPartWindow.show();
   };

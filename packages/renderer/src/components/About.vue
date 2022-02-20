@@ -28,15 +28,15 @@ const version = window.app.remote.app.getVersion();
 }
 #about {
   user-select: none;
-  background: #f25d8e;
+  background: @color-bg-pink;
   color: #fff;
   box-sizing: border-box;
   text-align: center;
   padding: 10px;
-  // position: absolute;
-  margin-top: -212px;
+  position: absolute;
+  margin-top: -180px;
   width: 100%;
-  height: 212px;
+  height: 180px;
   line-height: 1.3em;
   .logo {
     width: 60px;

@@ -8,6 +8,9 @@ const ipc = window.ipcRenderer;
 export const useAppStore = defineStore("app", {
   state: (): AppStateTypes => ({
     webview: null as unknown as Electron.WebviewTag,
+    canGoBack: false,
+    canGoForward: false,
+    title: "",
     lastTarget: "", // 这是最后一次传入changeUrl方法的url
     windowPosition: null,
     windowSizeMini: [300, 170],
@@ -49,7 +52,7 @@ export const useAppStore = defineStore("app", {
       });
       localStorage.setItem("app", JSON.stringify(Array.from(map.entries())));
     },
-    changeUrl() {
+    updateURL() {
       // 防止重复加载同页面
       const url = this.webview.getURL();
       if (url === this.lastTarget) {
@@ -57,17 +60,15 @@ export const useAppStore = defineStore("app", {
         return false;
       }
       this.lastTarget = url;
-      console.log("changeUrl", url);
+      console.log("updateURL", url);
       // 通知webview加载脚本
       this.webview.send("load-commit");
-      this.disablePartButton = true;
       const vid = getVidWithP(url);
       if (vid) {
         this.webview.loadURL(url, {
           userAgent: userAgent.desktop,
         });
         // this.webview.setUserAgent(userAgent.desktop);
-        console.log("m,", url);
         this.disableDanmakuButton = false;
         this.autoHideBar = true;
         if (this.windowID.selectPartWindow) {
@@ -77,22 +78,33 @@ export const useAppStore = defineStore("app", {
       }
 
       if (url.indexOf("/bangumi/play/") > -1) {
-        this.webview.setUserAgent(userAgent.desktop);
+        this.webview.loadURL(url, {
+          userAgent: userAgent.desktop,
+        });
+        // this.webview.setUserAgent(userAgent.desktop);
         this.disableDanmakuButton = false;
         this.autoHideBar = true;
         return;
       }
 
       if (/live\.bilibili\.com\/(h5\/||blanc\/)?(\d+).*/.test(url)) {
-        this.webview.setUserAgent(userAgent.desktop);
+        this.webview.loadURL(url, {
+          userAgent: userAgent.desktop,
+        });
+        // this.webview.setUserAgent(userAgent.desktop);
         this.disableDanmakuButton = false;
+        this.disablePartButton = true;
         this.autoHideBar = true;
         return;
       }
 
       if (url.indexOf("passport.bilibili.com/login") > -1) {
-        this.webview.setUserAgent(userAgent.desktop);
+        this.webview.loadURL(url, {
+          userAgent: userAgent.desktop,
+        });
+        // this.webview.setUserAgent(userAgent.desktop);
         this.disableDanmakuButton = true;
+        this.disablePartButton = true;
         this.autoHideBar = false;
         return;
       }
@@ -102,6 +114,7 @@ export const useAppStore = defineStore("app", {
           userAgent: userAgent.mobile,
         });
         this.disableDanmakuButton = true;
+        this.disablePartButton = true;
         this.autoHideBar = false;
         return;
       }
@@ -112,7 +125,15 @@ export const useAppStore = defineStore("app", {
         ipc.sendTo(this.windowID.selectPartWindow, "update-part", null);
       }
       this.disableDanmakuButton = true;
+      this.disablePartButton = true;
       this.autoHideBar = false;
+    },
+    updateNavigationState() {
+      this.canGoBack = this.webview.canGoBack();
+      this.canGoForward = this.webview.canGoForward();
+    },
+    updateTitle(title: string) {
+      this.title = title;
     },
     go(url: string) {
       console.log("go", url);

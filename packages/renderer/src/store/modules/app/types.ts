@@ -1,5 +1,8 @@
 export interface AppStateTypes {
   webview: Electron.WebviewTag;
+  canGoBack: boolean;
+  canGoForward: boolean;
+  title: string;
   lastTarget: string;
   windowPosition: number[] | null;
   windowSizeMini: number[];

@@ -76,113 +76,99 @@ export const getVid = (url: string) => {
   return m ? m[1] : null;
 };
 
-// ajax
-export const ajax = {
-  get: (
-    url: string,
-    success: (res: string) => void,
-    mode?: "desktop" | "mobile"
-  ) => {
-    const r = new XMLHttpRequest();
-    r.open("GET", url, true);
-    if (mode && mode in userAgent) {
-      r.setRequestHeader("userAgent", userAgent[mode || "desktop"]);
-    }
-    r.onreadystatechange = () => {
-      if (r.readyState !== 4 || r.status !== 200) return;
-      success(r.responseText);
-    };
-    r.send();
-  },
-};
-
-export const getPartOfBangumi = (url: string) => {
-  ajax.get(url, (res = "") => {
-    const appStore = useAppStore();
-    // 分 P 信息存储在 window.__INITIAL_STATE__= 中 根据 object 类型的特性最后一个 } 后面不会有 , ] } 使用正则匹配
-    const match = res.match(
-      /window\.__INITIAL_STATE__\s*=\s*(\{.*?\})[^,\]\}]/m
-    );
-    if (!match || match?.length < 2) {
-      console.log("获取番剧分p数据失败", res);
-      return false;
-    }
-    const json = JSON.parse(match[1]);
-    let parts;
-    let currentPartId = 0;
-    try {
-      parts = json.epList;
-      currentPartId = json.epInfo.i;
-    } catch (err) {
-      console.log(`解析番剧分p失败：${err}`, json);
-      return false;
-    }
-    console.log(`获取番剧 ${url} 的分P数据成功`, parts);
-    if (parts.length) {
-      if (!appStore.windowID.selectPartWindow) return;
-      ipc.sendTo(appStore.windowID.selectPartWindow, "update-bangumi-part", {
-        currentPartId,
-        parts: parts.map((p: any) => {
-          return {
-            epid: p.i,
-            // aid: p.aid,
-            bvid: p.bvid,
-            title: p.longTitle,
-          };
-        }),
-      });
-      if (parts.length > 1) {
-        // ipc.send("show-select-part-window");
-        appStore.disablePartButton = false;
+export const getPartOfBangumi = async (url: string) => {
+  const appStore = useAppStore();
+  const net = window.app.net;
+  await net.fetch(url).then((res) => {
+    res.text().then((res) => {
+      // 分 P 信息存储在 window.__INITIAL_STATE__= 中 根据 object 类型的特性最后一个 } 后面不会有 , ] } 使用正则匹配
+      const match = res.match(
+        /window\.__INITIAL_STATE__\s*=\s*(\{.*?\})[^,\]\}]/m
+      );
+      if (!match || match?.length < 2) {
+        console.log("获取番剧分p数据失败", res);
+        return false;
       }
-    } else {
-      if (!appStore.windowID.selectPartWindow) return;
-      ipc.sendTo(appStore.windowID.selectPartWindow, "update-part", null);
-      appStore.disablePartButton = true;
-    }
+      const json = JSON.parse(match[1]);
+      let parts;
+      let currentPartId = 0;
+      try {
+        parts = json.epList;
+        currentPartId = json.epInfo.i;
+      } catch (err) {
+        console.log(`解析番剧分p失败：${err}`, json);
+        return false;
+      }
+      console.log(`获取番剧 ${url} 的分P数据成功`, parts);
+      if (parts.length) {
+        if (!appStore.windowID.selectPartWindow) return;
+        ipc.sendTo(appStore.windowID.selectPartWindow, "update-bangumi-part", {
+          currentPartId,
+          parts: parts.map((p: any) => {
+            return {
+              epid: p.i,
+              // aid: p.aid,
+              bvid: p.bvid,
+              title: p.longTitle,
+            };
+          }),
+        });
+        if (parts.length > 1) {
+          // ipc.send("show-select-part-window");
+          appStore.disablePartButton = false;
+        }
+      } else {
+        if (!appStore.windowID.selectPartWindow) return;
+        ipc.sendTo(appStore.windowID.selectPartWindow, "update-part", null);
+        appStore.disablePartButton = true;
+      }
+    });
   });
 };
 
 export const getPartOfVideo = (vid: string) => {
-  ajax.get(videoUrlPrefix + vid, (res = "") => {
-    const appStore = useAppStore();
-    // 分 P 信息存储在 window.__INITIAL_STATE__= 中 根据 object 类型的特性最后一个 } 后面不会有 , ] } 使用正则匹配
-    const match = res.match(
-      /window\.__INITIAL_STATE__\s*=\s*(\{.*?\})[^,\]\}]/m
-    );
-    if (!match || match?.length < 2) {
-      console.log("获取番剧分p数据失败", res);
-      return false;
-    }
-    const json = JSON.parse(match[1]);
-    let parts;
-    try {
-      parts = json.videoData.pages;
-    } catch (err) {
-      console.log(`解析视频分p失败：${err}`, json);
-      return false;
-    }
-    console.log(`获取视频 ${vid} 的分P数据成功`);
-    if (parts.length) {
-      if (!appStore.windowID.selectPartWindow) return;
-      ipc.sendTo(
-        appStore.windowID.selectPartWindow,
-        "update-part",
-        parts.map((p: { part: [] }) => p.part)
+  const appStore = useAppStore();
+  const net = window.app.net;
+  net.fetch(videoUrlPrefix + vid).then((res) => {
+    res.text().then((res) => {
+      // 分 P 信息存储在 window.__INITIAL_STATE__= 中 根据 object 类型的特性最后一个 } 后面不会有 , ] } 使用正则匹配
+      const match = res.match(
+        /window\.__INITIAL_STATE__\s*=\s*(\{.*?\})[^,\]\}]/m
       );
-      // 有超过1p时自动开启分p窗口
-      if (parts.length > 1) {
+      if (!match || match?.length < 2) {
+        console.log("获取番剧分p数据失败", res);
+        return false;
+      }
+      const json = JSON.parse(match[1]);
+      let parts;
+      try {
+        parts = json.videoData.pages;
+      } catch (err) {
+        console.log(`解析视频分p失败：${err}`, json);
+        return false;
+      }
+      console.log(`获取视频 ${vid} 的分P数据成功`);
+      if (parts.length) {
         if (!appStore.windowID.selectPartWindow) return;
         ipc.sendTo(
           appStore.windowID.selectPartWindow,
-          "show-select-part-window"
+          "update-part",
+          parts.map((p: { part: [] }) => p.part)
         );
-        appStore.disablePartButton = false;
+        // 有超过1p时自动开启分p窗口
+        if (parts.length > 1) {
+          if (!appStore.windowID.selectPartWindow) return;
+          ipc.sendTo(
+            appStore.windowID.selectPartWindow,
+            "show-select-part-window"
+          );
+          appStore.disablePartButton = false;
+        }
+      } else {
+        if (!appStore.windowID.selectPartWindow) return;
+        ipc.sendTo(appStore.windowID.selectPartWindow, "update-part", null);
+        appStore.disablePartButton = true;
       }
-    } else {
-      if (!appStore.windowID.selectPartWindow) return;
-      ipc.sendTo(appStore.windowID.selectPartWindow, "update-part", null);
-      appStore.disablePartButton = true;
-    }
+    });
   });
 };

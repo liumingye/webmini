@@ -106,6 +106,8 @@ ipc.on("url-changed", (ev, url) => {
 
 <style lang="less" scoped>
 #selectPart {
+  display: flex;
+  flex-direction: column;
   user-select: none;
   background: @color-bg-pink;
   color: #fff;

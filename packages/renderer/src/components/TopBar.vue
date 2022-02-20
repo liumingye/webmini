@@ -14,27 +14,11 @@ import {
 const ipc = window.ipcRenderer;
 const appStore = useAppStore();
 const webview = computed(() => appStore.webview);
-const canGoBack = ref(false);
-const canGoForward = ref(false);
+const canGoBack = computed(() => appStore.canGoBack);
+const canGoForward = computed(() => appStore.canGoForward);
 const disableDanmakuButton = computed(() => appStore.disableDanmakuButton);
 const disablePartButton = computed(() => appStore.disablePartButton);
-const title = ref("");
-
-webview.value.addEventListener("did-finish-load", () => updateNavState());
-webview.value.addEventListener("did-navigate-in-page", () => updateNavState());
-webview.value.addEventListener("page-title-updated", ({ title }) => {
-  updateTitle(title);
-});
-
-const updateTitle = (_title: string) => {
-  title.value = _title;
-};
-
-const updateNavState = () => {
-  canGoBack.value = webview.value.canGoBack();
-  canGoForward.value = webview.value.canGoForward();
-};
-
+const title = computed(() => appStore.title);
 const goBack = () => webview.value.goBack();
 const goForward = () => webview.value.goForward();
 const naviGoHome = () => {
