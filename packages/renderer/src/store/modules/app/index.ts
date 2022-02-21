@@ -118,9 +118,7 @@ export const useAppStore = defineStore('app', {
     },
     go(url: string) {
       console.log('go', url)
-      this.webview.loadURL(url, {
-        userAgent: userAgent.mobile,
-      })
+      this.webview.loadURL(url)
     },
     goPart(pid: number) {
       console.log('goPart', pid)

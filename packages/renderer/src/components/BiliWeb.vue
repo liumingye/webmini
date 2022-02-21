@@ -48,20 +48,18 @@
       }
     }
 
-    webview.value.addEventListener('dom-ready', () => {
-      webview.value.addEventListener('load-commit', () => {
-        console.log('load-commit')
-        finish()
-      })
+    webview.value.addEventListener('load-commit', () => {
+      console.log('load-commit')
+      finish()
+    })
 
-      webview.value.addEventListener('did-start-loading', () => {
-        console.log('did-start-loading')
-        NProgress.start().inc()
-      })
+    webview.value.addEventListener('did-start-loading', () => {
+      console.log('did-start-loading')
+      NProgress.start().inc()
+    })
 
-      webview.value.addEventListener('did-stop-loading', () => {
-        NProgress.done()
-      })
+    webview.value.addEventListener('did-stop-loading', () => {
+      NProgress.done()
     })
 
     // 收到选p消息时跳p

@@ -1,9 +1,8 @@
 <script setup lang="ts">
-  import { ref, computed } from 'vue'
+  import { ref, computed, onMounted } from 'vue'
   import { useAppStore, useHistoryStore } from '@/store'
 
   import { Home, Left, Right, Windmill, CloseSmall, Help } from '@/components/Icon'
-  import { userAgent } from '@/utils/constant'
 
   const ipc = window.ipcRenderer
   const appStore = useAppStore()
@@ -15,16 +14,16 @@
   const disablePartButton = computed(() => appStore.disablePartButton)
   const title = ref('')
 
+  webview.value.addEventListener('page-title-updated', (event) => {
+    title.value = event.title
+  })
+
   webview.value.addEventListener('dom-ready', () => {
-    webview.value.addEventListener('page-title-updated', (event) => {
-      title.value = event.title
-    })
     title.value = webview.value.getTitle()
   })
 
   historyStore.listen((to) => {
-    webview.value.setUserAgent(userAgent.mobile)
-    webview.value.loadURL(to)
+    appStore.go(to)
   })
 
   const naviGoHome = () => {
