@@ -13,5 +13,4 @@ export interface AppStateTypes {
   disableDanmakuButton: boolean;
   autoHideBar: boolean;
   windowID: { mainWindow?: number; selectPartWindow?: number };
-  lastNavigation: number;
 }

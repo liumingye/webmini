@@ -20,19 +20,14 @@ const canGoBack = computed(() => historyStore.canGoBack);
 const canGoForward = computed(() => historyStore.canGoForward);
 const disableDanmakuButton = computed(() => appStore.disableDanmakuButton);
 const disablePartButton = computed(() => appStore.disablePartButton);
-const title = ref('');
+const title = ref("");
 
 webview.value.addEventListener("dom-ready", () => {
   webview.value.addEventListener("page-title-updated", (event) => {
     title.value = event.title;
   });
-  title.value = webview.value.getTitle()
+  title.value = webview.value.getTitle();
 });
-
-const go = (delta: number) => {
-  appStore.lastNavigation = 1;
-  historyStore.go(delta);
-};
 
 historyStore.listen((to, from) => {
   webview.value.setUserAgent(userAgent.mobile);
@@ -78,7 +73,7 @@ const turnOff = () => {
         id="navi-back"
         title="后退"
         :disabled="!canGoBack"
-        @click="go(-1)"
+        @click="historyStore.go(-1)"
       >
         <Left />
       </button>
@@ -86,7 +81,7 @@ const turnOff = () => {
         id="navi-forward"
         title="前进"
         :disabled="!canGoForward"
-        @click="go(1)"
+        @click="historyStore.go(1)"
       >
         <Right />
       </button>

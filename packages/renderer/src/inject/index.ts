@@ -1,5 +1,5 @@
 import { is, addStyle } from "./utils";
-import { search, removeAd, video } from "./modules";
+import { search, adblock, video } from "./modules";
 import { ipcRenderer } from "electron";
 
 declare global {
@@ -15,12 +15,12 @@ if (liveId) {
 
 const applyStyle = () => {
   // 脚本停止
-  removeAd.stop();
+  adblock.stop();
   video.stop();
   search.stop();
   // 脚本开始
   console.log("脚本注入成功！！！");
-  removeAd.start();
+  adblock.start();
   // 普通视频页：自动最大化播放器
   if (is.video(window.location.pathname)) {
     video.start();

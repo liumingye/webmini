@@ -47,10 +47,6 @@ onMounted(() => {
     }
   };
 
-  // webview.value.addEventListener("did-finish-load", () => {
-  //   console.log("did-finish-load");
-  // });
-
   webview.value.addEventListener("dom-ready", () => {
     webview.value.addEventListener("load-commit", () => {
       console.log("load-commit");
@@ -60,7 +56,6 @@ onMounted(() => {
     webview.value.addEventListener("did-start-loading", () => {
       console.log("did-start-loading");
       NProgress.start().inc();
-      finish();
     });
 
     webview.value.addEventListener("did-stop-loading", () => {

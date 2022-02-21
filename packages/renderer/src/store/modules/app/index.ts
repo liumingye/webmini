@@ -22,7 +22,6 @@ export const useAppStore = defineStore("app", {
     disableDanmakuButton: true,
     autoHideBar: false,
     windowID: {},
-    lastNavigation: 0,
   }),
   actions: {
     loadSelfFromLocalStorage() {
@@ -52,22 +51,19 @@ export const useAppStore = defineStore("app", {
       // 防止重复加载同页面
       const url = this.webview.getURL();
       console.log("updateURL", url);
-      if (this.lastNavigation > 0) {
-        this.lastNavigation--;
-      } else {
-        if (!["m.bilibili.com/video/"].includes(url)) {
-          historyStore.push(url);
-        }
-      }
+
+      historyStore.push(url);
+
       // 通知webview加载脚本
       this.webview.send("load-commit");
 
       const vid = getVidWithP(url);
       if (vid) {
-        this.lastNavigation = 1;
+        historyStore.replace(videoUrlPrefix + vid);
         this.webview.loadURL(videoUrlPrefix + vid, {
           userAgent: userAgent.desktop,
         });
+
         this.disableDanmakuButton = false;
         this.autoHideBar = true;
         if (this.windowID.selectPartWindow) {
@@ -77,7 +73,6 @@ export const useAppStore = defineStore("app", {
       }
 
       if (url.indexOf("/bangumi/play/") > -1) {
-        this.lastNavigation = 1;
         this.webview.loadURL(url, {
           userAgent: userAgent.desktop,
         });
@@ -88,7 +83,6 @@ export const useAppStore = defineStore("app", {
 
       const live = /live\.bilibili\.com\/(h5\/||blanc\/)?(\d+).*/.exec(url);
       if (live) {
-        this.lastNavigation = 1;
         this.webview.loadURL(liveUrlPrefix + live[2], {
           userAgent: userAgent.desktop,
         });
@@ -98,8 +92,7 @@ export const useAppStore = defineStore("app", {
         return;
       }
 
-      if (url.indexOf("passport.bilibili.com/login") > -1) {
-        this.lastNavigation = 1;
+      if (url.indexOf("//passport.bilibili.com/login") > -1) {
         this.webview.loadURL(url, {
           userAgent: userAgent.desktop,
         });
@@ -109,7 +102,12 @@ export const useAppStore = defineStore("app", {
         return;
       }
 
-      this.webview.setUserAgent(userAgent.mobile);
+      if (url.indexOf("//t.bilibili.com") > -1) {
+        this.webview.setUserAgent(userAgent.desktop);
+      } else {
+        this.webview.setUserAgent(userAgent.mobile);
+      }
+
       // 清除分p
       if (this.windowID.selectPartWindow) {
         ipc.sendTo(this.windowID.selectPartWindow, "update-part", null);
@@ -120,8 +118,6 @@ export const useAppStore = defineStore("app", {
     },
     go(url: string) {
       console.log("go", url);
-      const historyStore = useHistoryStore();
-      historyStore.push(url);
       this.webview.loadURL(url, {
         userAgent: userAgent.mobile,
       });

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { useAppStore } from "@/store";
-import { liveUrlPrefix, videoUrlPrefix } from "@/utils/constant";
+import { liveUrlPrefix, userAgent, videoUrlPrefix } from "@/utils/constant";
 
 const appStore = useAppStore();
 const naviGotoTarget = ref("");

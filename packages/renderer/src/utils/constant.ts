@@ -1,3 +1,4 @@
+export const START = "https://m.bilibili.com/index.html";
 export const userAgent = {
   desktop:
     "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.3 Safari/605.1.15",
@@ -6,4 +7,3 @@ export const userAgent = {
 };
 export const liveUrlPrefix = "https://live.bilibili.com/blanc/";
 export const videoUrlPrefix = "https://www.bilibili.com/video/";
-export const START = "https://m.bilibili.com/index.html";

@@ -5,7 +5,7 @@ let removeStyle: () => void;
 const module = {
   start: () => {
     removeStyle = addStyle(
-      `.launch-app-btn,.bili-app-link-container{display:none}`
+      `.launch-app-btn,.bili-app-link-container,.h5-download-bar{display:none}`
     );
   },
 

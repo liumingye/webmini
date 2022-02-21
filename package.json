@@ -6,7 +6,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git@github.com:liumingye/bilimini.git"
+    "url": "https://github.com/liumingye/bilimini.git"
   },
   "packageManager": "yarn@3.1.1",
   "scripts": {
@@ -21,6 +21,7 @@
   "engines": {
     "node": ">=14.17.0"
   },
+  "dependencies": {},
   "devDependencies": {
     "@electron/remote": "^2.0.4",
     "@types/nprogress": "^0.2.0",
