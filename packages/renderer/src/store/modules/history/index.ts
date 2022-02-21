@@ -1,6 +1,8 @@
 /**
  * memory history
  */
+import { defineStore } from 'pinia'
+import { START } from '@/utils/constant'
 import {
   HistoryStateTypes,
   HistoryLocation,
@@ -9,8 +11,6 @@ import {
   NavigationInformation,
   NavigationCallback,
 } from './types'
-import { defineStore } from 'pinia'
-import { START } from '@/utils/constant'
 
 export const useHistoryStore = defineStore('history', {
   state: (): HistoryStateTypes => ({
@@ -79,6 +79,12 @@ export const useHistoryStore = defineStore('history', {
       // remove current entry and decrement position
       this.queue.splice(this.position--, 1)
       this.setLocation(to)
+    },
+    goBack() {
+      this.go(-1)
+    },
+    goForward() {
+      this.go(1)
     },
   },
   getters: {

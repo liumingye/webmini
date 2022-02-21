@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import { ref, onMounted, computed } from 'vue'
-  import { useAppStore } from '@/store'
+  import { useAppStore, useHistoryStore } from '@/store'
   import { resizeMainWindow } from '@/utils'
   import { getVid, getPartOfBangumi, getPartOfVideo } from '@/utils'
   import { userAgent, START } from '@/utils/constant'
@@ -8,6 +8,7 @@
 
   const ipc = window.ipcRenderer
   const appStore = useAppStore()
+  const historyStore = useHistoryStore()
   const _webview = ref()
   const preload = window.app.preload
 
@@ -47,8 +48,12 @@
       }
     }
 
-    webview.value.addEventListener('load-commit', () => {
-      console.log('load-commit')
+    webview.value.addEventListener('did-finish-load', () => {
+      console.log('did-finish-load')
+      finish()
+    })
+    webview.value.addEventListener('did-navigate-in-page', () => {
+      console.log('did-navigate-in-page')
       finish()
     })
 
@@ -77,7 +82,7 @@
     })
     // 按下ESC键
     ipc.on('press-esc', () => {
-      appStore.goBack()
+      historyStore.goBack()
     })
   })
 </script>

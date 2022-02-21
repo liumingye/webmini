@@ -1,7 +1,7 @@
 import { useAppStore } from '@/store'
 import { ref } from 'vue'
 import { windowType } from './types'
-import { videoUrlPrefix } from '@/utils/constant'
+import { userAgent, videoUrlPrefix } from '@/utils/constant'
 
 const ipc = window.ipcRenderer
 
@@ -13,9 +13,9 @@ export const resizeMainWindow = () => {
   const url = appStore.webview.getURL()
   if (/(\/video\/(av|BV)|\/bangumi\/play\/|\/\/live\.bilibili\.com\/blanc\/\d+)/.test(url)) {
     targetWindowType.value = 'mini'
-  } else if (url.indexOf('://passport.bilibili.com/login') > -1) {
+  } else if (url.indexOf('//passport.bilibili.com/login') > -1) {
     targetWindowType.value = 'login'
-  } else if (url.indexOf('://t.bilibili.com/?tab') > -1) {
+  } else if (url.indexOf('//t.bilibili.com/?tab') > -1) {
     targetWindowType.value = 'feed'
   } else {
     targetWindowType.value = 'default'
@@ -23,8 +23,7 @@ export const resizeMainWindow = () => {
   if (targetWindowType.value === currentWindowType.value) {
     return
   }
-  console.log(url.indexOf('passport.bilibili.com/login'))
-  console.log(targetWindowType.value)
+  // console.log(targetWindowType.value)
   const currentSize = window.app.currentWindow.getSize(),
     leftTopPosition = window.app.currentWindow.getPosition(),
     rightBottomPosition = [
@@ -63,12 +62,18 @@ export const resizeMainWindow = () => {
 
 export const getVidWithP = (url: string) => {
   const m = /video\/((av\d+|BV\w+)(?:\/?\?p=\d+)?)/.exec(url)
-  return m ? m[2] : null
+  return m ? m[1] : null
+}
+
+export const getBvid = (url: string) => {
+  const m = /bangumi\/play\/(ss\d+|ep\d+)/.exec(url)
+  // console.log('getBvid', url, m)
+  return m ? m[1] : null
 }
 
 export const getVid = (url: string) => {
   const m = /video\/(av\d+|BV\w+)/.exec(url)
-  console.log('getVid', url, m)
+  // console.log('getVid', url, m)
   return m ? m[1] : null
 }
 
@@ -93,7 +98,7 @@ export const getPartOfBangumi = async (url: string) => {
         console.log(`解析番剧分p失败：${err}`, json)
         return false
       }
-      console.log(`获取番剧 ${url} 的分P数据成功`, parts)
+      // console.log(`获取番剧 ${url} 的分P数据成功`, parts)
       if (parts.length) {
         if (!appStore.windowID.selectPartWindow) return
         ipc.sendTo(appStore.windowID.selectPartWindow, 'update-bangumi-part', {
@@ -140,7 +145,7 @@ export const getPartOfVideo = (vid: string) => {
         console.log(`解析视频分p失败：${err}`, json)
         return false
       }
-      console.log(`获取视频 ${vid} 的分P数据成功`)
+      // console.log(`获取视频 ${vid} 的分P数据成功`)
       if (parts.length) {
         if (!appStore.windowID.selectPartWindow) return
         ipc.sendTo(
@@ -160,4 +165,11 @@ export const getPartOfVideo = (vid: string) => {
       }
     })
   })
+}
+
+export const judgeUserAgent = (url: string) => {
+  if (url.indexOf('//m.bilibili.com') > -1) {
+    return userAgent.mobile
+  }
+  return userAgent.desktop
 }

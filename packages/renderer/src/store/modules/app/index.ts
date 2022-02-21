@@ -1,7 +1,7 @@
 import { AppStateTypes } from './types'
 import { defineStore } from 'pinia'
-import { getVidWithP, getVid } from '@/utils'
-import { userAgent, videoUrlPrefix, liveUrlPrefix } from '@/utils/constant'
+import { getVidWithP, getVid, getBvid, judgeUserAgent } from '@/utils'
+import { userAgent, videoUrlPrefix, liveUrlPrefix, bangumiUrlPrefix } from '@/utils/constant'
 import { useHistoryStore } from '@/store'
 
 const ipc = window.ipcRenderer
@@ -48,10 +48,11 @@ export const useAppStore = defineStore('app', {
     },
     updateURL() {
       const historyStore = useHistoryStore()
-      // 防止重复加载同页面
+
       const url = this.webview.getURL()
       console.log('updateURL', url)
 
+      // 历史push
       historyStore.push(url)
 
       // 通知webview加载脚本
@@ -59,11 +60,12 @@ export const useAppStore = defineStore('app', {
 
       const vid = getVidWithP(url)
       if (vid) {
-        historyStore.replace(videoUrlPrefix + vid)
-        this.webview.loadURL(videoUrlPrefix + vid, {
-          userAgent: userAgent.desktop,
-        })
-
+        if (url.indexOf('//m.bilibili.com') > -1) {
+          historyStore.replace(videoUrlPrefix + vid)
+          this.webview.loadURL(videoUrlPrefix + vid, {
+            userAgent: userAgent.desktop,
+          })
+        }
         this.disableDanmakuButton = false
         this.autoHideBar = true
         if (this.windowID.selectPartWindow) {
@@ -72,10 +74,14 @@ export const useAppStore = defineStore('app', {
         return
       }
 
-      if (url.indexOf('/bangumi/play/') > -1) {
-        this.webview.loadURL(url, {
-          userAgent: userAgent.desktop,
-        })
+      const bvid = getBvid(url)
+      if (bvid) {
+        if (url.indexOf('//m.bilibili.com') > -1) {
+          historyStore.replace(bangumiUrlPrefix + bvid)
+          this.webview.loadURL(bangumiUrlPrefix + bvid, {
+            userAgent: userAgent.desktop,
+          })
+        }
         this.disableDanmakuButton = false
         this.autoHideBar = true
         return
@@ -83,9 +89,12 @@ export const useAppStore = defineStore('app', {
 
       const live = /live\.bilibili\.com\/(h5\/||blanc\/)?(\d+).*/.exec(url)
       if (live) {
-        this.webview.loadURL(liveUrlPrefix + live[2], {
-          userAgent: userAgent.desktop,
-        })
+        if (url.indexOf('//live.bilibili.com/h5/') > -1) {
+          historyStore.replace(liveUrlPrefix + live[2])
+          this.webview.loadURL(liveUrlPrefix + live[2], {
+            userAgent: userAgent.desktop,
+          })
+        }
         this.disableDanmakuButton = false
         this.disablePartButton = true
         this.autoHideBar = true
@@ -102,11 +111,7 @@ export const useAppStore = defineStore('app', {
         return
       }
 
-      if (url.indexOf('//t.bilibili.com') > -1) {
-        this.webview.setUserAgent(userAgent.desktop)
-      } else {
-        this.webview.setUserAgent(userAgent.mobile)
-      }
+      this.webview.setUserAgent(judgeUserAgent(url))
 
       // 清除分p
       if (this.windowID.selectPartWindow) {
@@ -118,17 +123,9 @@ export const useAppStore = defineStore('app', {
     },
     go(url: string) {
       console.log('go', url)
-      this.webview.loadURL(url)
-    },
-    goBack() {
-      this.webview.setUserAgent(userAgent.mobile)
-      const historyStore = useHistoryStore()
-      historyStore.go(-1)
-    },
-    goForward() {
-      this.webview.setUserAgent(userAgent.mobile)
-      const historyStore = useHistoryStore()
-      historyStore.go(1)
+      this.webview.loadURL(url, {
+        userAgent: judgeUserAgent(url),
+      })
     },
     goPart(pid: number) {
       console.log('goPart', pid)
@@ -138,13 +135,14 @@ export const useAppStore = defineStore('app', {
         this.webview.loadURL(url, {
           userAgent: userAgent.desktop,
         })
-        this.go(url)
         console.log(`路由：选择分p，选中第${pid}，转跳地址：${url}`)
       }
     },
     goBangumiPart(ep: { bvid: number }) {
       console.log('goBangumiPart', ep)
-      this.go(videoUrlPrefix + ep.bvid)
+      this.webview.loadURL(videoUrlPrefix + ep.bvid, {
+        userAgent: userAgent.desktop,
+      })
     },
   },
 })
