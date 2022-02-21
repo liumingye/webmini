@@ -32,7 +32,6 @@ async function createWindow() {
     height: 500,
     frame: false, // 是否有边框
     maximizable: false,
-    alwaysOnTop: true,
     webPreferences: {
       webviewTag: true,
       preload: join(__dirname, '../preload/index.cjs'), // 预先加载指定的脚本
@@ -40,6 +39,7 @@ async function createWindow() {
       webSecurity: false,
     },
   })
+  mainWindow.setAlwaysOnTop(true, 'torn-off-menu')
 
   mainWindow.loadURL(URL)
 
@@ -203,11 +203,11 @@ const createSelectPartWindow = () => {
     height: 300,
     frame: false,
     maximizable: false,
-    alwaysOnTop: true,
     webPreferences: {
       preload: join(__dirname, '../preload/index.cjs'), // 预先加载指定的脚本
     },
   })
+  selectPartWindow.setAlwaysOnTop(true, 'modal-panel')
 
   selectPartWindow.loadURL(`${URL}#/select-part`)
 

@@ -9,7 +9,6 @@
   const ipc = window.ipcRenderer
   const appStore = useAppStore()
   const _webview = ref()
-
   const preload = window.app.preload
 
   // NProgress Configuration
@@ -78,7 +77,7 @@
     })
     // 按下ESC键
     ipc.on('press-esc', () => {
-      webview.value.goBack()
+      appStore.goBack()
     })
   })
 </script>

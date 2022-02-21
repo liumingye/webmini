@@ -61,10 +61,15 @@
 <template>
   <div id="topbar">
     <div class="button-group">
-      <button id="navi-back" title="后退" :disabled="!canGoBack" @click="historyStore.go(-1)">
+      <button id="navi-back" title="后退" :disabled="!canGoBack" @click="appStore.goBack()">
         <Left />
       </button>
-      <button id="navi-forward" title="前进" :disabled="!canGoForward" @click="historyStore.go(1)">
+      <button
+        id="navi-forward"
+        title="前进"
+        :disabled="!canGoForward"
+        @click="appStore.goForward()"
+      >
         <Right />
       </button>
       <button id="navi-home" title="返回首页" @click="naviGoHome">

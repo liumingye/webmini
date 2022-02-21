@@ -120,6 +120,16 @@ export const useAppStore = defineStore('app', {
       console.log('go', url)
       this.webview.loadURL(url)
     },
+    goBack() {
+      this.webview.setUserAgent(userAgent.mobile)
+      const historyStore = useHistoryStore()
+      historyStore.go(-1)
+    },
+    goForward() {
+      this.webview.setUserAgent(userAgent.mobile)
+      const historyStore = useHistoryStore()
+      historyStore.go(1)
+    },
     goPart(pid: number) {
       console.log('goPart', pid)
       const vid = getVid(this.webview.getURL())
