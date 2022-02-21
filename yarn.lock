@@ -1100,9 +1100,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vitejs/plugin-vue@npm:^2.1.0":
+"@vitejs/plugin-vue@npm:^2.2.2":
   version: 2.2.2
-  resolution: "@vitejs/plugin-vue@npm:2.2.2"
+  resolution: "@vitejs/plugin-vue@npm:2.2.2::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2F%40vitejs%2Fplugin-vue%2F-%2Fplugin-vue-2.2.2.tgz"
   peerDependencies:
     vite: ^2.5.10
     vue: ^3.2.25
@@ -1604,11 +1604,11 @@ __metadata:
     "@types/nprogress": ^0.2.0
     "@typescript-eslint/eslint-plugin": ^5.12.0
     "@typescript-eslint/parser": ^5.12.0
-    "@vitejs/plugin-vue": ^2.1.0
+    "@vitejs/plugin-vue": ^2.2.2
     "@vitejs/plugin-vue-jsx": ^1.3.7
     autoprefixer: ^10.4.2
     electron: ^17.0.1
-    electron-builder: ^22.14.5
+    electron-builder: ^22.14.13
     electron-devtools-installer: ^3.2.0
     eslint: ^8.9.0
     eslint-config-prettier: ^8.4.0
@@ -1624,9 +1624,9 @@ __metadata:
     prettier: ^2.5.1
     typescript: ^4.5.5
     update-electron-app: ^2.0.1
-    vite: ^2.7.13
-    vite-plugin-resolve: ^1.4.3
-    vue: ^3.2.29
+    vite: ^2.8.4
+    vite-plugin-resolve: ^1.4.4
+    vue: ^3.2.31
     vue-router: ^4.0.12
   languageName: unknown
   linkType: soft
@@ -2530,9 +2530,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"electron-builder@npm:^22.14.5":
+"electron-builder@npm:^22.14.13":
   version: 22.14.13
-  resolution: "electron-builder@npm:22.14.13"
+  resolution: "electron-builder@npm:22.14.13::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Felectron-builder%2F-%2Felectron-builder-22.14.13.tgz"
   dependencies:
     "@types/yargs": ^17.0.1
     app-builder-lib: 22.14.13
@@ -6336,16 +6336,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vite-plugin-resolve@npm:^1.4.3":
+"vite-plugin-resolve@npm:^1.4.4":
   version: 1.4.4
-  resolution: "vite-plugin-resolve@npm:1.4.4"
+  resolution: "vite-plugin-resolve@npm:1.4.4::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Fvite-plugin-resolve%2F-%2Fvite-plugin-resolve-1.4.4.tgz"
   checksum: 17db87867406068c18248605d07b5610575bce5214e30475f67abfcf7dbce4b5f4db453e623b78f5d7322620d3f8a106e06d2329a94bd445aa0bd06b16ccf35a
   languageName: node
   linkType: hard
 
-"vite@npm:^2.7.13":
+"vite@npm:^2.8.4":
   version: 2.8.4
-  resolution: "vite@npm:2.8.4"
+  resolution: "vite@npm:2.8.4::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Fvite%2F-%2Fvite-2.8.4.tgz"
   dependencies:
     esbuild: ^0.14.14
     fsevents: ~2.3.2
@@ -6416,9 +6416,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vue@npm:^3.2.29":
+"vue@npm:^3.2.31":
   version: 3.2.31
-  resolution: "vue@npm:3.2.31"
+  resolution: "vue@npm:3.2.31::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Fvue%2F-%2Fvue-3.2.31.tgz"
   dependencies:
     "@vue/compiler-dom": 3.2.31
     "@vue/compiler-sfc": 3.2.31
