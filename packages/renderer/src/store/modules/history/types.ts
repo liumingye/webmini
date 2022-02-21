@@ -1,30 +1,26 @@
-export type HistoryLocation = string;
+export type HistoryLocation = string
 
 export enum NavigationDirection {
-  back = "back",
-  forward = "forward",
+  back = 'back',
+  forward = 'forward',
 }
 
 export enum NavigationType {
-  pop = "pop",
+  pop = 'pop',
 }
 
 export interface NavigationInformation {
-  type: NavigationType;
-  direction: NavigationDirection;
-  delta: number;
+  type: NavigationType
+  direction: NavigationDirection
+  delta: number
 }
 
 export interface NavigationCallback {
-  (
-    to: HistoryLocation,
-    from: HistoryLocation,
-    information: NavigationInformation
-  ): void;
+  (to: HistoryLocation, from: HistoryLocation, information: NavigationInformation): void
 }
 
 export interface HistoryStateTypes {
-  queue: HistoryLocation[];
-  position: number;
-  listeners: NavigationCallback[];
+  queue: HistoryLocation[]
+  position: number
+  listeners: NavigationCallback[]
 }

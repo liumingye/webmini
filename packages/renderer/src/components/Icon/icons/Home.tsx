@@ -5,30 +5,30 @@
 
 /* tslint:disable: max-line-length */
 /* eslint-disable max-len */
-import { ISvgIconProps, IconWrapper } from "../runtime";
+import { ISvgIconProps, IconWrapper } from '../runtime'
 
-export default IconWrapper("home", false, (props: ISvgIconProps) => (
-  <svg width={props.size} height={props.size} viewBox="0 0 48 48" fill="none">
-    <path d="M9 18V42H39V18L24 6L9 18Z" fill={props.colors[1]} />
+export default IconWrapper('home', false, (props: ISvgIconProps) => (
+  <svg width={props.size} height={props.size} viewBox='0 0 48 48' fill='none'>
+    <path d='M9 18V42H39V18L24 6L9 18Z' fill={props.colors[1]} />
     <path
-      d="M9 42V18L4 22L24 6L44 22L39 18V42H9Z"
+      d='M9 42V18L4 22L24 6L44 22L39 18V42H9Z'
       stroke={props.colors[0]}
       stroke-width={props.strokeWidth}
       stroke-linecap={props.strokeLinecap}
       stroke-linejoin={props.strokeLinejoin}
     />
     <path
-      d="M19 29V42H29V29H19Z"
+      d='M19 29V42H29V29H19Z'
       fill={props.colors[3]}
       stroke={props.colors[2]}
       stroke-width={props.strokeWidth}
       stroke-linejoin={props.strokeLinejoin}
     />
     <path
-      d="M9 42H39"
+      d='M9 42H39'
       stroke={props.colors[0]}
       stroke-width={props.strokeWidth}
       stroke-linecap={props.strokeLinecap}
     />
   </svg>
-));
+))

@@ -4,5 +4,5 @@ import { useHistoryStore } from './modules/history'
 
 const pinia = createPinia()
 
-export { useAppStore,useHistoryStore }
+export { useAppStore, useHistoryStore }
 export default pinia

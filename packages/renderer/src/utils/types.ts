@@ -1,1 +1,1 @@
-export type windowType = "mini" | "feed" | "default" | "login";
+export type windowType = 'mini' | 'feed' | 'default' | 'login'

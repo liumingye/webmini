@@ -1,7 +1,7 @@
-import "vue-router";
+import 'vue-router'
 
-declare module "vue-router" {
+declare module 'vue-router' {
   interface RouteMeta {
-    title?: string;
+    title?: string
   }
 }
