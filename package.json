@@ -2,8 +2,7 @@
   "name": "bilimini",
   "version": "1.0.0",
   "main": "dist/main/index.cjs",
-  "author": "liumingye",
-  "email" : "liumingye2015@gmail.com",
+  "author": "liumingye <liumingye2015@gmail.com>",
   "license": "MIT",
   "repository": {
     "type": "git",

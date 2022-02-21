@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { ref, computed, onMounted } from 'vue'
+  import { ref, computed } from 'vue'
   import { useAppStore, useHistoryStore } from '@/store'
 
   import { Home, Left, Right, Windmill, CloseSmall, Help } from '@/components/Icon'
