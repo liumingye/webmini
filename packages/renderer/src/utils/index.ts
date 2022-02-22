@@ -104,7 +104,7 @@ export const getPartOfBangumi = (url: string) => {
         console.log(`解析番剧分p失败：${err}`, json)
         return false
       }
-      // console.log(`获取番剧 ${url} 的分P数据成功`, parts)
+      console.log(`获取番剧 ${url} 的分P数据成功`, parts)
       if (parts.length) {
         if (!appStore.windowID.selectPartWindow) return
         ipc.sendTo(appStore.windowID.selectPartWindow, 'update-bangumi-part', {
@@ -151,7 +151,7 @@ export const getPartOfVideo = (vid: string) => {
         console.log(`解析视频分p失败：${err}`, json)
         return false
       }
-      // console.log(`获取视频 ${vid} 的分P数据成功`)
+      console.log(`获取视频 ${vid} 的分P数据成功`)
       if (parts.length) {
         if (!appStore.windowID.selectPartWindow) return
         ipc.sendTo(
@@ -174,7 +174,12 @@ export const getPartOfVideo = (vid: string) => {
 }
 
 export const judgeUserAgent = (url: string) => {
-  const map = ['//m.bilibili.com', '//live.bilibili.com/h5', '//www.bilibili.com/read/']
+  const map = [
+    '//m.bilibili.com',
+    '//live.bilibili.com/h5',
+    '//www.bilibili.com/read/mobile',
+    '//www.bilibili.com/read/cv',
+  ]
   for (let i = 0; i < map.length; i++) {
     if (url.indexOf(map[i]) > -1) {
       return userAgent.mobile

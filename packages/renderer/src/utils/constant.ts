@@ -27,8 +27,12 @@ export const webNav = {
       url: 'https://t.bilibili.com',
     },
     {
-      name: '个人主页',
+      name: '个人空间',
       url: 'https://space.bilibili.com',
+    },
+    {
+      name: '收藏',
+      url: 'https://space.bilibili.com/${uid}/favlist',
     },
     {
       name: '历史',
@@ -47,6 +51,38 @@ export const webNav = {
     {
       name: '我的关注',
       url: 'https://link.bilibili.com/p/center/index#/user-center/follow/1',
+    },
+    {
+      name: '直播中心',
+      url: 'https://link.bilibili.com/p/center/index#/user-center/my-info/operation',
+    },
+  ],
+  番剧: [
+    {
+      name: '番剧',
+      url: 'https://www.bilibili.com/anime',
+    },
+    {
+      name: '我的追番',
+      url: 'https://space.bilibili.com/${uid}/bangumi',
+    },
+    {
+      name: '新番时间表',
+      url: 'https://www.bilibili.com/anime/timeline/',
+    },
+  ],
+  其他: [
+    {
+      name: '专栏',
+      url: 'https://www.bilibili.com/read/home',
+    },
+    {
+      name: '频道',
+      url: 'https://www.bilibili.com/v/channel/',
+    },
+    {
+      name: '消息',
+      url: 'https://message.bilibili.com/#/reply',
     },
   ],
 }

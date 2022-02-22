@@ -1,4 +1,4 @@
-import { contextBridge, ipcRenderer } from 'electron'
+import { contextBridge, ipcRenderer, session } from 'electron'
 import remote from '@electron/remote'
 import { domReady } from './utils'
 import { useLoading } from './loading'
@@ -28,6 +28,19 @@ const DEFAULT_FETCH_CONFIG: FetchOptions = {
 }
 const currentWindow = remote.getCurrentWindow()
 contextBridge.exposeInMainWorld('app', {
+  getCookieValue: async (name: string) => {
+    return await currentWindow.webContents.session.cookies
+      .get({
+        url: 'https://www.bilibili.com',
+        name,
+      })
+      .then((cookie) => {
+        if (cookie.length) {
+          return cookie[0].value
+        }
+        return ''
+      })
+  },
   versions: {
     App: remote.app.getVersion(),
     'Vue.js': version,

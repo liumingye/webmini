@@ -252,12 +252,12 @@ app
     createSelectPartWindow()
   })
   .then(() => {
-    selectPartWindow?.webContents.on('did-finish-load', () => {
+    selectPartWindow?.webContents.on('dom-ready', () => {
       selectPartWindow?.webContents.send('windowID', {
         mainWindow: mainWindow?.id,
       })
     })
-    mainWindow?.webContents.on('did-finish-load', () => {
+    mainWindow?.webContents.on('dom-ready', () => {
       mainWindow?.webContents.send('windowID', {
         selectPartWindow: selectPartWindow?.id,
       })

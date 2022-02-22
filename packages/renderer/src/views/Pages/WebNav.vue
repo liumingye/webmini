@@ -7,11 +7,32 @@
   const router = useRouter()
   const appStore = useAppStore()
 
-  const open = (url: string) => {
-    router.push({
-      name: 'Home',
-    })
-    appStore.go(url)
+  const open = async (url: string) => {
+    try {
+      let newUrl = url
+      // 将链接中的${uid}替换为真正的值
+      const variable = url.match(/\${\w+}/g)
+      if (variable) {
+        // 去重
+        const newVariable = Array.from(new Set(variable))
+        for (const value of newVariable) {
+          if (value === '${uid}') {
+            await window.app.getCookieValue('DedeUserID').then((uid) => {
+              if (!uid) {
+                throw new Error('请先登录！')
+              }
+              newUrl = newUrl.replaceAll('${uid}', uid)
+            })
+          }
+        }
+      }
+      router.push({
+        name: 'Home',
+      })
+      appStore.go(newUrl)
+    } catch (error: any) {
+      alert(error.message)
+    }
   }
 
   const naviGotoTarget = ref('')
@@ -43,7 +64,7 @@
 </script>
 
 <template>
-  <div class="px-5 py-2 mt-8 max-w-200 mx-auto">
+  <div class="select-none px-5 py-2 mt-8 max-w-200 mx-auto">
     <div class="flex self-center mb-8 bg-gray-100 h-15 px-8 rounded-full">
       <input
         type="text"
@@ -54,7 +75,7 @@
       />
       <button @click="naviGoto">搜索</button>
     </div>
-    <div class="select-none flex flex-col">
+    <div class="flex flex-col">
       <div v-for="(bigCat, key) in webNav" :key="key" class="flex">
         <div
           class="flex items-center justify-center min-w-15 font-bold mr-4 border-r border-r-gray-100"

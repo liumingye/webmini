@@ -6,6 +6,7 @@ declare global {
     ipcRenderer: Electron.IpcRenderer
     removeLoading: () => void
     app: {
+      getCookieValue: (name: string) => Promise<string>
       versions: {
         App: string
         Chrome: string
