@@ -1,0 +1,59 @@
+// 隐藏全屏播放器（在某些情况下会出现）的滚动条
+body {
+  overflow: hidden !important;
+}
+.bilibili-player-video-sendbar {
+  display: none !important;
+}
+#bilibili-player {
+  width: 100vw !important;
+  height: 100vh !important;
+  position: fixed !important;
+  z-index: 100000 !important;
+  left: 0 !important;
+  top: 0 !important;
+}
+@media screen and (max-width: 480px), (max-height: 360px) {
+  .bilibili-player.mode-miniscreen.bilibili-player
+    .bilibili-player-area
+    .bilibili-player-video-control,
+  .bilibili-player.mode-miniscreen.bilibili-player
+    .bilibili-player-area
+    .bilibili-player-video-control-mask,
+  .bilibili-player.mode-miniscreen.bilibili-player
+    .bilibili-player-area
+    .bilibili-player-video-wrap
+    .bilibili-player-video-float-lastplay,
+  .bilibili-player.mode-miniscreen.bilibili-player
+    .bilibili-player-area
+    .bilibili-player-video-wrap
+    .bilibili-player-video-float-movie-wrp,
+  .bilibili-player.mode-miniscreen.bilibili-player
+    .bilibili-player-area
+    .bilibili-player-video-wrap
+    .bilibili-player-video-float-panel-wrp,
+  .bilibili-player.mode-miniscreen[class*='mode-']
+    .bilibili-player-area
+    .bilibili-player-video-control,
+  .bilibili-player.mode-miniscreen[class*='mode-']
+    .bilibili-player-area
+    .bilibili-player-video-control-mask,
+  .bilibili-player.mode-miniscreen[class*='mode-']
+    .bilibili-player-area
+    .bilibili-player-video-wrap
+    .bilibili-player-video-float-lastplay,
+  .bilibili-player.mode-miniscreen[class*='mode-']
+    .bilibili-player-area
+    .bilibili-player-video-wrap
+    .bilibili-player-video-float-movie-wrp,
+  .bilibili-player.mode-miniscreen[class*='mode-']
+    .bilibili-player-area
+    .bilibili-player-video-wrap
+    .bilibili-player-video-float-panel-wrp {
+    display: flex !important;
+  }
+}
+// 隐藏视频标题层
+.bilibili-player-video-top {
+  display: none !important;
+}

@@ -1,7 +1,7 @@
 <script setup lang="ts">
   import { ref, computed } from 'vue'
   import { useAppStore, useHistoryStore } from '@/store'
-
+  import { START } from '@/utils/constant'
   import { Home, Left, Right, Windmill, CloseSmall, Help } from '@/components/Icon'
 
   const ipc = window.ipcRenderer
@@ -27,7 +27,7 @@
   })
 
   const naviGoHome = () => {
-    appStore.go('https://m.bilibili.com/index.html')
+    appStore.go(START)
   }
 
   const naviGotoShow = () => {

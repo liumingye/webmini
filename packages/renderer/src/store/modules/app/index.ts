@@ -58,6 +58,7 @@ export const useAppStore = defineStore('app', {
       // 通知webview加载脚本
       this.webview.send('load-commit')
 
+      // 视频
       const vid = getVidWithP(url)
       if (vid) {
         if (url.indexOf('//m.bilibili.com') > -1) {
@@ -74,6 +75,7 @@ export const useAppStore = defineStore('app', {
         return
       }
 
+      // 番剧
       const bvid = getBvid(url)
       if (bvid) {
         if (url.indexOf('//m.bilibili.com') > -1) {
@@ -87,6 +89,9 @@ export const useAppStore = defineStore('app', {
         return
       }
 
+      this.disablePartButton = true
+
+      // 直播
       const live = /live\.bilibili\.com\/(h5\/||blanc\/)?(\d+).*/.exec(url)
       if (live) {
         if (url.indexOf('//live.bilibili.com/h5/') > -1) {
@@ -96,18 +101,29 @@ export const useAppStore = defineStore('app', {
           })
         }
         this.disableDanmakuButton = false
-        this.disablePartButton = true
         this.autoHideBar = true
         return
       }
 
+      this.disableDanmakuButton = true
+      this.autoHideBar = false
+
+      // 专栏页
+      if (url.indexOf('//www.bilibili.com/read/mobile') > -1) {
+        if (url.indexOf('//www.bilibili.com/read/cv') > -1) {
+          historyStore.replace(url)
+          this.webview.loadURL(url, {
+            userAgent: userAgent.mobile,
+          })
+        }
+        return
+      }
+
+      // 登录页
       if (url.indexOf('//passport.bilibili.com/login') > -1) {
         this.webview.loadURL(url, {
           userAgent: userAgent.desktop,
         })
-        this.disableDanmakuButton = true
-        this.disablePartButton = true
-        this.autoHideBar = false
         return
       }
 
@@ -117,9 +133,6 @@ export const useAppStore = defineStore('app', {
       if (this.windowID.selectPartWindow) {
         ipc.sendTo(this.windowID.selectPartWindow, 'update-part', null)
       }
-      this.disableDanmakuButton = true
-      this.disablePartButton = true
-      this.autoHideBar = false
     },
     go(url: string) {
       console.log('go', url)

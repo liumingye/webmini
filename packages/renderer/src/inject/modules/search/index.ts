@@ -1,6 +1,7 @@
-import { addStyle } from '../utils'
+import { addStyle } from '../../utils'
+import style from './style.less'
 
-let removeStyle: () => void
+let unloadStyle: () => void
 
 const searchObserver = new MutationObserver((mutations) => {
   mutations.forEach(({ addedNodes }) => {
@@ -18,7 +19,8 @@ const module = {
   start: () => {
     module.stop()
     // 打开app弹窗自动点击取消
-    removeStyle = addStyle('.v-dialog{display: none!important}')
+    const styleEntry = addStyle(style)
+    unloadStyle = styleEntry.unload
     searchObserver.observe(document.body, {
       childList: true,
     })
@@ -27,7 +29,7 @@ const module = {
   stop: () => {
     // 断开 observer
     searchObserver.disconnect()
-    removeStyle && removeStyle()
+    unloadStyle && unloadStyle()
   },
 }
 

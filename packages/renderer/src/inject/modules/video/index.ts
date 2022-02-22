@@ -1,13 +1,8 @@
-import { addStyle } from '../utils'
+import { addStyle } from '../../utils'
 import { ipcRenderer } from 'electron'
+import style from './style.less'
 
-let removeStyle: () => void
-
-const style = `.bilibili-player-video-sendbar,.bpx-player-sending-area{display:none!important}
-#bilibili-player{width:100vw!important;height:100vh!important;position:fixed!important;z-index:100000!important;left:0!important;top:0!important}
-@media screen and (max-width: 480px), (max-height: 360px) {
-  .bilibili-player.mode-miniscreen.bilibili-player .bilibili-player-area .bilibili-player-video-control, .bilibili-player.mode-miniscreen.bilibili-player .bilibili-player-area .bilibili-player-video-control-mask, .bilibili-player.mode-miniscreen.bilibili-player .bilibili-player-area .bilibili-player-video-wrap .bilibili-player-video-float-lastplay, .bilibili-player.mode-miniscreen.bilibili-player .bilibili-player-area .bilibili-player-video-wrap .bilibili-player-video-float-movie-wrp, .bilibili-player.mode-miniscreen.bilibili-player .bilibili-player-area .bilibili-player-video-wrap .bilibili-player-video-float-panel-wrp, .bilibili-player.mode-miniscreen[class*=mode-] .bilibili-player-area .bilibili-player-video-control, .bilibili-player.mode-miniscreen[class*=mode-] .bilibili-player-area .bilibili-player-video-control-mask, .bilibili-player.mode-miniscreen[class*=mode-] .bilibili-player-area .bilibili-player-video-wrap .bilibili-player-video-float-lastplay, .bilibili-player.mode-miniscreen[class*=mode-] .bilibili-player-area .bilibili-player-video-wrap .bilibili-player-video-float-movie-wrp, .bilibili-player.mode-miniscreen[class*=mode-] .bilibili-player-area .bilibili-player-video-wrap .bilibili-player-video-float-panel-wrp{display:flex!important;}
-}`
+let unloadStyle: () => void
 
 const changeVolume = (ev: Electron.IpcRendererEvent, arg: 'up' | 'down') => {
   const event = new KeyboardEvent('keydown', {
@@ -26,6 +21,15 @@ const observer = new MutationObserver((mutations) => {
       /(bilibili-player-video-web-fullscreen|squirtle-video-pagefullscreen)/.test(node.className)
     ) {
       node.click()
+      // 跳过充电鸣谢
+      document.querySelector('video')?.addEventListener('ended', () => {
+        setTimeout(() => {
+          const jumpButton = document.querySelector(
+            '.bilibili-player-electric-panel-jump',
+          ) as HTMLElement
+          jumpButton?.click()
+        }, 100)
+      })
       // 从app层面把 上、下 按键传进来，方便播放器控制音量
       ipcRenderer.on('change-volume', changeVolume)
       // 用户按了老板键，停止播放视频
@@ -51,9 +55,8 @@ const module = {
   start: () => {
     // 预先加载全屏样式
     document.body.classList.add('player-mode-webfullscreen', 'player-fullscreen-fix')
-    removeStyle = addStyle(style)
-    // 隐藏全屏播放器（在某些情况下会出现）的滚动条
-    document.body.style.overflow = 'hidden'
+    const styleEntry = addStyle(style)
+    unloadStyle = styleEntry.unload
     const target = document.querySelector('.bilibili-player-video-control-wrap,#bilibili-player')
     target &&
       observer.observe(target, {
@@ -67,8 +70,7 @@ const module = {
     observer.disconnect()
     ipcRenderer.off('change-volume', changeVolume)
     document.body.classList.remove('player-mode-webfullscreen', 'player-fullscreen-fix')
-    document.body.style.overflow = ''
-    removeStyle && removeStyle()
+    unloadStyle && unloadStyle()
   },
 }
 

@@ -77,10 +77,10 @@ export const getVid = (url: string) => {
   return m ? m[1] : null
 }
 
-export const getPartOfBangumi = async (url: string) => {
+export const getPartOfBangumi = (url: string) => {
   const appStore = useAppStore()
   const net = window.app.net
-  await net.fetch(url).then((res) => {
+  net.fetch(url).then((res) => {
     res.text().then((res) => {
       // 分 P 信息存储在 window.__INITIAL_STATE__= 中 根据 object 类型的特性最后一个 } 后面不会有 , ] } 使用正则匹配
       const match = res.match(/window\.__INITIAL_STATE__\s*=\s*(\{.*?\})[^,\]}]/m)
@@ -168,8 +168,11 @@ export const getPartOfVideo = (vid: string) => {
 }
 
 export const judgeUserAgent = (url: string) => {
-  if (url.indexOf('//m.bilibili.com') > -1) {
-    return userAgent.mobile
+  const map = ['//m.bilibili.com', '//live.bilibili.com/h5', '//www.bilibili.com/read/']
+  for (let i = 0; i < map.length; i++) {
+    if (url.indexOf(map[i]) > -1) {
+      return userAgent.mobile
+    }
   }
   return userAgent.desktop
 }

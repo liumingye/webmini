@@ -7,15 +7,17 @@ export const is = {
 }
 
 /**
- * 在 head 里插入 css
- * @param css - style
- * @returns remove method
+ * 向文档添加样式
+ * @param text - 样式内容
+ * @returns entry method
  */
-export const addStyle = (css: string) => {
-  const dom = document.createElement('style')
-  dom.innerHTML = css
-  const style = document.head.appendChild(dom)
-  return () => {
-    style.remove()
+export const addStyle = (text: string) => {
+  const style = document.createElement('style')
+  style.textContent = text
+  const styleElement = document.head.insertAdjacentElement('beforeend', style) as HTMLStyleElement
+  return {
+    unload: () => {
+      styleElement.remove()
+    },
   }
 }
