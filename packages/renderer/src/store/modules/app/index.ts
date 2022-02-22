@@ -10,13 +10,14 @@ export const useAppStore = defineStore('app', {
   state: (): AppStateTypes => ({
     webview: null as unknown as Electron.WebviewTag,
     windowPosition: null,
+    title: '',
     windowSize: {
+      mobile: [376, 500],
+      desktop: [1100, 600],
       mini: [300, 170],
       feed: [650, 760],
-      default: [376, 500],
       login: [490, 394],
     },
-    showGotoTarget: false,
     showAbout: false,
     disablePartButton: true,
     disableDanmakuButton: true,
@@ -136,6 +137,7 @@ export const useAppStore = defineStore('app', {
     },
     go(url: string) {
       console.log('go', url)
+      if (this.webview.getURL() === url) return
       this.webview.loadURL(url, {
         userAgent: judgeUserAgent(url),
       })

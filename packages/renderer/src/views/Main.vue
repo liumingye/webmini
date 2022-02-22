@@ -1,19 +1,18 @@
 <script setup lang="ts">
   import TopBar from '@/components/TopBar.vue'
-  import BiliWeb from '@/components/BiliWeb.vue'
-  import GotoTarget from '@/components/GoTarget.vue'
   import About from '@/components/About.vue'
+  import BiliWeb from '@/views/Pages/BiliWeb.vue'
 
   import { useAppStore } from '@/store'
   import { ref, onMounted, computed, watch } from 'vue'
   import { currentWindowType } from '@/utils'
   import debounce from '@/utils/debounce'
+  import { useRoute } from 'vue-router'
 
   const appStore = useAppStore()
-
+  const route = useRoute()
   const showTopBar = ref(true)
   const mounted = ref(false)
-  const showGotoTarget = computed(() => appStore.showGotoTarget)
   const showAbout = computed(() => appStore.showAbout)
   const autoHideBar = computed(() => appStore.autoHideBar)
 
@@ -72,8 +71,8 @@
     }
     app.currentWindow.setBounds(
       {
-        width: appStore.windowSize.default[0],
-        height: appStore.windowSize.default[1],
+        width: appStore.windowSize.mobile[0],
+        height: appStore.windowSize.mobile[1],
         ...position,
       },
       true,
@@ -100,10 +99,26 @@
   }
 
   onMounted(() => {
+    mounted.value = true
+
     loadWindowSize()
     saveWindowSize()
     initMouseStateDirtyCheck()
-    mounted.value = true
+
+    watch(
+      () => route.name,
+      (value) => {
+        if (value === 'Home') {
+          appStore.webview.setAudioMuted(false)
+          appStore.title = appStore.webview.getTitle()
+          return
+        }
+        appStore.webview.setAudioMuted(true)
+        if (route.meta.title) {
+          appStore.title = route.meta.title
+        }
+      },
+    )
   })
 </script>
 
@@ -113,8 +128,12 @@
       <About v-if="showAbout" />
     </keep-alive>
     <TopBar v-if="mounted" />
-    <BiliWeb />
-    <GotoTarget v-if="showGotoTarget" />
+    <router-view v-slot="{ Component }">
+      <keep-alive :include="[]">
+        <component :is="Component" />
+      </keep-alive>
+    </router-view>
+    <BiliWeb v-show="route.name === 'Home'" />
   </div>
 </template>
 

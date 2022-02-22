@@ -21,6 +21,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@antfu/utils@npm:^0.4.0":
+  version: 0.4.0
+  resolution: "@antfu/utils@npm:0.4.0::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2F%40antfu%2Futils%2F-%2Futils-0.4.0.tgz"
+  dependencies:
+    "@types/throttle-debounce": ^2.1.0
+  checksum: 1c679120c0b6a4433dc59c44b54d046cd0316b793120c1a4569671ed8307ab94734a04f9ad502112a07e5bd5db2ac82736d1a7e857aa0aa91029e1f1a59e7a0c
+  languageName: node
+  linkType: hard
+
 "@babel/code-frame@npm:^7.0.0, @babel/code-frame@npm:^7.16.7":
   version: 7.16.7
   resolution: "@babel/code-frame@npm:7.16.7"
@@ -946,6 +955,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/throttle-debounce@npm:^2.1.0":
+  version: 2.1.0
+  resolution: "@types/throttle-debounce@npm:2.1.0::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2F%40types%2Fthrottle-debounce%2F-%2Fthrottle-debounce-2.1.0.tgz"
+  checksum: 70e219d000595108fce0dc624c8296e37cdb174b528e09c939da18e619da1c6df86b088659f5eb93cb146bd5fe2954597823c2e1f0849dc8f6585d87cbbf71b7
+  languageName: node
+  linkType: hard
+
 "@types/verror@npm:^1.10.3":
   version: 1.10.5
   resolution: "@types/verror@npm:1.10.5"
@@ -1257,6 +1273,32 @@ __metadata:
   version: 3.2.31
   resolution: "@vue/shared@npm:3.2.31"
   checksum: bf614d9d06f7c01fbe3f5f50d8f7621fffd83d2eebd6c2ccf540c59754283d3b659aa93f7d610ed4c16284a4d5208ef5aec12337f2d4d0ab05e9a271cd4a2051
+  languageName: node
+  linkType: hard
+
+"@windicss/config@npm:1.7.1":
+  version: 1.7.1
+  resolution: "@windicss/config@npm:1.7.1::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2F%40windicss%2Fconfig%2F-%2Fconfig-1.7.1.tgz"
+  dependencies:
+    debug: ^4.3.3
+    jiti: ^1.12.9
+    windicss: ^3.4.3
+  checksum: ba0e9032311c42177c211b052a216628ce0a6db22f3adaac5d3ce63c050ad3925ae65e1f662e31007485c3c8f169101c56f0a1f2635c380a60d416efcdb1d189
+  languageName: node
+  linkType: hard
+
+"@windicss/plugin-utils@npm:1.7.1":
+  version: 1.7.1
+  resolution: "@windicss/plugin-utils@npm:1.7.1::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2F%40windicss%2Fplugin-utils%2F-%2Fplugin-utils-1.7.1.tgz"
+  dependencies:
+    "@antfu/utils": ^0.4.0
+    "@windicss/config": 1.7.1
+    debug: ^4.3.3
+    fast-glob: ^3.2.11
+    magic-string: ^0.25.7
+    micromatch: ^4.0.4
+    windicss: ^3.4.3
+  checksum: 85d5d2142e2eae03952530ec9e81967d1dc24cc88ecb26c5e8065464a516d329c1ce28e4a56221e9864e515e5c57b3ac2b4c6a3a6ae1abc372dd84fa595eaf5e
   languageName: node
   linkType: hard
 
@@ -1626,8 +1668,10 @@ __metadata:
     update-electron-app: ^2.0.1
     vite: ^2.8.4
     vite-plugin-resolve: ^1.4.4
+    vite-plugin-windicss: ^1.7.1
     vue: ^3.2.31
     vue-router: ^4.0.12
+    windicss: ^3.4.4
   languageName: unknown
   linkType: soft
 
@@ -2289,6 +2333,18 @@ __metadata:
   dependencies:
     ms: ^2.1.1
   checksum: b3d8c5940799914d30314b7c3304a43305fd0715581a919dacb8b3176d024a782062368405b47491516d2091d6462d4d11f2f4974a405048094f8bfebfa3071c
+  languageName: node
+  linkType: hard
+
+"debug@npm:^4.3.3":
+  version: 4.3.3
+  resolution: "debug@npm:4.3.3::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Fdebug%2F-%2Fdebug-4.3.3.tgz"
+  dependencies:
+    ms: 2.1.2
+  peerDependenciesMeta:
+    supports-color:
+      optional: true
+  checksum: 14472d56fe4a94dbcfaa6dbed2dd3849f1d72ba78104a1a328047bb564643ca49df0224c3a17fa63533fd11dd3d4c8636cd861191232a2c6735af00cc2d4de16
   languageName: node
   linkType: hard
 
@@ -3186,7 +3242,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"fast-glob@npm:^3.2.9":
+"fast-glob@npm:^3.2.11, fast-glob@npm:^3.2.9":
   version: 3.2.11
   resolution: "fast-glob@npm:3.2.11::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Ffast-glob%2F-%2Ffast-glob-3.2.11.tgz"
   dependencies:
@@ -4116,6 +4172,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"jiti@npm:^1.12.9":
+  version: 1.13.0
+  resolution: "jiti@npm:1.13.0::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Fjiti%2F-%2Fjiti-1.13.0.tgz"
+  bin:
+    jiti: bin/jiti.js
+  checksum: 1e74d99b9a551df952057b8bce56f744caccca0044aa05021643e6ce0837ed47bc2d5b290fecb462e32988c6bf318afe77e341310c5ecf6bb63c19c80c929cb6
+  languageName: node
+  linkType: hard
+
 "js-tokens@npm:^4.0.0":
   version: 4.0.0
   resolution: "js-tokens@npm:4.0.0"
@@ -4246,6 +4311,13 @@ __metadata:
   version: 6.0.3
   resolution: "kind-of@npm:6.0.3"
   checksum: 3ab01e7b1d440b22fe4c31f23d8d38b4d9b91d9f291df683476576493d5dfd2e03848a8b05813dd0c3f0e835bc63f433007ddeceb71f05cb25c45ae1b19c6d3b
+  languageName: node
+  linkType: hard
+
+"kolorist@npm:^1.5.1":
+  version: 1.5.1
+  resolution: "kolorist@npm:1.5.1::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Fkolorist%2F-%2Fkolorist-1.5.1.tgz"
+  checksum: c113be08834fc03a24699612141c79879fceba9ff9765ad500507fb594ee4fa3465a3453ea90bbc9b0dd82f7ba5dbd79814da28e9ebaf8da27266a0088ba2714
   languageName: node
   linkType: hard
 
@@ -6343,6 +6415,20 @@ __metadata:
   languageName: node
   linkType: hard
 
+"vite-plugin-windicss@npm:^1.7.1":
+  version: 1.7.1
+  resolution: "vite-plugin-windicss@npm:1.7.1::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Fvite-plugin-windicss%2F-%2Fvite-plugin-windicss-1.7.1.tgz"
+  dependencies:
+    "@windicss/plugin-utils": 1.7.1
+    debug: ^4.3.3
+    kolorist: ^1.5.1
+    windicss: ^3.4.3
+  peerDependencies:
+    vite: ^2.0.1
+  checksum: 273d40adb0fb1f02c4b04fce7d7820c159588a35c4770253c99b74bfd653aebe9af21b64bb026d3595c821b00ce6c06ae1de8d4d00dc3103fe8897f5c482127d
+  languageName: node
+  linkType: hard
+
 "vite@npm:^2.8.4":
   version: 2.8.4
   resolution: "vite@npm:2.8.4::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Fvite%2F-%2Fvite-2.8.4.tgz"
@@ -6455,6 +6541,15 @@ __metadata:
   dependencies:
     string-width: ^4.0.0
   checksum: 03db6c9d0af9329c37d74378ff1d91972b12553c7d72a6f4e8525fe61563fa7adb0b9d6e8d546b7e059688712ea874edd5ded475999abdeedf708de9849310e0
+  languageName: node
+  linkType: hard
+
+"windicss@npm:^3.4.3, windicss@npm:^3.4.4":
+  version: 3.4.4
+  resolution: "windicss@npm:3.4.4::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Fwindicss%2F-%2Fwindicss-3.4.4.tgz"
+  bin:
+    windicss: cli/index.js
+  checksum: 6f480eb199929af87bad679cb22e61a1538b1c4ad80a013d18ef226e36c2e10a2f357f7ebafb18c5c83c8e36a92f3591ece8f5d5afdd4104f641ed71712154d9
   languageName: node
   linkType: hard
 

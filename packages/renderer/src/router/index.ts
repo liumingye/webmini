@@ -6,6 +6,14 @@ const routes: RouteRecordRaw[] = [
     name: 'Home',
     component: () => import('@/views/Main.vue'),
     meta: { title: '主窗口' },
+    children: [
+      {
+        path: 'web-nav',
+        name: 'WebNav',
+        component: () => import('@/views/Pages/WebNav.vue'),
+        meta: { title: '导航' },
+      },
+    ],
   },
   {
     path: '/select-part',

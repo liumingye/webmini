@@ -1,13 +1,14 @@
 export interface AppStateTypes {
   webview: Electron.WebviewTag
   windowPosition: number[] | null
+  title: string
   windowSize: {
+    mobile: number[]
+    desktop: number[]
     mini: number[]
     feed: number[]
-    default: number[]
     login: number[]
   }
-  showGotoTarget: boolean
   showAbout: boolean
   disablePartButton: boolean
   disableDanmakuButton: boolean

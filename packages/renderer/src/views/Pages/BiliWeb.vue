@@ -95,12 +95,6 @@
     :useragent="userAgent.mobile"
     :preload="preload"
     webpreferences="nativeWindowOpen=no"
+    class="w-full h-full"
   />
 </template>
-
-<style lang="less" scoped>
-  webview {
-    width: 100%;
-    height: 100%;
-  }
-</style>

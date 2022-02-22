@@ -5,20 +5,26 @@ import { userAgent, videoUrlPrefix } from '@/utils/constant'
 
 const ipc = window.ipcRenderer
 
-export const currentWindowType = ref<windowType>('default')
+export const currentWindowType = ref<windowType>('mobile')
 
-export const resizeMainWindow = () => {
+export const resizeMainWindow = (windowType?: windowType) => {
   const appStore = useAppStore()
   const targetWindowType = ref<windowType>()
-  const url = appStore.webview.getURL()
-  if (/(\/video\/(av|BV)|\/bangumi\/play\/|\/\/live\.bilibili\.com\/blanc\/\d+)/.test(url)) {
-    targetWindowType.value = 'mini'
-  } else if (url.indexOf('//passport.bilibili.com/login') > -1) {
-    targetWindowType.value = 'login'
-  } else if (url.indexOf('//t.bilibili.com/?tab') > -1) {
-    targetWindowType.value = 'feed'
+  if (!windowType) {
+    const url = appStore.webview.getURL()
+    if (/(\/video\/(av|BV)|\/bangumi\/play\/|\/\/live\.bilibili\.com\/blanc\/\d+)/.test(url)) {
+      targetWindowType.value = 'mini'
+    } else if (url.indexOf('//passport.bilibili.com/login') > -1) {
+      targetWindowType.value = 'login'
+    } else if (url.indexOf('//t.bilibili.com/?tab') > -1) {
+      targetWindowType.value = 'feed'
+    } else if (appStore.webview.getUserAgent() === userAgent.desktop) {
+      targetWindowType.value = 'desktop'
+    } else {
+      targetWindowType.value = 'mobile'
+    }
   } else {
-    targetWindowType.value = 'default'
+    targetWindowType.value = windowType
   }
   if (targetWindowType.value === currentWindowType.value) {
     return

@@ -86,6 +86,7 @@ const createMenu = () => {
     {
       label: '编辑',
       submenu: [
+        { label: '剪切', role: 'cut' },
         { label: '拷贝', role: 'copy' },
         { label: '粘贴', role: 'paste' },
         { label: '删除', role: 'delete' },

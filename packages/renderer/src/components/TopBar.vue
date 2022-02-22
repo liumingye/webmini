@@ -1,37 +1,64 @@
 <script setup lang="ts">
-  import { ref, computed } from 'vue'
+  import { computed } from 'vue'
   import { useAppStore, useHistoryStore } from '@/store'
+  import { resizeMainWindow } from '@/utils'
   import { START } from '@/utils/constant'
   import { Home, Left, Right, Windmill, CloseSmall, Help } from '@/components/Icon'
+  import { useRoute, useRouter } from 'vue-router'
 
   const ipc = window.ipcRenderer
   const appStore = useAppStore()
+  const route = useRoute()
+  const router = useRouter()
   const historyStore = useHistoryStore()
   const webview = computed(() => appStore.webview)
   const canGoBack = computed(() => historyStore.canGoBack)
   const canGoForward = computed(() => historyStore.canGoForward)
   const disableDanmakuButton = computed(() => appStore.disableDanmakuButton)
   const disablePartButton = computed(() => appStore.disablePartButton)
-  const title = ref('')
+  const title = computed(() => appStore.title)
 
   webview.value.addEventListener('page-title-updated', (event) => {
-    title.value = event.title
+    appStore.title = event.title
   })
 
   webview.value.addEventListener('dom-ready', () => {
-    title.value = webview.value.getTitle()
+    appStore.title = webview.value.getTitle()
   })
 
   historyStore.listen((to) => {
     appStore.go(to)
   })
 
+  const isBiliWeb = () => {
+    if (router.currentRoute.value.name !== 'Home') {
+      router.push({
+        name: 'Home',
+      })
+      return false
+    }
+    return true
+  }
+
   const naviGoHome = () => {
+    isBiliWeb()
+    console.log(appStore.webview)
     appStore.go(START)
   }
 
-  const naviGotoShow = () => {
-    appStore.showGotoTarget = true
+  const goBack = () => {
+    const is = isBiliWeb()
+    if (is) {
+      historyStore.goBack()
+      return
+    }
+    router.back()
+    resizeMainWindow()
+  }
+
+  const goForward = () => {
+    isBiliWeb()
+    historyStore.goForward()
   }
 
   const toggleDanmaku = () => {
@@ -45,8 +72,14 @@
     ipc.send('toggle-select-part-window')
   }
 
-  const showFeed = () => {
-    appStore.go('https://t.bilibili.com/?tab=8')
+  const showNav = () => {
+    router.push({
+      name: 'WebNav',
+    })
+    resizeMainWindow('mobile')
+    appStore.disableDanmakuButton = true
+    appStore.disablePartButton = true
+    appStore.autoHideBar = false
   }
 
   const showAbout = () => {
@@ -61,21 +94,25 @@
 <template>
   <div id="topbar">
     <div class="button-group">
-      <button id="navi-back" title="后退" :disabled="!canGoBack" @click="historyStore.goBack()">
+      <button
+        id="navi-back"
+        title="后退"
+        :disabled="!canGoBack && route.name === 'Home'"
+        @click="goBack"
+      >
         <Left />
       </button>
       <button
         id="navi-forward"
         title="前进"
-        :disabled="!canGoForward"
-        @click="historyStore.goForward()"
+        :disabled="!canGoForward || route.name !== 'Home'"
+        @click="goForward"
       >
         <Right />
       </button>
       <button id="navi-home" title="返回首页" @click="naviGoHome">
         <Home />
       </button>
-      <button id="navi-goto" title="前往..." @click="naviGotoShow">av</button>
     </div>
     <div class="title">
       {{ title }}
@@ -97,7 +134,7 @@
       >
         P
       </button>
-      <button title="动态" @click="showFeed">
+      <button title="导航" :disabled="route.name === 'WebNav'" @click="showNav">
         <Windmill />
       </button>
       <!-- <span
@@ -191,12 +228,6 @@
               margin-left: 1px;
             }
           }
-        }
-        &#navi-goto {
-          border-radius: 3px;
-          font-size: 14px;
-          padding: 0 5px;
-          width: auto;
         }
         &#app-danmaku,
         &#app-part {

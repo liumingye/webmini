@@ -1,0 +1,76 @@
+<script setup lang="ts">
+  import { webNav, liveUrlPrefix, videoUrlPrefix } from '@/utils/constant'
+  import { ref } from 'vue'
+  import { useAppStore } from '@/store'
+  import { useRouter } from 'vue-router'
+
+  const router = useRouter()
+  const appStore = useAppStore()
+
+  const open = (url: string) => {
+    router.push({
+      name: 'Home',
+    })
+    appStore.go(url)
+  }
+
+  const naviGotoTarget = ref('')
+  const naviGoto = () => {
+    const value = naviGotoTarget.value
+    // 包含bilibili.com的字符串和纯数字是合法的跳转目标
+    if (value.startsWith('http') && value.indexOf('bilibili.com') > -1) {
+      // 直接输入url
+      open(value)
+      return
+    }
+    const lv = /^lv(\d+)$/.exec(value)
+    if (lv) {
+      // 直播
+      open(liveUrlPrefix + lv[1])
+    } else if (/^(\d+)$/.test(value)) {
+      // 纯数字是av号
+      open(videoUrlPrefix + 'av' + value)
+    } else if (/^(av\d+)$/.test(value)) {
+      // av号
+      open(videoUrlPrefix + value)
+    } else if (/^(BV\w+)$/.test(value)) {
+      // BV号
+      open(videoUrlPrefix + value)
+    } else {
+      open(`https://m.bilibili.com/search?keyword=${value}`)
+    }
+  }
+</script>
+
+<template>
+  <div class="px-5 py-2 mt-8 max-w-200 mx-auto">
+    <div class="flex self-center mb-8 bg-gray-100 h-15 px-8 rounded-full">
+      <input
+        type="text"
+        class="flex-1 bg-transparent mr-2"
+        v-model="naviGotoTarget"
+        placeholder="支持输入av号/BV号/lv直播/网址/关键词"
+        @keydown.enter="naviGoto"
+      />
+      <button @click="naviGoto">搜索</button>
+    </div>
+    <div class="select-none flex flex-col">
+      <div v-for="(bigCat, key) in webNav" :key="key" class="flex">
+        <div
+          class="flex items-center justify-center min-w-15 font-bold mr-4 border-r border-r-gray-100"
+          >{{ key }}</div
+        >
+        <div class="flex flex-wrap">
+          <div
+            v-for="cat in bigCat"
+            :key="cat.name"
+            :class="['min-w-15 p-2 m-1 rounded-md cursor-pointer text-center', 'hover:bg-gray-100']"
+            @click="open(cat.url)"
+          >
+            {{ cat.name }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>

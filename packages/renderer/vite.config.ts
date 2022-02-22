@@ -1,10 +1,12 @@
-import { builtinModules } from "module";
-import { defineConfig, Plugin } from "vite";
-import vue from "@vitejs/plugin-vue";
-import resolve from "vite-plugin-resolve";
-import pkg from "../../package.json";
-import path from "path";
-import vueJsx from "@vitejs/plugin-vue-jsx";
+// import { builtinModules } from 'module'
+// import { defineConfig, Plugin } from 'vite'
+import { defineConfig } from 'vite'
+import vue from '@vitejs/plugin-vue'
+// import resolve from 'vite-plugin-resolve'
+import pkg from '../../package.json'
+import path from 'path'
+import vueJsx from '@vitejs/plugin-vue-jsx'
+import WindiCSS from 'vite-plugin-windicss'
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -13,6 +15,7 @@ export default defineConfig({
   plugins: [
     vue(),
     vueJsx(),
+    WindiCSS(),
     // resolveElectron(),
     /**
      * Here you can specify other modules
@@ -24,17 +27,17 @@ export default defineConfig({
      * }
      */
   ],
-  base: "./",
+  base: './',
   build: {
     emptyOutDir: true,
-    outDir: "../../dist/renderer",
+    outDir: '../../dist/renderer',
   },
   server: {
     port: pkg.env.PORT,
   },
   resolve: {
     alias: {
-      "@": path.resolve(__dirname, "src"),
+      '@': path.resolve(__dirname, 'src'),
     },
   },
   css: {
@@ -42,12 +45,12 @@ export default defineConfig({
       less: {
         additionalData: `@import "${path.resolve(
           __dirname,
-          "src/assets/css/css-variables.less"
+          'src/assets/css/css-variables.less',
         )}";`,
       },
     },
   },
-});
+})
 
 /**
  * For usage of Electron and NodeJS APIs in the Renderer process

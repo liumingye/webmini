@@ -8,3 +8,45 @@ export const userAgent = {
 export const liveUrlPrefix = 'https://live.bilibili.com/blanc/'
 export const videoUrlPrefix = 'https://www.bilibili.com/video/'
 export const bangumiUrlPrefix = 'https://www.bilibili.com/bangumi/play/'
+export const webNav = {
+  主站: [
+    {
+      name: '主站(pc)',
+      url: 'https://www.bilibili.com',
+    },
+    {
+      name: '主站(m)',
+      url: 'https://m.bilibili.com',
+    },
+    {
+      name: '排行榜',
+      url: 'https://www.bilibili.com/v/popular/rank/all',
+    },
+    {
+      name: '动态',
+      url: 'https://t.bilibili.com',
+    },
+    {
+      name: '个人主页',
+      url: 'https://space.bilibili.com',
+    },
+    {
+      name: '历史',
+      url: 'https://www.bilibili.com/account/history',
+    },
+  ],
+  直播: [
+    {
+      name: '直播(pc)',
+      url: 'https://live.bilibili.com',
+    },
+    {
+      name: '直播(m)',
+      url: 'https://live.bilibili.com/h5',
+    },
+    {
+      name: '我的关注',
+      url: 'https://link.bilibili.com/p/center/index#/user-center/follow/1',
+    },
+  ],
+}
