@@ -65,7 +65,7 @@
 
 <template>
   <div class="px-6 py-8 max-w-200 mx-auto">
-    <div class="flex self-center mb-8 bg-gray-100 h-15 px-8 rounded-full">
+    <div class="flex self-center mb-8 bg-gray-100 h-14 px-8 rounded-full">
       <input
         type="text"
         class="flex-1 bg-transparent mr-2"

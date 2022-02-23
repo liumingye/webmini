@@ -10,7 +10,7 @@ const routes: RouteRecordRaw[] = [
       {
         path: 'web-nav',
         name: 'WebNav',
-        component: () => import('@/views/Pages/WebNav.vue'),
+        component: () => import('@/views/pages/WebNav.vue'),
         meta: { title: '导航' },
       },
     ],

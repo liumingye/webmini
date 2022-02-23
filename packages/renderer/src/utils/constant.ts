@@ -38,6 +38,10 @@ export const webNav = {
       name: '历史',
       url: 'https://www.bilibili.com/account/history',
     },
+    {
+      name: '创作中心',
+      url: 'https://member.bilibili.com/platform/home',
+    },
   ],
   直播: [
     {
@@ -51,6 +55,10 @@ export const webNav = {
     {
       name: '我的关注',
       url: 'https://link.bilibili.com/p/center/index#/user-center/follow/1',
+    },
+    {
+      name: '排行榜',
+      url: 'https://live.bilibili.com/p/eden/rank#/childnav/vitality/0',
     },
     {
       name: '直播中心',

@@ -23,6 +23,7 @@ export const useAppStore = defineStore('app', {
     disableDanmakuButton: true,
     autoHideBar: false,
     windowID: {},
+    lastPush: 0,
   }),
   actions: {
     loadSelfFromLocalStorage() {
@@ -54,7 +55,14 @@ export const useAppStore = defineStore('app', {
       console.log('updateURL', url)
 
       // 历史push
-      historyStore.push(url)
+      const now = Number(new Date())
+      if (now - this.lastPush < 500) {
+        // 两次转跳间隔小于500ms，疑似redirect
+        historyStore.replace(url)
+      } else {
+        historyStore.push(url)
+      }
+      this.lastPush = now
 
       // 通知webview加载脚本
       this.webview.send('load-commit')

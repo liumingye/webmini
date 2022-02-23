@@ -3,8 +3,9 @@
   import { useAppStore, useHistoryStore } from '@/store'
   import { resizeMainWindow } from '@/utils'
   import { START } from '@/utils/constant'
-  import { Home, Left, Right, Windmill, CloseSmall, Help } from '@/components/Icon'
+  import { Home, Left, Right, Windmill, CloseSmall, Help } from '@/components/icon'
   import { useRoute, useRouter } from 'vue-router'
+  import bButton from '@/components/button'
 
   const ipc = window.ipcRenderer
   const appStore = useAppStore()
@@ -143,51 +144,45 @@
 <template>
   <div id="topbar">
     <div class="button-group">
-      <button id="navi-back" title="后退" :disabled="disableBack" @click="goBack">
+      <b-button id="navi-back" title="后退" :disabled="disableBack" @click="goBack">
         <Left />
-      </button>
-      <button id="navi-forward" title="前进" :disabled="disableForward" @click="goForward">
+      </b-button>
+      <b-button v-if="!disableForward" title="前进" @click="goForward">
         <Right />
-      </button>
-      <button id="navi-home" title="返回首页" @click="naviGoHome">
+      </b-button>
+      <b-button id="navi-home" title="返回首页" @click="naviGoHome">
         <Home />
-      </button>
+      </b-button>
     </div>
     <div class="title">
       {{ title }}
     </div>
     <div class="button-group">
-      <button
+      <b-button
         id="app-danmaku"
         title="开/关弹幕"
         :disabled="disableDanmakuButton || route.name !== 'Home'"
         @click="toggleDanmaku"
       >
         <span>弹</span>
-      </button>
-      <button
+      </b-button>
+      <b-button
         id="app-part"
         title="分P列表"
         :disabled="disablePartButton || route.name !== 'Home'"
         @click="toggleSelectPartWindow"
       >
         <span>P</span>
-      </button>
-      <button title="导航" :disabled="route.name === 'WebNav'" @click="showNav">
+      </b-button>
+      <b-button title="导航" :disabled="route.name === 'WebNav'" @click="showNav">
         <Windmill />
-      </button>
-      <!-- <span
-        id="app-config"
-        title="设置"
-
-        alt="toggleConfig"
-      ></span> -->
-      <button title="关于" @click="showAbout">
+      </b-button>
+      <b-button title="关于" @click="showAbout">
         <Help />
-      </button>
-      <button title="退出" @click="turnOff">
+      </b-button>
+      <b-button title="退出" @click="turnOff">
         <CloseSmall />
-      </button>
+      </b-button>
     </div>
   </div>
 </template>
@@ -222,54 +217,16 @@
       display: flex;
       align-items: center;
 
-      button {
-        -webkit-app-region: no-drag;
-        border-radius: 100%;
-        width: 15px;
-        height: 15px;
-        background: @color-bg-white;
-        opacity: 0.5;
-        color: @color-bg-pink;
-        cursor: pointer;
-        transition: opacity 0.2s ease;
-
-        &[disabled] {
-          opacity: 0.2;
-        }
-
-        &:not([disabled]):hover {
-          opacity: 1;
-        }
-
+      #navi-back {
         span {
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          height: 100%;
           :deep(svg) {
-            width: 0.95em;
-            height: 0.95em;
+            margin-left: -2px;
           }
         }
-
-        &#navi-back {
-          span {
-            :deep(svg) {
-              margin-left: -2px;
-            }
-          }
-        }
-        &#navi-forward {
-          span {
-            :deep(svg) {
-              margin-left: 1px;
-            }
-          }
-        }
-        &#app-danmaku,
-        &#app-part {
-          font-size: 10px;
-        }
+      }
+      #app-danmaku,
+      #app-part {
+        font-size: 10px;
       }
     }
   }

@@ -1,8 +1,9 @@
 <script setup lang="ts">
-  import { CloseSmall } from '@/components/Icon'
+  import { CloseSmall } from '@/components/icon'
   import { computed, ref, nextTick } from 'vue'
   import { toRaw } from '@vue/reactivity'
   import { useAppStore } from '@/store'
+  import bButton from '@/components/button'
 
   const app = window.app
   const ipc = window.ipcRenderer
@@ -75,11 +76,11 @@
 
 <template>
   <div id="selectPart">
-    <button @click="closeWindow">
+    <b-button class="absolute top-3 right-3" @click="closeWindow">
       <CloseSmall />
-    </button>
-    <div class="list-title">视频分Part</div>
-    <div class="row">
+    </b-button>
+    <div class="drag pl-3 h-12 leading-12 font-bold mr-10">视频分Part</div>
+    <div class="overflow-y-auto px-2">
       <div
         v-for="(title, index) in partList"
         :key="index"
@@ -115,66 +116,26 @@
     color: #fff;
     height: 100%;
 
-    button {
-      background: @color-bg-white;
-      color: @color-bg-pink;
-      opacity: 0.5;
-      border-radius: 14px;
+    .item {
+      overflow: hidden;
+      border-radius: 4px;
       cursor: pointer;
-      text-align: center;
-      transition: opacity 0.2s ease;
-      width: 15px;
-      height: 15px;
-      line-height: 15px;
-      position: absolute;
-      top: 12px;
-      right: 10px;
-
+      line-height: 2.4em;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      padding: 0 5px;
+      opacity: 0.6;
+      &.current-ep {
+        opacity: 1;
+        font-weight: bold;
+      }
       &:hover {
         opacity: 1;
-      }
-
-      span {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        :deep(svg) {
-          width: 0.95em;
-          height: 0.95em;
-        }
+        background: rgba(255, 255, 255, 0.16);
       }
     }
 
-    .row {
-      padding: 0 5px;
-      overflow-y: auto;
-
-      .item {
-        overflow: hidden;
-        border-radius: 4px;
-        cursor: pointer;
-        line-height: 2.4em;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        padding: 0 5px;
-        opacity: 0.6;
-        &.current-ep {
-          opacity: 1;
-          font-weight: bold;
-        }
-        &:hover {
-          opacity: 1;
-          background: rgba(255, 255, 255, 0.16);
-        }
-      }
-    }
-    .list-title {
-      padding-left: 10px;
-      height: 36px;
-      line-height: 36px;
-      color: #fff;
-      font-weight: bold;
-      margin-right: 24px;
+    .drag {
       -webkit-app-region: drag;
     }
   }

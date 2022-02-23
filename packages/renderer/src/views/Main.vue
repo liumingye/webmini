@@ -1,7 +1,7 @@
 <script setup lang="ts">
   import TopBar from '@/components/TopBar.vue'
   import About from '@/components/About.vue'
-  import BiliWeb from '@/views/Pages/BiliWeb.vue'
+  import BiliWeb from '@/views/pages/BiliWeb.vue'
 
   import { useAppStore } from '@/store'
   import { ref, onMounted, computed, watch } from 'vue'
