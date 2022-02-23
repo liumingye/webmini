@@ -24,7 +24,7 @@ export const webNav = {
     },
     {
       name: '动态',
-      url: 'https://t.bilibili.com',
+      url: 'https://t.bilibili.com/?tab=8',
     },
     {
       name: '个人空间',

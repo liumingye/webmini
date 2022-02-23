@@ -14,7 +14,7 @@
     "lint:prettier": "prettier --write \"packages/renderer/src/**/*.{js,json,tsx,css,less,scss,vue,html,md}\"",
     "lint:eslint": "eslint --cache --max-warnings 0 \"packages/renderer/src/**/*.{vue,ts,tsx}\" --fix",
     "prebuild": "yarn lint:eslint && node scripts/build.mjs",
-    "build": "electron-builder",
+    "build": "yarn prebuild && electron-builder",
     "build:mac": "yarn build -m",
     "build:win32": "yarn build -w --ia32",
     "build:win64": "yarn build -w --x64",

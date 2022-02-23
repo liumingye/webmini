@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { computed } from 'vue'
+  import { computed, watch } from 'vue'
   import { useAppStore, useHistoryStore } from '@/store'
   import { resizeMainWindow } from '@/utils'
   import { START } from '@/utils/constant'
@@ -12,11 +12,9 @@
   const router = useRouter()
   const historyStore = useHistoryStore()
   const webview = computed(() => appStore.webview)
-  const canGoBack = computed(() => historyStore.canGoBack)
-  const canGoForward = computed(() => historyStore.canGoForward)
   const disableDanmakuButton = computed(() => appStore.disableDanmakuButton)
   const disablePartButton = computed(() => appStore.disablePartButton)
-  const title = computed(() => appStore.title)
+  const title = computed(() => appStore.title.replace('_哔哩哔哩_bilibili', ''))
 
   webview.value.addEventListener('page-title-updated', (event) => {
     appStore.title = event.title
@@ -30,35 +28,69 @@
     appStore.go(to)
   })
 
-  const isBiliWeb = () => {
-    if (router.currentRoute.value.name !== 'Home') {
-      router.push({
-        name: 'Home',
-      })
-      return false
+  const tempStore: Record<string, any> = {}
+
+  const isHome = () => {
+    if (router.currentRoute.value.name === 'Home') {
+      return true
     }
-    return true
+    return false
   }
 
   const naviGoHome = () => {
-    isBiliWeb()
-    console.log(appStore.webview)
+    const is = isHome()
+    if (!is) {
+      router.push({
+        name: 'Home',
+      })
+    }
     appStore.go(START)
   }
 
+  const disableBack = computed(() => {
+    const is = isHome()
+    if (is) {
+      return !historyStore.canGoBack
+    }
+    // use _path as dependency to force computed update
+    // eslint-disable-next-line
+    const _path = route.path
+    return window.history.state.back === null
+  })
+
+  const disableForward = computed(() => {
+    const is = isHome()
+    if (is) {
+      return !historyStore.canGoForward
+    }
+    // use _path as dependency to force computed update
+    // eslint-disable-next-line
+    const _path = route.path
+    return window.history.state.forward === null
+  })
+
   const goBack = () => {
-    const is = isBiliWeb()
+    const is = isHome()
     if (is) {
       historyStore.goBack()
       return
     }
+    // 恢复状态
+    appStore.autoHideBar = tempStore['autoHideBar']
     router.back()
     resizeMainWindow()
   }
 
   const goForward = () => {
-    isBiliWeb()
-    historyStore.goForward()
+    const is = isHome()
+    if (is) {
+      historyStore.goForward()
+      return
+    }
+    // 恢复状态
+    appStore.autoHideBar = tempStore['autoHideBar']
+    router.forward()
+    resizeMainWindow()
   }
 
   const toggleDanmaku = () => {
@@ -73,12 +105,15 @@
   }
 
   const showNav = () => {
+    const is = isHome()
+    if (is) {
+      // 临时保存一下状态
+      tempStore['autoHideBar'] = appStore.autoHideBar
+    }
     router.push({
       name: 'WebNav',
     })
     resizeMainWindow('mobile')
-    appStore.disableDanmakuButton = true
-    appStore.disablePartButton = true
     appStore.autoHideBar = false
   }
 
@@ -94,20 +129,10 @@
 <template>
   <div id="topbar">
     <div class="button-group">
-      <button
-        id="navi-back"
-        title="后退"
-        :disabled="!canGoBack && route.name === 'Home'"
-        @click="goBack"
-      >
+      <button id="navi-back" title="后退" :disabled="disableBack" @click="goBack">
         <Left />
       </button>
-      <button
-        id="navi-forward"
-        title="前进"
-        :disabled="!canGoForward || route.name !== 'Home'"
-        @click="goForward"
-      >
+      <button id="navi-forward" title="前进" :disabled="disableForward" @click="goForward">
         <Right />
       </button>
       <button id="navi-home" title="返回首页" @click="naviGoHome">
@@ -121,7 +146,7 @@
       <button
         id="app-danmaku"
         title="开/关弹幕"
-        :disabled="disableDanmakuButton"
+        :disabled="disableDanmakuButton || route.name !== 'Home'"
         @click="toggleDanmaku"
       >
         弹
@@ -129,7 +154,7 @@
       <button
         id="app-part"
         title="分P列表"
-        :disabled="disablePartButton"
+        :disabled="disablePartButton || route.name !== 'Home'"
         @click="toggleSelectPartWindow"
       >
         P

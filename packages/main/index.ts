@@ -63,7 +63,11 @@ async function createWindow() {
     return { action: 'deny' }
   })
 
-  // mainWindow.on("mouse-enter", () => {});
+  mainWindow?.webContents.on('dom-ready', () => {
+    mainWindow?.webContents.send('windowID', {
+      selectPartWindow: selectPartWindow?.id,
+    })
+  })
 }
 
 const createMenu = () => {
@@ -240,6 +244,12 @@ const createSelectPartWindow = () => {
   })
   // 仅开启
   ipcMain.on('show-select-part-window', showSelectPartWindow)
+
+  selectPartWindow?.webContents.on('dom-ready', () => {
+    selectPartWindow?.webContents.send('windowID', {
+      mainWindow: mainWindow?.id,
+    })
+  })
 }
 
 // electron 初始化完成
@@ -252,16 +262,6 @@ app
     createSelectPartWindow()
   })
   .then(() => {
-    selectPartWindow?.webContents.on('dom-ready', () => {
-      selectPartWindow?.webContents.send('windowID', {
-        mainWindow: mainWindow?.id,
-      })
-    })
-    mainWindow?.webContents.on('dom-ready', () => {
-      mainWindow?.webContents.send('windowID', {
-        selectPartWindow: selectPartWindow?.id,
-      })
-    })
     if (isDev) {
       installExtension(VUEJS3_DEVTOOLS.id)
         .then((name) => console.log(`Added Extension:  ${name}`))

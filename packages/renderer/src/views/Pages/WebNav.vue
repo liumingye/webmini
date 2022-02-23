@@ -64,7 +64,7 @@
 </script>
 
 <template>
-  <div class="select-none px-5 py-2 mt-8 max-w-200 mx-auto">
+  <div class="px-6 py-8 max-w-200 mx-auto">
     <div class="flex self-center mb-8 bg-gray-100 h-15 px-8 rounded-full">
       <input
         type="text"
@@ -78,14 +78,14 @@
     <div class="flex flex-col">
       <div v-for="(bigCat, key) in webNav" :key="key" class="flex">
         <div
-          class="flex items-center justify-center min-w-15 font-bold mr-4 border-r border-r-gray-100"
+          class="flex items-center justify-center min-w-20 font-bold mr-4 border-r border-r-gray-100"
           >{{ key }}</div
         >
         <div class="flex flex-wrap">
           <div
             v-for="cat in bigCat"
             :key="cat.name"
-            :class="['min-w-15 p-2 m-1 rounded-md cursor-pointer text-center', 'hover:bg-gray-100']"
+            class="p-2.5 m-1 rounded-md cursor-pointer hover:bg-gray-100"
             @click="open(cat.url)"
           >
             {{ cat.name }}

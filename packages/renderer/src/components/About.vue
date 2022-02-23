@@ -4,7 +4,7 @@
 
 <template>
   <transition name="delayDisplayNone">
-    <div class="about absolute w-full text-center select-none text-white">
+    <div class="about absolute w-full text-center text-white">
       <div class="flex mx-auto max-w-140 pl-10">
         <div class="flex-1">
           <div class="w-15 mx-auto">

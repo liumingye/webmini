@@ -123,14 +123,14 @@
 </script>
 
 <template>
-  <div id="main" :class="{ showTopBar, showAbout, autoHideBar }">
+  <div id="main" :class="['select-none', { showTopBar, showAbout, autoHideBar }]">
     <keep-alive>
       <About v-if="showAbout" />
     </keep-alive>
     <TopBar v-if="mounted" />
     <router-view v-slot="{ Component }">
       <keep-alive :include="[]">
-        <component :is="Component" />
+        <component :is="Component" class="overflow-x-none overflow-y-auto" />
       </keep-alive>
     </router-view>
     <BiliWeb v-show="route.name === 'Home'" />
