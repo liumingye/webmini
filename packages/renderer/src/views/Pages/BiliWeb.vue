@@ -48,14 +48,19 @@
       }
     }
 
-    webview.value.addEventListener('did-finish-load', () => {
-      console.log('did-finish-load')
+    webview.value.addEventListener('load-commit', () => {
+      console.log('load-commit')
       finish()
     })
-    webview.value.addEventListener('did-navigate-in-page', () => {
-      console.log('did-navigate-in-page')
-      finish()
-    })
+
+    // webview.value.addEventListener('did-finish-load', () => {
+    //   console.log('did-finish-load')
+    //   finish()
+    // })
+    // webview.value.addEventListener('did-navigate-in-page', () => {
+    //   console.log('did-navigate-in-page')
+    //   finish()
+    // })
 
     webview.value.addEventListener('did-start-loading', () => {
       console.log('did-start-loading')

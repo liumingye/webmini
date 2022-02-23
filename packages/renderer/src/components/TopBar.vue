@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { computed, watch } from 'vue'
+  import { computed } from 'vue'
   import { useAppStore, useHistoryStore } from '@/store'
   import { resizeMainWindow } from '@/utils'
   import { START } from '@/utils/constant'
@@ -14,7 +14,21 @@
   const webview = computed(() => appStore.webview)
   const disableDanmakuButton = computed(() => appStore.disableDanmakuButton)
   const disablePartButton = computed(() => appStore.disablePartButton)
-  const title = computed(() => appStore.title.replace('_哔哩哔哩_bilibili', ''))
+
+  const replaceTitle = (title: string) => {
+    const map = [
+      '_哔哩哔哩_bilibili',
+      '-高清正版在线观看-bilibili-哔哩哔哩',
+      ' - 哔哩哔哩弹幕视频网 - ( ゜- ゜)つロ 乾杯~ - bilibili',
+      '-哔哩哔哩 (゜-゜)つロ 干杯~-bilibili',
+    ]
+    map.forEach((value) => {
+      title = title.replace(value, '')
+    })
+    return title
+  }
+
+  const title = computed(() => replaceTitle(appStore.title))
 
   webview.value.addEventListener('page-title-updated', (event) => {
     appStore.title = event.title
@@ -149,7 +163,7 @@
         :disabled="disableDanmakuButton || route.name !== 'Home'"
         @click="toggleDanmaku"
       >
-        弹
+        <span>弹</span>
       </button>
       <button
         id="app-part"
@@ -157,7 +171,7 @@
         :disabled="disablePartButton || route.name !== 'Home'"
         @click="toggleSelectPartWindow"
       >
-        P
+        <span>P</span>
       </button>
       <button title="导航" :disabled="route.name === 'WebNav'" @click="showNav">
         <Windmill />
@@ -209,9 +223,6 @@
       align-items: center;
 
       button {
-        display: flex;
-        justify-content: center;
-        align-items: center;
         -webkit-app-region: no-drag;
         border-radius: 100%;
         width: 15px;
@@ -234,6 +245,7 @@
           display: flex;
           justify-content: center;
           align-items: center;
+          height: 100%;
           :deep(svg) {
             width: 0.95em;
             height: 0.95em;

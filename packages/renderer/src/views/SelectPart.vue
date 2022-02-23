@@ -1,4 +1,5 @@
 <script setup lang="ts">
+  import { CloseSmall } from '@/components/Icon'
   import { computed, ref, nextTick } from 'vue'
   import { toRaw } from '@vue/reactivity'
   import { useAppStore } from '@/store'
@@ -74,7 +75,9 @@
 
 <template>
   <div id="selectPart">
-    <button id="close" @click="closeWindow">x</button>
+    <button @click="closeWindow">
+      <CloseSmall />
+    </button>
     <div class="list-title">视频分Part</div>
     <div class="row">
       <div
@@ -112,13 +115,12 @@
     color: #fff;
     height: 100%;
 
-    #close {
+    button {
       background: @color-bg-white;
       color: @color-bg-pink;
-      opacity: 0.6;
+      opacity: 0.5;
       border-radius: 14px;
       cursor: pointer;
-      font-size: 12px;
       text-align: center;
       transition: opacity 0.2s ease;
       width: 15px;
@@ -127,9 +129,20 @@
       position: absolute;
       top: 12px;
       right: 10px;
-    }
-    #close:hover {
-      opacity: 1;
+
+      &:hover {
+        opacity: 1;
+      }
+
+      span {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        :deep(svg) {
+          width: 0.95em;
+          height: 0.95em;
+        }
+      }
     }
 
     .row {

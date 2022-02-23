@@ -76,7 +76,7 @@
       <button @click="naviGoto">搜索</button>
     </div>
     <div class="flex flex-col">
-      <div v-for="(bigCat, key) in webNav" :key="key" class="flex">
+      <div v-for="(bigCat, key) in webNav" :key="key" class="flex mb-6">
         <div
           class="flex items-center justify-center min-w-20 font-bold mr-4 border-r border-r-gray-100"
           >{{ key }}</div
@@ -85,7 +85,7 @@
           <div
             v-for="cat in bigCat"
             :key="cat.name"
-            class="p-2.5 m-1 rounded-md cursor-pointer hover:bg-gray-100"
+            class="p-2.5 m-0.5 rounded-md cursor-pointer hover:bg-gray-100"
             @click="open(cat.url)"
           >
             {{ cat.name }}

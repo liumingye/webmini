@@ -4,7 +4,7 @@
 
 <template>
   <transition name="delayDisplayNone">
-    <div class="about absolute w-full text-center text-white">
+    <div id="about" class="absolute w-full text-center text-white">
       <div class="flex mx-auto max-w-140 pl-10">
         <div class="flex-1">
           <div class="w-15 mx-auto">
@@ -31,7 +31,7 @@
   .delayDisplayNone-leave-active {
     transition: 0.2s;
   }
-  .about {
+  #about {
     background: @color-bg-pink;
     margin-top: -150px;
     height: 150px;
