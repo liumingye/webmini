@@ -12,7 +12,10 @@ export const resizeMainWindow = (windowType?: windowType) => {
   const targetWindowType = ref<windowType>()
   if (!windowType) {
     const url = appStore.webview.getURL()
-    if (/(\/video\/(av|BV)|\/bangumi\/play\/|\/\/live\.bilibili\.com\/(blanc|h5)\/\d+)/.test(url)) {
+    if (
+      /\/\/(www|m)\.bilibili\.com\/(video\/(av|BV)|bangumi\/play\/)/.test(url) ||
+      /\/\/live\.bilibili\.com\/(blanc|h5)\/\d+/.test(url)
+    ) {
       targetWindowType.value = 'mini'
     } else if (url.indexOf('//passport.bilibili.com/login') > -1) {
       targetWindowType.value = 'login'
@@ -177,6 +180,7 @@ export const judgeUserAgent = (url: string) => {
   const map = [
     '//m.bilibili.com',
     '//live.bilibili.com/h5',
+    '//live.bilibili.com/pages/h5',
     '//www.bilibili.com/read/mobile',
     '//www.bilibili.com/read/cv',
   ]

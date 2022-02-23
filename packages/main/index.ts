@@ -18,12 +18,21 @@ const URL = isDev
   ? `http://${process.env['VITE_DEV_SERVER_HOST']}:${process.env['VITE_DEV_SERVER_PORT']}`
   : `file://${join(app.getAppPath(), 'dist/renderer/index.html')}`
 
-let mainWindow: BrowserWindow | null = null // 主窗口
+let mainWindow: BrowserWindow | null // 主窗口
 let selectPartWindow: BrowserWindow | null // 分p窗口
 
 if (!app.requestSingleInstanceLock()) {
   app.quit()
   process.exit(0)
+}
+
+const sendWindowID = () => {
+  mainWindow?.webContents.send('windowID', {
+    selectPartWindow: selectPartWindow?.webContents.id,
+  })
+  selectPartWindow?.webContents.send('windowID', {
+    mainWindow: mainWindow?.webContents.id,
+  })
 }
 
 async function createWindow() {
@@ -63,10 +72,8 @@ async function createWindow() {
     return { action: 'deny' }
   })
 
-  mainWindow?.webContents.on('dom-ready', () => {
-    mainWindow?.webContents.send('windowID', {
-      selectPartWindow: selectPartWindow?.id,
-    })
+  mainWindow.webContents.once('dom-ready', () => {
+    sendWindowID()
   })
 }
 
@@ -245,10 +252,8 @@ const createSelectPartWindow = () => {
   // 仅开启
   ipcMain.on('show-select-part-window', showSelectPartWindow)
 
-  selectPartWindow?.webContents.on('dom-ready', () => {
-    selectPartWindow?.webContents.send('windowID', {
-      mainWindow: mainWindow?.id,
-    })
+  selectPartWindow.webContents.once('dom-ready', () => {
+    sendWindowID()
   })
 }
 

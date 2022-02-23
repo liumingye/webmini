@@ -97,7 +97,7 @@
         @click="selectBangumiPart(part)"
       >
         <span v-show="part.epid == currentPartId">● </span>{{ part.epid + 1 }})
-        {{ part.title }}
+        {{ part.title || `第${part.epid + 1}话` }}
       </div>
     </div>
   </div>

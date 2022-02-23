@@ -71,6 +71,7 @@
       appStore.goPart(pid)
     })
     ipc.on('select-bangumi-part', (ev, ep) => {
+      console.log(ep)
       appStore.goBangumiPart(ep)
     })
     ipc.on('openWebviewDevTools', () => {
