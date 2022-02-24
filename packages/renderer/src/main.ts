@@ -10,5 +10,14 @@ import 'virtual:windi-utilities.css'
 import 'nprogress/nprogress.css'
 // global style
 import '@/assets/css/global.less'
+// UiComponents
+import Ui from '@/components/ui'
+import Icon from '@/components/ui/icon'
 
-createApp(App).use(router).use(store).mount('#app').$nextTick(window.removeLoading)
+createApp(App)
+  .use(router)
+  .use(store)
+  .use(Ui)
+  .use(Icon)
+  .mount('#app')
+  .$nextTick(window.removeLoading)

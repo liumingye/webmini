@@ -1,9 +1,7 @@
 <script setup lang="ts">
-  import { CloseSmall } from '@/components/icon'
   import { computed, ref, nextTick } from 'vue'
   import { toRaw } from '@vue/reactivity'
   import { useAppStore } from '@/store'
-  import bButton from '@/components/button'
 
   const app = window.app
   const ipc = window.ipcRenderer
@@ -44,15 +42,14 @@
     currentPartId.value = 0
   })
   // 番剧分p
-  ipc.on('update-bangumi-part', (ev, data) => {
+  ipc.on('update-bangumi-part', async (ev, data) => {
     console.log('update-bangumi-part', data)
     partList.value = null
     bangumiPartList.value = data.parts
     if (currentPartId.value !== data.currentPartId) {
       currentPartId.value = data.currentPartId
-      nextTick(() => {
-        scrollIntoView()
-      })
+      await nextTick()
+      scrollIntoView()
     }
   })
   // 监听webview url改变
@@ -77,7 +74,7 @@
 <template>
   <div id="selectPart">
     <b-button class="absolute top-3 right-3" @click="closeWindow">
-      <CloseSmall />
+      <close-small />
     </b-button>
     <div class="drag pl-3 h-12 leading-12 font-bold mr-10">视频分Part</div>
     <div class="overflow-y-auto px-2">

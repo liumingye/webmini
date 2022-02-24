@@ -3,6 +3,7 @@
   import { ref } from 'vue'
   import { useAppStore } from '@/store'
   import { useRouter } from 'vue-router'
+  import { resizeMainWindow } from '@/utils'
 
   const router = useRouter()
   const appStore = useAppStore()
@@ -29,7 +30,11 @@
       router.push({
         name: 'Home',
       })
-      appStore.go(newUrl)
+      if (newUrl === appStore.webview.getURL()) {
+        resizeMainWindow()
+      } else {
+        appStore.go(newUrl)
+      }
     } catch (error: any) {
       alert(error.message)
     }

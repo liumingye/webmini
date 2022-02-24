@@ -3,9 +3,7 @@
   import { useAppStore, useHistoryStore } from '@/store'
   import { resizeMainWindow } from '@/utils'
   import { START } from '@/utils/constant'
-  import { Home, Left, Right, Windmill, CloseSmall, Help } from '@/components/icon'
   import { useRoute, useRouter } from 'vue-router'
-  import bButton from '@/components/button'
 
   const ipc = window.ipcRenderer
   const appStore = useAppStore()
@@ -145,13 +143,13 @@
   <div id="topbar">
     <div class="button-group">
       <b-button id="navi-back" title="后退" :disabled="disableBack" @click="goBack">
-        <Left />
+        <left />
       </b-button>
       <b-button v-if="!disableForward" title="前进" @click="goForward">
-        <Right />
+        <right />
       </b-button>
       <b-button id="navi-home" title="返回首页" @click="naviGoHome">
-        <Home />
+        <home />
       </b-button>
     </div>
     <div class="title">
@@ -175,13 +173,13 @@
         <span>P</span>
       </b-button>
       <b-button title="导航" :disabled="route.name === 'WebNav'" @click="showNav">
-        <Windmill />
+        <windmill />
       </b-button>
       <b-button title="关于" @click="showAbout">
-        <Help />
+        <help />
       </b-button>
       <b-button title="退出" @click="turnOff">
-        <CloseSmall />
+        <close-small />
       </b-button>
     </div>
   </div>

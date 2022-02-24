@@ -21,13 +21,12 @@
 
 <template>
   <button :disabled="disabled" @click="handleClick">
-    <slot />
+    <slot></slot>
   </button>
 </template>
 
 <style lang="less" scoped>
   button {
-    position: relative;
     display: inline-flex;
     justify-content: center;
     align-items: center;

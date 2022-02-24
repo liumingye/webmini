@@ -12,11 +12,11 @@ export const webNav = {
   主站: [
     {
       name: '主站(pc)',
-      url: 'https://www.bilibili.com',
+      url: 'https://www.bilibili.com/',
     },
     {
       name: '主站(m)',
-      url: 'https://m.bilibili.com',
+      url: 'https://m.bilibili.com/',
     },
     {
       name: '排行榜',
@@ -28,7 +28,7 @@ export const webNav = {
     },
     {
       name: '个人空间',
-      url: 'https://space.bilibili.com',
+      url: 'https://space.bilibili.com/',
     },
     {
       name: '收藏',
@@ -46,7 +46,7 @@ export const webNav = {
   直播: [
     {
       name: '直播(pc)',
-      url: 'https://live.bilibili.com',
+      url: 'https://live.bilibili.com/',
     },
     {
       name: '直播(m)',
