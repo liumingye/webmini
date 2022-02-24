@@ -13,6 +13,7 @@ import '@/assets/css/global.less'
 // UiComponents
 import Ui from '@/components/ui'
 import Icon from '@/components/ui/icon'
+import '@/components/ui/icon/runtime/index.less'
 
 createApp(App)
   .use(router)

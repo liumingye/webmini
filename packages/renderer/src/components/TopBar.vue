@@ -143,13 +143,13 @@
   <div id="topbar">
     <div class="button-group">
       <b-button id="navi-back" title="后退" :disabled="disableBack" @click="goBack">
-        <left />
+        <icon-left />
       </b-button>
       <b-button v-if="!disableForward" title="前进" @click="goForward">
         <right />
       </b-button>
       <b-button id="navi-home" title="返回首页" @click="naviGoHome">
-        <home />
+        <icon-home />
       </b-button>
     </div>
     <div class="title">
@@ -173,13 +173,13 @@
         <span>P</span>
       </b-button>
       <b-button title="导航" :disabled="route.name === 'WebNav'" @click="showNav">
-        <windmill />
+        <icon-windmill />
       </b-button>
       <b-button title="关于" @click="showAbout">
-        <help />
+        <icon-help />
       </b-button>
       <b-button title="退出" @click="turnOff">
-        <close-small />
+        <icon-close-small />
       </b-button>
     </div>
   </div>
