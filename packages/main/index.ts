@@ -18,8 +18,8 @@ const URL = isDev
   ? `http://${process.env['VITE_DEV_SERVER_HOST']}:${process.env['VITE_DEV_SERVER_PORT']}`
   : `file://${join(app.getAppPath(), 'dist/renderer/index.html')}`
 
-let mainWindow: BrowserWindow | null // 主窗口
-let selectPartWindow: BrowserWindow | null // 分p窗口
+let mainWindow: BrowserWindow | null = null // 主窗口
+let selectPartWindow: BrowserWindow | null = null // 分p窗口
 
 if (!app.requestSingleInstanceLock()) {
   app.quit()
@@ -41,6 +41,7 @@ const createWindow = () => {
     height: 500,
     frame: false, // 是否有边框
     maximizable: false,
+    alwaysOnTop: true,
     webPreferences: {
       webviewTag: true,
       preload: join(__dirname, '../preload/index.cjs'), // 预先加载指定的脚本
@@ -49,21 +50,25 @@ const createWindow = () => {
     },
   })
 
-  mainWindow.setAlwaysOnTop(true, 'torn-off-menu')
-
   mainWindow.loadURL(URL)
 
   enable(mainWindow.webContents) // 渲染进程中使用remote
 
-  mainWindow.on('closed', () => {
+  mainWindow.on('close', () => {
     mainWindow = null
-    console.log('主窗口：已关闭')
-    // 主窗口关闭后如果3s都没有重新创建，就认为程序是被不正常退出了（例如windows下直接alt+f4），关闭整个程序
-    if (process.platform != 'darwin') {
-      setTimeout(() => {
-        console.log('主窗口：关闭超过 3s 未重新创建，程序自动退出')
-        app.quit()
-      }, 3000)
+  })
+
+  mainWindow.on('closed', () => {
+    if (mainWindow) {
+      mainWindow = null
+      console.log('主窗口：已关闭')
+      // 主窗口关闭后如果3s都没有重新创建，就认为程序是被不正常退出了（例如windows下直接alt+f4），关闭整个程序
+      if (process.platform != 'darwin') {
+        setTimeout(() => {
+          console.log('主窗口：关闭超过 3s 未重新创建，程序自动退出')
+          app.quit()
+        }, 3000)
+      }
     }
   })
 
@@ -216,20 +221,27 @@ const createSelectPartWindow = () => {
     height: 300,
     frame: false,
     maximizable: false,
+    alwaysOnTop: true,
     webPreferences: {
       preload: join(__dirname, '../preload/index.cjs'), // 预先加载指定的脚本
     },
   })
-  selectPartWindow.setAlwaysOnTop(true, 'modal-panel')
 
   selectPartWindow.loadURL(`${URL}#/select-part`)
 
   enable(selectPartWindow.webContents) // 渲染进程中使用remote
 
-  selectPartWindow.on('closed', () => {
+  selectPartWindow.on('close', () => {
     selectPartWindow = null
-    console.log('选p窗口：已关闭')
   })
+
+  selectPartWindow.on('closed', () => {
+    if (mainWindow) {
+      selectPartWindow = null
+      console.log('选p窗口：已关闭')
+    }
+  })
+
   console.log('选p窗口：已创建')
   // 切换、可开可关
   const showSelectPartWindow = () => {

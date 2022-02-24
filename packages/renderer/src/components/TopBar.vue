@@ -146,7 +146,7 @@
         <icon-left />
       </b-button>
       <b-button v-if="!disableForward" title="前进" @click="goForward">
-        <right />
+        <icon-right />
       </b-button>
       <b-button id="navi-home" title="返回首页" @click="naviGoHome">
         <icon-home />

@@ -32,26 +32,43 @@ export const resizeMainWindow = (windowType?: windowType) => {
   if (targetWindowType.value === currentWindowType.value) {
     return
   }
-  // console.log(targetWindowType.value)
-  const currentSize = window.app.currentWindow.getSize(),
-    leftTopPosition = window.app.currentWindow.getPosition(),
-    rightBottomPosition = [
-      leftTopPosition[0] + currentSize[0],
-      leftTopPosition[1] + currentSize[1],
-    ],
-    targetSize = appStore.windowSize[targetWindowType.value],
-    targetPosition = [
-      rightBottomPosition[0] - targetSize[0],
-      rightBottomPosition[1] - targetSize[1],
-    ]
 
-  // 原先只考虑了一块屏幕的情况，其实有副屏时x轴是有可能为负数的
-  // 所以我们取一个简单的方法，只有一块屏幕时鼠标最小坐标是0，窗口不可能被拖到x<-width的位置上。所以如果这个窗口的x小于-width，那一定是被拖到副屏上了
-  // 只有在他的x处于[-width, 10]之间时，此时窗口应该横跨在左右两块屏幕的交界上，这时我们强行把窗口挪到主屏的x=10位置
-  if (targetPosition[0] > -targetSize[0] && targetPosition[0] < 10) {
-    targetPosition[0] = 10
+  // We want the new window to open on the same display that the parent is in
+  let displayToUse: Electron.Display | undefined
+  const screen = window.app.screen
+  const displays = screen.getAllDisplays()
+
+  // Single Display
+  if (displays.length === 1) {
+    displayToUse = displays[0]
   }
-  targetPosition[1] = targetPosition[1] > 10 ? targetPosition[1] : 10
+  // Multi Display
+  else {
+    // on mac there is 1 menu per window so we need to use the monitor where the cursor currently is
+    if (window.app.versions.Platform === 'darwin') {
+      const cursorPoint = screen.getCursorScreenPoint()
+      displayToUse = screen.getDisplayNearestPoint(cursorPoint)
+    }
+
+    // fallback to primary display or first display
+    if (!displayToUse) {
+      displayToUse = screen.getPrimaryDisplay() || displays[0]
+    }
+  }
+
+  const displayBounds = displayToUse.bounds
+
+  const currentSize = window.app.currentWindow.getSize()
+  const leftTopPosition = window.app.currentWindow.getPosition()
+  const rightBottomPosition = [
+    leftTopPosition[0] + currentSize[0],
+    leftTopPosition[1] + currentSize[1],
+  ]
+  const targetSize = appStore.windowSize[targetWindowType.value]
+  const targetPosition = [
+    displayBounds.x + rightBottomPosition[0] - targetSize[0],
+    displayBounds.y + rightBottomPosition[1] - targetSize[1],
+  ]
 
   window.app.currentWindow.setBounds(
     {
@@ -64,9 +81,6 @@ export const resizeMainWindow = (windowType?: windowType) => {
   )
 
   currentWindowType.value = targetWindowType.value
-
-  // 通知设置窗口改变位置
-  // ipc.send("main-window-resized", targetPosition, targetSize);
 }
 
 export const getVidWithP = (url: string) => {
