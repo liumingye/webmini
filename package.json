@@ -16,8 +16,7 @@
     "prebuild": "yarn lint:eslint && node scripts/build.mjs",
     "build": "yarn prebuild && electron-builder",
     "build:mac": "yarn build -m",
-    "build:win32": "yarn build -w --ia32",
-    "build:win64": "yarn build -w --x64",
+    "build:win": "yarn build -w",
     "build:linux": "yarn build -l"
   },
   "engines": {

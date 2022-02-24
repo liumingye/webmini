@@ -1,4 +1,4 @@
-import { contextBridge, ipcRenderer, session } from 'electron'
+import { contextBridge, ipcRenderer } from 'electron'
 import remote from '@electron/remote'
 import { domReady } from './utils'
 import { useLoading } from './loading'

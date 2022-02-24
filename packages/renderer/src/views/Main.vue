@@ -75,7 +75,7 @@
         height: appStore.windowSize.mobile[1],
         ...position,
       },
-      true,
+      false,
     )
   }
   const saveWindowSize = () => {

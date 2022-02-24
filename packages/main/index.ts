@@ -35,7 +35,7 @@ const sendWindowID = () => {
   })
 }
 
-async function createWindow() {
+const createWindow = () => {
   mainWindow = new BrowserWindow({
     width: 375,
     height: 500,
@@ -48,6 +48,7 @@ async function createWindow() {
       webSecurity: false,
     },
   })
+
   mainWindow.setAlwaysOnTop(true, 'torn-off-menu')
 
   mainWindow.loadURL(URL)
