@@ -25,6 +25,7 @@ module.exports = {
     'plugin:prettier/recommended',
   ],
   rules: {
+    '@typescript-eslint/no-namespace': 'off',
     'vue/script-setup-uses-vars': 'error',
     'prettier/prettier': ['error', { endOfLine: 'auto' }],
     '@typescript-eslint/ban-ts-ignore': 'off',
