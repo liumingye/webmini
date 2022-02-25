@@ -17,9 +17,9 @@ export const resizeMainWindow = (windowType?: windowType) => {
       /\/\/live\.bilibili\.com\/(blanc|h5)\/\d+/.test(url)
     ) {
       targetWindowType.value = 'mini'
-    } else if (url.indexOf('//passport.bilibili.com/login') > -1) {
+    } else if (url.indexOf('//passport.bilibili.com/login') >= 0) {
       targetWindowType.value = 'login'
-    } else if (url.indexOf('//t.bilibili.com/?tab') > -1) {
+    } else if (url.indexOf('//t.bilibili.com/?tab') >= 0) {
       targetWindowType.value = 'feed'
     } else if (appStore.webview.getUserAgent() === userAgent.desktop) {
       targetWindowType.value = 'desktop'
@@ -45,7 +45,7 @@ export const resizeMainWindow = (windowType?: windowType) => {
   // Multi Display
   else {
     // on mac there is 1 menu per window so we need to use the monitor where the cursor currently is
-    if (window.app.versions.Platform === 'darwin') {
+    if (window.app.versions.OS.indexOf('darwin') >= 0) {
       const cursorPoint = screen.getCursorScreenPoint()
       displayToUse = screen.getDisplayNearestPoint(cursorPoint)
     }
@@ -57,7 +57,6 @@ export const resizeMainWindow = (windowType?: windowType) => {
   }
 
   const displayBounds = displayToUse.bounds
-
   const currentSize = window.app.currentWindow.getSize()
   const leftTopPosition = window.app.currentWindow.getPosition()
   const rightBottomPosition = [
@@ -83,20 +82,18 @@ export const resizeMainWindow = (windowType?: windowType) => {
   currentWindowType.value = targetWindowType.value
 }
 
-export const getVidWithP = (url: string) => {
-  const m = /video\/((av\d+|BV\w+)(?:\/?\?p=\d+)?)/.exec(url)
+export const getVidWithP = (pathname: string) => {
+  const m = /^\/video\/((av\d+|BV\w+)(?:\/?\?p=\d+)?)/.exec(pathname)
   return m ? m[1] : null
 }
 
-export const getBvid = (url: string) => {
-  const m = /bangumi\/play\/(ss\d+|ep\d+)/.exec(url)
-  // console.log('getBvid', url, m)
+export const getBvid = (pathname: string) => {
+  const m = /^\/bangumi\/play\/(ss\d+|ep\d+)/.exec(pathname)
   return m ? m[1] : null
 }
 
 export const getVid = (url: string) => {
   const m = /video\/(av\d+|BV\w+)/.exec(url)
-  // console.log('getVid', url, m)
   return m ? m[1] : null
 }
 
@@ -191,16 +188,21 @@ export const getPartOfVideo = (vid: string) => {
 }
 
 export const judgeUserAgent = (url: string) => {
-  const map = [
-    '//m.bilibili.com',
-    '//live.bilibili.com/h5',
-    '//live.bilibili.com/pages/h5',
-    '//www.bilibili.com/read/mobile',
-    '//www.bilibili.com/read/cv',
-  ]
-  for (let i = 0; i < map.length; i++) {
-    if (url.indexOf(map[i]) > -1) {
-      return userAgent.mobile
+  const _URL = new URL(url)
+  console.log(_URL)
+  if (_URL.hostname.indexOf('.bilibili.com') >= 0) {
+    const map = [
+      'm.bilibili.com',
+      'live.bilibili.com/h5',
+      'live.bilibili.com/pages/h5',
+      'www.bilibili.com/read/mobile',
+      'www.bilibili.com/read/cv',
+    ]
+    for (let i = 0; i < map.length; i++) {
+      const completeURL = _URL.hostname + _URL.pathname
+      if (completeURL.indexOf(map[i]) >= 0) {
+        return userAgent.mobile
+      }
     }
   }
   return userAgent.desktop

@@ -10,17 +10,19 @@
           <div class="w-15 mx-auto">
             <img class="w-full h-full" src="@/assets/images/icon.png" />
           </div>
-          <p>bilimini</p>
+          <p>bilimini (v{{ versions.App }})</p>
           <p>藏起来！哔哩哔哩</p>
           <p>
             <a href="https://github.com/liumingye/bilimini" target="_blank">Github</a>
           </p>
         </div>
         <div class="flex-1">
-          <div v-for="(value, key) in versions" :key="key" class="flex mt-2">
-            <div class="mr-2">{{ key }}:</div>
-            <div class="font-bold">{{ value }}</div>
-          </div>
+          <template v-for="(value, key) in versions" :key="key">
+            <div v-if="key !== 'App'" class="flex mt-2">
+              <div class="mr-2">{{ key }}:</div>
+              <div class="font-bold">{{ value }}</div>
+            </div>
+          </template>
         </div>
       </div>
     </div>

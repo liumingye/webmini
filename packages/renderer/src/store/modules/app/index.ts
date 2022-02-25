@@ -50,7 +50,6 @@ export const useAppStore = defineStore('app', {
     },
     updateURL() {
       const historyStore = useHistoryStore()
-
       const url = this.webview.getURL()
       console.log('updateURL', url)
 
@@ -67,10 +66,12 @@ export const useAppStore = defineStore('app', {
       // 通知webview加载脚本
       this.webview.send('load-commit')
 
+      const _URL = new URL(url)
+
       // 视频
-      const vid = getVidWithP(url)
+      const vid = getVidWithP(_URL.pathname)
       if (vid) {
-        if (url.indexOf('//m.bilibili.com') > -1) {
+        if (_URL.hostname === 'm.bilibili.com') {
           historyStore.replace(videoUrlPrefix + vid)
           this.webview.loadURL(videoUrlPrefix + vid, {
             userAgent: userAgent.desktop,
@@ -85,9 +86,9 @@ export const useAppStore = defineStore('app', {
       }
 
       // 番剧
-      const bvid = getBvid(url)
+      const bvid = getBvid(_URL.pathname)
       if (bvid) {
-        if (url.indexOf('//m.bilibili.com') > -1) {
+        if (_URL.hostname === 'm.bilibili.com') {
           historyStore.replace(bangumiUrlPrefix + bvid)
           this.webview.loadURL(bangumiUrlPrefix + bvid, {
             userAgent: userAgent.desktop,
@@ -101,25 +102,27 @@ export const useAppStore = defineStore('app', {
       this.disablePartButton = true
 
       // 直播
-      const live = /live\.bilibili\.com\/(h5\/||blanc\/)?(\d+).*/.exec(url)
-      if (live) {
-        if (url.indexOf('//live.bilibili.com/h5/') > -1) {
-          historyStore.replace(liveUrlPrefix + live[2])
-          this.webview.loadURL(liveUrlPrefix + live[2], {
-            userAgent: userAgent.desktop,
-          })
+      if (_URL.hostname === 'live.bilibili.com') {
+        const live = /^\/(h5\/||blanc\/)?(\d+).*/.exec(_URL.pathname)
+        if (live) {
+          if (live[1] === 'h5/') {
+            historyStore.replace(liveUrlPrefix + live[2])
+            this.webview.loadURL(liveUrlPrefix + live[2], {
+              userAgent: userAgent.desktop,
+            })
+          }
+          this.disableDanmakuButton = false
+          this.autoHideBar = true
+          return
         }
-        this.disableDanmakuButton = false
-        this.autoHideBar = true
-        return
       }
 
       this.disableDanmakuButton = true
       this.autoHideBar = false
 
       // 专栏页
-      if (url.indexOf('//www.bilibili.com/read/mobile') > -1) {
-        if (url.indexOf('//www.bilibili.com/read/cv') > -1) {
+      if (url.indexOf('//www.bilibili.com/read/mobile') >= 0) {
+        if (url.indexOf('//www.bilibili.com/read/cv') >= 0) {
           historyStore.replace(url)
           this.webview.loadURL(url, {
             userAgent: userAgent.mobile,
@@ -129,7 +132,7 @@ export const useAppStore = defineStore('app', {
       }
 
       // 登录页
-      if (url.indexOf('//passport.bilibili.com/login') > -1) {
+      if (url.indexOf('//passport.bilibili.com/login') >= 0) {
         this.webview.loadURL(url, {
           userAgent: userAgent.desktop,
         })

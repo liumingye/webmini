@@ -9,11 +9,12 @@ declare global {
       getCookieValue: (name: string) => Promise<string>
       versions: {
         App: string
-        Chrome: string
-        Electron: string
-        Node: string
-        Platform: string
         'Vue.js': string
+        Electron: string
+        Chromium: string
+        'Node.js': string
+        V8: string
+        OS: string
       }
       screen: Electron.Screen
       preload: string

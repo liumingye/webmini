@@ -44,7 +44,7 @@
   const naviGoto = () => {
     const value = naviGotoTarget.value
     // 包含bilibili.com的字符串和纯数字是合法的跳转目标
-    if (value.startsWith('http') && value.indexOf('bilibili.com') > -1) {
+    if (value.startsWith('http') && value.indexOf('bilibili.com') >= 0) {
       // 直接输入url
       open(value)
       return

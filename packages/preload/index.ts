@@ -4,6 +4,8 @@ import { domReady } from './utils'
 import { useLoading } from './loading'
 import path from 'path'
 import { version } from 'vue'
+import { arch, release, type } from 'os'
+import { isLinuxSnap } from './common/platform'
 
 const { appendLoading, removeLoading } = useLoading()
 
@@ -45,9 +47,10 @@ contextBridge.exposeInMainWorld('app', {
     App: remote.app.getVersion(),
     'Vue.js': version,
     Electron: process.versions.electron,
-    Node: process.versions.node,
-    Chrome: process.versions.chrome,
-    Platform: require('os').platform(),
+    Chromium: process.versions.chrome,
+    'Node.js': process.versions.node,
+    V8: process.versions.v8,
+    OS: `${type} ${arch} ${release}${isLinuxSnap ? ' snap' : ''}`,
   },
   screen: {
     ...withPrototype(remote.screen),

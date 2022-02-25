@@ -42,7 +42,7 @@
           getPartOfVideo(vid)
           lastVid = vid
         }
-      } else if (url.indexOf('www.bilibili.com/bangumi/play/') > -1) {
+      } else if (url.indexOf('www.bilibili.com/bangumi/play/') >= 0) {
         getPartOfBangumi(url)
       }
     }
