@@ -157,20 +157,20 @@
     </div>
     <div class="button-group">
       <b-button
-        id="app-danmaku"
-        title="开/关弹幕"
-        :disabled="disableDanmakuButton || route.name !== 'Home'"
-        @click="toggleDanmaku"
-      >
-        <span>弹</span>
-      </b-button>
-      <b-button
+        v-if="!disablePartButton && route.name === 'Home'"
         id="app-part"
         title="分P列表"
-        :disabled="disablePartButton || route.name !== 'Home'"
         @click="toggleSelectPartWindow"
       >
         <span>P</span>
+      </b-button>
+      <b-button
+        v-if="!disableDanmakuButton && route.name === 'Home'"
+        id="app-danmaku"
+        title="开/关弹幕"
+        @click="toggleDanmaku"
+      >
+        <span>弹</span>
       </b-button>
       <b-button title="导航" :disabled="route.name === 'WebNav'" @click="showNav">
         <icon-windmill />
