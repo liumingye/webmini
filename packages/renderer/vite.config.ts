@@ -31,6 +31,7 @@ export default defineConfig({
   build: {
     emptyOutDir: true,
     outDir: '../../dist/renderer',
+    minify: process.env./* from mode option */ NODE_ENV === 'production',
     terserOptions: {
       compress: {
         keep_infinity: true,
