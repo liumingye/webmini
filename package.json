@@ -11,8 +11,8 @@
   "packageManager": "yarn@3.1.1",
   "scripts": {
     "dev": "node scripts/watch.mjs",
-    "lint:prettier": "prettier --write \"packages/renderer/src/**/*.{js,json,tsx,css,less,scss,vue,html,md}\"",
-    "lint:eslint": "eslint --cache --max-warnings 0 \"packages/renderer/src/**/*.{vue,ts,tsx}\" --fix",
+    "lint:prettier": "prettier --write \"packages/**/*.{js,json,tsx,css,less,scss,vue,html,md}\"",
+    "lint:eslint": "eslint --cache --max-warnings 0 \"packages/**/*.{vue,ts,tsx}\" --fix",
     "prebuild": "yarn lint:eslint && node scripts/build.mjs",
     "build": "yarn prebuild && electron-builder",
     "build:mac": "yarn build -m",
