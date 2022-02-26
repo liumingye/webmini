@@ -23,4 +23,5 @@ export interface HistoryStateTypes {
   queue: HistoryLocation[]
   position: number
   listeners: NavigationCallback[]
+  limit: number
 }

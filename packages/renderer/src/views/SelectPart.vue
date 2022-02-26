@@ -77,7 +77,7 @@
       <icon-close-small />
     </b-button>
     <div class="drag pl-3 h-12 leading-12 font-bold mr-10">视频分Part</div>
-    <div class="overflow-y-auto px-2">
+    <div class="overflow-y-auto px-2 mb-2">
       <div
         v-for="(title, index) in partList"
         :key="index"

@@ -1,3 +1,5 @@
+// https://github.com/microsoft/vscode/blob/32b031eeefc4fd27a21659d35070967bfe965bcc/src/vs/base/common/platform.ts
+
 /*---------------------------------------------------------------------------------------------
  *  Copyright (c) Microsoft Corporation. All rights reserved.
  *  Licensed under the MIT License. See License.txt in the project root for license information.

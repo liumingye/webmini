@@ -31,6 +31,12 @@ export default defineConfig({
   build: {
     emptyOutDir: true,
     outDir: '../../dist/renderer',
+    terserOptions: {
+      compress: {
+        keep_infinity: true,
+        drop_console: true, // 生产环境去除console
+      },
+    },
   },
   server: {
     port: pkg.env.PORT,

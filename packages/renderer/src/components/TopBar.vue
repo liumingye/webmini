@@ -113,7 +113,7 @@
   }
 
   const toggleSelectPartWindow = () => {
-    console.log('主窗口：点击P')
+    // console.log('主窗口：点击P')
     ipc.send('toggle-select-part-window')
   }
 
@@ -189,14 +189,11 @@
   #topbar {
     user-select: none;
     display: flex;
-    justify-content: space-between;
     background: @color-bg-pink;
     line-height: 36px;
     height: 36px;
     padding: 0 1em;
-    left: 0;
     width: 100%;
-    z-index: 9;
     -webkit-app-region: drag;
 
     .title {

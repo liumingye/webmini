@@ -51,7 +51,7 @@ export const useAppStore = defineStore('app', {
     updateURL() {
       const historyStore = useHistoryStore()
       const url = this.webview.getURL()
-      console.log('updateURL', url)
+      window.app.logger.info(`updateURL - ${url}`, { label: 'appStore' })
 
       // 历史push
       const now = Number(new Date())
@@ -147,14 +147,14 @@ export const useAppStore = defineStore('app', {
       }
     },
     go(url: string) {
-      console.log('go', url)
+      window.app.logger.debug(`go - ${url}`, { label: 'appStore' })
       if (this.webview.getURL() === url) return
       this.webview.loadURL(url, {
         userAgent: judgeUserAgent(url),
       })
     },
     goPart(pid: number) {
-      console.log('goPart', pid)
+      window.app.logger.debug(`goPart - ${pid}`, { label: 'appStore' })
       const vid = getVid(this.webview.getURL())
       if (vid) {
         const url = `${videoUrlPrefix}${vid}/?p=${pid}`
@@ -165,7 +165,7 @@ export const useAppStore = defineStore('app', {
       }
     },
     goBangumiPart(ep: { bvid: number }) {
-      console.log('goBangumiPart', ep)
+      window.app.logger.debug(`goBangumiPart - ${ep.bvid}`, { label: 'appStore' })
       this.webview.loadURL(videoUrlPrefix + ep.bvid, {
         userAgent: userAgent.desktop,
       })

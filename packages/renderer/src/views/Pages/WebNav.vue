@@ -75,7 +75,7 @@
         type="text"
         class="flex-1 bg-transparent mr-2"
         v-model="naviGotoTarget"
-        placeholder="支持输入av号/BV号/lv直播/网址/关键词"
+        placeholder="av号/BV号/lv直播/网址/关键词"
         @keydown.enter="naviGoto"
       />
       <button @click="naviGoto">搜索</button>

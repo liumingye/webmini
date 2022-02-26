@@ -1,4 +1,5 @@
 import { FetchOptions } from '../../preload'
+import { Logger } from 'winston'
 
 declare global {
   interface Window {
@@ -33,6 +34,7 @@ declare global {
           json: () => Promise<T>
         }>
       }
+      logger: Logger
     }
   }
 }

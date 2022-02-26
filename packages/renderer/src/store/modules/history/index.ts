@@ -17,9 +17,10 @@ export const useHistoryStore = defineStore('history', {
     queue: [START],
     position: 0,
     listeners: [],
+    limit: 50,
   }),
   actions: {
-    setLocation(location: HistoryLocation) {
+    _setLocation(location: HistoryLocation) {
       this.position++
       if (this.position === this.queue.length) {
         // we are at the end, we can simply append a new entry
@@ -32,9 +33,10 @@ export const useHistoryStore = defineStore('history', {
     },
     push(to: HistoryLocation) {
       if (this.location === to) return
-      this.setLocation(to)
+      this._setLocation(to)
+      this._reduceToLimit()
     },
-    triggerListeners(
+    _triggerListeners(
       to: HistoryLocation,
       from: HistoryLocation,
       { direction, delta }: Pick<NavigationInformation, 'direction' | 'delta'>,
@@ -57,7 +59,7 @@ export const useHistoryStore = defineStore('history', {
         delta < 0 ? NavigationDirection.back : NavigationDirection.forward
       this.position = Math.max(0, Math.min(this.position + delta, this.queue.length - 1))
       if (shouldTrigger) {
-        this.triggerListeners(this.location, from, {
+        this._triggerListeners(this.location, from, {
           direction,
           delta,
         })
@@ -74,17 +76,23 @@ export const useHistoryStore = defineStore('history', {
       this.queue = [START]
       this.position = 0
       this.listeners = []
+      this.limit = 50
     },
     replace(to: HistoryLocation) {
       // remove current entry and decrement position
       this.queue.splice(this.position--, 1)
-      this.setLocation(to)
+      this._setLocation(to)
     },
     goBack() {
       this.go(-1)
     },
     goForward() {
       this.go(1)
+    },
+    _reduceToLimit() {
+      if (this.queue.length > this.limit) {
+        this.queue = this.queue.slice(this.queue.length - this.limit)
+      }
     },
   },
   getters: {

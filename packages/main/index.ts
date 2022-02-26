@@ -4,12 +4,13 @@ import { join } from 'path'
 import { initialize, enable } from '@electron/remote/main'
 import updateElectronApp from 'update-electron-app'
 import installExtension, { VUEJS3_DEVTOOLS } from 'electron-devtools-installer'
+import { isWindows, isMacintosh } from '../renderer/src/utils/platform'
 
 // Disable GPU Acceleration for Windows 7
 if (release().startsWith('6.1')) app.disableHardwareAcceleration()
 
 // Set application name for Windows 10+ notifications
-if (process.platform === 'win32') app.setAppUserModelId(app.getName())
+if (isWindows) app.setAppUserModelId(app.getName())
 
 initialize()
 
@@ -63,7 +64,7 @@ const createWindow = () => {
       mainWindow = null
       console.log('主窗口：已关闭')
       // 主窗口关闭后如果3s都没有重新创建，就认为程序是被不正常退出了（例如windows下直接alt+f4），关闭整个程序
-      if (process.platform != 'darwin') {
+      if (!isMacintosh) {
         setTimeout(() => {
           console.log('主窗口：关闭超过 3s 未重新创建，程序自动退出')
           app.quit()
@@ -115,6 +116,7 @@ const createMenu = () => {
             mainWindow?.webContents.send('press-esc')
           },
         },
+        { type: 'separator' },
         {
           label: '提高音量',
           accelerator: 'Up',
@@ -140,32 +142,20 @@ const createMenu = () => {
       ],
     },
     {
-      label: 'DEBUG',
+      label: '帮助',
+      role: 'help',
       submenu: [
         {
-          label: 'Inspect Main Window',
-          accelerator: 'CmdOrCtrl+1',
+          label: '报告问题',
           click() {
-            mainWindow?.webContents.openDevTools()
+            shell.openExternal('https://github.com/liumingye/bilimini/issues')
           },
         },
-        {
-          label: 'Inspect Select Part Window',
-          accelerator: 'CmdOrCtrl+2',
-          click() {
-            selectPartWindow?.webContents.openDevTools()
-          },
-        },
-        // {
-        //   label: "Inspect Config Window",
-        //   accelerator: "CmdOrCtrl+3",
-        //   click() {
-        //     // mainWindow?.webContents.send("test", 123);
-        //   },
-        // },
+        { type: 'separator' },
+        { label: '开发者工具', role: 'toggleDevTools' },
         {
           label: 'Inspect Webview',
-          accelerator: 'CmdOrCtrl+4',
+          accelerator: 'CmdOrCtrl+i',
           click() {
             mainWindow?.webContents.send('openWebviewDevTools')
           },
@@ -182,7 +172,7 @@ app.on('window-all-closed', () => {
   // On macOS it is common for applications and their menu bar
   // to stay active until the user quits explicitly with Cmd + Q
   console.log('主线程：所有窗口关闭')
-  if (process.platform !== 'darwin') app.quit()
+  if (!isMacintosh) app.quit()
 })
 
 // 当运行第二个实例时, 将会聚焦到主窗口
@@ -203,7 +193,7 @@ app.on('activate', () => {
 })
 
 ipcMain.on('close-main-window', () => {
-  if (process.platform == 'darwin') {
+  if (isMacintosh) {
     mainWindow?.close()
     selectPartWindow?.hide()
   } else {

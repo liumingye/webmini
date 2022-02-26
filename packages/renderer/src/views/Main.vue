@@ -78,24 +78,30 @@
       false,
     )
   }
+
   const saveWindowSize = () => {
-    app.currentWindow.on('resized', () => {
-      console.log('resized')
+    const resized = debounce(() => {
+      app.logger.info('resized')
       const currentSize = appStore.windowSize[currentWindowType.value]
       const newSize: number[] = [window.innerWidth, window.innerHeight]
       if (currentSize !== newSize) {
         appStore.windowSize[currentWindowType.value] = newSize
         appStore.saveSelfToLocalStorage()
       }
-    })
+      // 解决full-reload后会重复绑定事件
+      if (app.currentWindow.isDestroyed()) return
+      app.currentWindow.once('resized', resized)
+    }, 500)
     const moved = debounce(() => {
-      console.log('moved')
+      app.logger.info('moved')
       appStore.windowPosition = app.currentWindow.getPosition()
       appStore.saveSelfToLocalStorage()
+      // 解决full-reload后会重复绑定事件
+      if (app.currentWindow.isDestroyed()) return
+      app.currentWindow.once('moved', moved)
     }, 500)
-    app.currentWindow.on('moved', () => {
-      moved()
-    })
+    app.currentWindow.once('resized', resized)
+    app.currentWindow.once('moved', moved)
   }
 
   onMounted(() => {

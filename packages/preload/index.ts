@@ -1,14 +1,14 @@
 import { contextBridge, ipcRenderer } from 'electron'
-import remote from '@electron/remote'
-import { domReady } from './utils'
-import { useLoading } from './loading'
+import { app, getCurrentWindow, screen, net } from '@electron/remote'
+import { domReady } from './utils/dom'
+import logger from './utils/logger'
+import { useLoading } from './utils/loading'
 import path from 'path'
 import { version } from 'vue'
 import { arch, release, type } from 'os'
-import { isLinuxSnap } from './common/platform'
+import { isLinuxSnap } from '../renderer/src/utils/platform'
 
 const { appendLoading, removeLoading } = useLoading()
-
 ;(async () => {
   await domReady()
   appendLoading()
@@ -28,7 +28,7 @@ const DEFAULT_FETCH_CONFIG: FetchOptions = {
   body: null,
   headers: null,
 }
-const currentWindow = remote.getCurrentWindow()
+const currentWindow = getCurrentWindow()
 contextBridge.exposeInMainWorld('app', {
   getCookieValue: async (name: string) => {
     return await currentWindow.webContents.session.cookies
@@ -44,7 +44,7 @@ contextBridge.exposeInMainWorld('app', {
       })
   },
   versions: {
-    App: remote.app.getVersion(),
+    App: app.getVersion(),
     'Vue.js': version,
     Electron: process.versions.electron,
     Chromium: process.versions.chrome,
@@ -52,9 +52,7 @@ contextBridge.exposeInMainWorld('app', {
     V8: process.versions.v8,
     OS: `${type} ${arch} ${release}${isLinuxSnap ? ' snap' : ''}`,
   },
-  screen: {
-    ...withPrototype(remote.screen),
-  },
+  screen: withPrototype(screen),
   preload: 'file://' + path.resolve(__dirname, '../inject/index.cjs'),
   currentWindow: {
     setBounds: currentWindow.setBounds,
@@ -62,6 +60,8 @@ contextBridge.exposeInMainWorld('app', {
     getSize: currentWindow.getSize,
     hide: currentWindow.hide,
     on: currentWindow.on,
+    once: currentWindow.once,
+    isDestroyed: currentWindow.isDestroyed,
   },
   net: {
     fetch: <T>(
@@ -80,7 +80,7 @@ contextBridge.exposeInMainWorld('app', {
         ...options,
       }
       return new Promise((resolve, reject) => {
-        const request = remote.net.request({
+        const request = net.request({
           url,
           method: config.method,
           useSessionCookies: true,
@@ -127,6 +127,7 @@ contextBridge.exposeInMainWorld('app', {
       })
     },
   },
+  logger: withPrototype(logger),
 })
 
 // `exposeInMainWorld` can't detect attributes and methods of `prototype`, manually patching it.
