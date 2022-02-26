@@ -38,8 +38,10 @@ const sendWindowID = () => {
 
 const createWindow = () => {
   mainWindow = new BrowserWindow({
-    width: 375,
+    width: 376,
     height: 500,
+    minHeight: 170,
+    minWidth: 300,
     frame: false, // 是否有边框
     maximizable: false,
     alwaysOnTop: true,
@@ -55,21 +57,16 @@ const createWindow = () => {
 
   enable(mainWindow.webContents) // 渲染进程中使用remote
 
-  mainWindow.on('close', () => {
-    mainWindow = null
-  })
+  // mainWindow.on('close', () => {
+  //   mainWindow = null
+  // })
 
   mainWindow.on('closed', () => {
-    if (mainWindow) {
-      mainWindow = null
-      console.log('主窗口：已关闭')
-      // 主窗口关闭后如果3s都没有重新创建，就认为程序是被不正常退出了（例如windows下直接alt+f4），关闭整个程序
-      if (!isMacintosh) {
-        setTimeout(() => {
-          console.log('主窗口：关闭超过 3s 未重新创建，程序自动退出')
-          app.quit()
-        }, 3000)
-      }
+    mainWindow = null
+    if (!isMacintosh) {
+      process.nextTick(() => {
+        app.quit()
+      })
     }
   })
 
@@ -177,11 +174,10 @@ app.on('window-all-closed', () => {
 
 // 当运行第二个实例时, 将会聚焦到主窗口
 app.on('second-instance', () => {
-  if (mainWindow) {
-    // Focus on the main window if the user tried to open another
-    if (mainWindow.isMinimized()) mainWindow.restore()
-    mainWindow.focus()
-  }
+  if (!mainWindow) return
+  // Focus on the main window if the user tried to open another
+  if (mainWindow.isMinimized()) mainWindow.restore()
+  mainWindow.focus()
 })
 
 app.on('activate', () => {
@@ -221,15 +217,13 @@ const createSelectPartWindow = () => {
 
   enable(selectPartWindow.webContents) // 渲染进程中使用remote
 
-  selectPartWindow.on('close', () => {
-    selectPartWindow = null
-  })
+  // selectPartWindow.on('close', () => {
+  //   selectPartWindow = null
+  // })
 
   selectPartWindow.on('closed', () => {
-    if (mainWindow) {
-      selectPartWindow = null
-      console.log('选p窗口：已关闭')
-    }
+    selectPartWindow = null
+    console.log('选p窗口：已关闭')
   })
 
   console.log('选p窗口：已创建')
@@ -266,8 +260,8 @@ app
   .then(() => {
     // 初始化 remote
     createWindow()
-    createMenu()
     createSelectPartWindow()
+    createMenu()
   })
   .then(() => {
     if (isDev) {

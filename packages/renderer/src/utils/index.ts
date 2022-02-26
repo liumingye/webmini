@@ -37,7 +37,6 @@ export const resizeMainWindow = (windowType?: windowType) => {
   let displayToUse: Electron.Display | undefined
   const screen = window.app.screen
   const displays = screen.getAllDisplays()
-
   // Single Display
   if (displays.length === 1) {
     displayToUse = displays[0]
@@ -49,7 +48,6 @@ export const resizeMainWindow = (windowType?: windowType) => {
       const cursorPoint = screen.getCursorScreenPoint()
       displayToUse = screen.getDisplayNearestPoint(cursorPoint)
     }
-
     // fallback to primary display or first display
     if (!displayToUse) {
       displayToUse = screen.getPrimaryDisplay() || displays[0]
@@ -59,26 +57,27 @@ export const resizeMainWindow = (windowType?: windowType) => {
   const displayBounds = displayToUse.bounds
   const currentSize = window.app.currentWindow.getSize()
   const leftTopPosition = window.app.currentWindow.getPosition()
-  const rightBottomPosition = [
-    leftTopPosition[0] + currentSize[0],
-    leftTopPosition[1] + currentSize[1],
-  ]
-  const targetSize = appStore.windowSize[targetWindowType.value]
-  const targetPosition = [
-    displayBounds.x + rightBottomPosition[0] - targetSize[0],
-    displayBounds.y + rightBottomPosition[1] - targetSize[1],
-  ]
-
-  window.app.currentWindow.setBounds(
-    {
-      x: targetPosition[0],
-      y: targetPosition[1],
-      width: targetSize[0],
-      height: targetSize[1],
-    },
-    true,
-  )
-
+  const rightBottomPosition = {
+    x: leftTopPosition[0] + currentSize[0],
+    y: leftTopPosition[1] + currentSize[1],
+  }
+  const bounds: Partial<Electron.Rectangle> = {}
+  bounds.width = appStore.windowSize[targetWindowType.value][0]
+  bounds.height = appStore.windowSize[targetWindowType.value][1]
+  bounds.x = displayBounds.x + rightBottomPosition.x - bounds.width
+  bounds.y = displayBounds.y + rightBottomPosition.y - bounds.height
+  // 防止超出屏幕可视范围
+  if (bounds.x < displayBounds.x) {
+    bounds.x = displayBounds.x
+  } else if (bounds.x > displayBounds.width - bounds.width) {
+    bounds.x = displayBounds.width - bounds.width
+  }
+  if (bounds.y < displayBounds.y) {
+    bounds.y = displayBounds.y
+  } else if (bounds.y > displayBounds.height - bounds.height) {
+    bounds.y = displayBounds.height - bounds.height
+  }
+  window.app.currentWindow.setBounds(bounds, true)
   currentWindowType.value = targetWindowType.value
 }
 
