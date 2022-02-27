@@ -122,7 +122,7 @@ export type Icon = DefineComponent<IIconProps>
 // 默认属性
 export const DEFAULT_ICON_CONFIGS: IIconConfig = {
   size: '1em',
-  strokeWidth: 4,
+  strokeWidth: 5,
   strokeLinecap: 'round',
   strokeLinejoin: 'round',
   rtl: false,

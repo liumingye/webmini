@@ -7,11 +7,11 @@
     "jsx": "preserve",
     "esModuleInterop": true,
     "resolveJsonModule": true,
-    "sourceMap": true,
+    "sourceMap": false,
     "baseUrl": "./",
     "strict": true,
-    "paths": {},
     "allowSyntheticDefaultImports": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "types": ["vite/client"]
   }
 }

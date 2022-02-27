@@ -1,10 +1,24 @@
 import { addStyle } from '../../utils'
 import { ipcRenderer } from 'electron'
-import style from './style.less'
+import style from './style.less?inline'
 
 let unloadStyle: () => void
+let fullscreenBtn: HTMLElement
 
-const changeVolume = (ev: Electron.IpcRendererEvent, arg: 'up' | 'down') => {
+const fullscreenchange = () => {
+  if (!document.fullscreenElement && fullscreenBtn) {
+    fullscreenBtn.click()
+  }
+}
+
+const ended = () => {
+  setTimeout(() => {
+    const jumpButton = document.querySelector('.bilibili-player-electric-panel-jump') as HTMLElement
+    jumpButton?.click()
+  }, 100)
+}
+
+const changeVolume = (_ev: Electron.IpcRendererEvent, arg: 'up' | 'down') => {
   const event = new KeyboardEvent('keydown', {
     keyCode: arg === 'up' ? 38 : 40,
     bubbles: true,
@@ -12,7 +26,7 @@ const changeVolume = (ev: Electron.IpcRendererEvent, arg: 'up' | 'down') => {
   document.dispatchEvent(event)
 }
 
-// 监控全屏按钮出现
+// 监控网页全屏按钮出现
 const observer = new MutationObserver((mutations) => {
   mutations.forEach(({ addedNodes }) => {
     if (addedNodes.length === 0) return
@@ -20,16 +34,12 @@ const observer = new MutationObserver((mutations) => {
     if (
       /(bilibili-player-video-web-fullscreen|squirtle-video-pagefullscreen)/.test(node.className)
     ) {
-      node.click()
+      fullscreenBtn = node
+      fullscreenBtn.click()
       // 跳过充电鸣谢
-      document.querySelector('video')?.addEventListener('ended', () => {
-        setTimeout(() => {
-          const jumpButton = document.querySelector(
-            '.bilibili-player-electric-panel-jump',
-          ) as HTMLElement
-          jumpButton?.click()
-        }, 100)
-      })
+      document.querySelector('video')?.addEventListener('ended', ended)
+      // 退出全屏后自动进入网页全屏
+      document.addEventListener('fullscreenchange', fullscreenchange)
       // 从app层面把 上、下 按键传进来，方便播放器控制音量
       ipcRenderer.on('change-volume', changeVolume)
       // 用户按了老板键，停止播放视频
@@ -68,6 +78,8 @@ const module = {
   stop: () => {
     // 断开 observer
     observer.disconnect()
+    document.querySelector('video')?.removeEventListener('ended', ended)
+    document.removeEventListener('fullscreenchange', fullscreenchange)
     ipcRenderer.off('change-volume', changeVolume)
     document.body.classList.remove('player-mode-webfullscreen', 'player-fullscreen-fix')
     unloadStyle && unloadStyle()

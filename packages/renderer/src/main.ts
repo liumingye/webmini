@@ -12,6 +12,7 @@ import 'nprogress/nprogress.css'
 import '@/assets/css/global.less'
 // UiComponents
 import Ui from '@/components/ui'
+// IconComponents
 import Icon from '@/components/ui/icon'
 import '@/components/ui/icon/runtime/index.less'
 
