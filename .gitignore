@@ -1,8 +1,13 @@
-**/.DS_Store
+.idea/
+
 node_modules/
+**/.DS_Store
+
 dist/
 release/
+
 .eslintcache
+package-lock.json
 
 .yarn/*
 !.yarn/patches

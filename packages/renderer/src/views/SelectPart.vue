@@ -65,10 +65,6 @@
       currentPartId.value = 0
     }
   })
-  // window.onerror = function (err, f, line) {
-  // var id = f.split("/");
-  // utils.error(`${id[id.length - 1]} : Line ${line}\n> ${err}`);
-  // };
 </script>
 
 <template>

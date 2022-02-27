@@ -1,4 +1,5 @@
-import { FetchOptions } from '../../preload'
+import type Net from '../../preload/utils/net'
+import type Cookies from '../../preload/utils/cookies'
 import { Logger } from 'winston'
 
 declare global {
@@ -7,7 +8,7 @@ declare global {
     ipcRenderer: Electron.IpcRenderer
     removeLoading: () => void
     app: {
-      getCookieValue: (name: string) => Promise<string>
+      cookies: Cookies
       versions: {
         App: string
         'Vue.js': string
@@ -21,19 +22,7 @@ declare global {
       preload: string
       cookie: string
       currentWindow: Electron.BrowserWindow
-      net: {
-        fetch: <T>(
-          url: string,
-          options: Partial<FetchOptions> = {},
-        ) => Promise<{
-          ok: boolean
-          status: number
-          statusText: string
-          headers: Record<string, string | string[]>
-          text: () => Promise<string>
-          json: () => Promise<T>
-        }>
-      }
+      net: Net
       logger: Logger
     }
   }

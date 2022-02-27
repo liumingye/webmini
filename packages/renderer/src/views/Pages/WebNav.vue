@@ -18,12 +18,14 @@
         const newVariable = Array.from(new Set(variable))
         for (const value of newVariable) {
           if (value === '${uid}') {
-            await window.app.getCookieValue('DedeUserID').then((uid) => {
-              if (!uid) {
-                throw new Error('请先登录！')
-              }
-              newUrl = newUrl.replaceAll('${uid}', uid)
-            })
+            await window.app.cookies
+              .get({ url: 'https://www.bilibili.com', name: 'DedeUserID' })
+              .then((uid) => {
+                if (uid.length === 0) {
+                  throw new Error('请先登录！')
+                }
+                newUrl = newUrl.replaceAll('${uid}', uid[0].value)
+              })
           }
         }
       }

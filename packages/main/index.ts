@@ -4,7 +4,7 @@ import { join } from 'path'
 import { initialize, enable } from '@electron/remote/main'
 import updateElectronApp from 'update-electron-app'
 import installExtension, { VUEJS3_DEVTOOLS } from 'electron-devtools-installer'
-import { isWindows, isMacintosh } from '../renderer/src/utils/platform'
+import { isWindows, isMacintosh } from '../common/platform'
 
 // Disable GPU Acceleration for Windows 7
 if (release().startsWith('6.1')) app.disableHardwareAcceleration()

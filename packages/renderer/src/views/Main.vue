@@ -46,8 +46,8 @@
         }
         return
       }
-      lastStatus.value = 'OUT'
       showTopBar.value = false
+      lastStatus.value = 'OUT'
     }
     watch(
       () => autoHideBar.value,
