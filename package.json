@@ -54,7 +54,6 @@
     "postcss-less": "^6.0.0",
     "prettier": "^2.5.1",
     "typescript": "^4.5.5",
-    "update-electron-app": "^2.0.1",
     "vite": "^2.8.4",
     "vite-plugin-resolve": "^1.4.4",
     "vite-plugin-windicss": "^1.7.1",

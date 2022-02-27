@@ -1,10 +1,11 @@
-import { app, BrowserWindow, ipcMain, Menu, shell, MenuItemConstructorOptions } from 'electron'
+import { app } from 'electron'
 import { release } from 'os'
-import { join } from 'path'
-import { initialize, enable } from '@electron/remote/main'
-import updateElectronApp from 'update-electron-app'
+import { initialize } from '@electron/remote/main'
+import updateElectronApp from './services/auto-updater'
 import installExtension, { VUEJS3_DEVTOOLS } from 'electron-devtools-installer'
-import { isWindows, isMacintosh } from '../common/platform'
+import { isWindows } from '../common/platform'
+import { Application } from './application'
+import { isDev } from '../common/utils'
 
 // Disable GPU Acceleration for Windows 7
 if (release().startsWith('6.1')) app.disableHardwareAcceleration()
@@ -14,262 +15,19 @@ if (isWindows) app.setAppUserModelId(app.getName())
 
 initialize()
 
-const isDev = !app.isPackaged
-const URL = isDev
-  ? `http://${process.env['VITE_DEV_SERVER_HOST']}:${process.env['VITE_DEV_SERVER_PORT']}`
-  : `file://${join(app.getAppPath(), 'dist/renderer/index.html')}`
-
-let mainWindow: BrowserWindow | null = null // 主窗口
-let selectPartWindow: BrowserWindow | null = null // 分p窗口
-
 if (!app.requestSingleInstanceLock()) {
   app.quit()
   process.exit(0)
 }
 
-const sendWindowID = () => {
-  mainWindow?.webContents.send('windowID', {
-    selectPartWindow: selectPartWindow?.webContents.id,
-  })
-  selectPartWindow?.webContents.send('windowID', {
-    mainWindow: mainWindow?.webContents.id,
-  })
-}
-
-const createWindow = () => {
-  mainWindow = new BrowserWindow({
-    width: 376,
-    height: 500,
-    minHeight: 170,
-    minWidth: 300,
-    frame: false, // 是否有边框
-    maximizable: false,
-    alwaysOnTop: true,
-    webPreferences: {
-      webviewTag: true,
-      preload: join(__dirname, '../preload/index.cjs'), // 预先加载指定的脚本
-      nativeWindowOpen: false,
-      webSecurity: false,
-    },
-  })
-
-  mainWindow.loadURL(URL)
-
-  enable(mainWindow.webContents) // 渲染进程中使用remote
-
-  // mainWindow.on('close', () => {
-  //   mainWindow = null
-  // })
-
-  mainWindow.on('closed', () => {
-    mainWindow = null
-    if (!isMacintosh) {
-      process.nextTick(() => {
-        app.quit()
-      })
-    }
-  })
-
-  // Make all links open with the browser, not with the application
-  mainWindow.webContents.setWindowOpenHandler(({ url }) => {
-    if (url.startsWith('https:')) shell.openExternal(url)
-    return { action: 'deny' }
-  })
-
-  mainWindow.webContents.once('dom-ready', () => {
-    sendWindowID()
-  })
-}
-
-const createMenu = () => {
-  // 菜单
-  const template: MenuItemConstructorOptions[] = [
-    {
-      label: app.name,
-      submenu: [
-        { label: `关于 ${app.name}`, role: 'about' },
-        { type: 'separator' },
-        { label: '服务', role: 'services' },
-        { type: 'separator' },
-        { label: `隐藏 ${app.name}`, role: 'hide' },
-        { label: '隐藏其他', role: 'hideOthers' },
-        { label: '全部显示', role: 'unhide' },
-        { type: 'separator' },
-        { label: `退出 ${app.name}`, role: 'quit' },
-      ],
-    },
-    {
-      label: '编辑',
-      submenu: [
-        { label: '剪切', role: 'cut' },
-        { label: '拷贝', role: 'copy' },
-        { label: '粘贴', role: 'paste' },
-        { label: '删除', role: 'delete' },
-        { label: '全选', role: 'selectAll' },
-        {
-          label: '返回',
-          accelerator: 'Esc',
-          click() {
-            mainWindow?.webContents.send('press-esc')
-          },
-        },
-        { type: 'separator' },
-        {
-          label: '提高音量',
-          accelerator: 'Up',
-          click() {
-            mainWindow?.webContents.send('change-volume', 'up')
-          },
-        },
-        {
-          label: '降低音量',
-          accelerator: 'Down',
-          click() {
-            mainWindow?.webContents.send('change-volume', 'down')
-          },
-        },
-      ],
-    },
-    {
-      label: '窗口',
-      role: 'window',
-      submenu: [
-        { label: '最小化', role: 'minimize' },
-        { label: '关闭', role: 'close' },
-      ],
-    },
-    {
-      label: '帮助',
-      role: 'help',
-      submenu: [
-        {
-          label: '报告问题',
-          click() {
-            shell.openExternal('https://github.com/liumingye/bilimini/issues')
-          },
-        },
-        { type: 'separator' },
-        { label: '开发者工具', role: 'toggleDevTools' },
-        {
-          label: 'Inspect Webview',
-          accelerator: 'CmdOrCtrl+i',
-          click() {
-            mainWindow?.webContents.send('openWebviewDevTools')
-          },
-        },
-      ],
-    },
-  ]
-
-  const menu = Menu.buildFromTemplate(template)
-  Menu.setApplicationMenu(menu)
-}
-
-app.on('window-all-closed', () => {
-  // On macOS it is common for applications and their menu bar
-  // to stay active until the user quits explicitly with Cmd + Q
-  console.log('主线程：所有窗口关闭')
-  if (!isMacintosh) app.quit()
-})
-
-// 当运行第二个实例时, 将会聚焦到主窗口
-app.on('second-instance', () => {
-  if (!mainWindow) return
-  // Focus on the main window if the user tried to open another
-  if (mainWindow.isMinimized()) mainWindow.restore()
-  mainWindow.focus()
-})
-
-app.on('activate', () => {
-  if (mainWindow === null) {
-    createWindow()
+app.whenReady().then(() => {
+  const application = Application.instance
+  application.start()
+  if (isDev) {
+    installExtension(VUEJS3_DEVTOOLS.id)
+      .then((name) => console.log(`Added Extension:  ${name}`))
+      .catch((err) => console.log('An error occurred: ', err))
   } else {
-    mainWindow.show()
+    updateElectronApp()
   }
 })
-
-ipcMain.on('close-main-window', () => {
-  if (isMacintosh) {
-    mainWindow?.close()
-    selectPartWindow?.hide()
-  } else {
-    app.quit()
-  }
-})
-
-// 初始化选分p窗口
-const createSelectPartWindow = () => {
-  console.log('选p窗口：开始创建')
-
-  selectPartWindow = new BrowserWindow({
-    show: false,
-    width: 200,
-    height: 300,
-    frame: false,
-    maximizable: false,
-    alwaysOnTop: true,
-    webPreferences: {
-      preload: join(__dirname, '../preload/index.cjs'), // 预先加载指定的脚本
-    },
-  })
-
-  selectPartWindow.loadURL(`${URL}#/select-part`)
-
-  enable(selectPartWindow.webContents) // 渲染进程中使用remote
-
-  // selectPartWindow.on('close', () => {
-  //   selectPartWindow = null
-  // })
-
-  selectPartWindow.on('closed', () => {
-    selectPartWindow = null
-    console.log('选p窗口：已关闭')
-  })
-
-  console.log('选p窗口：已创建')
-  // 切换、可开可关
-  const showSelectPartWindow = () => {
-    console.log('选p窗口：打开')
-    if (!mainWindow || !selectPartWindow) {
-      return
-    }
-    const p = mainWindow.getPosition(),
-      s = selectPartWindow.getSize(),
-      pos = [p[0] - s[0], p[1]]
-    selectPartWindow.setPosition(pos[0], pos[1])
-    selectPartWindow.show()
-  }
-  ipcMain.on('toggle-select-part-window', () => {
-    if (selectPartWindow && selectPartWindow.isVisible()) {
-      selectPartWindow.hide()
-    } else {
-      showSelectPartWindow()
-    }
-  })
-  // 仅开启
-  ipcMain.on('show-select-part-window', showSelectPartWindow)
-
-  selectPartWindow.webContents.once('dom-ready', () => {
-    sendWindowID()
-  })
-}
-
-// electron 初始化完成
-app
-  .whenReady()
-  .then(() => {
-    // 初始化 remote
-    createWindow()
-    createSelectPartWindow()
-    createMenu()
-  })
-  .then(() => {
-    if (isDev) {
-      installExtension(VUEJS3_DEVTOOLS.id)
-        .then((name) => console.log(`Added Extension:  ${name}`))
-        .catch((err) => console.log('An error occurred: ', err))
-    }
-    updateElectronApp({
-      updateInterval: '1 hour',
-    })
-  })

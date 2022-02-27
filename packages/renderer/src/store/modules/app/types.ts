@@ -14,5 +14,4 @@ export interface AppStateTypes {
   disableDanmakuButton: boolean
   autoHideBar: boolean
   windowID: { mainWindow?: number; selectPartWindow?: number }
-  lastPush: number
 }

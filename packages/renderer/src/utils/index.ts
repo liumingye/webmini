@@ -213,6 +213,8 @@ export const judgeUserAgent = (url: string) => {
       'live.bilibili.com/pages/h5',
       'www.bilibili.com/read/mobile',
       'www.bilibili.com/read/cv',
+      'h.bilibili.com/ywh/h5',
+      't.bilibili.com',
     ]
     for (let i = 0; i < map.length; i++) {
       const completeURL = _URL.hostname + _URL.pathname

@@ -5,6 +5,8 @@ import { userAgent, videoUrlPrefix, liveUrlPrefix, bangumiUrlPrefix } from '@/ut
 import { useHistoryStore } from '@/store'
 
 const ipc = window.ipcRenderer
+let lastPush = 0
+let lastUrl: string
 
 export const useAppStore = defineStore('app', {
   state: (): AppStateTypes => ({
@@ -23,7 +25,6 @@ export const useAppStore = defineStore('app', {
     disableDanmakuButton: true,
     autoHideBar: false,
     windowID: {},
-    lastPush: 0,
   }),
   actions: {
     loadSelfFromLocalStorage() {
@@ -48,26 +49,18 @@ export const useAppStore = defineStore('app', {
       })
       localStorage.setItem('app', JSON.stringify(Array.from(map.entries())))
     },
-    updateURL() {
-      const historyStore = useHistoryStore()
-      const url = this.webview.getURL()
+    updateURL(url: string) {
+      if (lastUrl === url) return
+      lastUrl = url
       window.app.logger.info(`updateURL - ${url}`, { label: 'appStore' })
 
-      // 历史push
-      const now = Number(new Date())
-      if (now - this.lastPush < 500) {
-        // 两次转跳间隔小于500ms，疑似redirect
-        historyStore.replace(url)
-      } else {
-        historyStore.push(url)
-      }
-      this.lastPush = now
+      this.addHistoryItem(url)
 
       // 通知webview加载脚本
       this.webview.send('load-commit')
 
       const _URL = new URL(url)
-
+      const historyStore = useHistoryStore()
       // 视频
       const vid = getVidWithP(_URL.pathname)
       if (vid) {
@@ -145,6 +138,18 @@ export const useAppStore = defineStore('app', {
       if (this.windowID.selectPartWindow) {
         ipc.sendTo(this.windowID.selectPartWindow, 'update-part', null)
       }
+    },
+    addHistoryItem(url: string) {
+      const historyStore = useHistoryStore()
+      // 历史push
+      const now = Number(new Date())
+      if (now - lastPush < 500) {
+        // 两次转跳间隔小于500ms，疑似redirect
+        historyStore.replace(url)
+      } else {
+        historyStore.push(url)
+      }
+      lastPush = now
     },
     go(url: string) {
       window.app.logger.debug(`go - ${url}`, { label: 'appStore' })

@@ -20,19 +20,17 @@
     const webview = computed(() => appStore.webview)
 
     webview.value.addEventListener('new-window', ({ url }) => {
-      // console.log(`触发 new-window 事件，目标: ${url}`)
       appStore.go(url)
     })
 
     let lastVid: string
     let lastLoadedUrl: string
 
-    const finish = () => {
+    const updateURL = () => {
       const url = webview.value.getURL()
       if (lastLoadedUrl === url) return
       lastLoadedUrl = url
-      // console.log(`触发 load-commit 事件，当前url是: ${url}`)
-      appStore.updateURL()
+      appStore.updateURL(url)
       // 改变窗口尺寸
       resizeMainWindow()
       const vid = getVid(url)
@@ -48,21 +46,10 @@
     }
 
     webview.value.addEventListener('load-commit', () => {
-      // console.log('load-commit')
-      finish()
+      updateURL()
     })
 
-    // webview.value.addEventListener('did-finish-load', () => {
-    //   console.log('did-finish-load')
-    //   finish()
-    // })
-    // webview.value.addEventListener('did-navigate-in-page', () => {
-    //   console.log('did-navigate-in-page')
-    //   finish()
-    // })
-
     webview.value.addEventListener('did-start-loading', () => {
-      // console.log('did-start-loading')
       NProgress.start().inc()
     })
 

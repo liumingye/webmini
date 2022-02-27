@@ -80,7 +80,7 @@
         class="item part"
         :class="{ 'current-ep': index === currentPartId }"
         :title="title"
-        @click="selectPart(index)"
+        @click="index !== currentPartId && selectPart(index)"
       >
         <span v-show="index == currentPartId">● </span>{{ index + 1 }})
         {{ title }}
@@ -91,7 +91,7 @@
         class="item part"
         :class="{ 'current-ep': part.epid === currentPartId }"
         :title="part.title"
-        @click="selectBangumiPart(part)"
+        @click="part.epid !== currentPartId && selectBangumiPart(part)"
       >
         <span v-show="part.epid == currentPartId">● </span>{{ part.epid + 1 }})
         {{ part.title || `第${part.epid + 1}话` }}

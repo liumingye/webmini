@@ -1,7 +1,7 @@
 <script setup lang="ts">
   import TopBar from '@/components/TopBar.vue'
   import About from '@/components/About.vue'
-  import BiliWeb from '@/views/pages/BiliWeb.vue'
+  import WebView from '@/views/pages/WebView.vue'
 
   import { useAppStore } from '@/store'
   import { ref, onMounted, computed, watch } from 'vue'
@@ -81,6 +81,8 @@
 
   const saveWindowSize = () => {
     const resized = debounce(() => {
+      // 解决full-reload后会重复绑定事件
+      if (app.currentWindow.isDestroyed()) return
       app.logger.info('resized')
       const currentSize = appStore.windowSize[currentWindowType.value]
       const newSize: number[] = [window.innerWidth, window.innerHeight]
@@ -88,16 +90,14 @@
         appStore.windowSize[currentWindowType.value] = newSize
         appStore.saveSelfToLocalStorage()
       }
-      // 解决full-reload后会重复绑定事件
-      if (app.currentWindow.isDestroyed()) return
       app.currentWindow.once('resized', resized)
     }, 500)
     const moved = debounce(() => {
+      // 解决full-reload后会重复绑定事件
+      if (app.currentWindow.isDestroyed()) return
       app.logger.info('moved')
       appStore.windowPosition = app.currentWindow.getPosition()
       appStore.saveSelfToLocalStorage()
-      // 解决full-reload后会重复绑定事件
-      if (app.currentWindow.isDestroyed()) return
       app.currentWindow.once('moved', moved)
     }, 500)
     app.currentWindow.once('resized', resized)
@@ -139,7 +139,7 @@
         <component :is="Component" class="overflow-x-none overflow-y-auto" />
       </keep-alive>
     </router-view>
-    <BiliWeb v-show="route.name === 'Home'" />
+    <WebView v-show="route.name === 'Home'" />
   </div>
 </template>
 
