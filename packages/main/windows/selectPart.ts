@@ -1,15 +1,12 @@
+import { CommonWindow } from './common'
 import { BrowserWindow, ipcMain } from 'electron'
-import { enable } from '@electron/remote/main'
 import { join } from 'path'
 import { URL } from '../../common/utils'
-import { MainWindow } from './main'
 import { Application } from '../application'
 
-export class SelectPartWindow {
-  public win: BrowserWindow
-
-  public constructor() {
-    this.win = new BrowserWindow({
+export class SelectPartWindow extends CommonWindow {
+  public constructor(window?: BrowserWindow) {
+    window = new BrowserWindow({
       show: false,
       width: 200,
       height: 300,
@@ -21,9 +18,7 @@ export class SelectPartWindow {
       },
     })
 
-    this.win.loadURL(`${URL}#/select-part`)
-
-    enable(this.win.webContents)
+    window.loadURL(`${URL}#/select-part`)
 
     ipcMain.on('toggle-select-part-window', () => {
       this.toggle()
@@ -32,39 +27,16 @@ export class SelectPartWindow {
     ipcMain.on('show-select-part-window', () => {
       this.show()
     })
+
+    super(window)
   }
 
   public show() {
-    if (this.win.isDestroyed() || !Application.instance.mainWindow) return
+    if (this.isDestroyed() || !Application.instance.mainWindow) return
     const p = Application.instance.mainWindow.win.getPosition(),
       s = this.win.getSize(),
       pos = [p[0] - s[0], p[1]]
     this.win.setPosition(pos[0], pos[1])
     this.win.show()
-  }
-
-  public hide() {
-    this.win.hide()
-  }
-
-  public toggle() {
-    if (this.win.isDestroyed()) return
-    if (this.win.isVisible()) {
-      this.hide()
-    } else {
-      this.show()
-    }
-  }
-
-  public get id() {
-    return this.win.webContents.id
-  }
-
-  public get webContents() {
-    return this.win.webContents
-  }
-
-  public send(channel: string, ...args: any[]) {
-    this.webContents.send(channel, ...args)
   }
 }

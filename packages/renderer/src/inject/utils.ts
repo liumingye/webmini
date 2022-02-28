@@ -1,4 +1,5 @@
 export const is = {
+  home: (href: string) => /m\.bilibili\.com(\/$|$|channel)/.test(href),
   video: (pathname: string) => /^(\/video\/(av|BV)|\/bangumi\/play\/)/.test(pathname),
   trends: (href: string) => /^http(s|):\/\/t\.bilibili\.com/.test(href),
   live: (href: string) => /\/\/live\.bilibili\.com\/blanc\/\d+/.test(href),

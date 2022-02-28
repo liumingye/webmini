@@ -63,6 +63,7 @@ const observer = new MutationObserver((mutations) => {
 
 const module = {
   start: () => {
+    module.stop()
     // 预先加载全屏样式
     document.body.classList.add('player-mode-webfullscreen', 'player-fullscreen-fix')
     const styleEntry = addStyle(style)

@@ -1,5 +1,5 @@
 import { is, addStyle } from './utils'
-import { search, adblock, video } from './modules'
+import { search, adblock, video, home } from './modules'
 import { ipcRenderer } from 'electron'
 
 declare global {
@@ -8,23 +8,24 @@ declare global {
   }
 }
 
-const liveId = /\/\/live\.bilibili\.com\/(\d+)/.exec(window.location.href)
+const location = window.location
+const simpleHref = location.origin + location.pathname
+
+const liveId = /\/\/live\.bilibili\.com\/(\d+)/.exec(simpleHref)
 if (liveId) {
-  window.location.href = `https://live.bilibili.com/blanc/${liveId[1]}?liteVersion=true`
+  location.href = `https://live.bilibili.com/blanc/${liveId[1]}?liteVersion=true`
 }
 
 const applyScript = () => {
   // 脚本开始
   console.log('脚本注入成功！！！')
-  adblock.stop()
   adblock.start()
   // 普通视频页：自动最大化播放器
-  if (is.video(window.location.pathname)) {
-    video.stop()
+  if (is.video(location.pathname)) {
     video.start()
   }
   // 动态页重做样式
-  else if (is.trends(window.location.href)) {
+  else if (is.trends(simpleHref)) {
     addStyle(
       '#internationalHeader{display:none;}' +
         '.home-page .home-container .home-content .center-panel{padding:0 8px;box-sizing:border-box;margin:0!important;}' +
@@ -35,7 +36,7 @@ const applyScript = () => {
   }
 
   // 直播使用桌面版 HTML5 直播播放器
-  else if (is.live(window.location.href)) {
+  else if (is.live(simpleHref)) {
     // 通过查询 HTML5 播放器 DIV 来判断页面加载
     if (document.querySelector('.bp-no-flash-tips')) {
       // 切换 HTML5 播放器
@@ -55,13 +56,15 @@ const applyScript = () => {
           '#sidebar-vm{display: none!important}',
       )
     }
-  } else if (is.login(window.location.href)) {
+  } else if (is.login(simpleHref)) {
     addStyle(
-      '#internationalHeader,.international-footer,.top-banner,.qrcode-tips,.title-line{display: none!important}',
+      'body{overflow:hidden}#internationalHeader,.international-footer,.top-banner,.qrcode-tips,.title-line,.app-link{display: none!important}',
     )
-  } else if (is.search(window.location.href)) {
-    search.stop()
+    document.title = '登录'
+  } else if (is.search(location.href)) {
     search.start()
+  } else if (is.home(simpleHref)) {
+    home.start()
   }
 }
 

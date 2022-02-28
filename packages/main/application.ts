@@ -12,7 +12,7 @@ export class Application {
 
   public async start() {
     app.on('second-instance', () => {
-      if (this.mainWindow?.win.isDestroyed()) return
+      if (this.mainWindow?.isDestroyed()) return
       // Focus on the main window if the user tried to open another
       if (this.mainWindow?.win.isMinimized()) this.mainWindow.win.restore()
       this.mainWindow?.win.focus()
@@ -20,14 +20,6 @@ export class Application {
 
     app.on('activate', () => {
       this.createAllWindow()
-      // if (this.mainWindow?.win.isDestroyed()) {
-      //   this.mainWindow = this.createMainWindow()
-      // } else {
-      //   this.mainWindow?.win.show()
-      // }
-      // if (this.selectPartWindow?.win.isDestroyed()) {
-      //   this.selectPartWindow = this.createSelectPartWindow()
-      // }
     })
 
     app.on('window-all-closed', () => {
@@ -53,19 +45,19 @@ export class Application {
     Menu.setApplicationMenu(getMainMenu())
   }
 
-  private getWindowID = () => {
+  private getAllWindowID = () => {
     const windowID: Record<string, number> = {}
-    if (this.mainWindow && !this.mainWindow.win.isDestroyed()) {
+    if (this.mainWindow && !this.mainWindow.isDestroyed()) {
       windowID.mainWindow = this.mainWindow.id
     }
-    if (this.selectPartWindow && !this.selectPartWindow.win.isDestroyed()) {
+    if (this.selectPartWindow && !this.selectPartWindow.isDestroyed()) {
       windowID.selectPartWindow = this.selectPartWindow.id
     }
     return windowID
   }
 
   private sendWindowID = () => {
-    const windowID = this.getWindowID()
+    const windowID = this.getAllWindowID()
     this.mainWindow?.send('windowID', windowID)
     this.selectPartWindow?.send('windowID', windowID)
   }
@@ -77,7 +69,7 @@ export class Application {
 
   // 初始化主窗口
   private createMainWindow = () => {
-    if (!this.mainWindow || this.mainWindow.win.isDestroyed()) {
+    if (!this.mainWindow || this.mainWindow.isDestroyed()) {
       const mainWindow = new MainWindow()
       mainWindow.webContents.once('dom-ready', () => {
         this.sendWindowID()
@@ -89,7 +81,7 @@ export class Application {
 
   // 初始化选分p窗口
   private createSelectPartWindow = () => {
-    if (!this.selectPartWindow || this.selectPartWindow.win.isDestroyed()) {
+    if (!this.selectPartWindow || this.selectPartWindow.isDestroyed()) {
       const selectPartWindow = new SelectPartWindow()
       selectPartWindow.webContents.once('dom-ready', () => {
         this.sendWindowID()
