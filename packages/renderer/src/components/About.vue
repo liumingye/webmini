@@ -5,7 +5,7 @@
 <template>
   <transition name="delayDisplayNone">
     <div id="about" class="absolute w-full text-center text-white">
-      <div class="flex mx-auto max-w-150 pl-10">
+      <div class="flex mx-auto max-w-150">
         <div class="w-1/2">
           <div class="w-15 mx-auto">
             <img class="w-full h-full" src="@/assets/images/icon.png" />

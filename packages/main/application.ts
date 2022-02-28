@@ -10,8 +10,6 @@ export class Application {
   public mainWindow: MainWindow | undefined
   public selectPartWindow: SelectPartWindow | undefined
 
-  constructor() {}
-
   public async start() {
     app.on('second-instance', () => {
       if (this.mainWindow?.win.isDestroyed()) return
@@ -21,11 +19,15 @@ export class Application {
     })
 
     app.on('activate', () => {
-      if (this.mainWindow?.win.isDestroyed()) {
-        this.mainWindow = this.createMainWindow()
-      } else {
-        this.mainWindow?.win.show()
-      }
+      this.createAllWindow()
+      // if (this.mainWindow?.win.isDestroyed()) {
+      //   this.mainWindow = this.createMainWindow()
+      // } else {
+      //   this.mainWindow?.win.show()
+      // }
+      // if (this.selectPartWindow?.win.isDestroyed()) {
+      //   this.selectPartWindow = this.createSelectPartWindow()
+      // }
     })
 
     app.on('window-all-closed', () => {
@@ -38,7 +40,7 @@ export class Application {
     ipcMain.on('close-main-window', () => {
       if (isMacintosh) {
         this.mainWindow?.win.close()
-        this.selectPartWindow?.hide()
+        this.selectPartWindow?.win.close()
       } else {
         app.quit()
       }
@@ -46,8 +48,7 @@ export class Application {
 
     await app.whenReady()
 
-    this.mainWindow = this.createMainWindow()
-    this.selectPartWindow = this.createSelectPartWindow(this.mainWindow)
+    this.createAllWindow()
 
     Menu.setApplicationMenu(getMainMenu())
   }
@@ -69,21 +70,32 @@ export class Application {
     this.selectPartWindow?.send('windowID', windowID)
   }
 
+  private createAllWindow = () => {
+    this.mainWindow = this.createMainWindow()
+    this.selectPartWindow = this.createSelectPartWindow()
+  }
+
   // 初始化主窗口
-  public createMainWindow = () => {
-    const mainWindow = new MainWindow()
-    mainWindow.webContents.once('dom-ready', () => {
-      this.sendWindowID()
-    })
-    return mainWindow
+  private createMainWindow = () => {
+    if (!this.mainWindow || this.mainWindow.win.isDestroyed()) {
+      const mainWindow = new MainWindow()
+      mainWindow.webContents.once('dom-ready', () => {
+        this.sendWindowID()
+      })
+      return mainWindow
+    }
+    return this.mainWindow
   }
 
   // 初始化选分p窗口
-  public createSelectPartWindow = (mainWindow: MainWindow) => {
-    const selectPartWindow = new SelectPartWindow(mainWindow)
-    selectPartWindow.webContents.once('dom-ready', () => {
-      this.sendWindowID()
-    })
-    return selectPartWindow
+  private createSelectPartWindow = () => {
+    if (!this.selectPartWindow || this.selectPartWindow.win.isDestroyed()) {
+      const selectPartWindow = new SelectPartWindow()
+      selectPartWindow.webContents.once('dom-ready', () => {
+        this.sendWindowID()
+      })
+      return selectPartWindow
+    }
+    return this.selectPartWindow
   }
 }

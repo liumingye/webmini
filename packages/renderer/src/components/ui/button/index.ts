@@ -5,7 +5,7 @@ import _Button from './button.vue'
 const Button = Object.assign(_Button, {
   install: (app: App) => {
     const componentPrefix = getComponentPrefix()
-    app.component(componentPrefix + 'Button', _Button)
+    app.component(componentPrefix + 'button', _Button)
   },
 })
 

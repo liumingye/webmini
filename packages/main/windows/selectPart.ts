@@ -3,15 +3,12 @@ import { enable } from '@electron/remote/main'
 import { join } from 'path'
 import { URL } from '../../common/utils'
 import { MainWindow } from './main'
+import { Application } from '../application'
 
 export class SelectPartWindow {
   public win: BrowserWindow
 
-  private mainWindow: MainWindow
-
-  public constructor(mainWindow: MainWindow) {
-    this.mainWindow = mainWindow
-
+  public constructor() {
     this.win = new BrowserWindow({
       show: false,
       width: 200,
@@ -38,8 +35,8 @@ export class SelectPartWindow {
   }
 
   public show() {
-    if (this.win.isDestroyed()) return
-    const p = this.mainWindow.win.getPosition(),
+    if (this.win.isDestroyed() || !Application.instance.mainWindow) return
+    const p = Application.instance.mainWindow.win.getPosition(),
       s = this.win.getSize(),
       pos = [p[0] - s[0], p[1]]
     this.win.setPosition(pos[0], pos[1])
