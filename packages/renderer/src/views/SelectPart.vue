@@ -75,24 +75,24 @@
       <div
         v-for="(title, index) in partList"
         :key="index"
+        v-memo="[index === currentPartId]"
         class="item part"
         :class="{ 'current-ep': index === currentPartId }"
         :title="title"
         @click="index !== currentPartId && selectPart(index)"
       >
-        <span v-show="index == currentPartId">● </span>{{ index + 1 }})
-        {{ title }}
+        {{ index + 1 }}){{ title }}
       </div>
       <div
-        v-for="(part, index) in bangumiPartList"
-        :key="index"
+        v-for="part in bangumiPartList"
+        :key="part.epid"
+        v-memo="[part.epid === currentPartId]"
         class="item part"
         :class="{ 'current-ep': part.epid === currentPartId }"
         :title="part.title"
         @click="part.epid !== currentPartId && selectBangumiPart(part)"
       >
-        <span v-show="part.epid == currentPartId">● </span>{{ part.epid + 1 }})
-        {{ part.title || `第${part.epid + 1}话` }}
+        {{ part.epid + 1 }}){{ part.title || `第${part.epid + 1}话` }}
       </div>
     </div>
   </div>
@@ -119,6 +119,10 @@
       &.current-ep {
         opacity: 1;
         font-weight: bold;
+        &::before {
+          content: '●';
+          margin-right: 4px;
+        }
       }
       &:hover {
         opacity: 1;

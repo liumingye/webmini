@@ -1,9 +1,36 @@
-// 隐藏全屏播放器（在某些情况下会出现）的滚动条
 body {
+  // 隐藏全屏播放器（在某些情况下会出现）的滚动条
   overflow: hidden !important;
+  // 预先加载全屏样式
+  #bilibili-player {
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    z-index: 100000;
+    left: 0;
+    top: 0;
+    // 控制栏加高
+    @heighten1: 20px;
+    .squirtle-controller {
+      height: 44px + @heighten1;
+      .squirtle-controller-wrap {
+        height: 29px + @heighten1;
+      }
+    }
+    @heighten2: 6px;
+    .bilibili-player-video-control {
+      height: 44px + @heighten2;
+      .bilibili-player-video-control-top {
+        bottom: 32px + @heighten2;
+      }
+      .bilibili-player-video-control-bottom {
+        height: 29px + @heighten2;
+      }
+    }
+  }
 }
 // 移除video外边框
-.bilibili-player .bilibili-player-area.video-state-blackside .bilibili-player-video {
+.bilibili-player-video {
   margin: 0 !important;
 }
 .bpx-player-video-wrap {
@@ -32,50 +59,7 @@ body {
 .bpx-player-top-wrap {
   display: none !important;
 }
-// 预先加载全屏样式
-#bilibili-player {
-  width: 100vw !important;
-  height: 100vh !important;
-  position: fixed !important;
-  z-index: 100000 !important;
-  left: 0 !important;
-  top: 0 !important;
-}
-.bilibili-player.mode-miniscreen.bilibili-player
-  .bilibili-player-area
-  .bilibili-player-video-control,
-.bilibili-player.mode-miniscreen.bilibili-player
-  .bilibili-player-area
-  .bilibili-player-video-control-mask,
-.bilibili-player.mode-miniscreen.bilibili-player
-  .bilibili-player-area
-  .bilibili-player-video-wrap
-  .bilibili-player-video-float-lastplay,
-.bilibili-player.mode-miniscreen.bilibili-player
-  .bilibili-player-area
-  .bilibili-player-video-wrap
-  .bilibili-player-video-float-movie-wrp,
-.bilibili-player.mode-miniscreen.bilibili-player
-  .bilibili-player-area
-  .bilibili-player-video-wrap
-  .bilibili-player-video-float-panel-wrp,
-.bilibili-player.mode-miniscreen[class*='mode-']
-  .bilibili-player-area
-  .bilibili-player-video-control,
-.bilibili-player.mode-miniscreen[class*='mode-']
-  .bilibili-player-area
-  .bilibili-player-video-control-mask,
-.bilibili-player.mode-miniscreen[class*='mode-']
-  .bilibili-player-area
-  .bilibili-player-video-wrap
-  .bilibili-player-video-float-lastplay,
-.bilibili-player.mode-miniscreen[class*='mode-']
-  .bilibili-player-area
-  .bilibili-player-video-wrap
-  .bilibili-player-video-float-movie-wrp,
-.bilibili-player.mode-miniscreen[class*='mode-']
-  .bilibili-player-area
-  .bilibili-player-video-wrap
-  .bilibili-player-video-float-panel-wrp {
+// 强制显示控制栏
+.bilibili-player-video-control {
   display: flex !important;
 }

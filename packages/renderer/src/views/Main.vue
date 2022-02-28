@@ -47,17 +47,15 @@
       showTopBar.value = false
       lastStatus.value = 'OUT'
     }
-    watch(
-      () => autoHideBar.value,
-      (value) => {
-        if (value) {
-          timeout.value = setInterval(Fn, 200)
-          return
-        }
-        clearInterval(timeout.value)
-        showTopBar.value = true
-      },
-    )
+    watchEffect(() => {
+      window.app.logger.debug('watchEffect - autoHideBar', { label: 'Main.vue' })
+      if (autoHideBar.value) {
+        timeout.value = setInterval(Fn, 200)
+        return
+      }
+      clearInterval(timeout.value)
+      showTopBar.value = true
+    })
   }
 
   const loadWindowSize = () => {

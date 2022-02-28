@@ -9,19 +9,12 @@
   const historyStore = useHistoryStore()
   const _webview = ref()
   const preload = window.app.preload
+  const webview = computed(() => appStore.webview)
 
   // NProgress Configuration
-  NProgress.configure({ easing: 'ease', speed: 400, showSpinner: false })
+  NProgress.configure({ easing: 'ease', speed: 200, trickleSpeed: 50, showSpinner: false })
 
-  onMounted(() => {
-    appStore.webview = _webview.value
-
-    const webview = computed(() => appStore.webview)
-
-    webview.value.addEventListener('new-window', ({ url }) => {
-      appStore.go(url)
-    })
-
+  const setListeners = () => {
     let lastVid: string
     let lastLoadedUrl: string
 
@@ -55,6 +48,16 @@
     webview.value.addEventListener('did-stop-loading', () => {
       NProgress.done()
     })
+
+    webview.value.addEventListener('new-window', ({ url }) => {
+      appStore.go(url)
+    })
+  }
+
+  onMounted(() => {
+    appStore.webview = _webview.value
+
+    setListeners()
 
     // 收到选p消息时跳p
     ipc.on('select-part', (ev, pid) => {

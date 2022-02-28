@@ -2,26 +2,18 @@ import { is, addStyle } from './utils'
 import { search, adblock, video, home } from './modules'
 import { ipcRenderer } from 'electron'
 
-declare global {
-  interface Window {
-    EmbedPlayer: any
-  }
-}
-
-const location = window.location
-const simpleHref = location.origin + location.pathname
-
-const liveId = /\/\/live\.bilibili\.com\/(\d+)/.exec(simpleHref)
-if (liveId) {
-  location.href = `https://live.bilibili.com/blanc/${liveId[1]}?liteVersion=true`
-}
-
 const applyScript = () => {
+  const location = window.location
+  const simpleHref = location.hostname + location.pathname
+  const liveId = /live\.bilibili\.com\/(\d+)/.exec(simpleHref)
+  if (liveId) {
+    location.href = `https://live.bilibili.com/blanc/${liveId[1]}?liteVersion=true`
+  }
   // 脚本开始
   console.log('脚本注入成功！！！')
   adblock.start()
   // 普通视频页：自动最大化播放器
-  if (is.video(location.pathname)) {
+  if (is.video(simpleHref)) {
     video.start()
   }
   // 动态页重做样式
@@ -37,31 +29,24 @@ const applyScript = () => {
 
   // 直播使用桌面版 HTML5 直播播放器
   else if (is.live(simpleHref)) {
-    // 通过查询 HTML5 播放器 DIV 来判断页面加载
-    if (document.querySelector('.bp-no-flash-tips')) {
-      // 切换 HTML5 播放器
-      window.EmbedPlayer.loader()
-    } else {
-      // 全屏播放器并隐藏聊天栏
-      document.getElementsByTagName('body')[0].classList.add('player-full-win', 'hide-aside-area')
-      addStyle(
-        // 隐藏聊天栏显示按钮
-        '.web-player-icon-roomStatus,.aside-area-toggle-btn{display: none!important}' +
-          // 隐藏全屏播放器（在某些情况下会出现）的滚动条
-          'body{overflow: hidden;}' +
-          // 移除看板娘
-          '#my-dear-haruna-vm{display: none!important}' +
-          // 移除问题反馈
-          '.web-player-icon-feedback{display: none!important}' +
-          '#sidebar-vm{display: none!important}',
-      )
-    }
+    document.getElementsByTagName('body')[0].classList.add('player-full-win', 'hide-aside-area')
+    addStyle(
+      // 隐藏聊天栏显示按钮
+      '.web-player-icon-roomStatus,.aside-area-toggle-btn{display: none!important}' +
+        // 隐藏全屏播放器（在某些情况下会出现）的滚动条
+        'body{overflow: hidden;}' +
+        // 移除看板娘
+        '#my-dear-haruna-vm{display: none!important}' +
+        // 移除问题反馈
+        '.web-player-icon-feedback{display: none!important}' +
+        '#sidebar-vm{display: none!important}',
+    )
   } else if (is.login(simpleHref)) {
     addStyle(
       'body{overflow:hidden}#internationalHeader,.international-footer,.top-banner,.qrcode-tips,.title-line,.app-link{display: none!important}',
     )
     document.title = '登录'
-  } else if (is.search(location.href)) {
+  } else if (is.search(simpleHref + location.search)) {
     search.start()
   } else if (is.home(simpleHref)) {
     home.start()
