@@ -30,6 +30,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@antfu/utils@npm:^0.5.0":
+  version: 0.5.0
+  resolution: "@antfu/utils@npm:0.5.0::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2F%40antfu%2Futils%2F-%2Futils-0.5.0.tgz"
+  checksum: a5b39b556fe9e53fbc985235ea429badbacc3cd2932cce64dfe8b843b19778f0dec34db3c0d101d2364670eeacbb2bf1858149803b2eb7315cfe55737a58c9e6
+  languageName: node
+  linkType: hard
+
 "@babel/code-frame@npm:^7.0.0, @babel/code-frame@npm:^7.16.7":
   version: 7.16.7
   resolution: "@babel/code-frame@npm:7.16.7"
@@ -1690,7 +1697,10 @@ __metadata:
     postcss-less: ^6.0.0
     prettier: ^2.5.1
     typescript: ^4.5.5
+    unplugin-auto-import: ^0.6.1
     vite: ^2.8.4
+    vite-plugin-optimize-persist: ^0.1.2
+    vite-plugin-package-config: ^0.1.1
     vite-plugin-resolve: ^1.4.4
     vite-plugin-windicss: ^1.7.1
     vue: ^3.2.31
@@ -4491,6 +4501,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"local-pkg@npm:^0.4.1":
+  version: 0.4.1
+  resolution: "local-pkg@npm:0.4.1::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Flocal-pkg%2F-%2Flocal-pkg-0.4.1.tgz"
+  checksum: 4ab3b4853ffbc3b292a3ae2e22618dbc348418a2ebf60ada55fdcc5a8583f9167c89fc7977194ffa39d0a4c5078f9c421d246afdd252fea7a840f7a8f3b5f96b
+  languageName: node
+  linkType: hard
+
 "locate-path@npm:^5.0.0":
   version: 5.0.0
   resolution: "locate-path@npm:5.0.0"
@@ -6491,6 +6508,48 @@ __metadata:
   languageName: node
   linkType: hard
 
+"unplugin-auto-import@npm:^0.6.1":
+  version: 0.6.1
+  resolution: "unplugin-auto-import@npm:0.6.1::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Funplugin-auto-import%2F-%2Funplugin-auto-import-0.6.1.tgz"
+  dependencies:
+    "@antfu/utils": ^0.5.0
+    "@rollup/pluginutils": ^4.1.2
+    local-pkg: ^0.4.1
+    magic-string: ^0.25.7
+    resolve: ^1.22.0
+    unplugin: ^0.3.2
+  peerDependencies:
+    "@vueuse/core": "*"
+  peerDependenciesMeta:
+    "@vueuse/core":
+      optional: true
+  checksum: 6941b8e3ebf2dfc6d1ef8a26d7dd537aaf9ff56435b3ef67571a08b3fa4ef955a57bf57e8df7737c6d68b05c3a6c9356ec1793724e90cdf0aa3207bc7338f3e3
+  languageName: node
+  linkType: hard
+
+"unplugin@npm:^0.3.2":
+  version: 0.3.2
+  resolution: "unplugin@npm:0.3.2::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Funplugin%2F-%2Funplugin-0.3.2.tgz"
+  dependencies:
+    webpack-virtual-modules: ^0.4.3
+  peerDependencies:
+    esbuild: ">=0.13"
+    rollup: ^2.50.0
+    vite: ^2.3.0
+    webpack: 4 || 5
+  peerDependenciesMeta:
+    esbuild:
+      optional: true
+    rollup:
+      optional: true
+    vite:
+      optional: true
+    webpack:
+      optional: true
+  checksum: 2f24c04356ec134125822d6def1766f1f00671e93741b6e1961e6f4bbd08ff947fd0862eb14ba50e5d1990fbd7f6a8fb042437b15b8d4441e60f9d213d098512
+  languageName: node
+  linkType: hard
+
 "unzip-crx-3@npm:^0.2.0":
   version: 0.2.0
   resolution: "unzip-crx-3@npm:0.2.0"
@@ -6588,6 +6647,30 @@ __metadata:
     core-util-is: 1.0.2
     extsprintf: ^1.2.0
   checksum: 690a8d6ad5a4001672290e9719e3107c86269bc45fe19f844758eecf502e59f8aa9631b19b839f6d3dea562334884d22d1eb95ae7c863032075a9212c889e116
+  languageName: node
+  linkType: hard
+
+"vite-plugin-optimize-persist@npm:^0.1.2":
+  version: 0.1.2
+  resolution: "vite-plugin-optimize-persist@npm:0.1.2::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Fvite-plugin-optimize-persist%2F-%2Fvite-plugin-optimize-persist-0.1.2.tgz"
+  dependencies:
+    debug: ^4.3.2
+    fs-extra: ^10.0.0
+  peerDependencies:
+    vite: ^2.0.0
+    vite-plugin-package-config: ^0.1.0
+  checksum: b5f0009d7a54d55b155b8c21d9e2a04d88c16da7da8b514652d6bbf04b412818594f812ad6035089731cf28e7cfa0307b2ac55912025f72d56bd1eabf6b7a6ed
+  languageName: node
+  linkType: hard
+
+"vite-plugin-package-config@npm:^0.1.1":
+  version: 0.1.1
+  resolution: "vite-plugin-package-config@npm:0.1.1::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Fvite-plugin-package-config%2F-%2Fvite-plugin-package-config-0.1.1.tgz"
+  dependencies:
+    debug: ^4.3.3
+  peerDependencies:
+    vite: ^2.0.0
+  checksum: 7d9524c1371d5aed97ffef4069abd63dd714dfdb115500a5f05af785dd393aba519e2d1c21992588aa663afbddbd3a57b0cf3c20fc69d082cc02fdbd355b913b
   languageName: node
   linkType: hard
 
@@ -6695,6 +6778,13 @@ __metadata:
     "@vue/server-renderer": 3.2.31
     "@vue/shared": 3.2.31
   checksum: 2d66b563e60ce01ff4872f425b1acaf9a9f9d36f48eb986c89962d9b324c6bf566868503811462317052273b53056bbc58be3ceb06ea39dff174bb0fa62db3a2
+  languageName: node
+  linkType: hard
+
+"webpack-virtual-modules@npm:^0.4.3":
+  version: 0.4.3
+  resolution: "webpack-virtual-modules@npm:0.4.3::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Fwebpack-virtual-modules%2F-%2Fwebpack-virtual-modules-0.4.3.tgz"
+  checksum: 158d30633e0d9be3cfcde10fe959b28df5d5adb1068e0f057fcfb10b0b16ede6c892eba438f6ced089c7c442087748c2fcd1e3f035e4e2dc6760517a8c227714
   languageName: node
   linkType: hard
 

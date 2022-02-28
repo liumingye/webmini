@@ -1,8 +1,6 @@
 <script setup lang="ts">
   import { webNav, liveUrlPrefix, videoUrlPrefix } from '@/utils/constant'
-  import { ref } from 'vue'
   import { useAppStore } from '@/store'
-  import { useRouter } from 'vue-router'
   import { resizeMainWindow } from '@/utils'
 
   const router = useRouter()

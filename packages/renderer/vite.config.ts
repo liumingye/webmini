@@ -1,31 +1,37 @@
-// import { builtinModules } from 'module'
-// import { defineConfig, Plugin } from 'vite'
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
-// import resolve from 'vite-plugin-resolve'
 import pkg from '../../package.json'
-import path from 'path'
+import { posix } from 'path'
 import vueJsx from '@vitejs/plugin-vue-jsx'
 import WindiCSS from 'vite-plugin-windicss'
+import OptimizationPersist from 'vite-plugin-optimize-persist'
+import PkgConfig from 'vite-plugin-package-config'
+import AutoImport from 'unplugin-auto-import/vite'
+// import { dirResolver, DirResolverHelper } from 'vite-auto-import-resolvers'
 
 // https://vitejs.dev/config/
 export default defineConfig({
   mode: process.env.NODE_ENV,
   root: __dirname,
   plugins: [
+    // 将包信息文件作为 vite 的配置文件之一，为 vite-plugin-optimize-persist 所用
+    PkgConfig(),
+    // 依赖预构建分析，提高大型项目性能
+    OptimizationPersist(),
+    // vue 官方插件，用来解析 sfc
     vue(),
+    // tsx 支持
     vueJsx(),
+    // windicss 插件
     WindiCSS(),
-    // resolveElectron(),
-    /**
-     * Here you can specify other modules
-     * 🚧 You have to make sure that your module is in `dependencies` and not in the` devDependencies`,
-     *    which will ensure that the electron-builder can package it correctly
-     * @example
-     * {
-     *   'electron-store': 'const Store = require("electron-store"); export default Store;',
-     * }
-     */
+    // api 自动按需引入
+    AutoImport({
+      dts: './src/auto-imports.d.ts',
+      imports: ['vue', 'pinia', 'vue-router'],
+      eslintrc: {
+        enabled: true,
+      },
+    }),
   ],
   base: './',
   build: {
@@ -44,13 +50,13 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, 'src'),
+      '@': posix.resolve(__dirname, 'src'),
     },
   },
   css: {
     preprocessorOptions: {
       less: {
-        additionalData: `@import "${path.resolve(
+        additionalData: `@import "${posix.resolve(
           __dirname,
           'src/assets/css/css-variables.less',
         )}";`,
@@ -58,76 +64,3 @@ export default defineConfig({
     },
   },
 })
-
-/**
- * For usage of Electron and NodeJS APIs in the Renderer process
- * @see https://github.com/caoxiemeihao/electron-vue-vite/issues/52
- */
-// function resolveElectron(resolves: Parameters<typeof resolve>[0] = {}): Plugin {
-//   const builtins = builtinModules.filter((t) => !t.startsWith("_"));
-
-//   /**
-//    * @see https://github.com/caoxiemeihao/vite-plugins/tree/main/packages/resolve#readme
-//    */
-//   return resolve({
-//     electron: electronExport(),
-//     ...builtinModulesExport(builtins),
-//     ...resolves,
-//   });
-
-//   function electronExport() {
-//     return `
-// /**
-//  * For all exported modules see https://www.electronjs.org/docs/latest/api/clipboard -> Renderer Process Modules
-//  */
-// const electron = require("electron");
-// const {
-//   clipboard,
-//   nativeImage,
-//   shell,
-//   contextBridge,
-//   crashReporter,
-//   ipcRenderer,
-//   webFrame,
-//   desktopCapturer,
-//   deprecate,
-// } = electron;
-
-// export {
-//   electron as default,
-//   clipboard,
-//   nativeImage,
-//   shell,
-//   contextBridge,
-//   crashReporter,
-//   ipcRenderer,
-//   webFrame,
-//   desktopCapturer,
-//   deprecate,
-// }
-// `;
-//   }
-
-//   function builtinModulesExport(modules: string[]) {
-//     return modules
-//       .map((moduleId) => {
-//         const nodeModule = require(moduleId);
-//         const requireModule = `const M = require("${moduleId}");`;
-//         const exportDefault = `export default M;`;
-//         const exportMembers =
-//           Object.keys(nodeModule)
-//             .map((attr) => `export const ${attr} = M.${attr}`)
-//             .join(";\n") + ";";
-//         const nodeModuleCode = `
-// ${requireModule}
-
-// ${exportDefault}
-
-// ${exportMembers}
-// `;
-
-//         return { [moduleId]: nodeModuleCode };
-//       })
-//       .reduce((memo, item) => Object.assign(memo, item), {});
-//   }
-// }

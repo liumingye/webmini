@@ -1,9 +1,7 @@
 <script setup lang="ts">
-  import { computed } from 'vue'
   import { useAppStore, useHistoryStore } from '@/store'
   import { resizeMainWindow } from '@/utils'
   import { START } from '@/utils/constant'
-  import { useRoute, useRouter } from 'vue-router'
 
   const ipc = window.ipcRenderer
   const appStore = useAppStore()

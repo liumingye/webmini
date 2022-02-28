@@ -4,10 +4,8 @@
   import WebView from '@/views/pages/WebView.vue'
 
   import { useAppStore } from '@/store'
-  import { ref, onMounted, computed, watch } from 'vue'
   import { currentWindowType } from '@/utils'
   import debounce from '@/utils/debounce'
-  import { useRoute } from 'vue-router'
 
   const appStore = useAppStore()
   const route = useRoute()
@@ -96,8 +94,10 @@
       // 解决full-reload后会重复绑定事件
       if (app.currentWindow.isDestroyed()) return
       app.logger.info('moved')
-      appStore.windowPosition = app.currentWindow.getPosition()
-      appStore.saveSelfToLocalStorage()
+      if (currentWindowType.value === 'mobile') {
+        appStore.windowPosition = app.currentWindow.getPosition()
+        appStore.saveSelfToLocalStorage()
+      }
       app.currentWindow.once('moved', moved)
     }, 500)
     app.currentWindow.once('resized', resized)

@@ -1,7 +1,7 @@
 /**
  * memory history
  */
-import { defineStore } from 'pinia'
+
 import { START } from '@/utils/constant'
 import {
   HistoryStateTypes,

@@ -1,10 +1,10 @@
 import { AppStateTypes } from './types'
-import { defineStore } from 'pinia'
 import { getVidWithP, getVid, getBvid, judgeUserAgent } from '@/utils'
 import { userAgent, videoUrlPrefix, liveUrlPrefix, bangumiUrlPrefix } from '@/utils/constant'
 import { useHistoryStore } from '@/store'
 
 const ipc = window.ipcRenderer
+
 let lastPush = 0
 let lastUrl: string
 

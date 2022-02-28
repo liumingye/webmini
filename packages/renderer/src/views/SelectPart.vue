@@ -1,6 +1,4 @@
 <script setup lang="ts">
-  import { computed, ref, nextTick } from 'vue'
-  import { toRaw } from '@vue/reactivity'
   import { useAppStore } from '@/store'
 
   const app = window.app

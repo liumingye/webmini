@@ -1,5 +1,4 @@
 <script setup lang="ts">
-  import { ref, onMounted, computed } from 'vue'
   import { useAppStore, useHistoryStore } from '@/store'
   import { resizeMainWindow, getVid, getPartOfBangumi, getPartOfVideo } from '@/utils'
   import { userAgent, START } from '@/utils/constant'
