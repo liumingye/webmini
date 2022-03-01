@@ -1,4 +1,4 @@
-import { app, ipcMain, Menu } from 'electron'
+import { app, ipcMain, Menu, BrowserWindow } from 'electron'
 import { MainWindow } from './windows/main'
 import { SelectPartWindow } from './windows/selectPart'
 import { isMacintosh } from '../common/platform'
@@ -29,6 +29,11 @@ export class Application {
       if (!isMacintosh) app.quit()
     })
 
+    await app.whenReady()
+
+    this.createAllWindow()
+    Menu.setApplicationMenu(getMainMenu())
+
     ipcMain.on('close-main-window', () => {
       if (isMacintosh) {
         this.mainWindow?.win.close()
@@ -38,11 +43,9 @@ export class Application {
       }
     })
 
-    await app.whenReady()
-
-    this.createAllWindow()
-
-    Menu.setApplicationMenu(getMainMenu())
+    ipcMain.on('menuMainPopup', () => {
+      getMainMenu().popup()
+    })
   }
 
   private getAllWindowID = () => {
@@ -90,5 +93,47 @@ export class Application {
       return selectPartWindow
     }
     return this.selectPartWindow
+  }
+
+  public relaunchApp = () => {
+    const relaunchOptions = {
+      execPath: process.execPath,
+      args: process.argv,
+    }
+    /**
+     * Fix for AppImage on Linux.
+     */
+    if (process.env.APPIMAGE) {
+      relaunchOptions.execPath = process.env.APPIMAGE
+      relaunchOptions.args.unshift('--appimage-extract-and-run')
+    }
+    app.relaunch(relaunchOptions)
+    app.exit()
+  }
+
+  public getFocusedWindow = () => {
+    return BrowserWindow.getFocusedWindow() ?? BrowserWindow.getAllWindows()[0]
+  }
+
+  public clearAllUserData = (): void => {
+    const { webContents } = this.getFocusedWindow()
+    webContents.session.flushStorageData()
+    webContents.session.clearStorageData()
+    this.relaunchApp()
+  }
+
+  /**
+   * Removes directories containing leveldb databases.
+   * Each directory is reinitialized after re-launching the application.
+   */
+  public clearSensitiveDirectories = (restart = true): void => {
+    const { webContents } = this.getFocusedWindow()
+    webContents.session.flushStorageData()
+    webContents.session.clearStorageData({
+      storages: ['appcache', 'cachestorage', 'serviceworkers', 'shadercache', 'indexdb', 'websql'],
+    })
+    if (restart) {
+      this.relaunchApp()
+    }
   }
 }

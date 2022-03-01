@@ -78,6 +78,19 @@ export const getMainMenu = () => {
       role: 'help',
       submenu: [
         {
+          label: '清理缓存',
+          click() {
+            application.clearSensitiveDirectories()
+          },
+        },
+        {
+          label: '重置应用',
+          click() {
+            application.clearAllUserData()
+          },
+        },
+        { type: 'separator' },
+        {
           label: '报告问题',
           click() {
             shell.openExternal('https://github.com/liumingye/bilimini/issues')

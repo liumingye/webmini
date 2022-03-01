@@ -1,7 +1,6 @@
 import { app, autoUpdater, dialog } from 'electron'
 import ms from 'ms'
 import os from 'os'
-import { format } from 'util'
 import pkg from '../../../package.json'
 
 declare namespace updateElectronApp {
@@ -40,7 +39,7 @@ declare namespace updateElectronApp {
   }
 }
 
-const userAgent = format('%s/%s (%s: %s)', pkg.name, pkg.version, os.platform(), os.arch())
+const userAgent = `${pkg.name}/${pkg.version} (${os.platform()}: ${os.arch()})`
 const supportedPlatforms = ['darwin', 'win32']
 
 const updater = <L = updateElectronApp.ILogger>(

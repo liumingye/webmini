@@ -15,7 +15,7 @@ export const resizeMainWindow = (windowType?: windowType) => {
     if (
       /\/\/(www|m)\.bilibili\.com\/(video\/(av|BV)|bangumi\/play\/)/.test(url) ||
       /\/\/live\.bilibili\.com\/(blanc|h5)\/\d+/.test(url) ||
-      /\/\/(m\.|)v\.qq\.com\/x\/(cover\/|m\/play)/.test(url)
+      /\/\/(m\.|)v\.qq\.com(.*?)(\/cover|\/play)/.test(url)
     ) {
       targetWindowType.value = 'mini'
     } else if (url.indexOf('//passport.bilibili.com/login') >= 0) {

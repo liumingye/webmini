@@ -97,11 +97,20 @@ export const useAppStore = defineStore('app', {
       // test
       // https://v.qq.com/x/cover/pld2wqk8kq044nv/r0035yfoa2m.html
       // https://m.v.qq.com/x/m/play?cid=u496ep9wpw4rkno&vid=
-      const vqq = /^\/x\/(m\/play\?cid=|cover\/)(\w+)(\.|&|\/)/.exec(_URL.pathname + _URL.search)
-      if (vqq && vqq.length > 2) {
-        if (vqq[1] === 'm/play?cid=') {
+      // https://m.v.qq.com/cover/m/mzc00200jtxd9ap.html?vid=d0042iplesm
+      // https://m.v.qq.com/x/play.html?cid=od1kjfd56e3s7n7
+      const vqq = /(=|\/)([A-Za-z0-9]{15})(.*?)([A-Za-z0-9]{11}|)/g.exec(
+        _URL.pathname + _URL.search,
+      )
+      window.app.logger.debug(vqq)
+      if (vqq && vqq.length >= 3) {
+        if (_URL.hostname !== 'v.qq.com') {
           historyStore.pop()
-          this.webview.loadURL(`https://v.qq.com/x/cover/${vqq[2]}.html`, {
+          const id = ref(vqq[2])
+          if (vqq[4] !== '') {
+            id.value += `/${vqq[4]}`
+          }
+          this.webview.loadURL(`https://v.qq.com/x/cover/${id.value}.html`, {
             userAgent: userAgent.desktop,
           })
         }
