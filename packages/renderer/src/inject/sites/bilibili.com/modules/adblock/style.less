@@ -9,9 +9,8 @@
   display: none !important;
 }
 // pc
+// https://github.com/RisesunStudios/Bilibili-Evolved/blob/airborne/src/utils/remove-promotions/remove-promotions.css
 #slide_ad,
-.v-wrap .vcd,
-.ad-report,
 #home_popularize .l-con,
 #home_popularize .adpos,
 .gg-floor-module,
@@ -26,19 +25,15 @@
 #reportFirst2 .extension,
 .video-page-special-card,
 .mascot,
-.rank-container .cm-module,
 body:not(.preserve-event-banner) .activity-m,
 body.remove-game-match-module .bili-wrapper > .home-match,
-body.remove-game-match-module #reportFirst3,
-.home-content .ad-panel,
-.recommend-list .rec-list > :not(.video-page-card),
-.eva-extension-area,
-.eva-banner {
+body.remove-game-match-module #reportFirst3 {
   display: none !important;
 }
-.recommend-list .rec-list > :not(.video-page-card) + .video-page-card {
-  padding-top: 0 !important;
-}
+/* .carousel-module .panel .pic li[data-id='0']
+{
+    visibility: hidden !important;
+} */
 #home_popularize {
   position: relative !important;
 }
@@ -56,23 +51,4 @@ body.remove-game-match-module #reportFirst3,
 #reportFirst2 {
   position: relative;
   margin-bottom: 4px;
-}
-.blocked-ads {
-  width: 440px;
-  height: 220px;
-  display: flex;
-  color: #888;
-  background-color: #8882;
-  font-size: 24pt;
-  font-weight: bold;
-  align-items: center;
-  justify-content: space-evenly;
-}
-.blocked-ads.new {
-  width: 100%;
-  height: 100%;
-  background-color: #eee;
-}
-body.dark .blocked-ads.new {
-  background-color: #333;
 }

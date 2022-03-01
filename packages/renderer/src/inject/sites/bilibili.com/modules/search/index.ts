@@ -1,4 +1,4 @@
-import { addStyle } from '../../utils'
+import { addStyle } from '@/utils'
 import style from './style.less?inline'
 
 let unloadStyle: () => void

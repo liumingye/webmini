@@ -21,7 +21,7 @@ export const webNav = {
     },
     {
       name: '排行榜',
-      url: 'https://www.bilibili.com/v/popular/rank/all',
+      url: 'https://m.bilibili.com/ranking',
     },
     {
       name: '动态',

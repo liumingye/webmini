@@ -1,9 +1,16 @@
 import { builtinModules } from 'module'
 import { defineConfig } from 'vite'
+import { posix } from 'path'
 import pkg from '../../../../package.json'
 
 export default defineConfig({
   root: __dirname,
+  base: './',
+  resolve: {
+    alias: {
+      '@': posix.resolve(__dirname, './'),
+    },
+  },
   build: {
     outDir: '../../../../dist/inject',
     lib: {

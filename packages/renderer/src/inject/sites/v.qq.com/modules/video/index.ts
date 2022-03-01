@@ -1,4 +1,4 @@
-import { addStyle, whenDom } from '../../utils'
+import { addStyle, whenDom } from '@/utils'
 import { ipcRenderer } from 'electron'
 import style from './style.less?inline'
 
@@ -58,7 +58,7 @@ const module = {
       )
     })
     // 预先加载全屏样式
-    document.body.classList.add('player-mode-webfullscreen', 'player-fullscreen-fix')
+    document.documentElement.classList.add('txp_html_fullscreen', 'txp_html_barrage_on')
     const styleEntry = addStyle(style)
     unloadStyle = styleEntry.unload
   },
@@ -66,7 +66,7 @@ const module = {
   stop: () => {
     // 断开 observer
     abortPromise && abortPromise()
-    document.body.classList.remove('player-mode-webfullscreen', 'player-fullscreen-fix')
+    document.documentElement.classList.remove('txp_html_fullscreen', 'txp_html_barrage_on')
     unloadStyle && unloadStyle()
   },
 }
