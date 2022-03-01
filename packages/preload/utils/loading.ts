@@ -4,7 +4,7 @@
  * https://projects.lukehaas.me/css-loaders
  * https://matejkustec.github.io/SpinThatShit
  */
-export function useLoading() {
+export default () => {
   const className = `loaders-css__square-spin`
   const styleContent = `
 @keyframes square-spin {

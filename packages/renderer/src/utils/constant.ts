@@ -1,4 +1,5 @@
 export const START = 'https://m.bilibili.com/'
+// export const START = 'http://m.v.qq.com/'
 export const userAgent = {
   desktop:
     'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.3 Safari/605.1.15',
@@ -37,6 +38,10 @@ export const webNav = {
     {
       name: '历史',
       url: 'https://www.bilibili.com/account/history',
+    },
+    {
+      name: '稍后再看',
+      url: 'https://www.bilibili.com/watchlater/#/list',
     },
     {
       name: '创作中心',

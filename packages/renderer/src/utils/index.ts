@@ -14,7 +14,8 @@ export const resizeMainWindow = (windowType?: windowType) => {
     const url = appStore.webview.getURL()
     if (
       /\/\/(www|m)\.bilibili\.com\/(video\/(av|BV)|bangumi\/play\/)/.test(url) ||
-      /\/\/live\.bilibili\.com\/(blanc|h5)\/\d+/.test(url)
+      /\/\/live\.bilibili\.com\/(blanc|h5)\/\d+/.test(url) ||
+      /\/\/(m\.|)v\.qq\.com\/x\/(cover\/|m\/play)/.test(url)
     ) {
       targetWindowType.value = 'mini'
     } else if (url.indexOf('//passport.bilibili.com/login') >= 0) {
@@ -215,6 +216,14 @@ export const judgeUserAgent = (url: string) => {
       'h.bilibili.com/ywh/h5',
       't.bilibili.com',
     ]
+    for (let i = 0; i < map.length; i++) {
+      const completeURL = _URL.hostname + _URL.pathname
+      if (completeURL.indexOf(map[i]) >= 0) {
+        return userAgent.mobile
+      }
+    }
+  } else if (_URL.hostname.indexOf('.qq.com') >= 0) {
+    const map = ['m.v.qq.com', 'm.film.qq.com']
     for (let i = 0; i < map.length; i++) {
       const completeURL = _URL.hostname + _URL.pathname
       if (completeURL.indexOf(map[i]) >= 0) {

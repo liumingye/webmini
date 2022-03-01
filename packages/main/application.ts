@@ -57,6 +57,7 @@ export class Application {
   }
 
   private sendWindowID = () => {
+    console.debug('sendWindowID')
     const windowID = this.getAllWindowID()
     this.mainWindow?.send('windowID', windowID)
     this.selectPartWindow?.send('windowID', windowID)
@@ -71,7 +72,7 @@ export class Application {
   private createMainWindow = () => {
     if (!this.mainWindow || this.mainWindow.isDestroyed()) {
       const mainWindow = new MainWindow()
-      mainWindow.webContents.once('dom-ready', () => {
+      mainWindow.webContents.on('dom-ready', () => {
         this.sendWindowID()
       })
       return mainWindow
@@ -83,7 +84,7 @@ export class Application {
   private createSelectPartWindow = () => {
     if (!this.selectPartWindow || this.selectPartWindow.isDestroyed()) {
       const selectPartWindow = new SelectPartWindow()
-      selectPartWindow.webContents.once('dom-ready', () => {
+      selectPartWindow.webContents.on('dom-ready', () => {
         this.sendWindowID()
       })
       return selectPartWindow

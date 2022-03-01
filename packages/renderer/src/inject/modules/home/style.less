@@ -1,4 +1,3 @@
-// other
 body {
   .m-head {
     height: 100vh;
@@ -8,19 +7,47 @@ body {
       position: relative;
       .m-navbar {
         background: #fb7299;
-        .logo i {
-          color: #fff;
+        .right {
+          display: flex;
+          justify-content: space-between;
+          flex-direction: row-reverse;
+          width: 100%;
+          .face {
+            z-index: 1;
+          }
+          .search {
+            z-index: 1;
+            margin-top: 0;
+            margin-right: 2vw;
+            i {
+              color: #fff;
+            }
+          }
         }
-        .search {
-          margin-top: 0;
+        .logo {
+          position: absolute;
+          width: 100%;
+          left: 0;
+          text-align: center;
           i {
             color: #fff;
           }
         }
       }
     }
+    .m-channel-view {
+      margin-top: 10.73333vw;
+      .channel-page,
+      .sub-channel-page {
+        margin-top: -10.73333vw;
+      }
+    }
     > div:last-child {
       overflow-y: auto;
     }
+  }
+  .m-home-no-more,
+  .m-footer {
+    display: none;
   }
 }

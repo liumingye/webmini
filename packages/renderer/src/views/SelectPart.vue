@@ -23,9 +23,9 @@
     app.currentWindow.hide()
   }
   // 当前part滚动到可视范围
-  const scrollIntoView = () => {
+  const scrollIntoView = (animation?: boolean) => {
     document.querySelector('.current-ep')?.scrollIntoView({
-      behavior: 'auto',
+      behavior: animation ? 'smooth' : 'auto',
       block: 'center',
     })
   }
@@ -67,10 +67,17 @@
 
 <template>
   <div id="selectPart">
-    <b-button class="absolute top-3 right-3" @click="closeWindow">
-      <icon-close-small />
-    </b-button>
-    <div class="drag pl-3 h-12 leading-12 font-bold mr-10">视频分Part</div>
+    <header class="flex px-3 h-12 leading-12">
+      <div class="drag flex-1 font-bold">视频分Part</div>
+      <div class="flex self-center gap-2">
+        <b-button @click="scrollIntoView(true)">
+          <icon-target-two />
+        </b-button>
+        <b-button @click="closeWindow">
+          <icon-close-small />
+        </b-button>
+      </div>
+    </header>
     <div class="overflow-y-auto px-2 mb-2">
       <div
         v-for="(title, index) in partList"

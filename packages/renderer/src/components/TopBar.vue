@@ -43,6 +43,10 @@
 
   const tempStore: Record<string, any> = {}
 
+  const minimize = () => {
+    window.app.currentWindow.minimize()
+  }
+
   const isHome = () => {
     if (router.currentRoute.value.name === 'Home') {
       return true
@@ -178,7 +182,7 @@
       <b-button title="关于" @click="showAbout">
         <icon-help />
       </b-button>
-      <b-button title="退出" @click="turnOff">
+      <b-button title="退出" @click="turnOff" @click.right="minimize">
         <icon-close-small />
       </b-button>
     </div>

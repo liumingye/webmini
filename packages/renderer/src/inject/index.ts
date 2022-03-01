@@ -1,5 +1,5 @@
 import { is, addStyle } from './utils'
-import { search, adblock, video, home } from './modules'
+import { search, adblock, video, home, live } from './modules'
 import { ipcRenderer } from 'electron'
 
 const applyScript = () => {
@@ -29,18 +29,7 @@ const applyScript = () => {
 
   // 直播使用桌面版 HTML5 直播播放器
   else if (is.live(simpleHref)) {
-    document.getElementsByTagName('body')[0].classList.add('player-full-win', 'hide-aside-area')
-    addStyle(
-      // 隐藏聊天栏显示按钮
-      '.web-player-icon-roomStatus,.aside-area-toggle-btn{display: none!important}' +
-        // 隐藏全屏播放器（在某些情况下会出现）的滚动条
-        'body{overflow: hidden;}' +
-        // 移除看板娘
-        '#my-dear-haruna-vm{display: none!important}' +
-        // 移除问题反馈
-        '.web-player-icon-feedback{display: none!important}' +
-        '#sidebar-vm{display: none!important}',
-    )
+    live.start()
   } else if (is.login(simpleHref)) {
     addStyle(
       'body{overflow:hidden}#internationalHeader,.international-footer,.top-banner,.qrcode-tips,.title-line,.app-link{display: none!important}',

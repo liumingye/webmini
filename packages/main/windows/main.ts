@@ -18,7 +18,7 @@ export class MainWindow extends CommonWindow {
         webviewTag: true,
         preload: join(__dirname, '../preload/index.cjs'), // 预先加载指定的脚本
         nativeWindowOpen: false,
-        webSecurity: false,
+        // webSecurity: false,
       },
     })
 

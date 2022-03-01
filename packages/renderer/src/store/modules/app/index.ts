@@ -65,7 +65,8 @@ export const useAppStore = defineStore('app', {
       const vid = getVidWithP(_URL.pathname)
       if (vid) {
         if (_URL.hostname === 'm.bilibili.com') {
-          historyStore.replace(videoUrlPrefix + vid)
+          // historyStore.replace(videoUrlPrefix + vid)
+          historyStore.pop()
           this.webview.loadURL(videoUrlPrefix + vid, {
             userAgent: userAgent.desktop,
           })
@@ -82,12 +83,30 @@ export const useAppStore = defineStore('app', {
       const bvid = getBvid(_URL.pathname)
       if (bvid) {
         if (_URL.hostname === 'm.bilibili.com') {
-          historyStore.replace(bangumiUrlPrefix + bvid)
+          // historyStore.replace(bangumiUrlPrefix + bvid)
+          historyStore.pop()
           this.webview.loadURL(bangumiUrlPrefix + bvid, {
             userAgent: userAgent.desktop,
           })
         }
         this.disableDanmakuButton = false
+        this.autoHideBar = true
+        return
+      }
+
+      // test
+      // https://v.qq.com/x/cover/pld2wqk8kq044nv/r0035yfoa2m.html
+      // https://m.v.qq.com/x/m/play?cid=u496ep9wpw4rkno&vid=
+      const vqq = /^\/x\/(m\/play\?cid=|cover\/)(\w+)(\.|&|\/)/.exec(_URL.pathname + _URL.search)
+      if (vqq && vqq.length > 2) {
+        if (vqq[1] === 'm/play?cid=') {
+          historyStore.pop()
+          this.webview.loadURL(`https://v.qq.com/x/cover/${vqq[2]}.html`, {
+            userAgent: userAgent.desktop,
+          })
+        }
+        this.disableDanmakuButton = true
+        this.disablePartButton = true
         this.autoHideBar = true
         return
       }
@@ -99,7 +118,8 @@ export const useAppStore = defineStore('app', {
         const live = /^\/(h5\/||blanc\/)?(\d+).*/.exec(_URL.pathname)
         if (live) {
           if (live[1] === 'h5/') {
-            historyStore.replace(liveUrlPrefix + live[2])
+            // historyStore.replace(liveUrlPrefix + live[2])
+            historyStore.pop()
             this.webview.loadURL(liveUrlPrefix + live[2], {
               userAgent: userAgent.desktop,
             })
@@ -112,17 +132,6 @@ export const useAppStore = defineStore('app', {
 
       this.disableDanmakuButton = true
       this.autoHideBar = false
-
-      // 专栏页
-      if (url.indexOf('//www.bilibili.com/read/mobile') >= 0) {
-        if (url.indexOf('//www.bilibili.com/read/cv') >= 0) {
-          historyStore.replace(url)
-          this.webview.loadURL(url, {
-            userAgent: userAgent.mobile,
-          })
-        }
-        return
-      }
 
       // 登录页
       if (url.indexOf('//passport.bilibili.com/login') >= 0) {

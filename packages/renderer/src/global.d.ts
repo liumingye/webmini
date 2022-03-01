@@ -1,5 +1,5 @@
-import type Net from '../../preload/utils/net'
-import type Cookies from '../../preload/utils/cookies'
+import type Net from '../../preload/apis/net'
+import type Cookies from '../../preload/apis/cookies'
 import { Logger } from 'winston'
 
 declare global {

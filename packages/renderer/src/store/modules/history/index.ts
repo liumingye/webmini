@@ -94,6 +94,10 @@ export const useHistoryStore = defineStore('history', {
         this.queue = this.queue.slice(this.queue.length - this.limit)
       }
     },
+    pop() {
+      this.queue.pop()
+      this.position--
+    },
   },
   getters: {
     location(state) {
