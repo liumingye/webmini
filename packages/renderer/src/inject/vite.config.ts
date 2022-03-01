@@ -1,6 +1,6 @@
 import { builtinModules } from 'module'
 import { defineConfig } from 'vite'
-import { posix } from 'path'
+import { resolve } from 'path'
 import pkg from '../../../../package.json'
 
 export default defineConfig({
@@ -8,7 +8,7 @@ export default defineConfig({
   base: './',
   resolve: {
     alias: {
-      '@': posix.resolve(__dirname, './'),
+      '@': resolve(__dirname, './'),
     },
   },
   build: {

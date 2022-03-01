@@ -51,9 +51,22 @@ body {
   .see-you-app {
     display: none;
   }
+  // 排行榜
   .v-navbar__body {
     transition: none;
     background-color: #fb7299 !important;
     color: #fff !important;
+  }
+  .m-ranking {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    .rank-nav-box .v-switcher {
+      position: relative;
+      top: 0;
+    }
+    .list-view {
+      overflow-y: auto;
+    }
   }
 }

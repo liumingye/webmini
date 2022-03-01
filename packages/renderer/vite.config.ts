@@ -1,7 +1,7 @@
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import pkg from '../../package.json'
-import { posix } from 'path'
+import { resolve } from 'path'
 import vueJsx from '@vitejs/plugin-vue-jsx'
 import WindiCSS from 'vite-plugin-windicss'
 import OptimizationPersist from 'vite-plugin-optimize-persist'
@@ -50,16 +50,13 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      '@': posix.resolve(__dirname, 'src'),
+      '@': resolve(__dirname, './src'),
     },
   },
   css: {
     preprocessorOptions: {
       less: {
-        additionalData: `@import "${posix.resolve(
-          __dirname,
-          'src/assets/css/css-variables.less',
-        )}";`,
+        additionalData: `@import "${resolve(__dirname, './src/assets/css/css-variables.less')}";`,
       },
     },
   },
