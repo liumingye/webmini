@@ -42,10 +42,6 @@ export class Application {
         app.quit()
       }
     })
-
-    ipcMain.on('menuMainPopup', () => {
-      getMainMenu().popup()
-    })
   }
 
   private getAllWindowID = () => {

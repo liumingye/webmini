@@ -142,14 +142,10 @@
   const turnOff = () => {
     ipc.send('close-main-window')
   }
-
-  const menuMainPopup = () => {
-    ipc.send('menuMainPopup')
-  }
 </script>
 
 <template>
-  <div id="topbar" @click.right="menuMainPopup">
+  <div id="topbar">
     <div class="button-group">
       <b-button id="navi-back" title="后退" :disabled="disableBack" @click="goBack">
         <icon-left />
@@ -187,7 +183,7 @@
       <b-button title="关于" @click="showAbout">
         <icon-help />
       </b-button>
-      <b-button title="退出" @click="turnOff" @click.right.stop="minimize">
+      <b-button title="退出" @click="turnOff" @click.right="minimize">
         <icon-close-small />
       </b-button>
     </div>
