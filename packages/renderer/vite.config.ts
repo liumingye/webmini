@@ -7,6 +7,8 @@ import WindiCSS from 'vite-plugin-windicss'
 import OptimizationPersist from 'vite-plugin-optimize-persist'
 import PkgConfig from 'vite-plugin-package-config'
 import AutoImport from 'unplugin-auto-import/vite'
+import Components from 'unplugin-vue-components/vite'
+import { ArcoResolver } from 'unplugin-vue-components/resolvers'
 // import { dirResolver, DirResolverHelper } from 'vite-auto-import-resolvers'
 
 // https://vitejs.dev/config/
@@ -20,6 +22,11 @@ export default defineConfig({
     OptimizationPersist(),
     // vue 官方插件，用来解析 sfc
     vue(),
+    // 按需加载
+    Components({
+      dts: './src/components.d.ts',
+      resolvers: [ArcoResolver({ importStyle: false })],
+    }),
     // tsx 支持
     vueJsx(),
     // windicss 插件

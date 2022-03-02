@@ -13,6 +13,18 @@ const routes: RouteRecordRaw[] = [
         component: () => import('@/views/pages/WebNav.vue'),
         meta: { title: '导航' },
       },
+      {
+        path: 'settings',
+        name: 'Settings',
+        component: () => import('@/views/pages/Settings.vue'),
+        meta: { title: '设置' },
+      },
+      {
+        path: 'about',
+        name: 'About',
+        component: () => import('@/views/pages/About.vue'),
+        meta: { title: '关于' },
+      },
     ],
   },
   {

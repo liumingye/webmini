@@ -2,11 +2,11 @@ import App from '@/App.vue'
 import store from '@/store'
 import router from '@/router'
 // windicss
-import 'virtual:windi-base.css'
-import 'virtual:windi-components.css'
-import 'virtual:windi-utilities.css'
+import 'virtual:windi.css'
 // nprogress
 import 'nprogress/nprogress.css'
+// arco-design
+import '@arco-design/web-vue/es/index.less'
 // global style
 import '@/assets/css/global.less'
 // UiComponents

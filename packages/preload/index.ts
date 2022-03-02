@@ -1,9 +1,10 @@
 import { contextBridge, ipcRenderer } from 'electron'
-import { getCurrentWindow, screen } from '@electron/remote'
+import { getCurrentWindow, screen, app } from '@electron/remote'
 import useLoading from './utils/loading'
 import domReady from './utils/domReady'
 import { logger, versions, cookies, net } from './apis'
 import { resolve } from 'path'
+import Storage from 'electron-json-storage'
 
 const { appendLoading, removeLoading } = useLoading()
 ;(async () => {
@@ -32,8 +33,10 @@ const withPrototype = (obj: Record<string, any>) => {
 contextBridge.exposeInMainWorld('removeLoading', removeLoading)
 contextBridge.exposeInMainWorld('ipcRenderer', withPrototype(ipcRenderer))
 
+Storage.setDataPath(app.getPath('userData'))
 const currentWindow = getCurrentWindow()
 contextBridge.exposeInMainWorld('app', {
+  storage: Storage,
   cookies: new cookies(),
   versions: new versions(),
   screen: withPrototype(screen),
@@ -47,6 +50,8 @@ contextBridge.exposeInMainWorld('app', {
     on: currentWindow.on,
     once: currentWindow.once,
     isDestroyed: currentWindow.isDestroyed,
+    isAlwaysOnTop: currentWindow.isAlwaysOnTop,
+    setAlwaysOnTop: currentWindow.setAlwaysOnTop,
   },
   net: new net(),
   logger: withPrototype(logger),

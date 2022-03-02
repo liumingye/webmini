@@ -1,4 +1,4 @@
-import { AppStateTypes } from './types'
+import { AppStateTypes, AppConfig } from './types'
 import { getVidWithP, getVid, getBvid, judgeUserAgent } from '@/utils'
 import { userAgent, videoUrlPrefix, liveUrlPrefix, bangumiUrlPrefix } from '@/utils/constant'
 import { useHistoryStore } from '@/store'
@@ -11,7 +11,7 @@ let lastUrl: string
 export const useAppStore = defineStore('app', {
   state: (): AppStateTypes => ({
     webview: null as unknown as Electron.WebviewTag,
-    windowPosition: null,
+    alwaysOnTop: 'on',
     title: '',
     windowSize: {
       mobile: [376, 500],
@@ -20,34 +20,46 @@ export const useAppStore = defineStore('app', {
       feed: [650, 760],
       login: [490, 394],
     },
-    showAbout: false,
     disablePartButton: true,
     disableDanmakuButton: true,
     autoHideBar: false,
     windowID: {},
   }),
   actions: {
-    loadSelfFromLocalStorage() {
-      const storage = localStorage.getItem('app')
-      if (!storage) return
-      try {
-        const map = new Map(JSON.parse(storage))
-        map.forEach((value, key) => {
+    init() {
+      const storage = window.app.storage
+      storage.get('config', (error, data) => {
+        if (error) {
+          // 读取出错删除配置文件
+          storage.remove('config', function (error) {
+            if (error) {
+              window.app.logger.error(error)
+              throw error
+            }
+          })
+          window.app.logger.error(error)
+          throw error
+        }
+        for (const key in data) {
           // @ts-ignore
-          this.$state[key] = value
-        })
-      } catch (e) {
-        localStorage.removeItem('app')
-      }
-    },
-    saveSelfToLocalStorage() {
-      const map = new Map()
-      const whiteList = ['windowPosition', 'windowSize']
-      whiteList.forEach((value) => {
-        // @ts-ignore
-        map.set(value, this[value])
+          this.$state[key] = data[key]
+        }
       })
-      localStorage.setItem('app', JSON.stringify(Array.from(map.entries())))
+    },
+    saveConfig<T extends keyof AppConfig>(key: T, value: AppConfig[T]) {
+      const storage = window.app.storage
+      storage.get('config', (error, data: any) => {
+        if (error) {
+          window.app.logger.error(error)
+          throw error
+        }
+        storage.set('config', { ...data, [key]: value }, (error: any) => {
+          if (error) {
+            window.app.logger.error(error)
+            throw error
+          }
+        })
+      })
     },
     updateURL(url: string) {
       if (lastUrl === url) return

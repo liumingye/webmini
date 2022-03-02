@@ -1,6 +1,6 @@
 export interface AppStateTypes {
   webview: Electron.WebviewTag
-  windowPosition: number[] | null
+  alwaysOnTop: 'on' | 'off' | 'playing'
   title: string
   windowSize: {
     mobile: number[]
@@ -9,9 +9,12 @@ export interface AppStateTypes {
     feed: number[]
     login: number[]
   }
-  showAbout: boolean
   disablePartButton: boolean
   disableDanmakuButton: boolean
   autoHideBar: boolean
   windowID: { mainWindow?: number; selectPartWindow?: number }
+}
+
+export interface AppConfig extends AppStateTypes {
+  windowPosition: number[]
 }

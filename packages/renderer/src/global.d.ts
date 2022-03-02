@@ -1,6 +1,8 @@
 import type Net from '../../preload/apis/net'
 import type Cookies from '../../preload/apis/cookies'
+import type Versions from '../../preload/apis/versions'
 import { Logger } from 'winston'
+import Storage from 'electron-json-storage'
 
 declare global {
   interface Window {
@@ -8,16 +10,9 @@ declare global {
     ipcRenderer: Electron.IpcRenderer
     removeLoading: () => void
     app: {
+      storage: typeof Storage
       cookies: Cookies
-      versions: {
-        App: string
-        'Vue.js': string
-        Electron: string
-        Chromium: string
-        'Node.js': string
-        V8: string
-        OS: string
-      }
+      versions: Versions
       screen: Electron.Screen
       preload: string
       cookie: string

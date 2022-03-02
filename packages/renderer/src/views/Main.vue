@@ -1,8 +1,9 @@
 <script setup lang="ts">
   import TopBar from '@/components/TopBar.vue'
-  import About from '@/components/About.vue'
+  // import About from '@/views/pages/About.vue'
   import WebView from '@/views/pages/WebView.vue'
 
+  import { WatchStopHandle } from 'vue'
   import { useAppStore } from '@/store'
   import { currentWindowType } from '@/utils'
   import debounce from '@/utils/debounce'
@@ -11,7 +12,6 @@
   const route = useRoute()
   const showTopBar = ref(true)
   const mounted = ref(false)
-  const showAbout = computed(() => appStore.showAbout)
   const autoHideBar = computed(() => appStore.autoHideBar)
 
   const app = window.app
@@ -48,7 +48,7 @@
       lastStatus.value = 'OUT'
     }
     watchEffect(() => {
-      window.app.logger.debug('watchEffect - autoHideBar', { label: 'Main.vue' })
+      app.logger.debug('watchEffect - autoHideBar', { label: 'Main.vue' })
       if (autoHideBar.value) {
         timeout.value = setInterval(Fn, 200)
         return
@@ -56,23 +56,6 @@
       clearInterval(timeout.value)
       showTopBar.value = true
     })
-  }
-
-  const loadWindowSize = () => {
-    // 恢复窗口尺寸和位置
-    const position: Record<string, number> = {}
-    if (appStore.windowPosition !== null) {
-      position.x = appStore.windowPosition[0]
-      position.y = appStore.windowPosition[1]
-    }
-    app.currentWindow.setBounds(
-      {
-        width: appStore.windowSize.mobile[0],
-        height: appStore.windowSize.mobile[1],
-        ...position,
-      },
-      false,
-    )
   }
 
   const saveWindowSize = () => {
@@ -84,7 +67,7 @@
       const newSize: number[] = [window.innerWidth, window.innerHeight]
       if (currentSize !== newSize) {
         appStore.windowSize[currentWindowType.value] = newSize
-        appStore.saveSelfToLocalStorage()
+        appStore.saveConfig('windowSize', toRaw(appStore.windowSize))
       }
       app.currentWindow.once('resized', resized)
     }, 500)
@@ -93,8 +76,7 @@
       if (app.currentWindow.isDestroyed()) return
       app.logger.info('moved')
       if (currentWindowType.value === 'mobile') {
-        appStore.windowPosition = app.currentWindow.getPosition()
-        appStore.saveSelfToLocalStorage()
+        appStore.saveConfig('windowPosition', app.currentWindow.getPosition())
       }
       app.currentWindow.once('moved', moved)
     }, 500)
@@ -102,12 +84,44 @@
     app.currentWindow.once('moved', moved)
   }
 
+  const watchAlwaysOnTop = () => {
+    let stopWatchWindowType: WatchStopHandle | null
+    watchEffect(() => {
+      if (stopWatchWindowType) {
+        stopWatchWindowType()
+        stopWatchWindowType = null
+      }
+      switch (appStore.alwaysOnTop) {
+        case 'on':
+          app.currentWindow.setAlwaysOnTop(true)
+          break
+        case 'off':
+          app.currentWindow.setAlwaysOnTop(false)
+          break
+        default:
+          app.currentWindow.setAlwaysOnTop(false)
+          stopWatchWindowType = watch(
+            () => currentWindowType.value,
+            (value) => {
+              // app.logger.debug(`currentWindowType - ${value}`)
+              if (value === 'mini') {
+                app.currentWindow.setAlwaysOnTop(true)
+                return
+              }
+              app.currentWindow.setAlwaysOnTop(false)
+            },
+          )
+          break
+      }
+    })
+  }
+
   onMounted(() => {
     mounted.value = true
 
-    loadWindowSize()
     saveWindowSize()
     initMouseStateDirtyCheck()
+    watchAlwaysOnTop()
 
     watch(
       () => route.name,
@@ -127,17 +141,16 @@
 </script>
 
 <template>
-  <div id="main" :class="['select-none', { showTopBar, showAbout, autoHideBar }]">
-    <keep-alive>
-      <About v-if="showAbout" />
-    </keep-alive>
+  <div id="main" :class="['select-none', { showTopBar, autoHideBar }]">
     <TopBar v-if="mounted" />
-    <router-view v-slot="{ Component }">
-      <keep-alive :include="[]">
-        <component :is="Component" class="overflow-x-none overflow-y-auto" />
-      </keep-alive>
-    </router-view>
-    <WebView v-show="route.name === 'Home'" />
+    <div class="relative h-full">
+      <router-view v-slot="{ Component }">
+        <!-- <keep-alive :include="[]"> -->
+        <component :is="Component" class="h-full overflow-x-none overflow-y-auto" />
+        <!-- </keep-alive> -->
+      </router-view>
+      <WebView v-show="route.name === 'Home'" />
+    </div>
   </div>
 </template>
 
@@ -147,7 +160,7 @@
     flex-direction: column;
     transition: all 0.2s ease;
     height: 100%;
-    margin-top: -36px;
+    margin-top: -32px;
 
     &.autoHideBar {
       display: block;
@@ -155,10 +168,6 @@
 
     &.showTopBar {
       margin-top: 0;
-    }
-
-    &.showAbout {
-      margin-top: 150px;
     }
   }
 </style>

@@ -1,9 +1,7 @@
 {
-  "extends": "../../tsconfig.json",
+  "extends": "../../../../tsconfig.json",
   "compilerOptions": {
     "useDefineForClassFields": true,
-    "resolveJsonModule": true,
-    "esModuleInterop": true,
     "lib": ["esnext", "dom"],
     "baseUrl": "./",
     "paths": {

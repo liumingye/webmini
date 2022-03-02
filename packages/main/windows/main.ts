@@ -3,12 +3,28 @@ import { BrowserWindow, app, shell } from 'electron'
 import { join } from 'path'
 import { URL } from '../../common/utils'
 import { isMacintosh } from '../../common/platform'
+import Storage from 'electron-json-storage'
 
 export class MainWindow extends CommonWindow {
   public constructor(window?: BrowserWindow) {
+    const bound: Record<string, number> = {}
+    const config: any = Storage.getSync('config')
+    const windowPosition = config['windowPosition']
+    if (windowPosition) {
+      bound.x = windowPosition[0]
+      bound.y = windowPosition[1]
+    }
+    const windowSize = config['windowSize']
+    if (windowSize && windowSize['mobile']) {
+      bound.width = windowSize['mobile'][0]
+      bound.height = windowSize['mobile'][1]
+    } else {
+      bound.width = 376
+      bound.height = 500
+    }
     window = new BrowserWindow({
-      width: 376,
-      height: 500,
+      ...bound,
+      // opacity: 0.5,
       minHeight: 170,
       minWidth: 300,
       frame: false, // 是否有边框
@@ -18,7 +34,6 @@ export class MainWindow extends CommonWindow {
         webviewTag: true,
         preload: join(__dirname, '../preload/index.cjs'), // 预先加载指定的脚本
         nativeWindowOpen: false,
-        // webSecurity: false,
       },
     })
 

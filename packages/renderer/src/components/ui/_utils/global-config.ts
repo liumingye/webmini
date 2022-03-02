@@ -1,5 +1,5 @@
-const COMPONENT_PREFIX = 'b-'
+const COMPONENT_PREFIX = 'b'
 
 export const getComponentPrefix = () => {
-  return COMPONENT_PREFIX
+  return `${COMPONENT_PREFIX}-`
 }

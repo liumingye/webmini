@@ -110,7 +110,7 @@
     display: flex;
     flex-direction: column;
     user-select: none;
-    background: @color-bg-pink;
+    background: @color-bg;
     color: #fff;
     height: 100%;
 

@@ -5,7 +5,7 @@
     Object.assign(appStore.windowID, items)
   })
   // Store Init
-  appStore.loadSelfFromLocalStorage()
+  appStore.init()
 </script>
 
 <template>

@@ -62,11 +62,11 @@ export const resizeMainWindow = (windowType?: windowType) => {
     x: leftTopPosition[0] + currentSize[0],
     y: leftTopPosition[1] + currentSize[1],
   }
-  const bounds: Partial<Electron.Rectangle> = {}
-  bounds.width = appStore.windowSize[targetWindowType.value][0]
-  bounds.height = appStore.windowSize[targetWindowType.value][1]
-  bounds.x = displayBounds.x + rightBottomPosition.x - bounds.width
-  bounds.y = displayBounds.y + rightBottomPosition.y - bounds.height
+  const width = appStore.windowSize[targetWindowType.value][0]
+  const height = appStore.windowSize[targetWindowType.value][1]
+  const x = displayBounds.x + rightBottomPosition.x - width
+  const y = displayBounds.y + rightBottomPosition.y - height
+  const bounds: Required<Electron.Rectangle> = { width, height, x, y }
   // 防止超出屏幕可视范围
   if (bounds.x < displayBounds.x) {
     bounds.x = displayBounds.x

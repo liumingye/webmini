@@ -6,6 +6,7 @@ import installExtension, { VUEJS3_DEVTOOLS } from 'electron-devtools-installer'
 import { isWindows } from '../common/platform'
 import { Application } from './application'
 import { isDev } from '../common/utils'
+import Storage from 'electron-json-storage'
 
 // Disable GPU Acceleration for Windows 7
 if (release().startsWith('6.1')) app.disableHardwareAcceleration()
@@ -21,8 +22,12 @@ if (!app.requestSingleInstanceLock()) {
 }
 
 app.whenReady().then(() => {
+  // set current data path
+  Storage.setDataPath(app.getPath('userData'))
+  // start app
   const application = Application.instance
   application.start()
+
   if (isDev) {
     installExtension(VUEJS3_DEVTOOLS.id)
       .then((name) => console.log(`Added Extension:  ${name}`))

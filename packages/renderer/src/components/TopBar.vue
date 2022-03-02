@@ -27,7 +27,7 @@
     return title
   }
 
-  const title = computed(() => replaceTitle(appStore.title))
+  const title = computed(() => replaceTitle(appStore.title) || 'bilimini')
 
   webview.value.addEventListener('page-title-updated', (event) => {
     appStore.title = event.title
@@ -122,21 +122,28 @@
     ipc.send('toggle-select-part-window')
   }
 
-  const showNav = () => {
+  // 保存一下状态
+  const saveStatus = () => {
     const is = isHome()
     if (is) {
-      // 临时保存一下状态
       tempStore['autoHideBar'] = appStore.autoHideBar
     }
-    router.push({
-      name: 'WebNav',
-    })
     resizeMainWindow('mobile')
     appStore.autoHideBar = false
   }
 
-  const showAbout = () => {
-    appStore.showAbout = !appStore.showAbout
+  const showNav = () => {
+    saveStatus()
+    router.push({
+      name: 'WebNav',
+    })
+  }
+
+  const showSettings = () => {
+    saveStatus()
+    router.push({
+      name: 'Settings',
+    })
   }
 
   const turnOff = () => {
@@ -145,89 +152,66 @@
 </script>
 
 <template>
-  <div id="topbar">
-    <div class="button-group">
-      <b-button id="navi-back" title="后退" :disabled="disableBack" @click="goBack">
-        <icon-left />
-      </b-button>
-      <b-button v-if="!disableForward" title="前进" @click="goForward">
-        <icon-right />
-      </b-button>
-      <b-button id="navi-home" title="返回首页" @click="naviGoHome">
-        <icon-home />
-      </b-button>
-    </div>
-    <div class="title">
+  <div id="topbar" class="gap-2 items-center">
+    <b-button id="navi-back" title="后退" :disabled="disableBack" @click="goBack">
+      <icon-left size=".9em" />
+    </b-button>
+    <b-button v-if="!disableForward" title="前进" @click="goForward">
+      <icon-right size=".9em" />
+    </b-button>
+    <b-button id="navi-home" title="返回首页" @click="naviGoHome">
+      <icon-home size=".8em" />
+    </b-button>
+    <div class="flex-1 truncate text-center text-$color-fill-1 text-0.9em">
       {{ title }}
     </div>
-    <div class="button-group">
-      <b-button
-        v-if="!disablePartButton && route.name === 'Home'"
-        id="app-part"
-        title="分P列表"
-        @click="toggleSelectPartWindow"
-      >
-        <span>P</span>
-      </b-button>
-      <b-button
-        v-if="!disableDanmakuButton && route.name === 'Home'"
-        id="app-danmaku"
-        title="开/关弹幕"
-        @click="toggleDanmaku"
-      >
-        <span>弹</span>
-      </b-button>
-      <b-button title="导航" :disabled="route.name === 'WebNav'" @click="showNav">
-        <icon-windmill />
-      </b-button>
-      <b-button title="关于" @click="showAbout">
-        <icon-help />
-      </b-button>
-      <b-button title="退出" @click="turnOff" @click.right="minimize">
-        <icon-close-small />
-      </b-button>
-    </div>
+    <b-button
+      v-if="!disablePartButton && route.name === 'Home'"
+      id="app-part"
+      title="分P列表"
+      @click="toggleSelectPartWindow"
+    >
+      <span>P</span>
+    </b-button>
+    <b-button
+      v-if="!disableDanmakuButton && route.name === 'Home'"
+      id="app-danmaku"
+      title="开/关弹幕"
+      @click="toggleDanmaku"
+    >
+      <span>弹</span>
+    </b-button>
+    <b-button title="导航" :disabled="route.name === 'WebNav'" @click="showNav">
+      <icon-windmill size=".8em" />
+    </b-button>
+    <b-button title="设置" :disabled="route.name === 'Settings'" @click="showSettings">
+      <icon-setting-two size=".8em" />
+    </b-button>
+    <b-button title="退出" @click="turnOff" @click.right="minimize">
+      <icon-close-small size=".8em" />
+    </b-button>
   </div>
 </template>
 
 <style lang="less" scoped>
   #topbar {
-    user-select: none;
     display: flex;
-    background: @color-bg-pink;
-    line-height: 36px;
-    height: 36px;
-    padding: 0 1em;
-    width: 100%;
+    background: @color-bg;
+    line-height: 32px;
+    height: 32px;
+    padding: 0 10px;
     -webkit-app-region: drag;
 
-    .title {
-      flex: 1;
-      padding: 0 10px;
-      overflow: hidden;
-      white-space: nowrap;
-      text-overflow: ellipsis;
-      color: @color-bg-white;
-      text-align: center;
-    }
-
-    .button-group {
-      grid-gap: 6px;
-      gap: 6px;
-      display: flex;
-      align-items: center;
-
-      #navi-back {
-        span {
-          :deep(svg) {
-            margin-left: -2px;
-          }
+    #navi-back {
+      span {
+        :deep(svg) {
+          margin-left: -1px;
         }
       }
-      #app-danmaku,
-      #app-part {
-        font-size: 10px;
-      }
+    }
+    #app-danmaku,
+    #app-part {
+      font-size: 10px;
     }
   }
 </style>

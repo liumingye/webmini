@@ -69,32 +69,27 @@
 </script>
 
 <template>
-  <div class="px-6 py-8 max-w-200 mx-auto">
-    <div class="flex self-center mb-8 bg-gray-100 h-14 px-8 rounded-full">
-      <input
-        v-model="naviGotoTarget"
-        type="text"
-        class="flex-1 bg-transparent mr-2"
-        placeholder="av号/BV号/lv直播/网址/关键词"
-        @keydown.enter="naviGoto"
-      />
-      <button @click="naviGoto">搜索</button>
-    </div>
-    <div class="flex flex-col">
-      <div v-for="(bigCat, key) in webNav" :key="key" class="flex mb-6">
+  <div class="px-2 py-2 max-w-200 mx-auto">
+    <a-input-search
+      v-model="naviGotoTarget"
+      allow-clear
+      placeholder="av号/BV号/lv直播/网址/关键词"
+      @press-enter="naviGoto"
+      @search="naviGoto"
+    />
+    <div v-for="(bigCat, key) in webNav" :key="key" class="flex my-3">
+      <div
+        class="flex items-center justify-center min-w-13 font-bold mr-2 border-r border-$color-border-2"
+        >{{ key }}</div
+      >
+      <div class="flex flex-wrap">
         <div
-          class="flex items-center justify-center min-w-20 font-bold mr-4 border-r border-r-gray-100"
-          >{{ key }}</div
+          v-for="cat in bigCat"
+          :key="cat.name"
+          class="p-2.5 m-0.4 rounded-md cursor-pointer hover:bg-$color-fill-2"
+          @click="open(cat.url)"
         >
-        <div class="flex flex-wrap">
-          <div
-            v-for="cat in bigCat"
-            :key="cat.name"
-            class="p-2.5 m-0.5 rounded-md cursor-pointer hover:bg-gray-100"
-            @click="open(cat.url)"
-          >
-            {{ cat.name }}
-          </div>
+          {{ cat.name }}
         </div>
       </div>
     </div>

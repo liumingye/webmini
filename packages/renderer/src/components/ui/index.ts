@@ -1,8 +1,10 @@
 import type { App, Plugin } from 'vue'
 import Button from './button'
+import Settings from './settings'
 
 const components: Record<string, Plugin> = {
   Button,
+  Settings,
 }
 
 const install = (app: App) => {
