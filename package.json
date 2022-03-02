@@ -8,6 +8,10 @@
     "type": "git",
     "url": "https://github.com/liumingye/bilimini.git"
   },
+  "bugs": {
+    "url": "https://github.com/liumingye/bilimini/issues"
+  },
+  "homepage": "https://github.com/liumingye/bilimini",
   "packageManager": "yarn@3.1.1",
   "scripts": {
     "dev": "node scripts/watch.mjs",
@@ -63,7 +67,6 @@
     "vite": "^2.8.4",
     "vite-plugin-optimize-persist": "^0.1.2",
     "vite-plugin-package-config": "^0.1.1",
-    "vite-plugin-resolve": "^1.4.4",
     "vite-plugin-windicss": "^1.7.1",
     "windicss": "^3.4.4"
   },

@@ -19,5 +19,6 @@
 <style>
   #app {
     height: 100%;
+    user-select: none;
   }
 </style>

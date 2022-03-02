@@ -1774,7 +1774,6 @@ __metadata:
     vite: ^2.8.4
     vite-plugin-optimize-persist: ^0.1.2
     vite-plugin-package-config: ^0.1.1
-    vite-plugin-resolve: ^1.4.4
     vite-plugin-windicss: ^1.7.1
     vue: ^3.2.31
     vue-router: ^4.0.12
@@ -6956,13 +6955,6 @@ __metadata:
   peerDependencies:
     vite: ^2.0.0
   checksum: 7d9524c1371d5aed97ffef4069abd63dd714dfdb115500a5f05af785dd393aba519e2d1c21992588aa663afbddbd3a57b0cf3c20fc69d082cc02fdbd355b913b
-  languageName: node
-  linkType: hard
-
-"vite-plugin-resolve@npm:^1.4.4":
-  version: 1.4.4
-  resolution: "vite-plugin-resolve@npm:1.4.4::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Fvite-plugin-resolve%2F-%2Fvite-plugin-resolve-1.4.4.tgz"
-  checksum: 17db87867406068c18248605d07b5610575bce5214e30475f67abfcf7dbce4b5f4db453e623b78f5d7322620d3f8a106e06d2329a94bd445aa0bd06b16ccf35a
   languageName: node
   linkType: hard
 
