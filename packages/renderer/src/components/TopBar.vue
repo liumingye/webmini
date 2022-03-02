@@ -1,7 +1,7 @@
 <script setup lang="ts">
   import { useAppStore, useHistoryStore } from '@/store'
   import { resizeMainWindow } from '@/utils'
-  import { START } from '@/utils/constant'
+  import { START } from '@/config/constant'
 
   const ipc = window.ipcRenderer
   const appStore = useAppStore()
@@ -22,8 +22,7 @@
     map.forEach((value) => {
       title = title.replace(value, '')
     })
-    title = title.replace('bilibili', 'bilimini')
-    title = title.replace('哔哩哔哩', 'bilimini')
+    title = title.replace('bilibili', 'bilimini').replace('哔哩哔哩', 'bilimini')
     return title
   }
 
@@ -36,6 +35,7 @@
 
   webview.value.addEventListener('dom-ready', () => {
     appStore.title = webview.value.getTitle()
+    document.title = title.value
   })
 
   historyStore.listen((to) => {
@@ -43,6 +43,22 @@
   })
 
   const tempStore: Record<string, any> = {}
+  watch(
+    () => route.name,
+    (newValue, oldValue) => {
+      // 恢复状态
+      if (newValue === 'Home') {
+        appStore.autoHideBar = tempStore['autoHideBar']
+        resizeMainWindow()
+        return
+      }
+      // 保存状态
+      else if (oldValue === 'Home') {
+        tempStore['autoHideBar'] = appStore.autoHideBar
+        appStore.autoHideBar = false
+      }
+    },
+  )
 
   const minimize = () => {
     window.app.currentWindow.minimize()
@@ -93,10 +109,7 @@
       historyStore.goBack()
       return
     }
-    // 恢复状态
-    appStore.autoHideBar = tempStore['autoHideBar']
     router.back()
-    resizeMainWindow()
   }
 
   const goForward = () => {
@@ -105,10 +118,7 @@
       historyStore.goForward()
       return
     }
-    // 恢复状态
-    appStore.autoHideBar = tempStore['autoHideBar']
     router.forward()
-    resizeMainWindow()
   }
 
   const toggleDanmaku = () => {
@@ -118,32 +128,21 @@
   }
 
   const toggleSelectPartWindow = () => {
-    // console.log('主窗口：点击P')
     ipc.send('toggle-select-part-window')
   }
 
-  // 保存一下状态
-  const saveStatus = () => {
-    const is = isHome()
-    if (is) {
-      tempStore['autoHideBar'] = appStore.autoHideBar
-    }
-    resizeMainWindow('mobile')
-    appStore.autoHideBar = false
-  }
-
   const showNav = () => {
-    saveStatus()
     router.push({
       name: 'WebNav',
     })
+    resizeMainWindow('mobile')
   }
 
   const showSettings = () => {
-    saveStatus()
     router.push({
       name: 'Settings',
     })
+    resizeMainWindow('mobile')
   }
 
   const turnOff = () => {
@@ -188,7 +187,7 @@
       <icon-setting-two size=".8em" />
     </b-button>
     <b-button title="退出" @click="turnOff" @click.right="minimize">
-      <icon-close-small size=".8em" />
+      <icon-close-small size=".85em" />
     </b-button>
   </div>
 </template>
@@ -196,7 +195,7 @@
 <style lang="less" scoped>
   #topbar {
     display: flex;
-    background: @color-bg;
+    background: @color-app-bg;
     line-height: 32px;
     height: 32px;
     padding: 0 10px;
@@ -211,7 +210,7 @@
     }
     #app-danmaku,
     #app-part {
-      font-size: 10px;
+      font-size: 0.7em;
     }
   }
 </style>

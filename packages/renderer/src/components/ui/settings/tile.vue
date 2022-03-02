@@ -29,3 +29,10 @@
     <slot></slot>
   </div>
 </template>
+
+<style lang="less" scoped>
+  :deep(.arco-select) {
+    text-align: right;
+    padding: 0;
+  }
+</style>

@@ -110,7 +110,7 @@
     display: flex;
     flex-direction: column;
     user-select: none;
-    background: @color-bg;
+    background: @color-app-bg;
     color: #fff;
     height: 100%;
 

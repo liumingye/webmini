@@ -31,7 +31,7 @@
     transition: 0.2s;
   }
   #about {
-    background: @color-bg;
+    background: @color-app-bg;
     // margin-top: -150px;
     // height: 150px;
     padding: 10px;

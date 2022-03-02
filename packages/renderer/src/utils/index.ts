@@ -1,6 +1,7 @@
 import { useAppStore } from '@/store'
-import { windowType } from './types'
-import { userAgent, videoUrlPrefix } from '@/utils/constant'
+import { windowType } from '@/types'
+import { videoUrlPrefix } from '@/config/constant'
+import Site from '@/utils/site'
 
 const ipc = window.ipcRenderer
 const logger = window.app.logger
@@ -12,28 +13,14 @@ export const resizeMainWindow = (windowType?: windowType) => {
   const targetWindowType = ref<windowType>()
   if (!windowType) {
     const url = appStore.webview.getURL()
-    if (
-      /\/\/(www|m)\.bilibili\.com\/(video\/(av|BV)|bangumi\/play\/)/.test(url) ||
-      /\/\/live\.bilibili\.com\/(blanc|h5)\/\d+/.test(url) ||
-      /\/\/(m\.|)v\.qq\.com(.*?)(\/cover|\/play)/.test(url)
-    ) {
-      targetWindowType.value = 'mini'
-    } else if (url.indexOf('//passport.bilibili.com/login') >= 0) {
-      targetWindowType.value = 'login'
-    } else if (url.indexOf('//t.bilibili.com/?tab') >= 0) {
-      targetWindowType.value = 'feed'
-    } else if (appStore.webview.getUserAgent() === userAgent.desktop) {
-      targetWindowType.value = 'desktop'
-    } else {
-      targetWindowType.value = 'mobile'
-    }
+    targetWindowType.value = new Site(url).getWindowType()
   } else {
     targetWindowType.value = windowType
   }
   if (targetWindowType.value === currentWindowType.value) {
     return
   }
-
+  window.app.logger.debug(`targetWindowType - ${targetWindowType.value}`)
   // We want the new window to open on the same display that the parent is in
   let displayToUse: Electron.Display | undefined
   const screen = window.app.screen
@@ -202,34 +189,4 @@ export const getPartOfVideo = (vid: string) => {
       }
     })
   })
-}
-
-export const judgeUserAgent = (url: string) => {
-  const _URL = new URL(url)
-  if (_URL.hostname.indexOf('.bilibili.com') >= 0) {
-    const map = [
-      'm.bilibili.com',
-      'live.bilibili.com/h5',
-      'live.bilibili.com/pages/h5',
-      'www.bilibili.com/read/mobile',
-      'www.bilibili.com/read/cv',
-      'h.bilibili.com/ywh/h5',
-      't.bilibili.com',
-    ]
-    for (let i = 0; i < map.length; i++) {
-      const completeURL = _URL.hostname + _URL.pathname
-      if (completeURL.indexOf(map[i]) >= 0) {
-        return userAgent.mobile
-      }
-    }
-  } else if (_URL.hostname.indexOf('.qq.com') >= 0) {
-    const map = ['m.v.qq.com', 'm.film.qq.com']
-    for (let i = 0; i < map.length; i++) {
-      const completeURL = _URL.hostname + _URL.pathname
-      if (completeURL.indexOf(map[i]) >= 0) {
-        return userAgent.mobile
-      }
-    }
-  }
-  return userAgent.desktop
 }

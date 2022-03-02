@@ -5,7 +5,7 @@ import { isMacintosh } from '../common/platform'
 import { getMainMenu } from './menus/main'
 
 export class Application {
-  public static instance = new Application()
+  public static instance = new this()
 
   public mainWindow: MainWindow | undefined
   public selectPartWindow: SelectPartWindow | undefined

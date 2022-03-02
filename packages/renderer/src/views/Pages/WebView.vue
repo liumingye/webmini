@@ -1,7 +1,7 @@
 <script setup lang="ts">
   import { useAppStore, useHistoryStore } from '@/store'
   import { resizeMainWindow, getVid, getPartOfBangumi, getPartOfVideo } from '@/utils'
-  import { userAgent, START } from '@/utils/constant'
+  import { userAgent, START } from '@/config/constant'
   import NProgress from 'nprogress' // progress bar
 
   const ipc = window.ipcRenderer

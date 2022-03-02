@@ -1,7 +1,8 @@
 import { AppStateTypes, AppConfig } from './types'
-import { getVidWithP, getVid, getBvid, judgeUserAgent } from '@/utils'
-import { userAgent, videoUrlPrefix, liveUrlPrefix, bangumiUrlPrefix } from '@/utils/constant'
+import { getVidWithP, getVid, getBvid } from '@/utils'
+import { userAgent, videoUrlPrefix, liveUrlPrefix, bangumiUrlPrefix } from '@/config/constant'
 import { useHistoryStore } from '@/store'
+import Site from '@/utils/site'
 
 const ipc = window.ipcRenderer
 
@@ -114,7 +115,7 @@ export const useAppStore = defineStore('app', {
       const vqq = /(=|\/)([A-Za-z0-9]{15})(.*?)([A-Za-z0-9]{11}|)/g.exec(
         _URL.pathname + _URL.search,
       )
-      window.app.logger.debug(vqq)
+      // window.app.logger.debug(vqq)
       if (vqq && vqq.length >= 3) {
         if (_URL.hostname !== 'v.qq.com') {
           historyStore.pop()
@@ -162,7 +163,7 @@ export const useAppStore = defineStore('app', {
         return
       }
 
-      this.webview.setUserAgent(judgeUserAgent(url))
+      this.webview.setUserAgent(new Site(url).getUserAgent())
 
       // 清除分p
       if (this.windowID.selectPartWindow) {
@@ -185,7 +186,7 @@ export const useAppStore = defineStore('app', {
       window.app.logger.debug(`go - ${url}`, { label: 'appStore' })
       if (this.webview.getURL() === url) return
       this.webview.loadURL(url, {
-        userAgent: judgeUserAgent(url),
+        userAgent: new Site(url).getUserAgent(),
       })
     },
     goPart(pid: number) {

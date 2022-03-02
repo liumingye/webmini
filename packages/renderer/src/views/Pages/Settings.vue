@@ -19,7 +19,7 @@
 </script>
 
 <template>
-  <div class="bg-$color-fill-2">
+  <div class="bg-$color-neutral-2">
     <b-settings-tile title="窗口置顶" :separate="true">
       <a-select
         v-model="alwaysOnTop"

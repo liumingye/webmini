@@ -1,6 +1,4 @@
 <script setup lang="ts">
-  import TopBar from '@/components/TopBar.vue'
-  // import About from '@/views/pages/About.vue'
   import WebView from '@/views/pages/WebView.vue'
 
   import { WatchStopHandle } from 'vue'
@@ -143,14 +141,15 @@
 <template>
   <div id="main" :class="['select-none', { showTopBar, autoHideBar }]">
     <TopBar v-if="mounted" />
-    <div class="relative h-full">
-      <router-view v-slot="{ Component }">
-        <!-- <keep-alive :include="[]"> -->
-        <component :is="Component" class="h-full overflow-x-none overflow-y-auto" />
-        <!-- </keep-alive> -->
-      </router-view>
-      <WebView v-show="route.name === 'Home'" />
-    </div>
+    <router-view v-slot="{ Component }">
+      <!-- <keep-alive :include="[]"> -->
+      <component
+        :is="Component"
+        class="h-full overflow-x-none overflow-y-auto bg-$color-bg-2 text-$color-text-1"
+      />
+      <!-- </keep-alive> -->
+    </router-view>
+    <WebView v-show="route.name === 'Home'" />
   </div>
 </template>
 

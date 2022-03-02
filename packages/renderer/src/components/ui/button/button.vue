@@ -33,9 +33,9 @@
     border-radius: 100%;
     width: 16px;
     height: 16px;
-    background: @color-color-white;
+    background: #fff;
     opacity: 0.5;
-    color: @color-bg;
+    color: @color-app-bg;
     cursor: pointer;
     transition: opacity 0.2s ease;
     -webkit-app-region: no-drag;
