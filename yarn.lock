@@ -1051,13 +1051,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typescript-eslint/eslint-plugin@npm:^5.12.1":
-  version: 5.12.1
-  resolution: "@typescript-eslint/eslint-plugin@npm:5.12.1::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2F%40typescript-eslint%2Feslint-plugin%2F-%2Feslint-plugin-5.12.1.tgz"
+"@typescript-eslint/eslint-plugin@npm:^5.13.0":
+  version: 5.13.0
+  resolution: "@typescript-eslint/eslint-plugin@npm:5.13.0::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2F%40typescript-eslint%2Feslint-plugin%2F-%2Feslint-plugin-5.13.0.tgz"
   dependencies:
-    "@typescript-eslint/scope-manager": 5.12.1
-    "@typescript-eslint/type-utils": 5.12.1
-    "@typescript-eslint/utils": 5.12.1
+    "@typescript-eslint/scope-manager": 5.13.0
+    "@typescript-eslint/type-utils": 5.13.0
+    "@typescript-eslint/utils": 5.13.0
     debug: ^4.3.2
     functional-red-black-tree: ^1.0.1
     ignore: ^5.1.8
@@ -1070,7 +1070,7 @@ __metadata:
   peerDependenciesMeta:
     typescript:
       optional: true
-  checksum: 007f89f6ce8744a15cbdb1953efd41fcb4af84357070d8e13ea5d0fbbca0c9c6cfdc0598fd00a793100a0c37104e68dd61d5b7cada7abbcc5dfec50ea480b8ba
+  checksum: ff8863b8c414eeed874c7ef4e5d540c918f9ee9be2e44fe30c6c22f2f59529a61e71afb3d7a90bff9a8f894098f11373989df91b11ef67a424c12f703021c174
   languageName: node
   linkType: hard
 
@@ -1091,16 +1091,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typescript-eslint/scope-manager@npm:5.12.1":
-  version: 5.12.1
-  resolution: "@typescript-eslint/scope-manager@npm:5.12.1::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2F%40typescript-eslint%2Fscope-manager%2F-%2Fscope-manager-5.12.1.tgz"
-  dependencies:
-    "@typescript-eslint/types": 5.12.1
-    "@typescript-eslint/visitor-keys": 5.12.1
-  checksum: b6e7f45b4fe39397430149ad005f7d28aa75a063dacfc947514abd52ba5235fecf937784416dfb7e8c168025b1bc74611332ceb214045cc362922e4b311bcb11
-  languageName: node
-  linkType: hard
-
 "@typescript-eslint/scope-manager@npm:5.13.0":
   version: 5.13.0
   resolution: "@typescript-eslint/scope-manager@npm:5.13.0::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2F%40typescript-eslint%2Fscope-manager%2F-%2Fscope-manager-5.13.0.tgz"
@@ -1111,11 +1101,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typescript-eslint/type-utils@npm:5.12.1":
-  version: 5.12.1
-  resolution: "@typescript-eslint/type-utils@npm:5.12.1::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2F%40typescript-eslint%2Ftype-utils%2F-%2Ftype-utils-5.12.1.tgz"
+"@typescript-eslint/type-utils@npm:5.13.0":
+  version: 5.13.0
+  resolution: "@typescript-eslint/type-utils@npm:5.13.0::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2F%40typescript-eslint%2Ftype-utils%2F-%2Ftype-utils-5.13.0.tgz"
   dependencies:
-    "@typescript-eslint/utils": 5.12.1
+    "@typescript-eslint/utils": 5.13.0
     debug: ^4.3.2
     tsutils: ^3.21.0
   peerDependencies:
@@ -1123,14 +1113,7 @@ __metadata:
   peerDependenciesMeta:
     typescript:
       optional: true
-  checksum: 3f25e650f3be2af93d9cb1b26120b306af11c7cf36b3bd13f1c97f5c875a4abd282f8a0ae0daff0b90b4734c0dae3828b9ec508d46f65fd6cf6389a5b037fe26
-  languageName: node
-  linkType: hard
-
-"@typescript-eslint/types@npm:5.12.1":
-  version: 5.12.1
-  resolution: "@typescript-eslint/types@npm:5.12.1::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2F%40typescript-eslint%2Ftypes%2F-%2Ftypes-5.12.1.tgz"
-  checksum: 753cb4b0f266500298f07c0386d72e7d9570f26e2deb7017fd677d21bb8bca7f2ca01d3f4b43d86fbb7337a76f0c9da86657de96f107dba92632d726b4e7797e
+  checksum: 454a2fe6c5faa211fec9d7992b44f377b9d492c3a18b8ce6d6da0077f0ea92320c7ee430cc33dcce8f0ec7afab7f8db59f39f9433be5358715754e64d7fbdef2
   languageName: node
   linkType: hard
 
@@ -1138,24 +1121,6 @@ __metadata:
   version: 5.13.0
   resolution: "@typescript-eslint/types@npm:5.13.0::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2F%40typescript-eslint%2Ftypes%2F-%2Ftypes-5.13.0.tgz"
   checksum: 2228935a9f7e80264a554ffadc458ee184259b56cd987bf10f12754183e032953fb93b7b31f8261dd0a40dbac4f341d4904ae7aa1f1aba9f2a92b1062f05c8dc
-  languageName: node
-  linkType: hard
-
-"@typescript-eslint/typescript-estree@npm:5.12.1":
-  version: 5.12.1
-  resolution: "@typescript-eslint/typescript-estree@npm:5.12.1::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2F%40typescript-eslint%2Ftypescript-estree%2F-%2Ftypescript-estree-5.12.1.tgz"
-  dependencies:
-    "@typescript-eslint/types": 5.12.1
-    "@typescript-eslint/visitor-keys": 5.12.1
-    debug: ^4.3.2
-    globby: ^11.0.4
-    is-glob: ^4.0.3
-    semver: ^7.3.5
-    tsutils: ^3.21.0
-  peerDependenciesMeta:
-    typescript:
-      optional: true
-  checksum: 5677f5550fdc24879b51b3bc4c7551a5b241f70cf8f4cfe0fa2dc270dcd858c6d5085bf784c0bd471bb71da5abbbcf1ec44dc84a688ce61107d5ddba21d235ae
   languageName: node
   linkType: hard
 
@@ -1177,29 +1142,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typescript-eslint/utils@npm:5.12.1":
-  version: 5.12.1
-  resolution: "@typescript-eslint/utils@npm:5.12.1::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2F%40typescript-eslint%2Futils%2F-%2Futils-5.12.1.tgz"
+"@typescript-eslint/utils@npm:5.13.0":
+  version: 5.13.0
+  resolution: "@typescript-eslint/utils@npm:5.13.0::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2F%40typescript-eslint%2Futils%2F-%2Futils-5.13.0.tgz"
   dependencies:
     "@types/json-schema": ^7.0.9
-    "@typescript-eslint/scope-manager": 5.12.1
-    "@typescript-eslint/types": 5.12.1
-    "@typescript-eslint/typescript-estree": 5.12.1
+    "@typescript-eslint/scope-manager": 5.13.0
+    "@typescript-eslint/types": 5.13.0
+    "@typescript-eslint/typescript-estree": 5.13.0
     eslint-scope: ^5.1.1
     eslint-utils: ^3.0.0
   peerDependencies:
     eslint: ^6.0.0 || ^7.0.0 || ^8.0.0
-  checksum: 0eb277ad4e60fa46b586d5df8e05be6e0d3963a59cf409a348e2c512d5e88d657a56026754ee10c31ee1333794e145f7ffe33e08d28aa1bed4b4ab4b02a95712
-  languageName: node
-  linkType: hard
-
-"@typescript-eslint/visitor-keys@npm:5.12.1":
-  version: 5.12.1
-  resolution: "@typescript-eslint/visitor-keys@npm:5.12.1::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2F%40typescript-eslint%2Fvisitor-keys%2F-%2Fvisitor-keys-5.12.1.tgz"
-  dependencies:
-    "@typescript-eslint/types": 5.12.1
-    eslint-visitor-keys: ^3.0.0
-  checksum: ada52c77dc42d055a6cefb294b9a893d680d125eb0fc5cc0daf2f85007c603ef688f4f5a865893758e00e89739850409bb748e26bb8c834372409d24ea820677
+  checksum: cb93cddc83bd5f9cee7fc72ab64c509b285392a005fb1315522374991f18a1cb8f233ee0d1e828cc18570c3fe27e81cc28471c36142284bd39351b8a3f8a83bd
   languageName: node
   linkType: hard
 
@@ -1387,29 +1342,29 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@windicss/config@npm:1.8.1":
-  version: 1.8.1
-  resolution: "@windicss/config@npm:1.8.1::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2F%40windicss%2Fconfig%2F-%2Fconfig-1.8.1.tgz"
+"@windicss/config@npm:1.8.2":
+  version: 1.8.2
+  resolution: "@windicss/config@npm:1.8.2::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2F%40windicss%2Fconfig%2F-%2Fconfig-1.8.2.tgz"
   dependencies:
     debug: ^4.3.3
     jiti: ^1.13.0
-    windicss: ^3.5.0
-  checksum: eb84f29746aad5c1d06d13b2f524c756e293af716c06b1e594de49b3904a47cc9d0d8c6f679f3ae42d62aa5b25e4b7e9a07ef9520d414a366c8c7dadf92e3ae7
+    windicss: ^3.5.1
+  checksum: 5387a3b295c14200d9ca340813f16211472f918f8fafb08c61d6a890ddd5da11c716fb2feb58be0310f02a7df80fbec00cf20f74a5edef93bdd28605279c1199
   languageName: node
   linkType: hard
 
-"@windicss/plugin-utils@npm:1.8.1":
-  version: 1.8.1
-  resolution: "@windicss/plugin-utils@npm:1.8.1::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2F%40windicss%2Fplugin-utils%2F-%2Fplugin-utils-1.8.1.tgz"
+"@windicss/plugin-utils@npm:1.8.2":
+  version: 1.8.2
+  resolution: "@windicss/plugin-utils@npm:1.8.2::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2F%40windicss%2Fplugin-utils%2F-%2Fplugin-utils-1.8.2.tgz"
   dependencies:
     "@antfu/utils": ^0.5.0
-    "@windicss/config": 1.8.1
+    "@windicss/config": 1.8.2
     debug: ^4.3.3
     fast-glob: ^3.2.11
     magic-string: ^0.25.7
     micromatch: ^4.0.4
-    windicss: ^3.5.0
-  checksum: 83b98a6485bffe1f2705473a83d948da3cfccc2efc92fa82cdb8e1c155648186457f58497f6cb61f75134323adf47bda798d778b50c69f052d792eaeef95c437
+    windicss: ^3.5.1
+  checksum: 091cae92744fc1e04d8ca520483dc06f3f3ad8835bbe0cb13bf22a6b3fdcf3a903c582c39dd856038b67f8cfaa4dc2252e167205151b8a85d125ac4e54b5dedc
   languageName: node
   linkType: hard
 
@@ -1800,7 +1755,7 @@ __metadata:
     "@types/electron-json-storage": ^4.5.0
     "@types/nprogress": ^0.2.0
     "@types/overlayscrollbars": ^1.12.1
-    "@typescript-eslint/eslint-plugin": ^5.12.1
+    "@typescript-eslint/eslint-plugin": ^5.13.0
     "@typescript-eslint/parser": ^5.13.0
     "@vitejs/plugin-vue": ^2.2.4
     "@vitejs/plugin-vue-jsx": ^1.3.8
@@ -1811,7 +1766,7 @@ __metadata:
     electron-is: ^3.0.0
     electron-json-storage: ^4.5.0
     eslint: ^8.10.0
-    eslint-config-prettier: ^8.4.0
+    eslint-config-prettier: ^8.5.0
     eslint-plugin-prettier: ^4.0.0
     eslint-plugin-vue: ^8.5.0
     husky: ^7.0.4
@@ -1829,10 +1784,10 @@ __metadata:
     vite: ^2.8.6
     vite-plugin-optimize-persist: ^0.1.2
     vite-plugin-package-config: ^0.1.1
-    vite-plugin-windicss: ^1.8.1
+    vite-plugin-windicss: ^1.8.2
     vue: ^3.2.31
     vue-router: ^4.0.13
-    windicss: ^3.5.0
+    windicss: ^3.5.1
     winston: ^3.6.0
     winston-daily-rotate-file: ^4.6.1
   languageName: unknown
@@ -3276,14 +3231,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-config-prettier@npm:^8.4.0":
-  version: 8.4.0
-  resolution: "eslint-config-prettier@npm:8.4.0::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Feslint-config-prettier%2F-%2Feslint-config-prettier-8.4.0.tgz"
+"eslint-config-prettier@npm:^8.5.0":
+  version: 8.5.0
+  resolution: "eslint-config-prettier@npm:8.5.0::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Feslint-config-prettier%2F-%2Feslint-config-prettier-8.5.0.tgz"
   peerDependencies:
     eslint: ">=7.0.0"
   bin:
     eslint-config-prettier: bin/cli.js
-  checksum: ee8dc343f1fed15dc0658e190a966cc23644477f2331a7f56ae2bb79dd74892e3cde8ea5c142e7a3329a8291a1de041e13ca96e54d0c85ff4a2aba13390c5f10
+  checksum: 0d0f5c32e7a0ad91249467ce71ca92394ccd343178277d318baf32063b79ea90216f4c81d1065d60f96366fdc60f151d4d68ae7811a58bd37228b84c2083f893
   languageName: node
   linkType: hard
 
@@ -7066,17 +7021,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vite-plugin-windicss@npm:^1.8.1":
-  version: 1.8.1
-  resolution: "vite-plugin-windicss@npm:1.8.1::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Fvite-plugin-windicss%2F-%2Fvite-plugin-windicss-1.8.1.tgz"
+"vite-plugin-windicss@npm:^1.8.2":
+  version: 1.8.2
+  resolution: "vite-plugin-windicss@npm:1.8.2::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Fvite-plugin-windicss%2F-%2Fvite-plugin-windicss-1.8.2.tgz"
   dependencies:
-    "@windicss/plugin-utils": 1.8.1
+    "@windicss/plugin-utils": 1.8.2
     debug: ^4.3.3
     kolorist: ^1.5.1
-    windicss: ^3.5.0
+    windicss: ^3.5.1
   peerDependencies:
     vite: ^2.0.1
-  checksum: a28b27927dd5537ccbf5dc1f8fa38752683a341069e0709ec131520c82e778155d06052c96facccc269c6b36f74cf06394bc492441c95a9abd6c1923cf5a58a4
+  checksum: df923fc0f64849c50b0bccea8dc66c3cbb29ec56450a0d0c800816e97c65a1a09ba0c54fa48cd9b6825d0fcc51afcc51f309201d2f353612b2292724de8144cb
   languageName: node
   linkType: hard
 
@@ -7202,12 +7157,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"windicss@npm:^3.5.0":
-  version: 3.5.0
-  resolution: "windicss@npm:3.5.0::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Fwindicss%2F-%2Fwindicss-3.5.0.tgz"
+"windicss@npm:^3.5.1":
+  version: 3.5.1
+  resolution: "windicss@npm:3.5.1::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Fwindicss%2F-%2Fwindicss-3.5.1.tgz"
   bin:
     windicss: cli/index.js
-  checksum: dc0b34d6a88e8c2a9269b6d383094d8869dc64efb8f7a41c87a7547610fed09d9de2fe7fad3c2865c50dd42c2122ef00035c6fa3ba2207719abd061594cf765f
+  checksum: fc2e1edeef9351da20457f08039bde383599761c1a585ccbbf08c41e2536419d5b751d50aae1ce99fd9bbe530ecd7d6f7b494d4019d11d5594889dc49e5bbc43
   languageName: node
   linkType: hard
 

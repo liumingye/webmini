@@ -18,7 +18,7 @@ export default defineConfig({
       formats: ['cjs'],
       fileName: () => '[name].cjs',
     },
-    minify: process.env./* from mode option */ NODE_ENV === 'production',
+    minify: 'terser',
     emptyOutDir: true,
     rollupOptions: {
       external: ['electron', ...builtinModules, ...Object.keys(pkg.dependencies || {})],

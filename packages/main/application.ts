@@ -66,7 +66,7 @@ export class Application {
   }
 
   private sendWindowID = () => {
-    console.debug('sendWindowID')
+    // console.debug('sendWindowID')
     const windowID = this.getAllWindowID()
     this.mainWindow?.send('windowID', windowID)
     this.selectPartWindow?.send('windowID', windowID)
