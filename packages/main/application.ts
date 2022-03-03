@@ -42,6 +42,12 @@ export class Application {
         app.quit()
       }
     })
+    ipcMain.on('clearSensitiveDirectories', () => {
+      this.clearSensitiveDirectories()
+    })
+    ipcMain.on('clearAllUserData', () => {
+      this.clearAllUserData()
+    })
   }
 
   private getAllWindowID = () => {

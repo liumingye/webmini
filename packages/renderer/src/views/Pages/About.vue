@@ -14,7 +14,7 @@
         <a href="https://github.com/liumingye/bilimini" target="_blank">Github</a>
         <a href="https://github.com/liumingye/bilimini/issues" target="_blank">报告问题</a>
       </p>
-      <div class="mt-5 self-center">
+      <div class="mt-5">
         <template v-for="(value, key) in versions" :key="key">
           <div class="justify-center mt-2 flex">
             <div class="mr-2">{{ key }}:</div>
@@ -32,10 +32,7 @@
   }
   #about {
     background: @color-app-bg;
-    // margin-top: -150px;
-    // height: 150px;
     padding: 10px;
-    line-height: 1.3em;
 
     p {
       margin-top: 8px;

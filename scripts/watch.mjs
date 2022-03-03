@@ -2,6 +2,29 @@ import { spawn } from 'child_process'
 import { createServer, build } from 'vite'
 import electron from 'electron'
 
+const RESET = '\x1b[0m'
+const FG_RED = '\x1b[31m'
+
+// https://github.com/yarnpkg/yarn/issues/5063
+function disallowNpm() {
+  const execPath = process.env.npm_execpath
+  if (!execPath.includes('yarn')) {
+    console.log(FG_RED)
+    console.log(`\tbilimini supports only Yarn package manager.`)
+    console.log(RESET)
+    console.log(
+      '\n\tPlease visit https://yarnpkg.com/getting-started/install to find instructions on how to install Yarn.\n',
+    )
+    throw new Error('Invalid package manager')
+  }
+}
+
+try {
+  disallowNpm()
+} catch (e) {
+  process.exit(1)
+}
+
 /**
  * @type {(server: import('vite').ViteDevServer) => Promise<import('rollup').RollupWatcher>}
  */

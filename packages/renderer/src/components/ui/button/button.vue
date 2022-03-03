@@ -20,25 +20,18 @@
 </script>
 
 <template>
-  <button :disabled="disabled" @click="handleClick">
+  <button
+    :disabled="disabled"
+    class="inline-flex justify-center items-center rounded-1 w-4 h-4 bg-$color-bg-1 opacity-50 cursor-pointer transition-opacity no-drag"
+    @click="handleClick"
+  >
     <slot></slot>
   </button>
 </template>
 
 <style lang="less" scoped>
   button {
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 100%;
-    width: 16px;
-    height: 16px;
-    background: #fff;
-    opacity: 0.5;
     color: @color-app-bg;
-    cursor: pointer;
-    transition: opacity 0.2s ease;
-    -webkit-app-region: no-drag;
 
     &[disabled] {
       opacity: 0.2;

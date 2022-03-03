@@ -25,16 +25,16 @@ class Site {
   public getUserAgent = () => {
     const rule = this.getRule()
     if (!rule) return userAgent.mobile
-    const mobileMap = rule.userAgent.mobile
-    for (const value of mobileMap) {
-      if (this.completeURL.indexOf(value) >= 0) {
-        return userAgent.mobile
-      }
-    }
     const desktopMap = rule.userAgent.desktop
     for (const value of desktopMap) {
       if (this.completeURL.indexOf(value) >= 0) {
         return userAgent.desktop
+      }
+    }
+    const mobileMap = rule.userAgent.mobile
+    for (const value of mobileMap) {
+      if (this.completeURL.indexOf(value) >= 0) {
+        return userAgent.mobile
       }
     }
     return userAgent.desktop

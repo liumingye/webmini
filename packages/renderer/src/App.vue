@@ -10,9 +10,7 @@
 
 <template>
   <router-view v-slot="{ Component }">
-    <keep-alive>
-      <component :is="Component" />
-    </keep-alive>
+    <component :is="Component" />
   </router-view>
 </template>
 
@@ -20,5 +18,6 @@
   #app {
     height: 100%;
     user-select: none;
+    overflow: hidden;
   }
 </style>

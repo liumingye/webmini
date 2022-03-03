@@ -1,6 +1,6 @@
 import type { App } from 'vue'
 import { getComponentPrefix } from '../_utils/global-config'
-import _Button from './button.vue'
+import _Button from './Button.vue'
 
 const Button = {
   install: (app: App) => {

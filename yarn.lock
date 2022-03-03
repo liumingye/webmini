@@ -988,6 +988,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/overlayscrollbars@npm:^1.12.1":
+  version: 1.12.1
+  resolution: "@types/overlayscrollbars@npm:1.12.1::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2F%40types%2Foverlayscrollbars%2F-%2Foverlayscrollbars-1.12.1.tgz"
+  checksum: 4d539db07ad5a268d6eb8f3af84f64126dd2e99831895f0a7a82839dae6d7405dbb7dacecc0ecd6f6aef403f6c5ae946f9d65dd1fa8fa44f0cb9926f01032f3c
+  languageName: node
+  linkType: hard
+
 "@types/parse-json@npm:^4.0.0":
   version: 4.0.0
   resolution: "@types/parse-json@npm:4.0.0"
@@ -1067,20 +1074,20 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typescript-eslint/parser@npm:^5.12.1":
-  version: 5.12.1
-  resolution: "@typescript-eslint/parser@npm:5.12.1::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2F%40typescript-eslint%2Fparser%2F-%2Fparser-5.12.1.tgz"
+"@typescript-eslint/parser@npm:^5.13.0":
+  version: 5.13.0
+  resolution: "@typescript-eslint/parser@npm:5.13.0::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2F%40typescript-eslint%2Fparser%2F-%2Fparser-5.13.0.tgz"
   dependencies:
-    "@typescript-eslint/scope-manager": 5.12.1
-    "@typescript-eslint/types": 5.12.1
-    "@typescript-eslint/typescript-estree": 5.12.1
+    "@typescript-eslint/scope-manager": 5.13.0
+    "@typescript-eslint/types": 5.13.0
+    "@typescript-eslint/typescript-estree": 5.13.0
     debug: ^4.3.2
   peerDependencies:
     eslint: ^6.0.0 || ^7.0.0 || ^8.0.0
   peerDependenciesMeta:
     typescript:
       optional: true
-  checksum: d2995b00937de1d289d0a5742ad0744cfa8fbaed1a1a965eaa5dc8dca6e36e18f5c3802148c4bde0ab014a91330ebe186d01b0871ee30f36ac41361dc1d525d4
+  checksum: 9ca74f891df82f4f93150f0b69fcd2d9fb138c75a4629a154256108fbaa1248a96f69627cb472423890ff291e7cec30c20da25a87a21ef53fc1149ac9c18bfac
   languageName: node
   linkType: hard
 
@@ -1091,6 +1098,16 @@ __metadata:
     "@typescript-eslint/types": 5.12.1
     "@typescript-eslint/visitor-keys": 5.12.1
   checksum: b6e7f45b4fe39397430149ad005f7d28aa75a063dacfc947514abd52ba5235fecf937784416dfb7e8c168025b1bc74611332ceb214045cc362922e4b311bcb11
+  languageName: node
+  linkType: hard
+
+"@typescript-eslint/scope-manager@npm:5.13.0":
+  version: 5.13.0
+  resolution: "@typescript-eslint/scope-manager@npm:5.13.0::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2F%40typescript-eslint%2Fscope-manager%2F-%2Fscope-manager-5.13.0.tgz"
+  dependencies:
+    "@typescript-eslint/types": 5.13.0
+    "@typescript-eslint/visitor-keys": 5.13.0
+  checksum: 43fade6759e751387ee91f85033c036f122b5051f7ad7baf35fe5db68e2129afc1cc1c12c2b0b8a25eb206092ad1073d8e640b21f6b04824413f40751d8e0d42
   languageName: node
   linkType: hard
 
@@ -1117,6 +1134,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@typescript-eslint/types@npm:5.13.0":
+  version: 5.13.0
+  resolution: "@typescript-eslint/types@npm:5.13.0::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2F%40typescript-eslint%2Ftypes%2F-%2Ftypes-5.13.0.tgz"
+  checksum: 2228935a9f7e80264a554ffadc458ee184259b56cd987bf10f12754183e032953fb93b7b31f8261dd0a40dbac4f341d4904ae7aa1f1aba9f2a92b1062f05c8dc
+  languageName: node
+  linkType: hard
+
 "@typescript-eslint/typescript-estree@npm:5.12.1":
   version: 5.12.1
   resolution: "@typescript-eslint/typescript-estree@npm:5.12.1::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2F%40typescript-eslint%2Ftypescript-estree%2F-%2Ftypescript-estree-5.12.1.tgz"
@@ -1132,6 +1156,24 @@ __metadata:
     typescript:
       optional: true
   checksum: 5677f5550fdc24879b51b3bc4c7551a5b241f70cf8f4cfe0fa2dc270dcd858c6d5085bf784c0bd471bb71da5abbbcf1ec44dc84a688ce61107d5ddba21d235ae
+  languageName: node
+  linkType: hard
+
+"@typescript-eslint/typescript-estree@npm:5.13.0":
+  version: 5.13.0
+  resolution: "@typescript-eslint/typescript-estree@npm:5.13.0::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2F%40typescript-eslint%2Ftypescript-estree%2F-%2Ftypescript-estree-5.13.0.tgz"
+  dependencies:
+    "@typescript-eslint/types": 5.13.0
+    "@typescript-eslint/visitor-keys": 5.13.0
+    debug: ^4.3.2
+    globby: ^11.0.4
+    is-glob: ^4.0.3
+    semver: ^7.3.5
+    tsutils: ^3.21.0
+  peerDependenciesMeta:
+    typescript:
+      optional: true
+  checksum: bcf2f94eb4b8e0a5f47fa1e04478aa3f36c8d2b629300bf3d3a375f87e8046cd7f2364cd7df8fceb97855e7789721de5c66dafcf17cfd93552a93a7d7733dfdb
   languageName: node
   linkType: hard
 
@@ -1161,9 +1203,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vitejs/plugin-vue-jsx@npm:^1.3.7":
-  version: 1.3.7
-  resolution: "@vitejs/plugin-vue-jsx@npm:1.3.7"
+"@typescript-eslint/visitor-keys@npm:5.13.0":
+  version: 5.13.0
+  resolution: "@typescript-eslint/visitor-keys@npm:5.13.0::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2F%40typescript-eslint%2Fvisitor-keys%2F-%2Fvisitor-keys-5.13.0.tgz"
+  dependencies:
+    "@typescript-eslint/types": 5.13.0
+    eslint-visitor-keys: ^3.0.0
+  checksum: 3987217053e22a86f9105efe6250ca028ef437483b79d0dad45850edacfc273835b82178e77e5012a3c045df18561fef3eb4417cc26c328c901fbaa0da09e922
+  languageName: node
+  linkType: hard
+
+"@vitejs/plugin-vue-jsx@npm:^1.3.8":
+  version: 1.3.8
+  resolution: "@vitejs/plugin-vue-jsx@npm:1.3.8::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2F%40vitejs%2Fplugin-vue-jsx%2F-%2Fplugin-vue-jsx-1.3.8.tgz"
   dependencies:
     "@babel/core": ^7.17.2
     "@babel/plugin-syntax-import-meta": ^7.10.4
@@ -1171,17 +1223,17 @@ __metadata:
     "@rollup/pluginutils": ^4.1.2
     "@vue/babel-plugin-jsx": ^1.1.1
     hash-sum: ^2.0.0
-  checksum: 2cb2969becfb33e6ff1f9e3b06c756be5a3f85bd24e222b6e0511866425701a2678db0ecc8826e4aa1749e71339ebd152e5c65c9521eb2d6f589d116b40baff6
+  checksum: c2e0684b06a63281ce2c53548cb927f02bcea0df1bfe9d542a757e5561a1ac08f5ab75aaeaa3fd43fee205c149417b26e36c840d41abcc8ed97c493842c0c9eb
   languageName: node
   linkType: hard
 
-"@vitejs/plugin-vue@npm:^2.2.2":
-  version: 2.2.2
-  resolution: "@vitejs/plugin-vue@npm:2.2.2::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2F%40vitejs%2Fplugin-vue%2F-%2Fplugin-vue-2.2.2.tgz"
+"@vitejs/plugin-vue@npm:^2.2.4":
+  version: 2.2.4
+  resolution: "@vitejs/plugin-vue@npm:2.2.4::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2F%40vitejs%2Fplugin-vue%2F-%2Fplugin-vue-2.2.4.tgz"
   peerDependencies:
     vite: ^2.5.10
     vue: ^3.2.25
-  checksum: f05920e282569c3721dbbd730c83e40978134c0f53cd10f9429cc37b22152c494782f7b9541db937a2fd7ed324b819ec8aa0b54f136c3c6adbed7298c9c9e9da
+  checksum: 915f494940dd62d20204671a0d3bd81bcd44c02b314847325c9d0ad2f634eb3c012d3a00ffcac60416a5239e1d5e47e9cbf38f9c8cc9de708e12b98876ce946b
   languageName: node
   linkType: hard
 
@@ -1259,10 +1311,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vue/devtools-api@npm:^6.0.0-beta.18":
-  version: 6.0.8
-  resolution: "@vue/devtools-api@npm:6.0.8"
-  checksum: 4601fad607538af52962636eb6045b22e71cf17578ef835c836c58d76c3f2778c2960d10645ed782c39a39a8881e5e763a6cc32536b973aac913fbb248b19632
+"@vue/devtools-api@npm:^6.0.0":
+  version: 6.0.12
+  resolution: "@vue/devtools-api@npm:6.0.12::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2F%40vue%2Fdevtools-api%2F-%2Fdevtools-api-6.0.12.tgz"
+  checksum: 5eb4601a6f6601c4481eab54c7f05f8e373ac3f2b5ab6973847a47e7ddbec7a9d2cd80dc692905da9e8615ac64a208702c54f7dfac47f7aa2168a5b7dd176545
   languageName: node
   linkType: hard
 
@@ -1335,29 +1387,29 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@windicss/config@npm:1.7.1":
-  version: 1.7.1
-  resolution: "@windicss/config@npm:1.7.1::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2F%40windicss%2Fconfig%2F-%2Fconfig-1.7.1.tgz"
+"@windicss/config@npm:1.8.1":
+  version: 1.8.1
+  resolution: "@windicss/config@npm:1.8.1::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2F%40windicss%2Fconfig%2F-%2Fconfig-1.8.1.tgz"
   dependencies:
     debug: ^4.3.3
-    jiti: ^1.12.9
-    windicss: ^3.4.3
-  checksum: ba0e9032311c42177c211b052a216628ce0a6db22f3adaac5d3ce63c050ad3925ae65e1f662e31007485c3c8f169101c56f0a1f2635c380a60d416efcdb1d189
+    jiti: ^1.13.0
+    windicss: ^3.5.0
+  checksum: eb84f29746aad5c1d06d13b2f524c756e293af716c06b1e594de49b3904a47cc9d0d8c6f679f3ae42d62aa5b25e4b7e9a07ef9520d414a366c8c7dadf92e3ae7
   languageName: node
   linkType: hard
 
-"@windicss/plugin-utils@npm:1.7.1":
-  version: 1.7.1
-  resolution: "@windicss/plugin-utils@npm:1.7.1::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2F%40windicss%2Fplugin-utils%2F-%2Fplugin-utils-1.7.1.tgz"
+"@windicss/plugin-utils@npm:1.8.1":
+  version: 1.8.1
+  resolution: "@windicss/plugin-utils@npm:1.8.1::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2F%40windicss%2Fplugin-utils%2F-%2Fplugin-utils-1.8.1.tgz"
   dependencies:
-    "@antfu/utils": ^0.4.0
-    "@windicss/config": 1.7.1
+    "@antfu/utils": ^0.5.0
+    "@windicss/config": 1.8.1
     debug: ^4.3.3
     fast-glob: ^3.2.11
     magic-string: ^0.25.7
     micromatch: ^4.0.4
-    windicss: ^3.4.3
-  checksum: 85d5d2142e2eae03952530ec9e81967d1dc24cc88ecb26c5e8065464a516d329c1ce28e4a56221e9864e515e5c57b3ac2b4c6a3a6ae1abc372dd84fa595eaf5e
+    windicss: ^3.5.0
+  checksum: 83b98a6485bffe1f2705473a83d948da3cfccc2efc92fa82cdb8e1c155648186457f58497f6cb61f75134323adf47bda798d778b50c69f052d792eaeef95c437
   languageName: node
   linkType: hard
 
@@ -1747,10 +1799,11 @@ __metadata:
     "@electron/remote": ^2.0.5
     "@types/electron-json-storage": ^4.5.0
     "@types/nprogress": ^0.2.0
+    "@types/overlayscrollbars": ^1.12.1
     "@typescript-eslint/eslint-plugin": ^5.12.1
-    "@typescript-eslint/parser": ^5.12.1
-    "@vitejs/plugin-vue": ^2.2.2
-    "@vitejs/plugin-vue-jsx": ^1.3.7
+    "@typescript-eslint/parser": ^5.13.0
+    "@vitejs/plugin-vue": ^2.2.4
+    "@vitejs/plugin-vue-jsx": ^1.3.8
     autoprefixer: ^10.4.2
     electron: 17.1.0
     electron-builder: ^22.14.13
@@ -1763,21 +1816,22 @@ __metadata:
     husky: ^7.0.4
     less: ^4.1.2
     nprogress: ^0.2.0
+    overlayscrollbars: ^1.13.1
     pinia: ^2.0.11
     postcss: ^8.4.7
     postcss-html: ^1.3.0
     postcss-less: ^6.0.0
     prettier: ^2.5.1
-    typescript: ^4.5.5
+    typescript: ^4.6.2
     unplugin-auto-import: ^0.6.1
     unplugin-vue-components: ^0.17.21
-    vite: ^2.8.4
+    vite: ^2.8.6
     vite-plugin-optimize-persist: ^0.1.2
     vite-plugin-package-config: ^0.1.1
-    vite-plugin-windicss: ^1.7.1
+    vite-plugin-windicss: ^1.8.1
     vue: ^3.2.31
-    vue-router: ^4.0.12
-    windicss: ^3.4.4
+    vue-router: ^4.0.13
+    windicss: ^3.5.0
     winston: ^3.6.0
     winston-daily-rotate-file: ^4.6.1
   languageName: unknown
@@ -4410,7 +4464,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jiti@npm:^1.12.9":
+"jiti@npm:^1.13.0":
   version: 1.13.0
   resolution: "jiti@npm:1.13.0::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Fjiti%2F-%2Fjiti-1.13.0.tgz"
   bin:
@@ -5309,6 +5363,13 @@ __metadata:
     type-check: ^0.4.0
     word-wrap: ^1.2.3
   checksum: dbc6fa065604b24ea57d734261914e697bd73b69eff7f18e967e8912aa2a40a19a9f599a507fa805be6c13c24c4eae8c71306c239d517d42d4c041c942f508a0
+  languageName: node
+  linkType: hard
+
+"overlayscrollbars@npm:^1.13.1":
+  version: 1.13.1
+  resolution: "overlayscrollbars@npm:1.13.1::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Foverlayscrollbars%2F-%2Foverlayscrollbars-1.13.1.tgz"
+  checksum: 6f3be25b60dd9c2adcb6bd42d51f1ac72a1538247dfa991f5238602fc941ede0ec1fb0f04d4e1367d85ac2e95bdb27d81e05c7e3bfdff585c48a5cd611af9271
   languageName: node
   linkType: hard
 
@@ -6681,7 +6742,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@npm:^4.4.3, typescript@npm:^4.5.5":
+"typescript@npm:^4.4.3":
   version: 4.5.5
   resolution: "typescript@npm:4.5.5"
   bin:
@@ -6691,13 +6752,33 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@^4.4.3#~builtin<compat/typescript>, typescript@patch:typescript@^4.5.5#~builtin<compat/typescript>":
+"typescript@npm:^4.6.2":
+  version: 4.6.2
+  resolution: "typescript@npm:4.6.2::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Ftypescript%2F-%2Ftypescript-4.6.2.tgz"
+  bin:
+    tsc: bin/tsc
+    tsserver: bin/tsserver
+  checksum: 8a44ed7e6f6c4cb1ebe8cf236ecda2fb119d84dcf0fbd77e707b2dfea1bbcfc4e366493a143513ce7f57203c75da9d4e20af6fe46de89749366351046be7577c
+  languageName: node
+  linkType: hard
+
+"typescript@patch:typescript@^4.4.3#~builtin<compat/typescript>":
   version: 4.5.5
   resolution: "typescript@patch:typescript@npm%3A4.5.5#~builtin<compat/typescript>::version=4.5.5&hash=493e53"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
   checksum: c05c318d79c690f101d7ffb34cd6c7d6bbd884d3af9cefe7749ad0cd6be43c7082f098280982ca945dcba23fde34a08fed9602bb26540936baf8c0520727d3ba
+  languageName: node
+  linkType: hard
+
+"typescript@patch:typescript@^4.6.2#~builtin<compat/typescript>":
+  version: 4.6.2
+  resolution: "typescript@patch:typescript@npm%3A4.6.2%3A%3A__archiveUrl=https%253A%252F%252Fregistry.npmmirror.com%252Ftypescript%252F-%252Ftypescript-4.6.2.tgz#~builtin<compat/typescript>::version=4.6.2&hash=493e53"
+  bin:
+    tsc: bin/tsc
+    tsserver: bin/tsserver
+  checksum: efb83260a22ee49d4c8bdc59b3cefe54fdf51d6f563f5c3a35aa3d5e46fb12f3f1d33a36d6f9f64171e567ead1847e99cb612d0a9a74e7d44e16cad9d0bbc937
   languageName: node
   linkType: hard
 
@@ -6958,23 +7039,23 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vite-plugin-windicss@npm:^1.7.1":
-  version: 1.7.1
-  resolution: "vite-plugin-windicss@npm:1.7.1::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Fvite-plugin-windicss%2F-%2Fvite-plugin-windicss-1.7.1.tgz"
+"vite-plugin-windicss@npm:^1.8.1":
+  version: 1.8.1
+  resolution: "vite-plugin-windicss@npm:1.8.1::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Fvite-plugin-windicss%2F-%2Fvite-plugin-windicss-1.8.1.tgz"
   dependencies:
-    "@windicss/plugin-utils": 1.7.1
+    "@windicss/plugin-utils": 1.8.1
     debug: ^4.3.3
     kolorist: ^1.5.1
-    windicss: ^3.4.3
+    windicss: ^3.5.0
   peerDependencies:
     vite: ^2.0.1
-  checksum: 273d40adb0fb1f02c4b04fce7d7820c159588a35c4770253c99b74bfd653aebe9af21b64bb026d3595c821b00ce6c06ae1de8d4d00dc3103fe8897f5c482127d
+  checksum: a28b27927dd5537ccbf5dc1f8fa38752683a341069e0709ec131520c82e778155d06052c96facccc269c6b36f74cf06394bc492441c95a9abd6c1923cf5a58a4
   languageName: node
   linkType: hard
 
-"vite@npm:^2.8.4":
-  version: 2.8.4
-  resolution: "vite@npm:2.8.4::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Fvite%2F-%2Fvite-2.8.4.tgz"
+"vite@npm:^2.8.6":
+  version: 2.8.6
+  resolution: "vite@npm:2.8.6::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Fvite%2F-%2Fvite-2.8.6.tgz"
   dependencies:
     esbuild: ^0.14.14
     fsevents: ~2.3.2
@@ -6997,7 +7078,7 @@ __metadata:
       optional: true
   bin:
     vite: bin/vite.js
-  checksum: 0531ea17d354c35026c87e732d28c777492cc5165c4abdaa507c4894535ecbbfcf447fa3f270bbb160cd7cba8ad319cc86a221be18b2ccd40d8be139f9d7381d
+  checksum: 4b02d133892c98362c10214b7ad518d74b59745889197a2ba0b63260ed083fcef75a447e8fb58dbd2af8747386274b36017983d93031254df6ead38701950dcc
   languageName: node
   linkType: hard
 
@@ -7034,14 +7115,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vue-router@npm:^4.0.12":
-  version: 4.0.12
-  resolution: "vue-router@npm:4.0.12"
+"vue-router@npm:^4.0.13":
+  version: 4.0.13
+  resolution: "vue-router@npm:4.0.13::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Fvue-router%2F-%2Fvue-router-4.0.13.tgz"
   dependencies:
-    "@vue/devtools-api": ^6.0.0-beta.18
+    "@vue/devtools-api": ^6.0.0
   peerDependencies:
-    vue: ^3.0.0
-  checksum: 5ac66dffd956d088267ba45ec17e390de0aebb1ad08fc9431deb1397e265a003ae99b705fe7ca4ee610782de70aef129b4adf0a494171620d8153d794b2e5498
+    vue: ^3.2.0
+  checksum: c1a4345e05af7e45d4808b89a92c6083891383759bba5f27a0e63840b19dbb4743fdaada48191445c652d6194792563dc76edf85557ae612a4908befa9148a57
   languageName: node
   linkType: hard
 
@@ -7094,12 +7175,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"windicss@npm:^3.4.3, windicss@npm:^3.4.4":
-  version: 3.4.4
-  resolution: "windicss@npm:3.4.4::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Fwindicss%2F-%2Fwindicss-3.4.4.tgz"
+"windicss@npm:^3.5.0":
+  version: 3.5.0
+  resolution: "windicss@npm:3.5.0::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Fwindicss%2F-%2Fwindicss-3.5.0.tgz"
   bin:
     windicss: cli/index.js
-  checksum: 6f480eb199929af87bad679cb22e61a1538b1c4ad80a013d18ef226e36c2e10a2f357f7ebafb18c5c83c8e36a92f3591ece8f5d5afdd4104f641ed71712154d9
+  checksum: dc0b34d6a88e8c2a9269b6d383094d8869dc64efb8f7a41c87a7547610fed09d9de2fe7fad3c2865c50dd42c2122ef00035c6fa3ba2207719abd061594cf765f
   languageName: node
   linkType: hard
 

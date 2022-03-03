@@ -69,14 +69,16 @@
 </script>
 
 <template>
-  <div class="px-2 py-2 max-w-200 mx-auto">
-    <a-input-search
-      v-model="naviGotoTarget"
-      allow-clear
-      placeholder="av号/BV号/lv直播/网址/关键词"
-      @press-enter="naviGoto"
-      @search="naviGoto"
-    />
+  <div class="bg-$color-bg-2 px-2 py-4 max-w-200 mx-auto">
+    <div class="px-2">
+      <a-input-search
+        v-model="naviGotoTarget"
+        allow-clear
+        placeholder="av号/BV号/lv直播/网址/关键词"
+        @press-enter="naviGoto"
+        @search="naviGoto"
+      />
+    </div>
     <div v-for="(bigCat, key) in webNav" :key="key" class="flex my-3">
       <div
         class="flex items-center justify-center min-w-13 font-bold mr-2 border-r border-$color-border-2"

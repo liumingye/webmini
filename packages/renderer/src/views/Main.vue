@@ -5,12 +5,14 @@
   import { useAppStore } from '@/store'
   import { currentWindowType } from '@/utils'
   import debounce from '@/utils/debounce'
+  import OverlayScrollbars from 'overlayscrollbars'
 
   const appStore = useAppStore()
   const route = useRoute()
+  const router = useRouter()
   const showTopBar = ref(true)
-  const mounted = ref(false)
   const autoHideBar = computed(() => appStore.autoHideBar)
+  const scrollContainer = ref()
 
   const app = window.app
 
@@ -115,11 +117,20 @@
   }
 
   onMounted(() => {
-    mounted.value = true
-
     saveWindowSize()
     initMouseStateDirtyCheck()
     watchAlwaysOnTop()
+
+    OverlayScrollbars(scrollContainer.value, {
+      scrollbars: {
+        autoHide: 'leave',
+        clickScrolling: true,
+      },
+      overflowBehavior: {
+        x: 'hidden',
+        y: 'scroll',
+      },
+    })
 
     watch(
       () => route.name,
@@ -136,24 +147,62 @@
       },
     )
   })
+  router.afterEach((to, from) => {
+    const toDepth = to.path.split('/').length
+    const fromDepth = from.path.split('/').length
+    to.meta.transition = toDepth < fromDepth ? 'slide-right' : 'slide-left'
+  })
 </script>
 
 <template>
   <div id="main" :class="['select-none', { showTopBar, autoHideBar }]">
-    <TopBar v-if="mounted" />
-    <router-view v-slot="{ Component }">
-      <!-- <keep-alive :include="[]"> -->
-      <component
-        :is="Component"
-        class="h-full overflow-x-none overflow-y-auto bg-$color-bg-2 text-$color-text-1"
-      />
-      <!-- </keep-alive> -->
-    </router-view>
-    <WebView v-show="route.name === 'Home'" />
+    <TopBar />
+    <div ref="scrollContainer" class="relative h-full w-full bg-$color-bg-2 text-$color-text-1">
+      <WebView v-show="route.name === 'Home'" />
+      <router-view v-slot="{ Component }">
+        <transition :name="route.meta.transition">
+          <!-- <keep-alive :include="[]"> -->
+          <component :is="Component" class="min-h-full min-w-full" />
+          <!-- </keep-alive> -->
+        </transition>
+      </router-view>
+    </div>
   </div>
 </template>
 
 <style lang="less" scoped>
+  .slide-left-enter-from {
+    opacity: 0;
+    transform: translateX(20%);
+  }
+  .slide-left-enter-active {
+    transition: all 0.15s ease-out;
+  }
+  .slide-left-leave-to {
+    opacity: 0;
+    transform: translateX(-10%);
+    position: absolute;
+  }
+  .slide-left-leave-active {
+    transition: all 0.15s ease-in;
+  }
+
+  .slide-right-enter-from {
+    opacity: 0;
+    transform: translateX(-10%);
+  }
+  .slide-right-enter-active {
+    transition: all 0.15s ease-out;
+  }
+  .slide-right-leave-to {
+    opacity: 0;
+    transform: translateX(20%);
+    position: absolute;
+  }
+  .slide-right-leave-active {
+    transition: all 0.15s ease-in;
+  }
+
   #main {
     display: flex;
     flex-direction: column;

@@ -13,7 +13,7 @@ export const useAppStore = defineStore('app', {
   state: (): AppStateTypes => ({
     webview: null as unknown as Electron.WebviewTag,
     alwaysOnTop: 'on',
-    title: '',
+    title: 'bilimini',
     windowSize: {
       mobile: [376, 500],
       desktop: [1100, 600],
@@ -112,7 +112,7 @@ export const useAppStore = defineStore('app', {
       // https://m.v.qq.com/x/m/play?cid=u496ep9wpw4rkno&vid=
       // https://m.v.qq.com/cover/m/mzc00200jtxd9ap.html?vid=d0042iplesm
       // https://m.v.qq.com/x/play.html?cid=od1kjfd56e3s7n7
-      const vqq = /(=|\/)([A-Za-z0-9]{15})(.*?)([A-Za-z0-9]{11}|)/g.exec(
+      const vqq = /(id=|\/)([A-Za-z0-9]{15})(.*?)([A-Za-z0-9]{11}|)/g.exec(
         _URL.pathname + _URL.search,
       )
       // window.app.logger.debug(vqq)

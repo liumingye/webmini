@@ -52,6 +52,25 @@
     webview.value.addEventListener('new-window', ({ url }) => {
       appStore.go(url)
     })
+
+    const replaceTitle = (title: string) => {
+      const map = [
+        '_哔哩哔哩_bilibili',
+        '-高清正版在线观看-bilibili-哔哩哔哩',
+        ' - 哔哩哔哩弹幕视频网 - ( ゜- ゜)つロ 乾杯~',
+        '哔哩哔哩 (゜-゜)つロ 干杯~-',
+      ]
+      map.forEach((value) => {
+        title = title.replace(value, '')
+      })
+      title = title.replace('bilibili', 'bilimini').replace('哔哩哔哩', 'bilimini')
+      return title
+    }
+
+    webview.value.addEventListener('page-title-updated', (event) => {
+      appStore.title = replaceTitle(event.title) || 'bilimini'
+      document.title = appStore.title
+    })
   }
 
   onMounted(() => {

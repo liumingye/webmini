@@ -11,32 +11,7 @@
   const webview = computed(() => appStore.webview)
   const disableDanmakuButton = computed(() => appStore.disableDanmakuButton)
   const disablePartButton = computed(() => appStore.disablePartButton)
-
-  const replaceTitle = (title: string) => {
-    const map = [
-      '_哔哩哔哩_bilibili',
-      '-高清正版在线观看-bilibili-哔哩哔哩',
-      ' - 哔哩哔哩弹幕视频网 - ( ゜- ゜)つロ 乾杯~',
-      '哔哩哔哩 (゜-゜)つロ 干杯~-',
-    ]
-    map.forEach((value) => {
-      title = title.replace(value, '')
-    })
-    title = title.replace('bilibili', 'bilimini').replace('哔哩哔哩', 'bilimini')
-    return title
-  }
-
-  const title = computed(() => replaceTitle(appStore.title) || 'bilimini')
-
-  webview.value.addEventListener('page-title-updated', (event) => {
-    appStore.title = event.title
-    document.title = title.value
-  })
-
-  webview.value.addEventListener('dom-ready', () => {
-    appStore.title = webview.value.getTitle()
-    document.title = title.value
-  })
+  const title = computed(() => appStore.title)
 
   historyStore.listen((to) => {
     appStore.go(to)
@@ -123,7 +98,7 @@
 
   const toggleDanmaku = () => {
     webview.value.executeJavaScript(
-      "document.querySelector('.bilibili-player-video-danmaku-switch .bui-switch-input').click()",
+      "document.querySelector('.bilibili-player-video-danmaku-switch .bui-switch-input,.bpx-player-dm-switch .bui-switch-input').click()",
     )
   }
 
@@ -151,7 +126,7 @@
 </script>
 
 <template>
-  <div id="topbar" class="gap-2 items-center">
+  <div id="topbar" class="gap-2 items-center drag">
     <b-button id="navi-back" title="后退" :disabled="disableBack" @click="goBack">
       <icon-left size=".9em" />
     </b-button>
@@ -161,7 +136,7 @@
     <b-button id="navi-home" title="返回首页" @click="naviGoHome">
       <icon-home size=".8em" />
     </b-button>
-    <div class="flex-1 truncate text-center text-$color-fill-1 text-0.9em">
+    <div class="flex-1 truncate text-center text-$color-fill-1 text-0.9em leading-32px">
       {{ title }}
     </div>
     <b-button
@@ -196,10 +171,9 @@
   #topbar {
     display: flex;
     background: @color-app-bg;
-    line-height: 32px;
     height: 32px;
+    line-height: 32px;
     padding: 0 10px;
-    -webkit-app-region: drag;
 
     #navi-back {
       span {

@@ -1,5 +1,6 @@
 <script setup lang="ts">
   import { useAppStore } from '@/store'
+  import OverlayScrollbars from 'overlayscrollbars'
 
   const app = window.app
   const ipc = window.ipcRenderer
@@ -8,6 +9,7 @@
   const currentPartId = ref(0)
   const appStore = useAppStore()
   const mainWindowID = computed(() => appStore.windowID.mainWindow)
+  const scrollContainer = ref()
 
   const selectPart = (index: number) => {
     if (!mainWindowID.value) return
@@ -63,22 +65,35 @@
       currentPartId.value = 0
     }
   })
+
+  onMounted(() => {
+    OverlayScrollbars(scrollContainer.value, {
+      scrollbars: {
+        autoHide: 'leave',
+        clickScrolling: true,
+      },
+      overflowBehavior: {
+        x: 'hidden',
+        y: 'scroll',
+      },
+    })
+  })
 </script>
 
 <template>
   <div id="selectPart">
-    <header class="flex px-3 h-12 leading-12">
-      <div class="drag flex-1 font-bold">视频分Part</div>
-      <div class="flex self-center gap-2">
-        <b-button @click="scrollIntoView(true)">
+    <header class="flex p-2 drag">
+      <div class="flex-1 font-bold">视频分Part</div>
+      <div class="flex gap-2 no-drag">
+        <b-button title="定位" @click="scrollIntoView(true)">
           <icon-target-two />
         </b-button>
-        <b-button @click="closeWindow">
+        <b-button title="关闭" @click="closeWindow">
           <icon-close-small />
         </b-button>
       </div>
     </header>
-    <div class="overflow-y-auto px-2 mb-2">
+    <div ref="scrollContainer" class="px-2 mb-2 h-full">
       <div
         v-for="(title, index) in partList"
         :key="index"
@@ -135,10 +150,6 @@
         opacity: 1;
         background: rgba(255, 255, 255, 0.16);
       }
-    }
-
-    .drag {
-      -webkit-app-region: drag;
     }
   }
 </style>

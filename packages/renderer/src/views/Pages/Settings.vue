@@ -13,26 +13,43 @@
       appStore.saveConfig('alwaysOnTop', value)
     },
   })
-  const goTo = (name: string) => {
-    router.push({ name })
+  const clearSensitiveDirectories = () => {
+    window.ipcRenderer.send('clearSensitiveDirectories')
+  }
+  const clearAllUserData = () => {
+    window.ipcRenderer.send('clearAllUserData')
   }
 </script>
 
 <template>
-  <div class="bg-$color-neutral-2">
-    <b-settings-tile title="窗口置顶" :separate="true">
-      <a-select
-        v-model="alwaysOnTop"
-        :style="{ width: '120px' }"
-        placeholder="Select"
-        :bordered="false"
-        :trigger-props="{ autoFitPopupMinWidth: true }"
-      >
-        <a-option value="off">关闭</a-option>
-        <a-option value="on"> 开启</a-option>
-        <a-option value="playing">播放视频时</a-option>
-      </a-select>
-    </b-settings-tile>
-    <b-settings-tile title="关于 bilimini" :separate="true" @click="goTo('About')" />
+  <div class="bg-$color-neutral-2 inline-block">
+    <b-settings>
+      <b-settings-tile title="窗口置顶">
+        <a-select
+          v-model="alwaysOnTop"
+          :style="{ width: '120px' }"
+          placeholder="Select"
+          :bordered="false"
+          :trigger-props="{ autoFitPopupMinWidth: true }"
+        >
+          <a-option value="off">关闭</a-option>
+          <a-option value="on"> 开启</a-option>
+          <a-option value="playing">播放视频时</a-option>
+        </a-select>
+      </b-settings-tile>
+    </b-settings>
+    <b-settings>
+      <router-link :to="{ name: 'About' }">
+        <b-settings-tile title="关于 bilimini" />
+      </router-link>
+      <b-settings-tile title="清理缓存" @click="clearSensitiveDirectories" />
+      <b-settings-tile title="重置应用" @click="clearAllUserData" />
+    </b-settings>
   </div>
 </template>
+
+<style lang="less" scoped>
+  ::host {
+    background-color: #000;
+  }
+</style>
