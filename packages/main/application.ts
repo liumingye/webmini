@@ -1,11 +1,15 @@
 import { app, ipcMain, Menu, BrowserWindow } from 'electron'
+import is from 'electron-is'
 import { MainWindow } from './windows/main'
 import { SelectPartWindow } from './windows/selectPart'
-import { isMacintosh } from '../common/platform'
 import { getMainMenu } from './menus/main'
 
 export class Application {
   public static instance = new this()
+
+  public static URL = is.dev()
+    ? `http://${process.env['VITE_DEV_SERVER_HOST']}:${process.env['VITE_DEV_SERVER_PORT']}`
+    : `file://${join(app.getAppPath(), 'dist/renderer/index.html')}`
 
   public mainWindow: MainWindow | undefined
   public selectPartWindow: SelectPartWindow | undefined
@@ -26,7 +30,7 @@ export class Application {
       // On macOS it is common for applications and their menu bar
       // to stay active until the user quits explicitly with Cmd + Q
       console.log('主线程：所有窗口关闭')
-      if (!isMacintosh) app.quit()
+      if (!is.macOS()) app.quit()
     })
 
     await app.whenReady()
@@ -35,7 +39,7 @@ export class Application {
     Menu.setApplicationMenu(getMainMenu())
 
     ipcMain.on('close-main-window', () => {
-      if (isMacintosh) {
+      if (is.macOS()) {
         this.mainWindow?.win.close()
         this.selectPartWindow?.win.close()
       } else {

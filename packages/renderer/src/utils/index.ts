@@ -1,9 +1,7 @@
 import { useAppStore } from '@/store'
 import { windowType } from '@/types'
-import { videoUrlPrefix } from '@/config/constant'
 import Site from '@/utils/site'
 
-const ipc = window.ipcRenderer
 const logger = window.app.logger
 
 export const currentWindowType = ref<windowType>('mobile')
@@ -20,7 +18,7 @@ export const resizeMainWindow = (windowType?: windowType) => {
   if (targetWindowType.value === currentWindowType.value) {
     return
   }
-  window.app.logger.debug(`targetWindowType - ${targetWindowType.value}`)
+  logger.debug(`targetWindowType - ${targetWindowType.value}`)
   // We want the new window to open on the same display that the parent is in
   let displayToUse: Electron.Display | undefined
   const screen = window.app.screen
@@ -84,109 +82,24 @@ export const getVid = (url: string) => {
   return m ? m[1] : null
 }
 
-export const getPartOfBangumi = (url: string) => {
-  const appStore = useAppStore()
-  const net = window.app.net
-  net.fetch(url).then((res) => {
-    res.text().then((res) => {
-      // 分 P 信息存储在 window.__INITIAL_STATE__= 中 根据 object 类型的特性最后一个 } 后面不会有 , ] } 使用正则匹配
-      const match = res.match(/window\.__INITIAL_STATE__\s*=\s*(\{.*?\})[^,\]}]/m)
-      if (!match || match?.length < 2) {
-        logger.error(`获取番剧分p数据失败`, {
-          data: res,
-          label: 'getPartOfBangumi',
-        })
-        return false
-      }
-      const json = JSON.parse(match[1])
-      let parts
-      let currentPartId = 0
-      try {
-        parts = json.epList
-        currentPartId = Number(json.epInfo.i)
-      } catch (err) {
-        logger.error(`解析番剧分p失败`, {
-          error: err,
-          data: json,
-          label: 'getPartOfBangumi',
-        })
-        return false
-      }
-      logger.debug(`获取番剧 ${url} 的分P数据成功`, {
-        label: 'getPartOfBangumi',
-      })
-      if (parts.length) {
-        if (!appStore.windowID.selectPartWindow) return
-        ipc.sendTo(appStore.windowID.selectPartWindow, 'update-bangumi-part', {
-          currentPartId,
-          parts: parts.map((p: any) => {
-            return {
-              epid: p.i,
-              // aid: p.aid,
-              bvid: p.bvid,
-              title: p.longTitle,
-            }
-          }),
-        })
-        if (parts.length > 1) {
-          // ipc.send("show-select-part-window");
-          appStore.disablePartButton = false
-        }
-      } else {
-        if (!appStore.windowID.selectPartWindow) return
-        ipc.sendTo(appStore.windowID.selectPartWindow, 'update-part', null)
-        appStore.disablePartButton = true
-      }
-    })
+export const replace = (text: string, map: string[], replacer: string) => {
+  map.forEach((value) => {
+    text = text.replace(value, replacer)
   })
+  return text
 }
 
-export const getPartOfVideo = (vid: string) => {
-  const appStore = useAppStore()
-  const net = window.app.net
-  net.fetch(videoUrlPrefix + vid).then((res) => {
-    res.text().then((res) => {
-      // 分 P 信息存储在 window.__INITIAL_STATE__= 中 根据 object 类型的特性最后一个 } 后面不会有 , ] } 使用正则匹配
-      const match = res.match(/window\.__INITIAL_STATE__\s*=\s*(\{.*?\})[^,\]}]/m)
-      if (!match || match?.length < 2) {
-        logger.error(`获取视频分p数据失败`, {
-          data: res,
-          label: 'getPartOfVideo',
-        })
-        return false
-      }
-      const json = JSON.parse(match[1])
-      let parts
-      try {
-        parts = json.videoData.pages
-      } catch (err) {
-        logger.error(`解析视频分p失败`, {
-          error: err,
-          data: json,
-          label: 'getPartOfVideo',
-        })
-        return false
-      }
-      logger.debug(`获取视频 ${vid} 的分P数据成功`, {
-        label: 'getPartOfBangumi',
-      })
-      if (parts.length) {
-        if (!appStore.windowID.selectPartWindow) return
-        ipc.sendTo(
-          appStore.windowID.selectPartWindow,
-          'update-part',
-          parts.map((p: { part: [] }) => p.part),
-        )
-        // 有超过1p时自动开启分p窗口
-        if (parts.length > 1) {
-          ipc.send('show-select-part-window')
-          appStore.disablePartButton = false
-        }
-      } else {
-        if (!appStore.windowID.selectPartWindow) return
-        ipc.sendTo(appStore.windowID.selectPartWindow, 'update-part', null)
-        appStore.disablePartButton = true
-      }
-    })
-  })
+export const replaceTitle = (title: string) => {
+  title = replace(
+    title,
+    [
+      '_哔哩哔哩_bilibili',
+      '-高清正版在线观看-bilibili-哔哩哔哩',
+      ' - 哔哩哔哩弹幕视频网 - ( ゜- ゜)つロ 乾杯~',
+      '哔哩哔哩 (゜-゜)つロ 干杯~-',
+    ],
+    '',
+  )
+  title = replace(title, ['bilibili', '哔哩哔哩'], 'bilimini')
+  return title
 }

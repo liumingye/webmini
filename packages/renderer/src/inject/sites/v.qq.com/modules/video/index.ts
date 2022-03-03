@@ -21,14 +21,14 @@ const module = {
   start: () => {
     module.stop()
     // 预先加载全屏样式
-    document.documentElement.classList.add('txp_html_fullscreen', 'txp_html_barrage_on')
+    document.body.classList.add('txp_html_fullscreen', 'txp_html_barrage_on')
     const styleEntry = addStyle(style)
     unloadStyle = styleEntry.unload
     ipcRenderer.on('change-volume', changeVolume)
   },
 
   stop: () => {
-    document.documentElement.classList.remove('txp_html_fullscreen', 'txp_html_barrage_on')
+    document.body.classList.remove('txp_html_fullscreen', 'txp_html_barrage_on')
     unloadStyle && unloadStyle()
     ipcRenderer.off('change-volume', changeVolume)
   },

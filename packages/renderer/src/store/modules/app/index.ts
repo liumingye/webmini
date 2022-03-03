@@ -1,13 +1,17 @@
 import { AppStateTypes, AppConfig } from './types'
-import { getVidWithP, getVid, getBvid } from '@/utils'
+import { getVidWithP, getBvid } from '@/utils'
 import { userAgent, videoUrlPrefix, liveUrlPrefix, bangumiUrlPrefix } from '@/config/constant'
 import { useHistoryStore } from '@/store'
 import Site from '@/utils/site'
+import { getPartOfBangumi, getPartOfVideo, getPartOfQQ } from '@/utils/part'
 
 const ipc = window.ipcRenderer
 
-let lastPush = 0
-let lastUrl: string
+const last = reactive({
+  push: 0,
+  url: '',
+  vid: '',
+})
 
 export const useAppStore = defineStore('app', {
   state: (): AppStateTypes => ({
@@ -63,26 +67,30 @@ export const useAppStore = defineStore('app', {
       })
     },
     updateURL(url: string) {
-      if (lastUrl === url) return
-      lastUrl = url
+      if (last.url === url) return
+      last.url = url
       window.app.logger.info(`updateURL - ${url}`, { label: 'appStore' })
 
-      this.addHistoryItem(url)
+      // 历史push
+      const historyStore = useHistoryStore()
+      historyStore.push(url)
 
       // 通知webview加载脚本
       this.webview.send('load-commit')
 
       const _URL = new URL(url)
-      const historyStore = useHistoryStore()
       // 视频
       const vid = getVidWithP(_URL.pathname)
       if (vid) {
         if (_URL.hostname === 'm.bilibili.com') {
-          // historyStore.replace(videoUrlPrefix + vid)
           historyStore.pop()
           this.webview.loadURL(videoUrlPrefix + vid, {
             userAgent: userAgent.desktop,
           })
+        }
+        if (vid !== last.vid) {
+          getPartOfVideo(vid)
+          last.vid = vid
         }
         this.disableDanmakuButton = false
         this.autoHideBar = true
@@ -90,18 +98,20 @@ export const useAppStore = defineStore('app', {
           ipc.sendTo(this.windowID.selectPartWindow, 'url-changed', url)
         }
         return
+      } else {
+        last.vid = ''
       }
 
       // 番剧
       const bvid = getBvid(_URL.pathname)
       if (bvid) {
         if (_URL.hostname === 'm.bilibili.com') {
-          // historyStore.replace(bangumiUrlPrefix + bvid)
           historyStore.pop()
           this.webview.loadURL(bangumiUrlPrefix + bvid, {
             userAgent: userAgent.desktop,
           })
         }
+        getPartOfBangumi(bvid)
         this.disableDanmakuButton = false
         this.autoHideBar = true
         return
@@ -112,21 +122,28 @@ export const useAppStore = defineStore('app', {
       // https://m.v.qq.com/x/m/play?cid=u496ep9wpw4rkno&vid=
       // https://m.v.qq.com/cover/m/mzc00200jtxd9ap.html?vid=d0042iplesm
       // https://m.v.qq.com/x/play.html?cid=od1kjfd56e3s7n7
-      const vqq = /(id=|\/)([A-Za-z0-9]{15})(.*?)([A-Za-z0-9]{11}|)/g.exec(
-        _URL.pathname + _URL.search,
-      )
-      // window.app.logger.debug(vqq)
-      if (vqq && vqq.length >= 3) {
-        if (_URL.hostname !== 'v.qq.com') {
+      const cidArr = /(cid=|\/)([A-Za-z0-9]{15})/.exec(_URL.pathname + _URL.search)
+      // window.app.logger.debug(cidArr)
+      if (cidArr) {
+        const vidArr = /(vid=|\/)([A-Za-z0-9]{11})(\.|$|&)/.exec(_URL.pathname + _URL.search)
+        const cid = cidArr[2]
+        const vid = vidArr ? vidArr[2] : ''
+        if (_URL.hostname === 'm.v.qq.com') {
           historyStore.pop()
-          const id = ref(vqq[2])
-          if (vqq[4] !== '') {
-            id.value += `/${vqq[4]}`
+          const url = ref(`https://v.qq.com/x/cover/${cid}`)
+          if (vid !== '') {
+            url.value += `/${vid}`
           }
-          this.webview.loadURL(`https://v.qq.com/x/cover/${id.value}.html`, {
+          url.value += `.html`
+          this.webview.loadURL(url.value, {
             userAgent: userAgent.desktop,
           })
         }
+        // if (cid + vid !== lastId) {
+        getPartOfQQ(cid, vid)
+        // lastId = cid + vid
+        // console.log(lastId)
+        // }
         this.disableDanmakuButton = true
         this.disablePartButton = true
         this.autoHideBar = true
@@ -140,7 +157,6 @@ export const useAppStore = defineStore('app', {
         const live = /^\/(h5\/||blanc\/)?(\d+).*/.exec(_URL.pathname)
         if (live) {
           if (live[1] === 'h5/') {
-            // historyStore.replace(liveUrlPrefix + live[2])
             historyStore.pop()
             this.webview.loadURL(liveUrlPrefix + live[2], {
               userAgent: userAgent.desktop,
@@ -169,41 +185,19 @@ export const useAppStore = defineStore('app', {
       if (this.windowID.selectPartWindow) {
         ipc.sendTo(this.windowID.selectPartWindow, 'update-part', null)
       }
-    },
-    addHistoryItem(url: string) {
-      const historyStore = useHistoryStore()
-      // 历史push
+
       const now = Number(new Date())
-      if (now - lastPush < 500) {
+      if (now - last.push < 500) {
         // 两次转跳间隔小于500ms，疑似redirect
-        historyStore.replace(url)
-      } else {
-        historyStore.push(url)
+        historyStore.pop()
       }
-      lastPush = now
+      last.push = now
     },
     go(url: string) {
       window.app.logger.debug(`go - ${url}`, { label: 'appStore' })
       if (this.webview.getURL() === url) return
       this.webview.loadURL(url, {
         userAgent: new Site(url).getUserAgent(),
-      })
-    },
-    goPart(pid: number) {
-      window.app.logger.debug(`goPart - ${pid}`, { label: 'appStore' })
-      const vid = getVid(this.webview.getURL())
-      if (vid) {
-        const url = `${videoUrlPrefix}${vid}/?p=${pid}`
-        this.webview.loadURL(url, {
-          userAgent: userAgent.desktop,
-        })
-        console.log(`路由：选择分p，选中第${pid}，转跳地址：${url}`)
-      }
-    },
-    goBangumiPart(ep: { bvid: number }) {
-      window.app.logger.debug(`goBangumiPart - ${ep.bvid}`, { label: 'appStore' })
-      this.webview.loadURL(videoUrlPrefix + ep.bvid, {
-        userAgent: userAgent.desktop,
       })
     },
   },

@@ -28,6 +28,7 @@
     "node": ">=14.17.0"
   },
   "dependencies": {
+    "electron-is": "^3.0.0",
     "electron-json-storage": "^4.5.0",
     "nprogress": "^0.2.0",
     "overlayscrollbars": "^1.13.1",
@@ -87,9 +88,6 @@
     "optimizeDeps": {
       "include": [
         "@arco-design/web-vue",
-        "@arco-design/web-vue/es/switch/style/css.js",
-        "@arco-design/web-vue/es/switch/style/index.js",
-        "@vue/reactivity",
         "nprogress",
         "overlayscrollbars",
         "pinia",

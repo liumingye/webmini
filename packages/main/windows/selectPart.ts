@@ -1,7 +1,6 @@
 import { CommonWindow } from './common'
 import { BrowserWindow, ipcMain } from 'electron'
 import { join } from 'path'
-import { URL } from '../../common/utils'
 import { Application } from '../application'
 
 export class SelectPartWindow extends CommonWindow {
@@ -18,7 +17,7 @@ export class SelectPartWindow extends CommonWindow {
       },
     })
 
-    window.loadURL(`${URL}#/select-part`)
+    window.loadURL(`${Application.URL}#/select-part`)
 
     ipcMain.on('toggle-select-part-window', () => {
       this.toggle()

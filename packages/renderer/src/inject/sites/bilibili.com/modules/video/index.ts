@@ -29,15 +29,6 @@ const changeVolume = (_ev: Electron.IpcRendererEvent, arg: 'up' | 'down') => {
   document.dispatchEvent(event)
 }
 
-/**
- * 播放器加载完成
- */
-const playerReady = () => {
-  document.querySelector('video')?.addEventListener('ended', ended)
-  ipcRenderer.on('change-volume', changeVolume)
-  abortPromise && abortPromise()
-}
-
 const module = {
   start: () => {
     module.stop()
@@ -48,9 +39,17 @@ const module = {
       abortPromise = abort
       promise.then(
         () => {
-          playerReady()
+          /**
+           * 播放器加载完成
+           */
+          document.querySelector('video')?.addEventListener('ended', ended)
+          ipcRenderer.on('change-volume', changeVolume)
+          abortPromise && abortPromise()
         },
         () => {
+          /**
+           * 断开 observer 回调
+           */
           abortPromise = null
           document.querySelector('video')?.removeEventListener('ended', ended)
           ipcRenderer.off('change-volume', changeVolume)
@@ -58,7 +57,7 @@ const module = {
       )
     })
     // 预先加载全屏样式
-    document.body.classList.add('player-mode-webfullscreen', 'player-fullscreen-fix')
+    document.documentElement.classList.add('player-mode-webfullscreen', 'player-fullscreen-fix')
     const styleEntry = addStyle(style)
     unloadStyle = styleEntry.unload
   },
@@ -66,7 +65,7 @@ const module = {
   stop: () => {
     // 断开 observer
     abortPromise && abortPromise()
-    document.body.classList.remove('player-mode-webfullscreen', 'player-fullscreen-fix')
+    document.documentElement.classList.remove('player-mode-webfullscreen', 'player-fullscreen-fix')
     unloadStyle && unloadStyle()
   },
 }

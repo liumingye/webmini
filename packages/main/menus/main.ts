@@ -1,4 +1,4 @@
-import { Menu, MenuItemConstructorOptions, MenuItem, app, shell, BrowserWindow } from 'electron'
+import { Menu, MenuItemConstructorOptions, MenuItem, app, shell } from 'electron'
 import { Application } from '../application'
 
 export const getMainMenu = () => {
@@ -60,17 +60,6 @@ export const getMainMenu = () => {
         { label: '最小化', role: 'minimize' },
         { label: '缩放', role: 'zoom' },
         { label: '关闭', role: 'close' },
-        { type: 'separator' },
-        {
-          label: '置顶',
-          type: 'checkbox',
-          checked: true,
-          click(menuItem: MenuItem, browserWindow?: BrowserWindow) {
-            if (!browserWindow) return
-            menuItem.checked = !browserWindow.isAlwaysOnTop()
-            browserWindow.setAlwaysOnTop(menuItem.checked)
-          },
-        },
       ],
     },
     {

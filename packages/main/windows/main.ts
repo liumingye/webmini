@@ -1,9 +1,9 @@
 import { CommonWindow } from './common'
 import { BrowserWindow, app, shell } from 'electron'
+import is from 'electron-is'
 import { join } from 'path'
-import { URL } from '../../common/utils'
-import { isMacintosh } from '../../common/platform'
 import Storage from 'electron-json-storage'
+import { Application } from '../application'
 
 export class MainWindow extends CommonWindow {
   public constructor(window?: BrowserWindow) {
@@ -37,10 +37,10 @@ export class MainWindow extends CommonWindow {
       },
     })
 
-    window.loadURL(URL)
+    window.loadURL(Application.URL)
 
     window.on('close', () => {
-      if (!isMacintosh) {
+      if (!is.macOS()) {
         process.nextTick(() => {
           app.quit()
         })

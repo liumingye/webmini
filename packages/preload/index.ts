@@ -2,7 +2,7 @@ import { contextBridge, ipcRenderer } from 'electron'
 import { getCurrentWindow, screen, app } from '@electron/remote'
 import useLoading from './utils/loading'
 import domReady from './utils/domReady'
-import { logger, versions, cookies, net } from './apis'
+import { Logger, Versions, Cookies, Net } from './apis'
 import { resolve } from 'path'
 import Storage from 'electron-json-storage'
 
@@ -37,8 +37,8 @@ Storage.setDataPath(app.getPath('userData'))
 const currentWindow = getCurrentWindow()
 contextBridge.exposeInMainWorld('app', {
   storage: Storage,
-  cookies: new cookies(),
-  versions: new versions(),
+  cookies: new Cookies(),
+  versions: new Versions(),
   screen: withPrototype(screen),
   preload: 'file://' + resolve(__dirname, '../inject/index.cjs'),
   currentWindow: {
@@ -53,6 +53,6 @@ contextBridge.exposeInMainWorld('app', {
     isAlwaysOnTop: currentWindow.isAlwaysOnTop,
     setAlwaysOnTop: currentWindow.setAlwaysOnTop,
   },
-  net: new net(),
-  logger: withPrototype(logger),
+  net: new Net(),
+  logger: withPrototype(Logger),
 })

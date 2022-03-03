@@ -2,7 +2,6 @@
   import { useAppStore } from '@/store'
 
   const appStore = useAppStore()
-  const router = useRouter()
 
   const alwaysOnTop = computed<typeof appStore.alwaysOnTop>({
     get() {

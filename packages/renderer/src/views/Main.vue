@@ -3,7 +3,7 @@
 
   import { WatchStopHandle } from 'vue'
   import { useAppStore } from '@/store'
-  import { currentWindowType } from '@/utils'
+  import { currentWindowType, replaceTitle } from '@/utils'
   import debounce from '@/utils/debounce'
   import OverlayScrollbars from 'overlayscrollbars'
 
@@ -137,7 +137,7 @@
       (value) => {
         if (value === 'Home') {
           appStore.webview.setAudioMuted(false)
-          appStore.title = appStore.webview.getTitle()
+          appStore.title = replaceTitle(appStore.webview.getTitle()) || 'bilimini'
           return
         }
         appStore.webview.setAudioMuted(true)
@@ -173,14 +173,14 @@
 <style lang="less" scoped>
   .slide-left-enter-from {
     opacity: 0;
-    transform: translateX(20%);
+    transform: translate3d(20%, 0, 0);
   }
   .slide-left-enter-active {
     transition: all 0.15s ease-out;
   }
   .slide-left-leave-to {
     opacity: 0;
-    transform: translateX(-10%);
+    transform: translate3d(-10%, 0, 0);
     position: absolute;
   }
   .slide-left-leave-active {
@@ -189,14 +189,14 @@
 
   .slide-right-enter-from {
     opacity: 0;
-    transform: translateX(-10%);
+    transform: translate3d(-10%, 0, 0);
   }
   .slide-right-enter-active {
     transition: all 0.15s ease-out;
   }
   .slide-right-leave-to {
     opacity: 0;
-    transform: translateX(20%);
+    transform: translate3d(20%, 0, 0);
     position: absolute;
   }
   .slide-right-leave-active {

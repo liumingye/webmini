@@ -1,6 +1,7 @@
 import App from '@/App.vue'
 import store from '@/store'
 import router from '@/router'
+
 // windicss
 import 'virtual:windi-base.css'
 import 'virtual:windi-components.css'

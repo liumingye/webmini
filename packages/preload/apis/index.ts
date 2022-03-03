@@ -1,4 +1,4 @@
-export { default as logger } from './logger'
-export { default as versions } from './versions'
-export { default as cookies } from './cookies'
-export { default as net } from './net'
+export { default as Logger } from './logger'
+export { default as Versions } from './versions'
+export { default as Cookies } from './cookies'
+export { default as Net } from './net'
