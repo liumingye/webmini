@@ -7,7 +7,7 @@
   },
   "files": ["dist"],
   "linux": {
-    "target": ["deb", "tar.gz", "appimage", "rpm"]
+    "target": ["deb", "appimage", "rpm"]
   },
   "mac": {
     "category": "public.app-category.video",

@@ -6,7 +6,7 @@
 
 ## 💽 安装稳定版
 
-[GitHub](https://github.com/liumingye/bilimini/releases) 或 [Hazel](https://hazel-liumingye.vercel.app) 提供了已经编译好的稳定版安装包，当然你也可以自己克隆代码编译打包。
+[GitHub](https://github.com/liumingye/bilimini/releases) 或 [Gitee](https://gitee.com/liumingye/bilimini/releases) 或 [Hazel](https://hazel-liumingye.vercel.app) 提供了已经编译好的稳定版安装包，当然你也可以自己克隆代码编译打包。
 
 ## ✨ 特性
 
