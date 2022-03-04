@@ -4,9 +4,6 @@
 
 declare module 'vue' {
   export interface GlobalComponents {
-    AInputSearch: typeof import('@arco-design/web-vue')['InputSearch']
-    AOption: typeof import('@arco-design/web-vue')['Option']
-    ASelect: typeof import('@arco-design/web-vue')['Select']
     Button: typeof import('./components/ui/button/Button.vue')['default']
     SettingsContainer: typeof import('./components/ui/settings/SettingsContainer.vue')['default']
     SettingsTile: typeof import('./components/ui/settings/SettingsTile.vue')['default']

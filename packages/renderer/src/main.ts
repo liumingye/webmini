@@ -14,7 +14,7 @@ import '@arco-design/web-vue/es/index.less'
 import Ui from '@/components/ui'
 // IconComponents
 import Icon from '@/components/ui/icon'
-// import '@/components/ui/icon/runtime/index.less'
+import '@/components/ui/icon/runtime/index.less'
 // OverlayScrollbars
 import 'overlayscrollbars/css/OverlayScrollbars.css'
 // global style
