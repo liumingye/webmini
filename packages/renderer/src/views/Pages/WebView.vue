@@ -47,7 +47,6 @@
     })
 
     // update title
-
     webview.value.addEventListener('page-title-updated', (event) => {
       appStore.title = replaceTitle(event.title) || 'bilimini'
       document.title = appStore.title

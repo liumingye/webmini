@@ -1,5 +1,6 @@
 {
   "appId": "org.electron.bilimini",
+  "productName": "bilimini",
   "asar": true,
   "artifactName": "${name}-${version}-${os}-${arch}.${ext}",
   "directories": {
@@ -7,15 +8,41 @@
   },
   "files": ["dist"],
   "linux": {
-    "target": ["deb", "appimage", "rpm"]
+    "category": "Video",
+    "target": ["deb", "appimage", "rpm", "snap"]
+  },
+  "snap": {
+    "publish": [
+      {
+        "provider": "github"
+      }
+    ]
   },
   "mac": {
     "category": "public.app-category.video",
-    "target": ["dmg"],
+    "target": [
+      {
+        "target": "dmg",
+        "arch": ["x64", "arm64"]
+      }
+    ],
     "darkModeSupport": true
   },
   "win": {
-    "target": ["nsis", "zip"]
+    "target": [
+      {
+        "target": "nsis",
+        "arch": ["x64", "ia32"]
+      },
+      {
+        "target": "zip",
+        "arch": ["x64", "ia32"]
+      },
+      {
+        "target": "portable",
+        "arch": ["x64", "ia32"]
+      }
+    ]
   },
   "nsis": {
     "oneClick": false,

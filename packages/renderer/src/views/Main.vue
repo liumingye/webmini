@@ -2,9 +2,9 @@
   import WebView from '@/views/pages/WebView.vue'
 
   import { WatchStopHandle } from 'vue'
-  import { useAppStore } from '@/store'
+  import { useAppStore, usePluginStore } from '@/store'
   import { currentWindowType, replaceTitle } from '@/utils'
-  import debounce from '@/utils/debounce'
+  import { debounce } from 'lodash-es'
   import OverlayScrollbars from 'overlayscrollbars'
 
   const appStore = useAppStore()
@@ -14,12 +14,15 @@
   const autoHideBar = computed(() => appStore.autoHideBar)
   const scrollContainer = ref()
 
+  // 加载内置插件
+  const pluginStore = usePluginStore()
+  pluginStore.getBuiltInPlugins()
+
   const app = window.app
 
   // windows下frameless window没法正确检测到mouseout事件，只能根据光标位置做个dirtyCheck了
   const initMouseStateDirtyCheck = () => {
     const lastStatus = ref<'OUT' | 'IN'>()
-    const timeout = ref()
     const Fn = () => {
       const mousePos = app.screen.getCursorScreenPoint(),
         windowPos = app.currentWindow.getPosition(),
@@ -47,13 +50,14 @@
       showTopBar.value = false
       lastStatus.value = 'OUT'
     }
+    const timeout = ref()
     watchEffect(() => {
-      app.logger.debug('watchEffect - autoHideBar', { label: 'Main.vue' })
+      app.logger.debug(`watchEffect - autoHideBar - ${autoHideBar.value}`, { label: 'Main.vue' })
+      clearInterval(timeout.value)
       if (autoHideBar.value) {
         timeout.value = setInterval(Fn, 200)
         return
       }
-      clearInterval(timeout.value)
       showTopBar.value = true
     })
   }
@@ -147,6 +151,7 @@
       },
     )
   })
+
   router.afterEach((to, from) => {
     const toDepth = to.path.split('/').length
     const fromDepth = from.path.split('/').length

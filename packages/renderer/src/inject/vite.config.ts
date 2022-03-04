@@ -18,7 +18,6 @@ export default defineConfig({
       formats: ['cjs'],
       fileName: () => '[name].cjs',
     },
-    minify: 'terser',
     emptyOutDir: true,
     rollupOptions: {
       external: ['electron', ...builtinModules, ...Object.keys(pkg.dependencies || {})],

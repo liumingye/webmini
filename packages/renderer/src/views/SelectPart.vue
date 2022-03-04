@@ -37,6 +37,7 @@
 
   // 更新分p列表
   ipc.on('update-part', async (ev, data) => {
+    console.log(data)
     if (!data) {
       app.currentWindow.hide()
       return
@@ -49,21 +50,9 @@
     }
   })
 
-  // 监听webview url改变
-  // https://github.com/chitosai/bilimini/issues/66
-  // 阿B现在支持自动跳转下一页了，这种情况下的跳转不会经过我们的代码触发_isLastNavigationSelectPart，
-  // 于是会被路由当作是打开了新视频而重新获取分p，currentPartId也因此被重置回0。我们一方面在路由那边加判断来防止重复获取同一个视频的分p，
-  // 另一方面每当webview加载了新的url时，就让路由把最新的url广播出来，然后这里我们监听这个事件并解析当前应该显示第几p
-  ipc.on('url-changed', async (ev, url) => {
+  ipc.on('update-currentPartId', async (ev, data) => {
     if (!partList.value) return
-    const m = /p=(\d+)/.exec(url)
-    if (m) {
-      partList.value.currentPartId = Number(m[1]) - 1
-    } else {
-      partList.value.currentPartId = 0
-    }
-    await nextTick()
-    scrollIntoView()
+    partList.value.currentPartId = data
   })
 
   onMounted(() => {

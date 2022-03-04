@@ -67,20 +67,15 @@ export const resizeMainWindow = (windowType?: windowType) => {
   currentWindowType.value = targetWindowType.value
 }
 
-export const getVidWithP = (pathname: string) => {
-  const m = /^\/video\/((av\d+|BV\w+)(?:\/?\?p=\d+)?)/.exec(pathname)
-  return m ? m[1] : null
-}
+// export const getVidWithP = (pathname: string) => {
+//   const m = /^\/video\/((av\d+|BV\w+)(?:\/?\?p=\d+)?)/.exec(pathname)
+//   return m ? m[1] : null
+// }
 
-export const getBvid = (pathname: string) => {
-  const m = /^\/bangumi\/play\/(ss\d+|ep\d+)/.exec(pathname)
-  return m ? m[1] : null
-}
-
-export const getVid = (url: string) => {
-  const m = /video\/(av\d+|BV\w+)/.exec(url)
-  return m ? m[1] : null
-}
+// export const getBvid = (pathname: string) => {
+//   const m = /^\/bangumi\/play\/(ss\d+|ep\d+)/.exec(pathname)
+//   return m ? m[1] : null
+// }
 
 export const replace = (text: string, map: string[], replacer: string) => {
   map.forEach((value) => {

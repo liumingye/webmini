@@ -2,7 +2,7 @@
 
 ## 藏起来！哔哩哔哩
 
-![GitHub](https://img.shields.io/github/license/liumingye/bilimini) ![GitHub package.json version](https://img.shields.io/github/package-json/v/liumingye/bilimini) ![GitHub last commit](https://img.shields.io/github/last-commit/liumingye/bilimini)
+![GitHub](https://img.shields.io/github/license/liumingye/bilimini) ![GitHub package.json version](https://img.shields.io/github/package-json/v/liumingye/bilimini) ![GitHub last commit](https://img.shields.io/github/last-commit/liumingye/bilimini) [![Build/release](https://github.com/liumingye/bilimini/actions/workflows/release.yml/badge.svg?branch=main)](https://github.com/liumingye/bilimini/actions/workflows/release.yml)
 
 ## 💽 安装稳定版
 

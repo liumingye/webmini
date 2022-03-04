@@ -30,6 +30,7 @@
   "dependencies": {
     "electron-is": "^3.0.0",
     "electron-json-storage": "^4.5.0",
+    "lodash-es": "^4.17.21",
     "nprogress": "^0.2.0",
     "overlayscrollbars": "^1.13.1",
     "pinia": "^2.0.11",
@@ -44,6 +45,7 @@
     "@commitlint/config-conventional": "^16.2.1",
     "@electron/remote": "^2.0.5",
     "@types/electron-json-storage": "^4.5.0",
+    "@types/lodash-es": "^4.17.6",
     "@types/nprogress": "^0.2.0",
     "@types/overlayscrollbars": "^1.12.1",
     "@typescript-eslint/eslint-plugin": "^5.13.0",
@@ -88,6 +90,7 @@
     "optimizeDeps": {
       "include": [
         "@arco-design/web-vue",
+        "lodash-es",
         "nprogress",
         "overlayscrollbars",
         "pinia",

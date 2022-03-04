@@ -4,7 +4,7 @@
   window.ipcRenderer.on('windowID', (_event, items) => {
     Object.assign(appStore.windowID, items)
   })
-  // Store Init
+  // appStore Init
   appStore.init()
 </script>
 
