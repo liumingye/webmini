@@ -1,5 +1,7 @@
 {
   "search.exclude": {
     ".yarn": true
-  }
+  },
+  "css.validate": false,
+  "less.validate": false
 }

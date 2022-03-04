@@ -14,10 +14,10 @@
   </router-view>
 </template>
 
-<style>
+<style lang="less">
   #app {
     height: 100%;
-    user-select: none;
     overflow: hidden;
+    user-select: none;
   }
 </style>

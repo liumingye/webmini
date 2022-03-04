@@ -46,9 +46,3 @@
     </b-settings>
   </div>
 </template>
-
-<style lang="less" scoped>
-  ::host {
-    background-color: #000;
-  }
-</style>

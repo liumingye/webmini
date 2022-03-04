@@ -1,51 +1,63 @@
 body {
   .m-head {
-    height: 100vh;
     display: flex;
     flex-direction: column;
+    height: 100vh;
+
     .suspension-box {
       position: relative;
+
       .m-navbar {
         background: @color-app-bg;
+
         .right {
           display: flex;
-          justify-content: space-between;
           flex-direction: row-reverse;
+          justify-content: space-between;
           width: 100%;
+
           .face {
             z-index: 1;
           }
+
           .search {
             z-index: 1;
             margin-top: 0;
             margin-right: 2vw;
+
             i {
               color: #fff;
             }
           }
         }
+
         .logo {
           position: absolute;
-          width: 100%;
           left: 0;
+          width: 100%;
           text-align: center;
+
           i {
             color: #fff;
           }
         }
       }
     }
+
     .m-channel-view {
       margin-top: 10.73333vw;
+
       .channel-page,
       .sub-channel-page {
         margin-top: -10.73333vw;
       }
     }
+
     > div:last-child {
       overflow-y: auto;
     }
   }
+
   .m-home-no-more,
   .m-footer,
   .see-you-app {
@@ -53,8 +65,8 @@ body {
   }
   // 排行榜
   .v-navbar__body {
-    transition: none;
-    background-color: @color-app-bg !important;
     color: #fff !important;
+    background-color: @color-app-bg !important;
+    transition: none;
   }
 }
