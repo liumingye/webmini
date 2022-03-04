@@ -38,6 +38,7 @@ git clone git@github.com:liumingye/bilimini.git
 ### 安装依赖
 
 ```
+corepack enable
 yarn install
 ```
 
