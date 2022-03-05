@@ -23,11 +23,4 @@ export default defineConfig({
       external: ['electron', ...builtinModules, ...Object.keys(pkg.dependencies || {})],
     },
   },
-  css: {
-    preprocessorOptions: {
-      less: {
-        additionalData: `@import "${resolve(__dirname, '../assets/css/css-variables.less')}";`,
-      },
-    },
-  },
 })

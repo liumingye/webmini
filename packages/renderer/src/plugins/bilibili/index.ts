@@ -19,7 +19,6 @@ export const plugin: PluginMetadata = {
   name: 'bilibili',
   displayName: '哔哩哔哩',
   urlInclude: ['www.bilibili.com', 'm.bilibili.com', 'live.bilibili.com', 'passport.bilibili.com'],
-  themeColor: '#f36f98',
   options: {
     windowType: {
       mini: [
@@ -29,6 +28,16 @@ export const plugin: PluginMetadata = {
     },
   },
   setup: ({ addHook, addData }) => {
+    addData('themeColor', (presetBase: Record<string, Record<string, string>>) => {
+      presetBase.light = {
+        bg: '#f36f98',
+        text: '#fff',
+      }
+      presetBase.dark = {
+        bg: '#f36f98',
+        text: '#fff',
+      }
+    })
     addData('windowType', (presetBase: Record<string, (string | RegExp)[]>) => {
       presetBase.mini = [
         /(www|m)\.bilibili\.com\/(video\/(av|BV)|bangumi\/play\/)/,

@@ -109,6 +109,13 @@
     color: #fff;
     height: 100%;
 
+    header {
+      button {
+        background: #fff;
+        color: @color-app-bg;
+      }
+    }
+
     .item {
       overflow: hidden;
       border-radius: 4px;

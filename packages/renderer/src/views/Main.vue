@@ -1,14 +1,11 @@
 <script setup lang="ts">
   import WebView from '@/views/pages/WebView.vue'
 
-  import { WatchStopHandle, getCurrentInstance } from 'vue'
+  import { WatchStopHandle } from 'vue'
   import { useAppStore, usePluginStore } from '@/store'
   import { currentWindowType, replaceTitle } from '@/utils'
   import { debounce } from 'lodash-es'
   import OverlayScrollbars from 'overlayscrollbars'
-
-  const instance = getCurrentInstance()
-  console.log(instance)
 
   const appStore = useAppStore()
   const route = useRoute()

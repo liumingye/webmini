@@ -96,6 +96,7 @@
     "optimizeDeps": {
       "include": [
         "@arco-design/web-vue",
+        "less",
         "lodash-es",
         "nprogress",
         "overlayscrollbars",

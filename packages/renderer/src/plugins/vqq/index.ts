@@ -11,6 +11,16 @@ export const plugin: PluginMetadata = {
   displayName: '腾讯视频',
   urlInclude: ['v.qq.com', 'm.v.qq.com'],
   setup: ({ addHook, addData }) => {
+    addData('themeColor', (presetBase: Record<string, Record<string, string>>) => {
+      presetBase.light = {
+        bg: '#fff',
+        text: '#111c2e',
+      }
+      presetBase.dark = {
+        bg: '#111c2e',
+        text: '#fff',
+      }
+    })
     addData('userAgent', (presetBase: Record<string, string[]>) => {
       presetBase.mobile = ['m.v.qq.com', 'm.film.qq.com']
     })

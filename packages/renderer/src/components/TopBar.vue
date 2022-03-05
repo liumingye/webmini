@@ -136,7 +136,7 @@
     <b-button id="navi-home" title="返回首页" @click="naviGoHome">
       <icon-home size=".8em" />
     </b-button>
-    <div class="flex-1 truncate text-center text-$color-fill-1 text-0.9em leading-32px">
+    <div class="flex-1 truncate text-center text-$theme-color-text text-0.9em leading-32px">
       {{ title }}
     </div>
     <b-button
@@ -170,10 +170,15 @@
 <style lang="less" scoped>
   #topbar {
     display: flex;
-    background: @color-app-bg;
+    background: var(--theme-color-bg);
     height: 32px;
     line-height: 32px;
     padding: 0 10px;
+
+    button {
+      background: var(--theme-color-text);
+      color: var(--theme-color-bg);
+    }
 
     #navi-back {
       span {

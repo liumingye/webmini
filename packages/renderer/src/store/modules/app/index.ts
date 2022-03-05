@@ -5,6 +5,7 @@ import Site from '@/utils/site'
 const last = reactive({
   push: 0,
   url: '',
+  domain: '',
 })
 
 export const useAppStore = defineStore('app', {
@@ -61,9 +62,44 @@ export const useAppStore = defineStore('app', {
       })
     },
     loadPlugins(url: string) {
-      const pluginStore = usePluginStore()
-      pluginStore.unloadAllPlugins()
-      pluginStore.loadAllPlugins(url)
+      const _URL = new URL(url)
+      if (last.domain != _URL.hostname) {
+        const pluginStore = usePluginStore()
+        pluginStore.unloadAllPlugins()
+        pluginStore.loadAllPlugins(url)
+        // 主题色更改
+        const themeColorProvider = {
+          light: {
+            bg: '',
+            text: '',
+          },
+          dark: {
+            bg: '',
+            text: '',
+          },
+        }
+        const [themeColor]: Record<string, Record<string, string>>[] =
+          pluginStore.registerAndGetData('themeColor', themeColorProvider)
+        let scheme: 'dark' | 'light'
+        const onDarkModeChange = ({ matches }: { matches: boolean }) => {
+          if (matches) {
+            scheme = 'dark'
+          } else {
+            scheme = 'light'
+          }
+          document.body.style.setProperty('--theme-color-bg', themeColor[scheme].bg)
+          document.body.style.setProperty('--theme-color-text', themeColor[scheme].text)
+          document.body.setAttribute('arco-theme', scheme)
+        }
+        window
+          .matchMedia('(prefers-color-scheme: dark)')
+          .removeEventListener('change', onDarkModeChange)
+        window
+          .matchMedia('(prefers-color-scheme: dark)')
+          .addEventListener('change', onDarkModeChange)
+        onDarkModeChange(window.matchMedia('(prefers-color-scheme: dark)'))
+      }
+      last.domain = _URL.hostname
     },
     updateURL(url: string) {
       if (last.url === url) return
@@ -73,12 +109,14 @@ export const useAppStore = defineStore('app', {
       // 更新插件列表
       this.loadPlugins(url)
 
+      const _URL = new URL(url)
+
       // hook
       const pluginStore = usePluginStore()
       const updateUrlHooks = pluginStore.getHook('updateUrl')
 
       updateUrlHooks?.before({
-        url: new URL(url),
+        url: _URL,
       })
 
       const historyStore = useHistoryStore()
@@ -103,7 +141,7 @@ export const useAppStore = defineStore('app', {
       last.push = now
 
       updateUrlHooks?.after({
-        url: new URL(url),
+        url: _URL,
       })
 
       // test

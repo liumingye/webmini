@@ -30,8 +30,6 @@ export interface PluginMinimalData {
   name: string
   /** 显示名称 */
   displayName: string
-  /** 主题色 */
-  themeColor?: string
   /** 初始化函数, 可在其中注册数据, 添加代码注入等 */
   setup: (params: PluginSetupParameters) => void | Promise<void>
   /** 设置匹配的URL, 不匹配则不运行此组件 */

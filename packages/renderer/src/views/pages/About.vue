@@ -3,7 +3,7 @@
 </script>
 
 <template>
-  <div id="about" class="flex items-center flex-col text-white">
+  <div id="about" class="flex items-center flex-col">
     <div class="w-15 mx-auto">
       <img class="w-full h-full" src="@/assets/images/icon.png" />
     </div>
@@ -28,7 +28,8 @@
     transition: 0.2s;
   }
   #about {
-    background: @color-app-bg;
+    background: var(--theme-color-bg);
+    color: var(--theme-color-text);
     padding: 20px 10px 10px;
 
     p {
@@ -36,7 +37,6 @@
     }
     .link {
       a {
-        color: #fff;
         text-decoration: underline;
         &:not(:last-child)::after {
           content: '|';

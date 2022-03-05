@@ -19,13 +19,17 @@
 
 ## 🖥 应用界面
 
-![](https://ae01.alicdn.com/kf/H597810126c254b2784ef2b456916de51v.png)
+![](https://ae01.alicdn.com/kf/H9d655f89e940420bb0e0ed352893fab0x.png)
 
-![](https://ae01.alicdn.com/kf/Hff93d36ddde540d393684e2925acb9b2f.png)
+![](https://ae01.alicdn.com/kf/H847e841e971541299e3aabaa4bc7183cy.png)
 
-![](https://ae01.alicdn.com/kf/H51a0523e4b2e43a3a2876c7e7712aea1E.png)
+![](https://ae01.alicdn.com/kf/Hc05b3be0894b4069a95b34e4386ba442n.png)
 
-![demo](https://cdn.jsdelivr.net/gh/chitosai/bilimini/images/demo.gif)
+![](https://ae01.alicdn.com/kf/H011a53a606d7422cbd6c61d135e28b64J.png)
+
+![](https://ae01.alicdn.com/kf/H6a1b68d4677d4c0aa9960c77f0f9580cr.png)
+
+![](https://ae01.alicdn.com/kf/H5710f7fbaf38452da4b05b60f27638dfg.png)
 
 ## ⌨️ 本地开发
 
@@ -41,7 +45,7 @@ git clone git@github.com:liumingye/bilimini.git
 corepack enable
 yarn install
 ```
-  
+
 > Error: Electron failed to install correctly, please delete node_modules/electron and try installing again
 
 `Electron` 下载安装失败的问题，解决方式请参考 https://github.com/electron/electron/issues/8466#issuecomment-571425574
