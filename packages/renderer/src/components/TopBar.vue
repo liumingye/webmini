@@ -126,70 +126,66 @@
 </script>
 
 <template>
-  <header id="topbar" class="gap-2 items-center drag">
-    <b-button id="navi-back" title="后退" :disabled="disableBack" @click="goBack">
-      <icon-left size=".9em" />
-    </b-button>
-    <b-button v-if="!disableForward" title="前进" @click="goForward">
-      <icon-right size=".9em" />
-    </b-button>
-    <b-button id="navi-home" title="返回首页" @click="naviGoHome">
-      <icon-home size=".8em" />
-    </b-button>
-    <div class="flex-1 truncate text-center text-$theme-color-text text-0.9em leading-32px">
+  <header class="drag flex px-2 h-8 leading-8 bg-$theme-color-bg gap-1.5 items-center">
+    <div class="flex-1 flex gap-1.5">
+      <b-button id="navi-back" title="后退" :disabled="disableBack" @click="goBack">
+        <icon-left size=".9em" />
+      </b-button>
+      <b-button v-if="!disableForward" title="前进" @click="goForward">
+        <icon-right size=".9em" />
+      </b-button>
+      <b-button id="navi-home" title="返回首页" @click="naviGoHome">
+        <icon-home size=".8em" />
+      </b-button>
+    </div>
+    <div class="truncate text-center text-$theme-color-text text-0.9em leading-32px">
       {{ title }}
     </div>
-    <b-button
-      v-if="!disablePartButton && route.name === 'Home'"
-      id="app-part"
-      title="分P列表"
-      @click="toggleSelectPartWindow"
-    >
-      <span>P</span>
-    </b-button>
-    <b-button
-      v-if="!disableDanmakuButton && route.name === 'Home'"
-      id="app-danmaku"
-      title="开/关弹幕"
-      @click="toggleDanmaku"
-    >
-      <span>弹</span>
-    </b-button>
-    <b-button title="导航" :disabled="route.name === 'WebNav'" @click="showNav">
-      <icon-windmill size=".8em" />
-    </b-button>
-    <b-button title="设置" :disabled="route.name === 'Settings'" @click="showSettings">
-      <icon-setting-two size=".8em" />
-    </b-button>
-    <b-button title="退出" @click="turnOff" @click.right="minimize">
-      <icon-close-small size=".85em" />
-    </b-button>
+    <div class="flex-1 flex gap-1.5 justify-end">
+      <b-button
+        v-if="!disablePartButton && route.name === 'Home'"
+        id="app-part"
+        title="分P列表"
+        @click="toggleSelectPartWindow"
+      >
+        <span>P</span>
+      </b-button>
+      <b-button
+        v-if="!disableDanmakuButton && route.name === 'Home'"
+        id="app-danmaku"
+        title="开/关弹幕"
+        @click="toggleDanmaku"
+      >
+        <span>弹</span>
+      </b-button>
+      <b-button title="导航" :disabled="route.name === 'WebNav'" @click="showNav">
+        <icon-windmill size=".8em" />
+      </b-button>
+      <b-button title="设置" :disabled="route.name === 'Settings'" @click="showSettings">
+        <icon-setting-two size=".8em" />
+      </b-button>
+      <b-button title="退出" @click="turnOff" @click.right="minimize">
+        <icon-close-small size=".85em" />
+      </b-button>
+    </div>
   </header>
 </template>
 
 <style lang="less" scoped>
-  #topbar {
-    display: flex;
-    background: var(--theme-color-bg);
-    height: 32px;
-    line-height: 32px;
-    padding: 0 10px;
+  button {
+    background: var(--theme-color-text);
+    color: var(--theme-color-bg);
+  }
 
-    button {
-      background: var(--theme-color-text);
-      color: var(--theme-color-bg);
-    }
-
-    #navi-back {
-      span {
-        :deep(svg) {
-          margin-left: -1px;
-        }
+  #navi-back {
+    span {
+      :deep(svg) {
+        margin-left: -1px;
       }
     }
-    #app-danmaku,
-    #app-part {
-      font-size: 0.7em;
-    }
+  }
+  #app-danmaku,
+  #app-part {
+    font-size: 0.7em;
   }
 </style>

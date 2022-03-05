@@ -213,7 +213,7 @@
     flex-direction: column;
     transition: all 0.2s ease;
     height: 100%;
-    margin-top: -32px;
+    margin-top: -2rem;
 
     &.autoHideBar {
       display: block;
