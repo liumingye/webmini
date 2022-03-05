@@ -1,8 +1,11 @@
-import { app, ipcMain, Menu, BrowserWindow } from 'electron'
+import { app, ipcMain, Menu, BrowserWindow, session } from 'electron'
 import is from 'electron-is'
+import { join } from 'path'
 import { MainWindow } from './windows/main'
 import { SelectPartWindow } from './windows/selectPart'
 import { getMainMenu } from './menus/main'
+import adblockerService from './services/adblocker'
+import autoUpdaterService from './services/autoUpdater'
 
 export class Application {
   public static instance = new this()
@@ -52,6 +55,10 @@ export class Application {
     ipcMain.on('clearAllUserData', () => {
       this.clearAllUserData()
     })
+
+    // 服务
+    adblockerService(session.defaultSession)
+    autoUpdaterService()
   }
 
   private getAllWindowID = () => {

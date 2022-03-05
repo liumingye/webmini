@@ -58,7 +58,6 @@ export const usePluginStore = defineStore('plugin', {
           if (plugin.urlInclude && plugin.urlInclude.every(negate(matchPattern(url)))) {
             return false
           }
-          console.log(plugin)
           return plugin.setup({
             addHook,
             addData,

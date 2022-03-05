@@ -426,6 +426,62 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@cliqz/adblocker-content@npm:^1.23.6":
+  version: 1.23.6
+  resolution: "@cliqz/adblocker-content@npm:1.23.6::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2F%40cliqz%2Fadblocker-content%2F-%2Fadblocker-content-1.23.6.tgz"
+  dependencies:
+    "@cliqz/adblocker-extended-selectors": ^1.23.6
+  checksum: 1a43d33cde44f01764cedfa98045d0c4d00ea942df9efbaf284c36d7996d94446e68fb13aa2414b44915649b705ff92d124c00b636cb2e12a4373281508b2066
+  languageName: node
+  linkType: hard
+
+"@cliqz/adblocker-electron-preload@npm:^1.23.6":
+  version: 1.23.6
+  resolution: "@cliqz/adblocker-electron-preload@npm:1.23.6::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2F%40cliqz%2Fadblocker-electron-preload%2F-%2Fadblocker-electron-preload-1.23.6.tgz"
+  dependencies:
+    "@cliqz/adblocker-content": ^1.23.6
+  peerDependencies:
+    electron: ">11"
+  checksum: 647e9ae95d89a06ae89f9e824dd9529593fd86fc8c08c13ea8970aa386ccb50cb580bdd4aaf6b39ed0051464933d7849256efddbe4f4096bd9e4056a5aeabd77
+  languageName: node
+  linkType: hard
+
+"@cliqz/adblocker-electron@npm:^1.23.6":
+  version: 1.23.6
+  resolution: "@cliqz/adblocker-electron@npm:1.23.6::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2F%40cliqz%2Fadblocker-electron%2F-%2Fadblocker-electron-1.23.6.tgz"
+  dependencies:
+    "@cliqz/adblocker": ^1.23.6
+    "@cliqz/adblocker-electron-preload": ^1.23.6
+    tldts-experimental: ^5.6.21
+  peerDependencies:
+    electron: ">11"
+  checksum: 3fa79cc3b518cc5814b2f840e6e38f2fa45a0f7a79179fe21e087ff21184387e337c475730e57f2976703e3ffd300b8ba11aabb01754543f20922a74ffb3c097
+  languageName: node
+  linkType: hard
+
+"@cliqz/adblocker-extended-selectors@npm:^1.23.6":
+  version: 1.23.6
+  resolution: "@cliqz/adblocker-extended-selectors@npm:1.23.6::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2F%40cliqz%2Fadblocker-extended-selectors%2F-%2Fadblocker-extended-selectors-1.23.6.tgz"
+  checksum: 0d49440c5e47ed5b12add6f6a22ccdef26ad9bf28496b8ade939548825cf52b000877f73a065ec5fe8326236fb044ed256fc4d8dc54d7c1cd3c4f85649180f80
+  languageName: node
+  linkType: hard
+
+"@cliqz/adblocker@npm:^1.23.6":
+  version: 1.23.6
+  resolution: "@cliqz/adblocker@npm:1.23.6::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2F%40cliqz%2Fadblocker%2F-%2Fadblocker-1.23.6.tgz"
+  dependencies:
+    "@cliqz/adblocker-content": ^1.23.6
+    "@cliqz/adblocker-extended-selectors": ^1.23.6
+    "@remusao/guess-url-type": ^1.1.2
+    "@remusao/small": ^1.1.2
+    "@remusao/smaz": ^1.7.1
+    "@types/chrome": ^0.0.178
+    "@types/firefox-webext-browser": ^94.0.0
+    tldts-experimental: ^5.6.21
+  checksum: 81e78e9c6ad936312f975a3c80b2cb08377834787e29b96c1a89473910594a3912449de7686c5aa50ef0ce462c6b225345eae9e22dccb570ba3a606397060ff9
+  languageName: node
+  linkType: hard
+
 "@colors/colors@npm:1.5.0":
   version: 1.5.0
   resolution: "@colors/colors@npm:1.5.0::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2F%40colors%2Fcolors%2F-%2Fcolors-1.5.0.tgz"
@@ -853,6 +909,53 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@remusao/guess-url-type@npm:^1.1.2":
+  version: 1.2.1
+  resolution: "@remusao/guess-url-type@npm:1.2.1::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2F%40remusao%2Fguess-url-type%2F-%2Fguess-url-type-1.2.1.tgz"
+  checksum: 37a5142c970b6fb0c217c87a554add83b370dabd7f9f191e61747ba0979d8ceede5bea74cd00896641eab1ef3f23f37398d050a2e0de2adb719c556087cd623a
+  languageName: node
+  linkType: hard
+
+"@remusao/small@npm:^1.1.2":
+  version: 1.2.1
+  resolution: "@remusao/small@npm:1.2.1::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2F%40remusao%2Fsmall%2F-%2Fsmall-1.2.1.tgz"
+  checksum: e9c6a6d117754a86064c6a65f256ec7d0a0a73e0096ef522ea036d702477c5d4ace3349a5236ebcc2809dc887a60bf627eed0e45fd3416f3a6051e3a3436c712
+  languageName: node
+  linkType: hard
+
+"@remusao/smaz-compress@npm:^1.9.1":
+  version: 1.9.1
+  resolution: "@remusao/smaz-compress@npm:1.9.1::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2F%40remusao%2Fsmaz-compress%2F-%2Fsmaz-compress-1.9.1.tgz"
+  dependencies:
+    "@remusao/trie": ^1.4.1
+  checksum: e01875f4bb2508316f234c2bf662d8aab3ecaddd5cea516a6822954533e4305ff6d5f90e9e53f5bcababf203d515e9b99da9e7f6e58007aabcb90f5e4c5c9669
+  languageName: node
+  linkType: hard
+
+"@remusao/smaz-decompress@npm:^1.9.1":
+  version: 1.9.1
+  resolution: "@remusao/smaz-decompress@npm:1.9.1::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2F%40remusao%2Fsmaz-decompress%2F-%2Fsmaz-decompress-1.9.1.tgz"
+  checksum: 6abc127dd3ff79b63bb469ae265ab568d1b9a4234f759cbff8c7688a4adf78141c0913255eb281fee03fc9250bc3ee36494999f01a7950c3a86bb5b9e7ab4dcc
+  languageName: node
+  linkType: hard
+
+"@remusao/smaz@npm:^1.7.1":
+  version: 1.9.1
+  resolution: "@remusao/smaz@npm:1.9.1::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2F%40remusao%2Fsmaz%2F-%2Fsmaz-1.9.1.tgz"
+  dependencies:
+    "@remusao/smaz-compress": ^1.9.1
+    "@remusao/smaz-decompress": ^1.9.1
+  checksum: 0a7607daccd751b21a2baf43eff5b82948bfe666353612510c3c34bc3a864a40ffd8cfa5f4c29ae240426d400e95e0816bb581b3233be78ed05a315b53d65df1
+  languageName: node
+  linkType: hard
+
+"@remusao/trie@npm:^1.4.1":
+  version: 1.4.1
+  resolution: "@remusao/trie@npm:1.4.1::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2F%40remusao%2Ftrie%2F-%2Ftrie-1.4.1.tgz"
+  checksum: 0df106a649fd1b33cfa78712518e59b9c4b00c06dbdd0cda17f0ae8a6e661996a3b84161139eacb9578e8ee0a03564a860875537414b906c1dddf39a05db7570
+  languageName: node
+  linkType: hard
+
 "@rollup/pluginutils@npm:^4.1.2":
   version: 4.1.2
   resolution: "@rollup/pluginutils@npm:4.1.2"
@@ -921,6 +1024,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/chrome@npm:^0.0.178":
+  version: 0.0.178
+  resolution: "@types/chrome@npm:0.0.178::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2F%40types%2Fchrome%2F-%2Fchrome-0.0.178.tgz"
+  dependencies:
+    "@types/filesystem": "*"
+    "@types/har-format": "*"
+  checksum: 6b38bd864c146e6f0f4ec1d3f1dfc2f96c1ad32c36f8adf84b820ea9c6379d3bbe4f5de273d53aaaba804bb1f237b8dc7bd8bd12e5a3284ebe2e706e37a40791
+  languageName: node
+  linkType: hard
+
 "@types/debug@npm:^4.1.6":
   version: 4.1.7
   resolution: "@types/debug@npm:4.1.7"
@@ -934,6 +1047,29 @@ __metadata:
   version: 4.5.0
   resolution: "@types/electron-json-storage@npm:4.5.0::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2F%40types%2Felectron-json-storage%2F-%2Felectron-json-storage-4.5.0.tgz"
   checksum: 0ce33c9fe756588f59e1ed24919f91ceb89dd78d5abf2e191d6a68b07800aadb0302feda87900d4f1c8df2142d189db99f5cd5f00b377be4d67022996c9ec8eb
+  languageName: node
+  linkType: hard
+
+"@types/filesystem@npm:*":
+  version: 0.0.32
+  resolution: "@types/filesystem@npm:0.0.32::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2F%40types%2Ffilesystem%2F-%2Ffilesystem-0.0.32.tgz"
+  dependencies:
+    "@types/filewriter": "*"
+  checksum: 4b9079d200a3b241722b90e1c5806c4b32c4dac87d42a1c7ef76a2c0dafdbe7d5f1a379b873ad5de73622b44de6599e1522908f67b938d54e785bd1c36e302a0
+  languageName: node
+  linkType: hard
+
+"@types/filewriter@npm:*":
+  version: 0.0.29
+  resolution: "@types/filewriter@npm:0.0.29::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2F%40types%2Ffilewriter%2F-%2Ffilewriter-0.0.29.tgz"
+  checksum: 0c58aa875c2c245be7dbc42b20212f3203e13d11ec013a4a5cd0febf0e8b87214be5882c05ff9d7bdf0398f145a4fdbc24b7e6cf7b094e134a3b4c7a0598502f
+  languageName: node
+  linkType: hard
+
+"@types/firefox-webext-browser@npm:^94.0.0":
+  version: 94.0.1
+  resolution: "@types/firefox-webext-browser@npm:94.0.1::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2F%40types%2Ffirefox-webext-browser%2F-%2Ffirefox-webext-browser-94.0.1.tgz"
+  checksum: 43f7e34857f5750c6dc6833f3c4735e75782dcc71800dd29eadc8211a58de0e36611cec79ca7a238da855d5ed7badea46992baec4420b067c4dfa4b052e91465
   languageName: node
   linkType: hard
 
@@ -953,6 +1089,13 @@ __metadata:
     "@types/minimatch": "*"
     "@types/node": "*"
   checksum: 6ae717fedfdfdad25f3d5a568323926c64f52ef35897bcac8aca8e19bc50c0bd84630bbd063e5d52078b2137d8e7d3c26eabebd1a2f03ff350fff8a91e79fc19
+  languageName: node
+  linkType: hard
+
+"@types/har-format@npm:*":
+  version: 1.2.8
+  resolution: "@types/har-format@npm:1.2.8::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2F%40types%2Fhar-format%2F-%2Fhar-format-1.2.8.tgz"
+  checksum: a14c6f31fb7c39be383638e00b3beaf693acfa6a2d8a10d9333f3d5cb70d3f2fc4d369a781775451012adc52faef08ff476e40a34fc6a1d6a557dd02ad984c0c
   languageName: node
   linkType: hard
 
@@ -1990,6 +2133,7 @@ __metadata:
   resolution: "bilimini@workspace:."
   dependencies:
     "@arco-design/web-vue": ^2.18.0
+    "@cliqz/adblocker-electron": ^1.23.6
     "@commitlint/cli": ^16.2.1
     "@commitlint/config-conventional": ^16.2.1
     "@electron/remote": ^2.0.5
@@ -2005,6 +2149,7 @@ __metadata:
     electron: 17.1.0
     electron-builder: ^22.14.13
     electron-devtools-installer: ^3.2.0
+    electron-fetch: ^1.7.4
     electron-is: ^3.0.0
     electron-json-storage: ^4.5.0
     eslint: ^8.10.0
@@ -2026,7 +2171,7 @@ __metadata:
     stylelint-config-recommended-vue: ^1.3.0
     stylelint-config-standard: ^25.0.0
     stylelint-order: ^5.0.0
-    typescript: ^4.6.2
+    typescript: ^4.6.0
     unplugin-auto-import: ^0.6.1
     unplugin-vue-components: ^0.17.21
     vite: ^2.8.6
@@ -3451,6 +3596,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"electron-fetch@npm:^1.7.4":
+  version: 1.7.4
+  resolution: "electron-fetch@npm:1.7.4::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Felectron-fetch%2F-%2Felectron-fetch-1.7.4.tgz"
+  dependencies:
+    encoding: ^0.1.13
+  checksum: f48ea19df5779d71eda27dd3abaea7066fc632633dee5c1cd501173eab5c80d6e04224ffafffcc8008fd8116f09dd8db18152c24f0f3608e775cec6ad97ea1c4
+  languageName: node
+  linkType: hard
+
 "electron-is-dev@npm:^0.3.0":
   version: 0.3.0
   resolution: "electron-is-dev@npm:0.3.0::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Felectron-is-dev%2F-%2Felectron-is-dev-0.3.0.tgz"
@@ -3572,6 +3726,15 @@ __metadata:
 "encoding@npm:^0.1.12":
   version: 0.1.13
   resolution: "encoding@npm:0.1.13"
+  dependencies:
+    iconv-lite: ^0.6.2
+  checksum: bb98632f8ffa823996e508ce6a58ffcf5856330fde839ae42c9e1f436cc3b5cc651d4aeae72222916545428e54fd0f6aa8862fd8d25bdbcc4589f1e3f3715e7f
+  languageName: node
+  linkType: hard
+
+"encoding@npm:^0.1.13":
+  version: 0.1.13
+  resolution: "encoding@npm:0.1.13::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Fencoding%2F-%2Fencoding-0.1.13.tgz"
   dependencies:
     iconv-lite: ^0.6.2
   checksum: bb98632f8ffa823996e508ce6a58ffcf5856330fde839ae42c9e1f436cc3b5cc651d4aeae72222916545428e54fd0f6aa8862fd8d25bdbcc4589f1e3f3715e7f
@@ -9029,6 +9192,22 @@ __metadata:
   languageName: node
   linkType: hard
 
+"tldts-core@npm:^5.7.67":
+  version: 5.7.67
+  resolution: "tldts-core@npm:5.7.67::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Ftldts-core%2F-%2Ftldts-core-5.7.67.tgz"
+  checksum: db2f8f7f6f2cd8bf244aa4f1fe91bd2fb83c0b3b8096c7e8ac0c080ef7455f856d51649acdbf3fd42959370cf3307b4d0d2d329a66afc7ba879eb88b84b11716
+  languageName: node
+  linkType: hard
+
+"tldts-experimental@npm:^5.6.21":
+  version: 5.7.67
+  resolution: "tldts-experimental@npm:5.7.67::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Ftldts-experimental%2F-%2Ftldts-experimental-5.7.67.tgz"
+  dependencies:
+    tldts-core: ^5.7.67
+  checksum: b0dbadeba543320473a6ba47ebb6d5c60918887d8d6d60b6efb4db9b209900a2df35675110d0c8e505189f422da7b329c4a8139f2788e24cf06ed5e2598804af
+  languageName: node
+  linkType: hard
+
 "tmp-promise@npm:^3.0.2":
   version: 3.0.3
   resolution: "tmp-promise@npm:3.0.3"
@@ -9291,7 +9470,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@npm:^4.6.2":
+"typescript@npm:^4.6.0":
   version: 4.6.2
   resolution: "typescript@npm:4.6.2::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Ftypescript%2F-%2Ftypescript-4.6.2.tgz"
   bin:
@@ -9311,7 +9490,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@^4.6.2#~builtin<compat/typescript>":
+"typescript@patch:typescript@^4.6.0#~builtin<compat/typescript>":
   version: 4.6.2
   resolution: "typescript@patch:typescript@npm%3A4.6.2%3A%3A__archiveUrl=https%253A%252F%252Fregistry.npmmirror.com%252Ftypescript%252F-%252Ftypescript-4.6.2.tgz#~builtin<compat/typescript>::version=4.6.2&hash=493e53"
   bin:

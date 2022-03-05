@@ -3,7 +3,6 @@ import is from 'electron-is'
 import { appId } from '../../electron-builder.json'
 import { release } from 'os'
 import { initialize } from '@electron/remote/main'
-import updateElectronApp from './services/auto-updater'
 import installExtension, { VUEJS3_DEVTOOLS } from 'electron-devtools-installer'
 import { Application } from './application'
 import Storage from 'electron-json-storage'
@@ -35,7 +34,5 @@ app.whenReady().then(() => {
     installExtension(VUEJS3_DEVTOOLS.id)
       .then((name) => console.log(`Added Extension:  ${name}`))
       .catch((err) => console.log('An error occurred: ', err))
-  } else {
-    updateElectronApp()
   }
 })

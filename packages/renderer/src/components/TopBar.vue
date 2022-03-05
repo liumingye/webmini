@@ -21,19 +21,19 @@
   router.beforeEach((to, from) => {
     // 恢复状态
     if (to.name === 'Home') {
-      appStore.autoHideBar = tempStore['autoHideBar']
+      appStore.autoHideBar = tempStore.autoHideBar
     }
     // 保存状态
     if (from.name === 'Home') {
-      tempStore['autoHideBar'] = appStore.autoHideBar
-      tempStore['windowType'] = currentWindowType.value
+      tempStore.autoHideBar = appStore.autoHideBar
+      tempStore.windowType = currentWindowType.value
       resizeMainWindow({ windowType: 'mobile' })
       appStore.autoHideBar = false
     }
   })
   router.afterEach((to) => {
     if (to.name === 'Home') {
-      resizeMainWindow({ windowType: tempStore['windowType'] })
+      resizeMainWindow({ windowType: tempStore.windowType })
     }
   })
 

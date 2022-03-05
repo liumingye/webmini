@@ -5,7 +5,7 @@
   import { useAppStore, usePluginStore } from '@/store'
   import { currentWindowType, replaceTitle } from '@/utils'
   import { debounce } from 'lodash-es'
-  import OverlayScrollbars from 'overlayscrollbars'
+  import overlayScrollbars from 'overlayscrollbars'
 
   const appStore = useAppStore()
   const route = useRoute()
@@ -18,21 +18,21 @@
   const pluginStore = usePluginStore()
   pluginStore.getBuiltInPlugins()
 
-  const app = window.app
+  const { screen, currentWindow, logger } = window.app
 
   // windows下frameless window没法正确检测到mouseout事件，只能根据光标位置做个dirtyCheck了
   const initMouseStateDirtyCheck = () => {
     const lastStatus = ref<'OUT' | 'IN'>()
     const Fn = () => {
-      const mousePos = app.screen.getCursorScreenPoint(),
-        windowPos = app.currentWindow.getPosition(),
-        windowSize = app.currentWindow.getSize()
+      const mousePos = screen.getCursorScreenPoint()
+      const windowPos = currentWindow.getPosition()
+      const windowSize = currentWindow.getSize()
       const getTriggerAreaWidth = () => {
-        return lastStatus.value == 'IN' ? 0 : 16
+        return lastStatus.value === 'IN' ? 0 : 16
       }
       const getTriggerAreaHeight = () => {
-        let h = 0.1 * windowSize[1],
-          minHeight = lastStatus.value == 'IN' ? 120 : 36
+        const h = 0.1 * windowSize[1]
+        const minHeight = lastStatus.value === 'IN' ? 120 : 36
         return h > minHeight ? h : minHeight
       }
       if (
@@ -41,7 +41,7 @@
         mousePos.y > windowPos[1] - 10 &&
         mousePos.y < windowPos[1] + getTriggerAreaHeight()
       ) {
-        if (lastStatus.value == 'OUT') {
+        if (lastStatus.value === 'OUT') {
           showTopBar.value = true
           lastStatus.value = 'IN'
         }
@@ -52,7 +52,7 @@
     }
     const timeout = ref()
     watchEffect(() => {
-      app.logger.debug(`watchEffect - autoHideBar - ${autoHideBar.value}`, { label: 'Main.vue' })
+      logger.debug(`watchEffect - autoHideBar - ${autoHideBar.value}`, { label: 'Main.vue' })
       clearInterval(timeout.value)
       if (autoHideBar.value) {
         timeout.value = setInterval(Fn, 200)
@@ -65,27 +65,27 @@
   const saveWindowSize = () => {
     const resized = debounce(() => {
       // 解决full-reload后会重复绑定事件
-      if (app.currentWindow.isDestroyed()) return
-      app.logger.info('resized')
+      if (currentWindow.isDestroyed()) return
+      logger.info('resized')
       const currentSize = appStore.windowSize[currentWindowType.value]
       const newSize: number[] = [window.innerWidth, window.innerHeight]
       if (currentSize !== newSize) {
         appStore.windowSize[currentWindowType.value] = newSize
         appStore.saveConfig('windowSize', toRaw(appStore.windowSize))
       }
-      app.currentWindow.once('resized', resized)
+      currentWindow.once('resized', resized)
     }, 500)
     const moved = debounce(() => {
       // 解决full-reload后会重复绑定事件
-      if (app.currentWindow.isDestroyed()) return
-      app.logger.info('moved')
+      if (currentWindow.isDestroyed()) return
+      logger.info('moved')
       if (currentWindowType.value === 'mobile') {
-        appStore.saveConfig('windowPosition', app.currentWindow.getPosition())
+        appStore.saveConfig('windowPosition', currentWindow.getPosition())
       }
-      app.currentWindow.once('moved', moved)
+      currentWindow.once('moved', moved)
     }, 500)
-    app.currentWindow.once('resized', resized)
-    app.currentWindow.once('moved', moved)
+    currentWindow.once('resized', resized)
+    currentWindow.once('moved', moved)
   }
 
   const watchAlwaysOnTop = () => {
@@ -97,22 +97,22 @@
       }
       switch (appStore.alwaysOnTop) {
         case 'on':
-          app.currentWindow.setAlwaysOnTop(true)
+          currentWindow.setAlwaysOnTop(true)
           break
         case 'off':
-          app.currentWindow.setAlwaysOnTop(false)
+          currentWindow.setAlwaysOnTop(false)
           break
         default:
-          app.currentWindow.setAlwaysOnTop(false)
+          currentWindow.setAlwaysOnTop(false)
           stopWatchWindowType = watch(
             () => currentWindowType.value,
             (value) => {
-              // app.logger.debug(`currentWindowType - ${value}`)
+              // logger.debug(`currentWindowType - ${value}`)
               if (value === 'mini') {
-                app.currentWindow.setAlwaysOnTop(true)
+                currentWindow.setAlwaysOnTop(true)
                 return
               }
-              app.currentWindow.setAlwaysOnTop(false)
+              currentWindow.setAlwaysOnTop(false)
             },
           )
           break
@@ -125,7 +125,7 @@
     initMouseStateDirtyCheck()
     watchAlwaysOnTop()
 
-    OverlayScrollbars(scrollContainer.value, {
+    overlayScrollbars(scrollContainer.value, {
       scrollbars: {
         autoHide: 'leave',
         clickScrolling: true,

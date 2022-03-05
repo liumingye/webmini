@@ -7,8 +7,8 @@
   const ipc = window.ipcRenderer
   const appStore = useAppStore()
   const historyStore = useHistoryStore()
-  const _webview = ref()
   const preload = window.app.preload
+  const webviewRef = ref()
   const webview = computed(() => appStore.webview)
 
   // NProgress Configuration
@@ -55,7 +55,7 @@
   }
 
   onMounted(() => {
-    appStore.webview = _webview.value
+    appStore.webview = webviewRef.value
 
     setListeners()
 
@@ -80,7 +80,7 @@
 <template>
   <component
     :is="'webview'"
-    ref="_webview"
+    ref="webviewRef"
     :src="START"
     :useragent="userAgent.mobile"
     :preload="preload"

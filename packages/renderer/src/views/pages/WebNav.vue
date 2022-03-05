@@ -82,8 +82,9 @@
     <div v-for="(bigCat, key) in webNav" :key="key" class="flex my-3">
       <div
         class="flex items-center justify-center min-w-13 font-bold mr-2 border-r border-$color-border-2"
-        >{{ key }}</div
       >
+        {{ key }}
+      </div>
       <div class="flex flex-wrap">
         <div
           v-for="cat in bigCat"

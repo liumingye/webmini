@@ -1,8 +1,8 @@
 <script setup lang="ts">
   import { useAppStore } from '@/store'
-  import OverlayScrollbars from 'overlayscrollbars'
+  import overlayScrollbars from 'overlayscrollbars'
 
-  const app = window.app
+  const { currentWindow } = window.app
   const ipc = window.ipcRenderer
   const partList = ref<{
     url: string
@@ -24,7 +24,7 @@
   }
 
   const closeWindow = () => {
-    app.currentWindow.hide()
+    currentWindow.hide()
   }
 
   // 当前part滚动到可视范围
@@ -39,7 +39,7 @@
   ipc.on('update-part', async (ev, data) => {
     // console.log(data)
     if (!data) {
-      app.currentWindow.hide()
+      currentWindow.hide()
       return
     }
     const lastCurrentPartId = partList.value?.currentPartId
@@ -56,7 +56,7 @@
   })
 
   onMounted(() => {
-    OverlayScrollbars(scrollContainer.value, {
+    overlayScrollbars(scrollContainer.value, {
       scrollbars: {
         autoHide: 'leave',
         clickScrolling: true,
@@ -72,7 +72,7 @@
 <template>
   <main id="selectPart">
     <header class="flex p-2 drag">
-      <div class="flex-1 font-bold">视频分Part</div>
+      <div class="flex-1 font-bold"> 视频分Part </div>
       <div class="flex gap-2 no-drag">
         <b-button title="定位" @click="scrollIntoView(true)">
           <icon-target-two />
