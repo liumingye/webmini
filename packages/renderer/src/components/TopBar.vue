@@ -126,7 +126,7 @@
 </script>
 
 <template>
-  <header class="drag flex px-2 h-8 leading-8 bg-$theme-color-bg gap-1.5 items-center">
+  <header class="drag flex flex-shrink-0 px-2 h-8 bg-$theme-color-bg gap-1.5 items-center">
     <div class="flex-1 flex gap-1.5">
       <b-button id="navi-back" title="后退" :disabled="disableBack" @click="goBack">
         <icon-left size=".9em" />
@@ -138,7 +138,10 @@
         <icon-home size=".8em" />
       </b-button>
     </div>
-    <div class="truncate text-center text-$theme-color-text text-0.9em leading-32px">
+    <div
+      class="truncate bg-transparenttext-center text-$theme-color-text text-0.9em"
+      :title="title"
+    >
       {{ title }}
     </div>
     <div class="flex-1 flex gap-1.5 justify-end">
