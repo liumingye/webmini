@@ -82,9 +82,14 @@ export const replaceTitle = (title: string) => {
   return title
 }
 
-export const matchPattern = (str: string, pattern: string | RegExp) => {
-  if (isString(pattern)) {
-    return str.includes(pattern)
+/**
+ * 测试字符串是否包含子串或匹配正则
+ */
+export const matchPattern = (str: string) => {
+  return (pattern: string | RegExp) => {
+    if (isString(pattern)) {
+      return str.includes(pattern)
+    }
+    return pattern.test(str)
   }
-  return pattern.test(str)
 }

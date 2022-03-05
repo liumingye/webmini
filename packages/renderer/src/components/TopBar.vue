@@ -138,10 +138,7 @@
         <icon-home size=".8em" />
       </b-button>
     </div>
-    <div
-      class="truncate bg-transparenttext-center text-$theme-color-text text-0.9em"
-      :title="title"
-    >
+    <div class="truncate text-$theme-color-text text-0.9em" :title="title">
       {{ title }}
     </div>
     <div class="flex-1 flex gap-1.5 justify-end">

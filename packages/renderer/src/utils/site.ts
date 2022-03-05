@@ -65,7 +65,7 @@ class Site {
       windowTypeProvider,
     )
     const mini = windowType.mini
-    if (mini.some((value) => matchPattern(this.completeURL, value))) {
+    if (mini.some(matchPattern(this.completeURL))) {
       return 'mini'
     }
     // todo: 特殊大小窗口判断代码移动到插件内

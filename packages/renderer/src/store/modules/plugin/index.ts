@@ -10,6 +10,9 @@ export const usePluginStore = defineStore('plugin', {
     plugins: [],
   }),
   actions: {
+    /**
+     * 加载内部插件
+     */
     getBuiltInPlugins() {
       once(() => {
         const context = import.meta.glob('../../../plugins/**/index.ts')
@@ -27,31 +30,42 @@ export const usePluginStore = defineStore('plugin', {
         window.app.logger.info('built-in plugin was loaded successfully', { lable: 'pluginStore' })
       })()
     },
+    /**
+     * 载入指定url的所有插件
+     */
     loadAllPlugins(url: string) {
       this.url = url
-      return Promise.allSettled(this.plugins.map(this.loadPlugin))
+      return Promise.allSettled(this.plugins.map(this.loadPlugin(url)))
     },
+    /**
+     * 卸载所有插件
+     */
     unloadAllPlugins() {
       clearHook()
       clearData()
     },
-    loadPlugin(plugin: PluginMetadata) {
-      if (plugin.setup) {
-        const matchUrlPattern = (value: string | RegExp) => matchPattern(this.url, value)
-        // 若指定了排除URL, 任意URL匹配就不加载
-        if (plugin.urlExclude && plugin.urlExclude.some(matchUrlPattern)) {
-          return false
+    /**
+     * 载入单个插件
+     */
+    loadPlugin(url: string) {
+      return (plugin: PluginMetadata) => {
+        if (plugin.setup) {
+          // 若指定了排除URL, 任意URL匹配就不加载
+          if (plugin.urlExclude && plugin.urlExclude.some(matchPattern(url))) {
+            return false
+          }
+          // 若指定了包含URL, 所有URL都不匹配时不加载
+          if (plugin.urlInclude && plugin.urlInclude.every(negate(matchPattern(url)))) {
+            return false
+          }
+          console.log(plugin)
+          return plugin.setup({
+            addHook,
+            addData,
+          })
         }
-        // 若指定了包含URL, 所有URL都不匹配时不加载
-        if (plugin.urlInclude && plugin.urlInclude.every(negate(matchUrlPattern))) {
-          return false
-        }
-        return plugin.setup({
-          addHook,
-          addData,
-        })
+        return null
       }
-      return null
     },
     addHook,
     getHook,
