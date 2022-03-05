@@ -1,7 +1,7 @@
 <script setup lang="ts">
   import { useAppStore, useHistoryStore } from '@/store'
   import { resizeMainWindow, currentWindowType } from '@/utils'
-  import { START } from '@/config/constant'
+  import { START } from '@/utils/constant'
 
   const ipc = window.ipcRenderer
   const appStore = useAppStore()
@@ -126,7 +126,7 @@
 </script>
 
 <template>
-  <div id="topbar" class="gap-2 items-center drag">
+  <header id="topbar" class="gap-2 items-center drag">
     <b-button id="navi-back" title="后退" :disabled="disableBack" @click="goBack">
       <icon-left size=".9em" />
     </b-button>
@@ -164,7 +164,7 @@
     <b-button title="退出" @click="turnOff" @click.right="minimize">
       <icon-close-small size=".85em" />
     </b-button>
-  </div>
+  </header>
 </template>
 
 <style lang="less" scoped>

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { webNav, liveUrlPrefix, videoUrlPrefix } from '@/config/constant'
+  import { webNav, liveUrlPrefix, videoUrlPrefix } from '@/utils/constant'
   import { useAppStore } from '@/store'
   import { resizeMainWindow } from '@/utils'
 

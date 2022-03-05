@@ -160,7 +160,7 @@
 </script>
 
 <template>
-  <div id="main" :class="['select-none', { showTopBar, autoHideBar }]">
+  <main id="main" :class="['select-none', { showTopBar, autoHideBar }]">
     <TopBar />
     <div ref="scrollContainer" class="relative h-full w-full bg-$color-bg-2 text-$color-text-1">
       <WebView v-show="route.name === 'Home'" />
@@ -172,7 +172,7 @@
         </transition>
       </router-view>
     </div>
-  </div>
+  </main>
 </template>
 
 <style lang="less" scoped>

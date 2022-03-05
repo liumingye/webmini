@@ -9,7 +9,7 @@ import {
   getPartOfVideo,
 } from './utils'
 import { useAppStore, useHistoryStore } from '@/store'
-import { userAgent } from '@/config/constant'
+import { userAgent } from '@/utils/constant'
 
 const last = reactive({
   vid: '',
@@ -18,7 +18,13 @@ const last = reactive({
 export const plugin: PluginMetadata = {
   name: 'bilibili',
   displayName: '哔哩哔哩',
-  urlInclude: ['www.bilibili.com', 'm.bilibili.com', 'live.bilibili.com', 'passport.bilibili.com'],
+  urlInclude: [
+    'www.bilibili.com',
+    'm.bilibili.com',
+    'live.bilibili.com',
+    'passport.bilibili.com',
+    't.bilibili.com',
+  ],
   options: {
     windowType: {
       mini: [
@@ -46,17 +52,17 @@ export const plugin: PluginMetadata = {
     })
     addData('userAgent', (presetBase: Record<string, string[]>) => {
       presetBase.mobile = [
-        'm.bilibili.com',
+        'm.bilibili.com/',
         'live.bilibili.com/h5',
         'live.bilibili.com/pages/h5',
         'www.bilibili.com/read/mobile',
         'www.bilibili.com/read/cv',
         'h.bilibili.com/ywh/h5',
-        't.bilibili.com',
+        't.bilibili.com/',
       ]
     })
     addHook('updateUrl', {
-      after: async ({ url }: { url: URL }) => {
+      after: ({ url }: { url: URL }) => {
         const appStore = useAppStore()
         const historyStore = useHistoryStore()
 

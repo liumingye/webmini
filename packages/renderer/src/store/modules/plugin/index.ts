@@ -2,6 +2,7 @@ import { PluginStateTypes, PluginMetadata } from './types'
 import { addHook, getHook, clearHook } from './hook'
 import { registerData, addData, getData, registerAndGetData, clearData } from './data'
 import { negate, once } from 'lodash-es'
+import { matchPattern } from '@/utils'
 
 export const usePluginStore = defineStore('plugin', {
   state: (): PluginStateTypes => ({
@@ -34,23 +35,15 @@ export const usePluginStore = defineStore('plugin', {
       clearHook()
       clearData()
     },
-    matchPattern(str: string, pattern: string | RegExp) {
-      if (typeof pattern === 'string') {
-        return str.includes(pattern)
-      }
-      return pattern.test(str)
-    },
-    matchUrlPattern(pattern: string | RegExp) {
-      return this.matchPattern(this.url, pattern)
-    },
     loadPlugin(plugin: PluginMetadata) {
       if (plugin.setup) {
+        const matchUrlPattern = (value: string | RegExp) => matchPattern(this.url, value)
         // 若指定了排除URL, 任意URL匹配就不加载
-        if (plugin.urlExclude && plugin.urlExclude.some(this.matchUrlPattern)) {
+        if (plugin.urlExclude && plugin.urlExclude.some(matchUrlPattern)) {
           return false
         }
         // 若指定了包含URL, 所有URL都不匹配时不加载
-        if (plugin.urlInclude && plugin.urlInclude.every(negate(this.matchUrlPattern))) {
+        if (plugin.urlInclude && plugin.urlInclude.every(negate(matchUrlPattern))) {
           return false
         }
         return plugin.setup({

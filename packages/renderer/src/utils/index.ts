@@ -1,19 +1,20 @@
 import { useAppStore } from '@/store'
 import { windowType } from '@/types'
 import Site from '@/utils/site'
+import { clamp, isString } from 'lodash-es'
 
 const logger = window.app.logger
 
 export const currentWindowType = ref<windowType>('mobile')
 
-export const resizeMainWindow = (option?: { windowType?: windowType }) => {
+export const resizeMainWindow = (option: { windowType?: windowType } = {}) => {
   const appStore = useAppStore()
   const targetWindowType = ref<windowType>()
-  if (!option?.windowType) {
-    const url = appStore.webview.getURL()
-    targetWindowType.value = new Site(url).getWindowType()
-  } else {
+  if (option.windowType) {
     targetWindowType.value = option.windowType
+  } else {
+    const url = appStore.webview.getURL()
+    targetWindowType.value = new Site(url).windowType
   }
   if (targetWindowType.value === currentWindowType.value) {
     return
@@ -53,29 +54,11 @@ export const resizeMainWindow = (option?: { windowType?: windowType }) => {
   const y = displayBounds.y + rightBottomPosition.y - height
   const bounds: Required<Electron.Rectangle> = { width, height, x, y }
   // 防止超出屏幕可视范围
-  if (bounds.x < displayBounds.x) {
-    bounds.x = displayBounds.x
-  } else if (bounds.x > displayBounds.width - bounds.width) {
-    bounds.x = displayBounds.width - bounds.width
-  }
-  if (bounds.y < displayBounds.y) {
-    bounds.y = displayBounds.y
-  } else if (bounds.y > displayBounds.height - bounds.height) {
-    bounds.y = displayBounds.height - bounds.height
-  }
+  bounds.x = clamp(bounds.x, displayBounds.x, displayBounds.width - bounds.width)
+  bounds.y = clamp(bounds.y, displayBounds.y, displayBounds.height - bounds.height)
   window.app.currentWindow.setBounds(bounds, true)
   currentWindowType.value = targetWindowType.value
 }
-
-// export const getVidWithP = (pathname: string) => {
-//   const m = /^\/video\/((av\d+|BV\w+)(?:\/?\?p=\d+)?)/.exec(pathname)
-//   return m ? m[1] : null
-// }
-
-// export const getBvid = (pathname: string) => {
-//   const m = /^\/bangumi\/play\/(ss\d+|ep\d+)/.exec(pathname)
-//   return m ? m[1] : null
-// }
 
 export const replace = (text: string, map: string[], replacer: string) => {
   map.forEach((value) => {
@@ -97,4 +80,11 @@ export const replaceTitle = (title: string) => {
   )
   title = replace(title, ['bilibili', '哔哩哔哩'], 'bilimini')
   return title
+}
+
+export const matchPattern = (str: string, pattern: string | RegExp) => {
+  if (isString(pattern)) {
+    return str.includes(pattern)
+  }
+  return pattern.test(str)
 }

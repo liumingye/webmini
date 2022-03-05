@@ -2,7 +2,7 @@
  * memory history
  */
 
-import { START } from '@/config/constant'
+import { START } from '@/utils/constant'
 import {
   HistoryStateTypes,
   HistoryLocation,

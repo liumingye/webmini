@@ -131,7 +131,7 @@ export const useAppStore = defineStore('app', {
       this.disableDanmakuButton = true
       this.autoHideBar = false
 
-      this.webview.setUserAgent(new Site(url).getUserAgent())
+      this.webview.setUserAgent(new Site(url).userAgent)
 
       const now = Number(new Date())
       if (now - last.push < 500) {
@@ -184,7 +184,7 @@ export const useAppStore = defineStore('app', {
       this.loadPlugins(url)
       this.webview.src = url
       this.webview.loadURL(url, {
-        userAgent: new Site(url).getUserAgent(),
+        userAgent: new Site(url).userAgent,
       })
     },
   },

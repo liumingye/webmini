@@ -36,7 +36,7 @@ export interface PluginMinimalData {
   urlInclude?: (string | RegExp)[]
   /** 设置不匹配的URL, 不匹配则不运行此组件, 优先级高于`urlInclude` */
   urlExclude?: (string | RegExp)[]
-  options?: { windowType?: { mini?: RegExp[] } }
+  options?: { windowType?: { mini?: string | RegExp[] } }
 }
 type PartialRequired<Target, Props extends keyof Target> = Target & {
   [P in Props]-?: Target[P]
