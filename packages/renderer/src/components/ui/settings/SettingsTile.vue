@@ -26,7 +26,9 @@
 
 <style lang="less" scoped>
   :deep(.arco-select) {
-    text-align: right;
     padding: 0;
+    .arco-select-view-value {
+      justify-content: flex-end;
+    }
   }
 </style>
