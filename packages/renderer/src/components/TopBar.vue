@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import { useAppStore, useHistoryStore } from '@/store'
-  import { resizeMainWindow } from '@/utils'
+  import { resizeMainWindow, currentWindowType } from '@/utils'
   import { START } from '@/config/constant'
 
   const ipc = window.ipcRenderer
@@ -18,22 +18,24 @@
   })
 
   const tempStore: Record<string, any> = {}
-  watch(
-    () => route.name,
-    (newValue, oldValue) => {
-      // 恢复状态
-      if (newValue === 'Home') {
-        appStore.autoHideBar = tempStore['autoHideBar']
-        resizeMainWindow()
-        return
-      }
-      // 保存状态
-      else if (oldValue === 'Home') {
-        tempStore['autoHideBar'] = appStore.autoHideBar
-        appStore.autoHideBar = false
-      }
-    },
-  )
+  router.beforeEach((to, from) => {
+    // 恢复状态
+    if (to.name === 'Home') {
+      appStore.autoHideBar = tempStore['autoHideBar']
+    }
+    // 保存状态
+    if (from.name === 'Home') {
+      tempStore['autoHideBar'] = appStore.autoHideBar
+      tempStore['windowType'] = currentWindowType.value
+      resizeMainWindow({ windowType: 'mobile' })
+      appStore.autoHideBar = false
+    }
+  })
+  router.afterEach((to) => {
+    if (to.name === 'Home') {
+      resizeMainWindow({ windowType: tempStore['windowType'] })
+    }
+  })
 
   const minimize = () => {
     window.app.currentWindow.minimize()
@@ -110,14 +112,12 @@
     router.push({
       name: 'WebNav',
     })
-    resizeMainWindow('mobile')
   }
 
   const showSettings = () => {
     router.push({
       name: 'Settings',
     })
-    resizeMainWindow('mobile')
   }
 
   const turnOff = () => {

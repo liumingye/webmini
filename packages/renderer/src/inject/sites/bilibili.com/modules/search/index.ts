@@ -6,9 +6,9 @@ let unloadStyle: () => void
 const searchObserver = new MutationObserver((mutations) => {
   mutations.forEach(({ addedNodes }) => {
     if (addedNodes.length === 0) return
-    const node = addedNodes[0] as HTMLElement
+    const node = <HTMLElement>addedNodes[0]
     if (node.className === 'v-dialog') {
-      const cancel = document.querySelector('.open-app-dialog-btn.cancel') as HTMLElement
+      const cancel = document.querySelector<HTMLElement>('.open-app-dialog-btn.cancel')
       cancel?.click()
       searchObserver.disconnect()
     }

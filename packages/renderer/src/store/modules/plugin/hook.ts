@@ -1,10 +1,6 @@
 /** 针对某种事件进行的代码注入 */
-export interface PluginHookProvider {
-  /** 事件发生前执行 */
-  before?: (...args: any[]) => void | Promise<void>
-  /** 事件发生后执行 */
-  after?: (...args: any[]) => void | Promise<void>
-}
+import { PluginHookProvider } from './types'
+
 const pluginHookMap = new Map<
   string,
   {

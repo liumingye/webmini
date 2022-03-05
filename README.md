@@ -41,7 +41,7 @@ git clone git@github.com:liumingye/bilimini.git
 corepack enable
 yarn install
 ```
-
+  
 > Error: Electron failed to install correctly, please delete node_modules/electron and try installing again
 
 `Electron` 下载安装失败的问题，解决方式请参考 https://github.com/electron/electron/issues/8466#issuecomment-571425574

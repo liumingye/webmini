@@ -27,14 +27,14 @@
           }
         }
       }
-      router.push({
-        name: 'Home',
-      })
       if (newUrl === appStore.webview.getURL()) {
         resizeMainWindow()
       } else {
         appStore.go(newUrl)
       }
+      router.push({
+        name: 'Home',
+      })
     } catch (error: any) {
       alert(error.message)
     }

@@ -140,8 +140,11 @@ export const useAppStore = defineStore('app', {
       // }
     },
     go(url: string) {
-      window.app.logger.debug(`go - ${url}`, { label: 'appStore' })
       if (this.webview.getURL() === url) return
+      window.app.logger.debug(`go - ${url}`, { label: 'appStore' })
+      // 更新插件列表
+      this.loadPlugins(url)
+      this.webview.src = url
       this.webview.loadURL(url, {
         userAgent: new Site(url).getUserAgent(),
       })

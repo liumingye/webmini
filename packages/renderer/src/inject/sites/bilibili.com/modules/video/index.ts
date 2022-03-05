@@ -11,7 +11,7 @@ let abortPromise: null | (() => void)
 const ended = () => {
   // 跳过充电鸣谢
   setTimeout(() => {
-    const jumpButton = document.querySelector('.bilibili-player-electric-panel-jump') as HTMLElement
+    const jumpButton = document.querySelector<HTMLElement>('.bilibili-player-electric-panel-jump')
     jumpButton?.click()
   }, 100)
 }

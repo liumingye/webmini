@@ -1,6 +1,7 @@
 import { PluginStateTypes, PluginMetadata } from './types'
 import { addHook, getHook, clearHook } from './hook'
-import { negate } from 'lodash-es'
+import { registerData, addData, getData, registerAndGetData, clearData } from './data'
+import { negate, once } from 'lodash-es'
 
 export const usePluginStore = defineStore('plugin', {
   state: (): PluginStateTypes => ({
@@ -9,19 +10,21 @@ export const usePluginStore = defineStore('plugin', {
   }),
   actions: {
     getBuiltInPlugins() {
-      const context = import.meta.glob('../../../plugins/**/index.ts')
-      const pluginPaths = Object.keys(context)
-      pluginPaths
-        .map(async (path) => {
-          const loadModule = context[path]
-          const module = await loadModule()
-          if ('plugin' in module) {
-            const plugin = module.plugin
-            this.plugins.push(plugin)
-          }
-        })
-        .filter((it) => it !== undefined)
-      window.app.logger.info('built-in plugin was loaded successfully', { lable: 'pluginStore' })
+      once(() => {
+        const context = import.meta.glob('../../../plugins/**/index.ts')
+        const pluginPaths = Object.keys(context)
+        pluginPaths
+          .map(async (path) => {
+            const loadModule = context[path]
+            const module = await loadModule()
+            if ('plugin' in module) {
+              const plugin = module.plugin
+              this.plugins.push(plugin)
+            }
+          })
+          .filter((it) => it !== undefined)
+        window.app.logger.info('built-in plugin was loaded successfully', { lable: 'pluginStore' })
+      })()
     },
     loadAllPlugins(url: string) {
       this.url = url
@@ -29,6 +32,7 @@ export const usePluginStore = defineStore('plugin', {
     },
     unloadAllPlugins() {
       clearHook()
+      clearData()
     },
     matchPattern(str: string, pattern: string | RegExp) {
       if (typeof pattern === 'string') {
@@ -51,12 +55,16 @@ export const usePluginStore = defineStore('plugin', {
         }
         return plugin.setup({
           addHook,
-          getHook,
+          addData,
         })
       }
       return null
     },
     addHook,
     getHook,
+    registerData,
+    addData,
+    getData,
+    registerAndGetData,
   },
 })

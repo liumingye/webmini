@@ -37,7 +37,7 @@
 
   // 更新分p列表
   ipc.on('update-part', async (ev, data) => {
-    console.log(data)
+    // console.log(data)
     if (!data) {
       app.currentWindow.hide()
       return

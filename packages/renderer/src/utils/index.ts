@@ -6,14 +6,14 @@ const logger = window.app.logger
 
 export const currentWindowType = ref<windowType>('mobile')
 
-export const resizeMainWindow = (windowType?: windowType) => {
+export const resizeMainWindow = (option?: { windowType?: windowType }) => {
   const appStore = useAppStore()
   const targetWindowType = ref<windowType>()
-  if (!windowType) {
+  if (!option?.windowType) {
     const url = appStore.webview.getURL()
     targetWindowType.value = new Site(url).getWindowType()
   } else {
-    targetWindowType.value = windowType
+    targetWindowType.value = option.windowType
   }
   if (targetWindowType.value === currentWindowType.value) {
     return

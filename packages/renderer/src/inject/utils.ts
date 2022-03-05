@@ -6,7 +6,7 @@
 export const addStyle = (text: string) => {
   const style = document.createElement('style')
   style.textContent = text
-  const styleElement = document.head.insertAdjacentElement('beforeend', style) as HTMLStyleElement
+  const styleElement = <HTMLStyleElement>document.head.insertAdjacentElement('beforeend', style)
   return {
     unload: () => {
       styleElement.remove()
@@ -39,7 +39,7 @@ export const whenDom = async (
     observer = new MutationObserver((mutations) => {
       mutations.forEach(({ addedNodes }) => {
         if (addedNodes.length === 0) return
-        const node = addedNodes[0] as HTMLElement
+        const node = <HTMLElement>addedNodes[0]
         const reg = new RegExp(`(${dom.join('|')})`)
         if (reg.test(`.${node.className}`)) {
           resolve()
