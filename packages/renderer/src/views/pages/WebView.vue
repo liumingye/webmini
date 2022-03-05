@@ -48,6 +48,7 @@
 
     // update title
     webview.value.addEventListener('page-title-updated', (event) => {
+      // window.app.logger.debug(`page-title-updated - ${event.title}`)
       appStore.title = replaceTitle(event.title) || 'bilimini'
       document.title = appStore.title
     })
