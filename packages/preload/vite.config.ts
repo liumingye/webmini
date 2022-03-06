@@ -12,7 +12,7 @@ export default defineConfig({
     },
     emptyOutDir: true,
     rollupOptions: {
-      external: ['electron', ...builtinModules],
+      external: ['electron', ...builtinModules, 'winston', 'winston-daily-rotate-file'],
     },
   },
 })
