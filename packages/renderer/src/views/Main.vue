@@ -157,6 +157,9 @@
     const fromDepth = from.path.split('/').length
     to.meta.transition = toDepth < fromDepth ? 'slide-right' : 'slide-left'
   })
+
+  // const tabsStore = useTabsStore()
+  // tabsStore.addTabs([{ url: `https://tools.liumingye.cn/music`, active: true }])
 </script>
 
 <template>

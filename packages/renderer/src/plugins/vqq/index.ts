@@ -9,7 +9,7 @@ import { userAgent } from '@/utils/constant'
 export const plugin: PluginMetadata = {
   name: 'vqq',
   displayName: '腾讯视频',
-  urlInclude: ['v.qq.com', 'm.v.qq.com'],
+  urlInclude: ['v.qq.com', 'm.v.qq.com', 'm.film.qq.com'],
   setup: ({ addHook, addData }) => {
     addData('themeColor', (presetBase: Record<string, Record<string, string>>) => {
       presetBase.light = {
@@ -22,7 +22,7 @@ export const plugin: PluginMetadata = {
       }
     })
     addData('userAgent', (presetBase: Record<string, string[]>) => {
-      presetBase.mobile = ['m.v.qq.com', 'm.film.qq.com']
+      presetBase.mobile = ['m.v.qq.com', 'm.film.qq.com', 'm.film.qq.com']
     })
     addData('windowType', (presetBase: Record<string, (string | RegExp)[]>) => {
       presetBase.mini = [/(m\.|)v\.qq\.com(.*?)(\/cover|\/play)/]

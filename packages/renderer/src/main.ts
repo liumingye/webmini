@@ -20,6 +20,8 @@ import 'overlayscrollbars/css/OverlayScrollbars.css'
 // global style
 import '@/assets/css/global.less'
 
+window.app.logger.debug('init')
+
 createApp(App)
   .use(router)
   .use(store)

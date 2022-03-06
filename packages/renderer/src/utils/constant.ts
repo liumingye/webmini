@@ -7,7 +7,7 @@ export const userAgent = {
 }
 export const liveUrlPrefix = 'https://live.bilibili.com/blanc/'
 export const videoUrlPrefix = 'https://www.bilibili.com/video/'
-export const bangumiUrlPrefix = 'https://www.bilibili.com/bangumi/play/'
+// export const bangumiUrlPrefix = 'https://www.bilibili.com/bangumi/play/'
 export const webNav = {
   主站: [
     {

@@ -1,4 +1,4 @@
-import { app } from 'electron'
+import { app, ipcMain, webContents } from 'electron'
 import is from 'electron-is'
 import { appId } from '../../electron-builder.json'
 import { release } from 'os'
@@ -29,6 +29,19 @@ app.whenReady().then(() => {
   // start app
   const application = Application.instance
   application.start()
+
+  ipcMain.handle(`web-contents-call`, async (e, { webContentsId, method, args = [] }) => {
+    const wc = webContents.fromId(webContentsId)
+    const result = (wc as any)[method](...args)
+
+    if (result) {
+      if (result instanceof Promise) {
+        return await result
+      }
+
+      return result
+    }
+  })
 
   if (is.dev()) {
     installExtension(VUEJS3_DEVTOOLS.id)

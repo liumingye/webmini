@@ -23,6 +23,7 @@ export const useAppStore = defineStore('app', {
     disablePartButton: true,
     disableDanmakuButton: true,
     autoHideBar: false,
+    currentWindowID: window.app.currentWindow.id,
     windowID: {},
   }),
   actions: {

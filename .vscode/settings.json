@@ -1,7 +1,9 @@
 {
   "search.exclude": {
-    ".yarn": true
-  },
-  "css.validate": false,
-  "less.validate": false
+    ".yarn": true,
+    "yarn.lock": true,
+    ".eslintrc-auto-import.json": true
+  }
+  // "css.validate": false,
+  // "less.validate": false
 }

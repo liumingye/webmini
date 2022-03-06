@@ -4,8 +4,10 @@ import is from 'electron-is'
 import { join } from 'path'
 import Storage from 'electron-json-storage'
 import { Application } from '../application'
+import { ViewManager } from '../viewManager'
 
 export class MainWindow extends CommonWindow {
+  public viewManager: ViewManager
   public constructor(window?: BrowserWindow) {
     const bound: Record<string, number> = {}
     const config: any = Storage.getSync('config')
@@ -54,5 +56,7 @@ export class MainWindow extends CommonWindow {
     })
 
     super(window)
+
+    this.viewManager = new ViewManager(this)
   }
 }

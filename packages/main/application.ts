@@ -36,8 +36,11 @@ export class Application {
       if (!is.macOS()) app.quit()
     })
 
-    await app.whenReady()
+    this.onReady()
+  }
 
+  private async onReady() {
+    await app.whenReady()
     this.createAllWindow()
     Menu.setApplicationMenu(getMainMenu())
 
@@ -45,6 +48,7 @@ export class Application {
       if (is.macOS()) {
         this.mainWindow?.win.close()
         this.selectPartWindow?.win.close()
+        this.mainWindow?.viewManager.clear()
       } else {
         app.quit()
       }
@@ -55,6 +59,11 @@ export class Application {
     ipcMain.on('clearAllUserData', () => {
       this.clearAllUserData()
     })
+
+    // this.mainWindow?.viewManager.create({
+    //   url: `https://tools.liumingye.cn/music`,
+    //   active: true,
+    // })
 
     // 服务
     adblockerService(session.defaultSession)

@@ -1,7 +1,7 @@
 <script setup lang="ts">
   import { useAppStore } from '@/store'
   const appStore = useAppStore()
-  window.ipcRenderer.on('windowID', (_event, items) => {
+  window.ipcRenderer.once('windowID', (_event, items) => {
     Object.assign(appStore.windowID, items)
   })
   // appStore Init

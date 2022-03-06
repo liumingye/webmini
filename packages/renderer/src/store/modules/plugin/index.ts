@@ -15,7 +15,7 @@ export const usePluginStore = defineStore('plugin', {
      */
     getBuiltInPlugins() {
       once(() => {
-        const context = import.meta.glob('../../../plugins/**/index.ts')
+        const context = import.meta.glob('../../../plugins/*/index.ts')
         const pluginPaths = Object.keys(context)
         pluginPaths
           .map(async (path) => {

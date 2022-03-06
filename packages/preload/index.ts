@@ -52,6 +52,7 @@ contextBridge.exposeInMainWorld('app', {
     isDestroyed: currentWindow.isDestroyed,
     isAlwaysOnTop: currentWindow.isAlwaysOnTop,
     setAlwaysOnTop: currentWindow.setAlwaysOnTop,
+    id: currentWindow.id,
   },
   net: new Net(),
   logger: withPrototype(Logger),
