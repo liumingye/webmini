@@ -1,5 +1,5 @@
 import { matchPattern } from '@/utils'
-import { userAgent, START } from '@/utils/constant'
+import { userAgent } from '@/utils/constant'
 import { windowType } from '@/types'
 import { usePluginStore } from '@/store'
 

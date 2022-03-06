@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import { useAppStore, usePluginStore, useTabsStore } from '@/store'
-  import { replaceTitle, saveWindowSize, initMouseStateDirtyCheck, watchAlwaysOnTop } from '@/utils'
+  import { saveWindowSize, initMouseStateDirtyCheck, watchAlwaysOnTop } from '@/utils'
   import { START, userAgent } from '@/utils/constant'
   import { callViewMethod } from '@/utils/view'
   import overlayScrollbars from 'overlayscrollbars'
@@ -76,13 +76,13 @@
     appStore.go(url)
   })
   // 用户按↑、↓键时，把事件传递到webview里去实现修改音量功能
-  window.ipcRenderer.on('change-volume', (ev, arg) => {
-    // webview.value.send('change-volume', arg)
-  })
+  // window.ipcRenderer.on('change-volume', (ev, arg) => {
+  // webview.value.send('change-volume', arg)
+  // })
   // 按下ESC键
-  window.ipcRenderer.on('press-esc', () => {
-    // historyStore.goBack()
-  })
+  // window.ipcRenderer.on('press-esc', () => {
+  // historyStore.goBack()
+  // })
 </script>
 
 <template>

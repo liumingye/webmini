@@ -1,7 +1,6 @@
 <script setup lang="ts">
-  import { useAppStore, useHistoryStore, useTabsStore } from '@/store'
+  import { useAppStore, useHistoryStore } from '@/store'
   import { resizeMainWindow, currentWindowType } from '@/utils'
-  import { callViewMethod } from '@/utils/view'
   import { START } from '@/utils/constant'
 
   const ipc = window.ipcRenderer

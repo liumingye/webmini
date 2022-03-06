@@ -2,8 +2,6 @@ import { TabsStateTypes, CreateProperties } from './type'
 import { ITab } from './model'
 import { useAppStore } from '@/store'
 import { TabEvent } from '~/interfaces/tabs'
-import { usePluginStore } from '../plugin'
-import { resizeMainWindow } from '@/utils'
 
 const cache: Record<string, any> = {
   getTabById: {

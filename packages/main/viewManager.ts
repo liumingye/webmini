@@ -140,7 +140,7 @@ export class ViewManager extends EventEmitter {
     const view = this.views.get(id)
 
     this.views.delete(id)
-    console.log(view)
+    // console.log(view)
     if (view && !view.browserView.webContents.isDestroyed()) {
       this.window.win.removeBrowserView(view.browserView)
       view.destroy()

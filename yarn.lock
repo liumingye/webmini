@@ -1569,29 +1569,29 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@windicss/config@npm:1.8.2":
-  version: 1.8.2
-  resolution: "@windicss/config@npm:1.8.2::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2F%40windicss%2Fconfig%2F-%2Fconfig-1.8.2.tgz"
+"@windicss/config@npm:1.8.3":
+  version: 1.8.3
+  resolution: "@windicss/config@npm:1.8.3::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2F%40windicss%2Fconfig%2F-%2Fconfig-1.8.3.tgz"
   dependencies:
     debug: ^4.3.3
     jiti: ^1.13.0
     windicss: ^3.5.1
-  checksum: 5387a3b295c14200d9ca340813f16211472f918f8fafb08c61d6a890ddd5da11c716fb2feb58be0310f02a7df80fbec00cf20f74a5edef93bdd28605279c1199
+  checksum: e60cbb3eff1a5a5a02b302af2bed3f1fbadf82ab25821db05b950befee85e55df8bb24cdc54bf70a0e402781c958af4b009bc9ed4938a9e00c545b69e2658463
   languageName: node
   linkType: hard
 
-"@windicss/plugin-utils@npm:1.8.2":
-  version: 1.8.2
-  resolution: "@windicss/plugin-utils@npm:1.8.2::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2F%40windicss%2Fplugin-utils%2F-%2Fplugin-utils-1.8.2.tgz"
+"@windicss/plugin-utils@npm:1.8.3":
+  version: 1.8.3
+  resolution: "@windicss/plugin-utils@npm:1.8.3::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2F%40windicss%2Fplugin-utils%2F-%2Fplugin-utils-1.8.3.tgz"
   dependencies:
     "@antfu/utils": ^0.5.0
-    "@windicss/config": 1.8.2
+    "@windicss/config": 1.8.3
     debug: ^4.3.3
     fast-glob: ^3.2.11
     magic-string: ^0.25.7
     micromatch: ^4.0.4
     windicss: ^3.5.1
-  checksum: 091cae92744fc1e04d8ca520483dc06f3f3ad8835bbe0cb13bf22a6b3fdcf3a903c582c39dd856038b67f8cfaa4dc2252e167205151b8a85d125ac4e54b5dedc
+  checksum: 9af4cd77b0efd38d671cb64a26ba18c4995d884e5ed31d2fab49170d565cfb5d0efd59525ef1d98dc756872da5b4eff424ccd99b04cf2735280723545789a246
   languageName: node
   linkType: hard
 
@@ -2177,7 +2177,7 @@ __metadata:
     vite: ^2.8.6
     vite-plugin-optimize-persist: ^0.1.2
     vite-plugin-package-config: ^0.1.1
-    vite-plugin-windicss: ^1.8.2
+    vite-plugin-windicss: ^1.8.3
     vue: ^3.2.31
     vue-router: ^4.0.13
     windicss: ^3.5.1
@@ -9911,17 +9911,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vite-plugin-windicss@npm:^1.8.2":
-  version: 1.8.2
-  resolution: "vite-plugin-windicss@npm:1.8.2::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Fvite-plugin-windicss%2F-%2Fvite-plugin-windicss-1.8.2.tgz"
+"vite-plugin-windicss@npm:^1.8.3":
+  version: 1.8.3
+  resolution: "vite-plugin-windicss@npm:1.8.3::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Fvite-plugin-windicss%2F-%2Fvite-plugin-windicss-1.8.3.tgz"
   dependencies:
-    "@windicss/plugin-utils": 1.8.2
+    "@windicss/plugin-utils": 1.8.3
     debug: ^4.3.3
     kolorist: ^1.5.1
     windicss: ^3.5.1
   peerDependencies:
     vite: ^2.0.1
-  checksum: df923fc0f64849c50b0bccea8dc66c3cbb29ec56450a0d0c800816e97c65a1a09ba0c54fa48cd9b6825d0fcc51afcc51f309201d2f353612b2292724de8144cb
+  checksum: 73a565527956069b67a3a3213e5f9270673ff02bf79412da0d62fec526d854183d19a50fb23619478cf7b8cab3f42c87eed9e18e8156d91ec60a2c07d93a6523
   languageName: node
   linkType: hard
 
