@@ -6,6 +6,7 @@ import { SelectPartWindow } from './windows/selectPart'
 import { getMainMenu } from './menus/main'
 import adblockerService from './services/adblocker'
 import autoUpdaterService from './services/autoUpdater'
+import installExtension, { VUEJS3_DEVTOOLS } from 'electron-devtools-installer'
 
 export class Application {
   public static instance = new this()
@@ -17,7 +18,7 @@ export class Application {
   public mainWindow: MainWindow | undefined
   public selectPartWindow: SelectPartWindow | undefined
 
-  public async start() {
+  public start() {
     app.on('second-instance', () => {
       if (this.mainWindow?.isDestroyed()) return
       // Focus on the main window if the user tried to open another
@@ -32,7 +33,6 @@ export class Application {
     app.on('window-all-closed', () => {
       // On macOS it is common for applications and their menu bar
       // to stay active until the user quits explicitly with Cmd + Q
-      console.log('主线程：所有窗口关闭')
       if (!is.macOS()) app.quit()
     })
 
@@ -46,9 +46,9 @@ export class Application {
 
     ipcMain.on('close-main-window', () => {
       if (is.macOS()) {
+        this.mainWindow?.viewManager.clear()
         this.mainWindow?.win.close()
         this.selectPartWindow?.win.close()
-        this.mainWindow?.viewManager.clear()
       } else {
         app.quit()
       }
@@ -68,6 +68,13 @@ export class Application {
     // 服务
     adblockerService(session.defaultSession)
     autoUpdaterService()
+
+    // vue devtool
+    if (is.dev()) {
+      installExtension(VUEJS3_DEVTOOLS.id)
+        .then((name) => console.log(`Added Extension:  ${name}`))
+        .catch((err) => console.log('An error occurred: ', err))
+    }
   }
 
   private getAllWindowID = () => {

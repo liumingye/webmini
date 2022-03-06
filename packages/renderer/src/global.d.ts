@@ -14,7 +14,7 @@ declare global {
       cookies: Cookies
       versions: Versions
       screen: Electron.Screen
-      preload: string
+      // preload: string
       cookie: string
       currentWindow: Electron.BrowserWindow
       net: Net

@@ -13,7 +13,7 @@ export const usePluginStore = defineStore('plugin', {
     /**
      * 加载内部插件
      */
-    getBuiltInPlugins() {
+    async getBuiltInPlugins() {
       once(() => {
         const context = import.meta.glob('../../../plugins/*/index.ts')
         const pluginPaths = Object.keys(context)

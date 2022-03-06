@@ -86,12 +86,12 @@ export const getMainMenu = () => {
           },
         },
         { type: 'separator' },
-        { label: 'Inspect Main', role: 'toggleDevTools' },
+        { label: '开发者工具', role: 'toggleDevTools' },
         {
-          label: 'Inspect Webview',
+          label: '审查源码',
           accelerator: 'CmdOrCtrl+i',
           click() {
-            application.mainWindow?.send('openWebviewDevTools')
+            Application.instance.mainWindow?.viewManager.selected?.webContents.toggleDevTools()
           },
         },
       ],

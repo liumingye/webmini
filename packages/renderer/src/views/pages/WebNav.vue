@@ -1,10 +1,11 @@
 <script setup lang="ts">
   import { webNav, liveUrlPrefix, videoUrlPrefix } from '@/utils/constant'
-  import { useAppStore } from '@/store'
+  import { useAppStore, useTabsStore } from '@/store'
   import { resizeMainWindow } from '@/utils'
 
   const router = useRouter()
   const appStore = useAppStore()
+  const tabsStore = useTabsStore()
 
   const open = async (url: string) => {
     try {
@@ -27,7 +28,7 @@
           }
         }
       }
-      if (newUrl === appStore.webview.getURL()) {
+      if (newUrl === tabsStore.selectedTab().url) {
         resizeMainWindow()
       } else {
         appStore.go(newUrl)

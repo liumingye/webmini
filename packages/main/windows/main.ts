@@ -8,14 +8,18 @@ import { ViewManager } from '../viewManager'
 
 export class MainWindow extends CommonWindow {
   public viewManager: ViewManager
+
   public constructor(window?: BrowserWindow) {
     const bound: Record<string, number> = {}
+
     const config: any = Storage.getSync('config')
+
     const windowPosition = config['windowPosition']
     if (windowPosition) {
       bound.x = windowPosition[0]
       bound.y = windowPosition[1]
     }
+
     const windowSize = config['windowSize']
     if (windowSize && windowSize['mobile']) {
       bound.width = windowSize['mobile'][0]
@@ -24,6 +28,7 @@ export class MainWindow extends CommonWindow {
       bound.width = 376
       bound.height = 500
     }
+
     window = new BrowserWindow({
       ...bound,
       // opacity: 0.5,
@@ -35,11 +40,21 @@ export class MainWindow extends CommonWindow {
       webPreferences: {
         webviewTag: true,
         preload: join(__dirname, '../preload/index.cjs'), // 预先加载指定的脚本
-        nativeWindowOpen: false,
+        // nativeWindowOpen: false,
       },
     })
 
+    super(window)
+
     window.loadURL(Application.URL)
+
+    this.viewManager = new ViewManager(this)
+
+    // Make all links open with the browser, not with the application
+    window.webContents.setWindowOpenHandler(({ url }) => {
+      if (url.startsWith('https:')) shell.openExternal(url)
+      return { action: 'deny' }
+    })
 
     window.on('close', () => {
       if (!is.macOS()) {
@@ -49,14 +64,10 @@ export class MainWindow extends CommonWindow {
       }
     })
 
-    // Make all links open with the browser, not with the application
-    window.webContents.setWindowOpenHandler(({ url }) => {
-      if (url.startsWith('https:')) shell.openExternal(url)
-      return { action: 'deny' }
+    this.win.on('resize', () => {
+      if (!this.win.isMaximized()) {
+        this.viewManager.fixBounds()
+      }
     })
-
-    super(window)
-
-    this.viewManager = new ViewManager(this)
   }
 }

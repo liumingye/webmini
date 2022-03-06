@@ -8,8 +8,9 @@ import {
   getPartOfBangumi,
   getPartOfVideo,
 } from './utils'
-import { useAppStore, useHistoryStore } from '@/store'
+import { useAppStore, useHistoryStore, useTabsStore } from '@/store'
 import { userAgent } from '@/utils/constant'
+import { callViewMethod } from '@/utils/view'
 
 const last = reactive({
   vid: '',
@@ -65,6 +66,7 @@ export const plugin: PluginMetadata = {
       after: ({ url }: { url: URL }) => {
         const appStore = useAppStore()
         const historyStore = useHistoryStore()
+        const tabsStore = useTabsStore()
 
         if (['www.bilibili.com', 'm.bilibili.com'].includes(url.hostname)) {
           // 视频
@@ -72,9 +74,12 @@ export const plugin: PluginMetadata = {
           if (vid) {
             if (url.hostname === 'm.bilibili.com') {
               historyStore.pop()
-              appStore.webview.loadURL(`${videoUrlPrefix}${vid}`, {
+              callViewMethod(tabsStore.selectedTabId, 'loadURL', videoUrlPrefix + vid, {
                 userAgent: userAgent.desktop,
               })
+              // appStore.webview.loadURL(`${videoUrlPrefix}${vid}`, {
+              //   userAgent: userAgent.desktop,
+              // })
             } else if (url.hostname === 'www.bilibili.com') {
               if (vid !== last.vid) {
                 getPartOfVideo(vid)
@@ -100,9 +105,12 @@ export const plugin: PluginMetadata = {
           if (bvid) {
             if (url.hostname === 'm.bilibili.com') {
               historyStore.pop()
-              appStore.webview.loadURL(bangumiUrlPrefix + bvid, {
+              callViewMethod(tabsStore.selectedTabId, 'loadURL', bangumiUrlPrefix + bvid, {
                 userAgent: userAgent.desktop,
               })
+              // appStore.webview.loadURL(bangumiUrlPrefix + bvid, {
+              //   userAgent: userAgent.desktop,
+              // })
             }
             getPartOfBangumi(bvid)
             appStore.disableDanmakuButton = false
@@ -117,9 +125,12 @@ export const plugin: PluginMetadata = {
           if (live) {
             if (live[1] === 'h5/') {
               historyStore.pop()
-              appStore.webview.loadURL(liveUrlPrefix + live[2], {
+              callViewMethod(tabsStore.selectedTabId, 'loadURL', liveUrlPrefix + live[2], {
                 userAgent: userAgent.desktop,
               })
+              // appStore.webview.loadURL(liveUrlPrefix + live[2], {
+              //   userAgent: userAgent.desktop,
+              // })
             }
             appStore.disableDanmakuButton = false
             appStore.autoHideBar = true
@@ -128,9 +139,12 @@ export const plugin: PluginMetadata = {
         }
 
         if (url.href.indexOf('//passport.bilibili.com/login') >= 0) {
-          appStore.webview.loadURL(url.href, {
+          callViewMethod(tabsStore.selectedTabId, 'loadURL', url.href, {
             userAgent: userAgent.desktop,
           })
+          // appStore.webview.loadURL(url.href, {
+          //   userAgent: userAgent.desktop,
+          // })
           return
         }
 

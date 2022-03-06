@@ -3,7 +3,6 @@ import { getCurrentWindow, screen, app } from '@electron/remote'
 import useLoading from './utils/loading'
 import domReady from './utils/domReady'
 import { Logger, Versions, Cookies, Net } from './apis'
-import { resolve } from 'path'
 import Storage from 'electron-json-storage'
 
 const { appendLoading, removeLoading } = useLoading()
@@ -40,7 +39,7 @@ contextBridge.exposeInMainWorld('app', {
   cookies: new Cookies(),
   versions: new Versions(),
   screen: withPrototype(screen),
-  preload: 'file://' + resolve(__dirname, '../inject/index.cjs'),
+  // preload: 'file://' + resolve(__dirname, '../inject/index.cjs'),
   currentWindow: {
     minimize: currentWindow.minimize,
     setBounds: currentWindow.setBounds,

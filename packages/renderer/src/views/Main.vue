@@ -1,127 +1,20 @@
 <script setup lang="ts">
-  import WebView from '@/views/pages/WebView.vue'
-
-  import { WatchStopHandle } from 'vue'
-  import { useAppStore, usePluginStore } from '@/store'
-  import { currentWindowType, replaceTitle } from '@/utils'
-  import { debounce } from 'lodash-es'
+  import { useAppStore, usePluginStore, useTabsStore } from '@/store'
+  import { replaceTitle, saveWindowSize, initMouseStateDirtyCheck, watchAlwaysOnTop } from '@/utils'
+  import { START, userAgent } from '@/utils/constant'
+  import { callViewMethod } from '@/utils/view'
   import overlayScrollbars from 'overlayscrollbars'
 
   const appStore = useAppStore()
   const route = useRoute()
   const router = useRouter()
-  const showTopBar = ref(true)
+  const showTopBar = computed(() => appStore.showTopBar)
   const autoHideBar = computed(() => appStore.autoHideBar)
   const scrollContainer = ref()
 
-  // 加载内置插件
-  const pluginStore = usePluginStore()
-  pluginStore.getBuiltInPlugins()
-
-  const { screen, currentWindow, logger } = window.app
-
-  // windows下frameless window没法正确检测到mouseout事件，只能根据光标位置做个dirtyCheck了
-  const initMouseStateDirtyCheck = () => {
-    const lastStatus = ref<'OUT' | 'IN'>()
-    const Fn = () => {
-      const mousePos = screen.getCursorScreenPoint()
-      const windowPos = currentWindow.getPosition()
-      const windowSize = currentWindow.getSize()
-      const getTriggerAreaWidth = () => {
-        return lastStatus.value === 'IN' ? 0 : 16
-      }
-      const getTriggerAreaHeight = () => {
-        const h = 0.1 * windowSize[1]
-        const minHeight = lastStatus.value === 'IN' ? 120 : 36
-        return h > minHeight ? h : minHeight
-      }
-      if (
-        mousePos.x > windowPos[0] &&
-        mousePos.x < windowPos[0] + windowSize[0] - getTriggerAreaWidth() &&
-        mousePos.y > windowPos[1] - 10 &&
-        mousePos.y < windowPos[1] + getTriggerAreaHeight()
-      ) {
-        if (lastStatus.value === 'OUT') {
-          showTopBar.value = true
-          lastStatus.value = 'IN'
-        }
-        return
-      }
-      showTopBar.value = false
-      lastStatus.value = 'OUT'
-    }
-    const timeout = ref()
-    watchEffect(() => {
-      logger.debug(`watchEffect - autoHideBar - ${autoHideBar.value}`, { label: 'Main.vue' })
-      clearInterval(timeout.value)
-      if (autoHideBar.value) {
-        timeout.value = setInterval(Fn, 200)
-        return
-      }
-      showTopBar.value = true
-    })
-  }
-
-  const saveWindowSize = () => {
-    const resized = debounce(() => {
-      // 解决full-reload后会重复绑定事件
-      if (currentWindow.isDestroyed()) return
-      logger.info('resized')
-      const currentSize = appStore.windowSize[currentWindowType.value]
-      const newSize: number[] = [window.innerWidth, window.innerHeight]
-      if (currentSize !== newSize) {
-        appStore.windowSize[currentWindowType.value] = newSize
-        appStore.saveConfig('windowSize', toRaw(appStore.windowSize))
-      }
-      currentWindow.once('resized', resized)
-    }, 500)
-    const moved = debounce(() => {
-      // 解决full-reload后会重复绑定事件
-      if (currentWindow.isDestroyed()) return
-      logger.info('moved')
-      if (currentWindowType.value === 'mobile') {
-        appStore.saveConfig('windowPosition', currentWindow.getPosition())
-      }
-      currentWindow.once('moved', moved)
-    }, 500)
-    currentWindow.once('resized', resized)
-    currentWindow.once('moved', moved)
-  }
-
-  const watchAlwaysOnTop = () => {
-    let stopWatchWindowType: WatchStopHandle | null
-    watchEffect(() => {
-      if (stopWatchWindowType) {
-        stopWatchWindowType()
-        stopWatchWindowType = null
-      }
-      switch (appStore.alwaysOnTop) {
-        case 'on':
-          currentWindow.setAlwaysOnTop(true)
-          break
-        case 'off':
-          currentWindow.setAlwaysOnTop(false)
-          break
-        default:
-          currentWindow.setAlwaysOnTop(false)
-          stopWatchWindowType = watch(
-            () => currentWindowType.value,
-            (value) => {
-              // logger.debug(`currentWindowType - ${value}`)
-              if (value === 'mini') {
-                currentWindow.setAlwaysOnTop(true)
-                return
-              }
-              currentWindow.setAlwaysOnTop(false)
-            },
-          )
-          break
-      }
-    })
-  }
-
   onMounted(() => {
     saveWindowSize()
+    // windows下frameless window没法正确检测到mouseout事件，只能根据光标位置做个dirtyCheck了
     initMouseStateDirtyCheck()
     watchAlwaysOnTop()
 
@@ -140,11 +33,11 @@
       () => route.name,
       (value) => {
         if (value === 'Home') {
-          appStore.webview.setAudioMuted(false)
-          appStore.title = replaceTitle(appStore.webview.getTitle()) || 'bilimini'
+          callViewMethod(tabsStore.selectedTabId, 'setAudioMuted', false)
+          appStore.title = tabsStore.selectedTab().title
           return
         }
-        appStore.webview.setAudioMuted(true)
+        callViewMethod(tabsStore.selectedTabId, 'setAudioMuted', true)
         if (route.meta.title) {
           appStore.title = route.meta.title
         }
@@ -158,15 +51,45 @@
     to.meta.transition = toDepth < fromDepth ? 'slide-right' : 'slide-left'
   })
 
-  // const tabsStore = useTabsStore()
-  // tabsStore.addTabs([{ url: `https://tools.liumingye.cn/music`, active: true }])
+  const tabsStore = useTabsStore()
+  tabsStore.init()
+
+  // 加载内置插件
+  const pluginStore = usePluginStore()
+  pluginStore.getBuiltInPlugins().then(() => {
+    startupTab()
+  })
+
+  const startupTab = async () => {
+    await tabsStore.addTabs([
+      {
+        url: START,
+        active: true,
+        userAgent: userAgent.mobile,
+      },
+    ])
+  }
+
+  // 收到选p消息时跳p
+  window.ipcRenderer.on('go', (ev, url) => {
+    console.log(url)
+    appStore.go(url)
+  })
+  // 用户按↑、↓键时，把事件传递到webview里去实现修改音量功能
+  window.ipcRenderer.on('change-volume', (ev, arg) => {
+    // webview.value.send('change-volume', arg)
+  })
+  // 按下ESC键
+  window.ipcRenderer.on('press-esc', () => {
+    // historyStore.goBack()
+  })
 </script>
 
 <template>
   <main id="main" :class="['select-none', { showTopBar, autoHideBar }]">
     <TopBar />
     <div ref="scrollContainer" class="relative h-full w-full bg-$color-bg-2 text-$color-text-1">
-      <WebView v-show="route.name === 'Home'" />
+      <!-- <WebView v-show="route.name === 'Home'" /> -->
       <router-view v-slot="{ Component }">
         <transition :name="route.meta.transition">
           <!-- <keep-alive :include="[]"> -->

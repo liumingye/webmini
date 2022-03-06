@@ -5,9 +5,10 @@ export interface CreateProperties {
   active: boolean
   // pinned?: boolean
   index?: number
+  userAgent?: string
 }
 
 export interface TabsStateTypes {
   list: ITab[]
-  removedTabs: number
+  selectedTabId: number
 }

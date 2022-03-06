@@ -12,6 +12,7 @@ export interface AppStateTypes {
   disablePartButton: boolean
   disableDanmakuButton: boolean
   autoHideBar: boolean
+  showTopBar: boolean
   currentWindowID: number
   windowID: { mainWindow?: number; selectPartWindow?: number }
 }

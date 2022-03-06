@@ -10,13 +10,23 @@ export class ViewManager extends EventEmitter {
 
   private window: MainWindow
 
+  public _showTopBar = true
+
+  public get showTopBar() {
+    return this._showTopBar
+  }
+
+  public set showTopBar(val: boolean) {
+    this._showTopBar = val
+    this.fixBounds()
+  }
+
   public constructor(window: MainWindow) {
     super()
     this.window = window
 
     const { id } = window.win
     ipcMain.handle(`views-create-${id}`, (e, options) => {
-      console.log(options)
       return options.map((option: any) => {
         const id = this.create(option, false, false).id
         this.select(id, false)
@@ -24,41 +34,31 @@ export class ViewManager extends EventEmitter {
       })
     })
 
-    ipcMain.handle(`views-clear-${id}`, () => {
-      this.clear()
+    ipcMain.handle(`browserview-hide-${id}`, () => {
+      this.hide()
     })
 
-    // this.create({ url: 'https://tools.liumingye.cn/music' }, false, false).id
-    this.setBoundsListener()
+    ipcMain.handle(`browserview-show-${id}`, () => {
+      this.show()
+    })
+
+    // ipcMain.handle(`browserview-clear-${id}`, () => {
+    //   this.clear()
+    // })
+
+    ipcMain.handle(`showTopBar-${id}`, (e, options) => {
+      this.showTopBar = options
+    })
+
+    // this.setBoundsListener()
 
     // this.incognito = incognito
     this.select(id, true)
   }
 
-  private setBoundsListener() {
-    // resize the BrowserView's height when the toolbar height changes
-    // ex: when the bookmarks bar appears
-    this.window.webContents.executeJavaScript(`
-        // import electron from 'electron';
-        // // const electron = require('electron');
-        // const resizeObserver = new ResizeObserver(([{ contentRect }]) => {
-        //   electron.ipcRenderer.send('resize-height');
-        // });
-        // const app2 = document.getElementById('app');
-        // resizeObserver.observe(app2);
-      `)
-
-    this.window.webContents.on('ipc-message', (e, message) => {
-      if (message === 'resize-height') {
-        // this.fixBounds()
-      }
-    })
-  }
-
   public select(id: number, focus = true) {
-    const { selected } = this
-    // const view = this.views.get(2)
-    // console.log(this.views)
+    // const { selected } = this.selected
+
     const view = this.views.get(id)
 
     if (!view) {
@@ -67,13 +67,11 @@ export class ViewManager extends EventEmitter {
 
     this.selectedId = id
 
-    if (selected) {
-      this.window.win.removeBrowserView(selected.browserView)
+    if (this.selected) {
+      this.window.win.removeBrowserView(this.selected.browserView)
     }
 
     this.window.win.addBrowserView(view.browserView)
-
-    // console.log(121213213213213)
 
     if (focus) {
       // Also fixes switching tabs with Ctrl + Tab
@@ -82,31 +80,31 @@ export class ViewManager extends EventEmitter {
       this.window.webContents.focus()
     }
 
-    // this.window.updateTitle()
-    // view.updateBookmark()
-    // console.log(111111111111111)
     this.fixBounds()
 
-    // view.updateNavigationState()
-
     this.emit('activated', id)
-
-    // TODO: this.emitZoomUpdate(false);
   }
 
   public async fixBounds() {
     const view = this.selected
+
     if (!view) return
+
     const { width, height } = this.window.win.getContentBounds()
-    // const toolbarContentHeight = await this.window.win.webContents.executeJavaScript(`
-    //   document.getElementById('app').offsetHeight
-    // `)
+
+    // const topbarContentHeight = await this.window.webContents.executeJavaScript(
+    //   `document.getElementsByTagName('header')[0].offsetHeight`,
+    // )
+    const topbarContentHeight = 32
+
     const newBounds = {
       x: 0,
-      y: 32,
+      y: this.showTopBar ? topbarContentHeight : 0,
       width,
-      height: height - 32,
+      // height: this.showTopBar ? height - topbarContentHeight : height,
+      height,
     }
+
     // console.log(newBounds)
     if (newBounds !== view.bounds) {
       view.browserView.setBounds(newBounds)
@@ -116,22 +114,15 @@ export class ViewManager extends EventEmitter {
 
   public get selected() {
     return this.views.get(this.selectedId)
-    // return this.views.get(2)
   }
 
   public create(details: any, isNext = false, sendMessage = true) {
-    const view = new View(this.window, details.url)
+    const view = new View(this.window, details)
 
     const { webContents } = view.browserView
     const { id } = view
 
     this.views.set(id, view)
-
-    // console.log(view)
-    console.log(this.views)
-    // if (process.env.ENABLE_EXTENSIONS) {
-    //   extensions.tabs.observe(webContents)
-    // }
 
     webContents.once('destroyed', () => {
       console.log('clear')
@@ -149,18 +140,31 @@ export class ViewManager extends EventEmitter {
     const view = this.views.get(id)
 
     this.views.delete(id)
-
+    console.log(view)
     if (view && !view.browserView.webContents.isDestroyed()) {
       this.window.win.removeBrowserView(view.browserView)
       view.destroy()
-      this.emit('removed', id)
     }
   }
 
   public clear() {
     this.window.win.setBrowserView(null)
-    this.views.forEach((x) => {
-      this.destroy(x.id)
-    })
+    this.views.forEach((x) => this.destroy(x.id))
+  }
+
+  public hide(id?: number) {
+    const browserView = id
+      ? this.views.get(this.selectedId)?.browserView
+      : this.selected?.browserView
+    if (!browserView) return
+    this.window.win.removeBrowserView(browserView)
+  }
+
+  public show(id?: number) {
+    const browserView = id
+      ? this.views.get(this.selectedId)?.browserView
+      : this.selected?.browserView
+    if (!browserView) return
+    this.window.win.addBrowserView(browserView)
   }
 }

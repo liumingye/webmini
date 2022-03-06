@@ -1,5 +1,5 @@
 import { matchPattern } from '@/utils'
-import { userAgent } from '@/utils/constant'
+import { userAgent, START } from '@/utils/constant'
 import { windowType } from '@/types'
 import { usePluginStore } from '@/store'
 
@@ -45,6 +45,7 @@ class Site {
       'userAgent',
       userAgentProvider,
     )
+    console.log($_userAgent)
     if ($_userAgent.desktop.some((value) => this.completeURL.includes(value))) {
       return userAgent.desktop
     }

@@ -1,10 +1,12 @@
 import { AppStateTypes, AppConfig } from './types'
-import { useHistoryStore, usePluginStore } from '@/store'
+import { useHistoryStore, usePluginStore, useTabsStore } from '@/store'
+import { callViewMethod } from '@/utils/view'
 import Site from '@/utils/site'
+import { isURL } from '@/utils/url'
+import { resizeMainWindow } from '@/utils'
 
 const last = reactive({
   push: 0,
-  url: '',
   domain: '',
 })
 
@@ -23,6 +25,7 @@ export const useAppStore = defineStore('app', {
     disablePartButton: true,
     disableDanmakuButton: true,
     autoHideBar: false,
+    showTopBar: true,
     currentWindowID: window.app.currentWindow.id,
     windowID: {},
   }),
@@ -64,51 +67,52 @@ export const useAppStore = defineStore('app', {
     },
     loadPlugins(url: string) {
       const _URL = new URL(url)
-      if (last.domain != _URL.hostname) {
-        const pluginStore = usePluginStore()
-        pluginStore.unloadAllPlugins()
-        pluginStore.loadAllPlugins(url)
-        // 主题色更改
-        const themeColorProvider = {
-          light: {
-            bg: '',
-            text: '',
-          },
-          dark: {
-            bg: '',
-            text: '',
-          },
-        }
-        const [themeColor]: Record<string, Record<string, string>>[] =
-          pluginStore.registerAndGetData('themeColor', themeColorProvider)
-        let scheme: 'dark' | 'light'
-        const onDarkModeChange = ({ matches }: { matches: boolean }) => {
-          if (matches) {
-            scheme = 'dark'
-          } else {
-            scheme = 'light'
-          }
-          document.body.style.setProperty('--theme-color-bg', themeColor[scheme].bg)
-          document.body.style.setProperty('--theme-color-text', themeColor[scheme].text)
-          document.body.setAttribute('arco-theme', scheme)
-        }
-        window
-          .matchMedia('(prefers-color-scheme: dark)')
-          .removeEventListener('change', onDarkModeChange)
-        window
-          .matchMedia('(prefers-color-scheme: dark)')
-          .addEventListener('change', onDarkModeChange)
-        onDarkModeChange(window.matchMedia('(prefers-color-scheme: dark)'))
-      }
+
+      if (last.domain === _URL.hostname) return
       last.domain = _URL.hostname
+
+      console.log('loadPlugins' + url)
+
+      const pluginStore = usePluginStore()
+      pluginStore.unloadAllPlugins()
+      pluginStore.loadAllPlugins(url)
+
+      // 主题色更改
+      const themeColorProvider = {
+        light: {
+          bg: '',
+          text: '',
+        },
+        dark: {
+          bg: '',
+          text: '',
+        },
+      }
+      const [themeColor]: Record<string, Record<string, string>>[] = pluginStore.registerAndGetData(
+        'themeColor',
+        themeColorProvider,
+      )
+      let scheme: 'dark' | 'light'
+      const onDarkModeChange = ({ matches }: { matches: boolean }) => {
+        if (matches) {
+          scheme = 'dark'
+        } else {
+          scheme = 'light'
+        }
+        document.body.style.setProperty('--theme-color-bg', themeColor[scheme].bg)
+        document.body.style.setProperty('--theme-color-text', themeColor[scheme].text)
+        document.body.setAttribute('arco-theme', scheme)
+      }
+      window
+        .matchMedia('(prefers-color-scheme: dark)')
+        .removeEventListener('change', onDarkModeChange)
+      window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', onDarkModeChange)
+      onDarkModeChange(window.matchMedia('(prefers-color-scheme: dark)'))
     },
     updateURL(url: string) {
-      if (last.url === url) return
-      last.url = url
       window.app.logger.info(`updateURL - ${url}`, { label: 'appStore' })
 
-      // 更新插件列表
-      this.loadPlugins(url)
+      resizeMainWindow()
 
       const _URL = new URL(url)
 
@@ -126,13 +130,16 @@ export const useAppStore = defineStore('app', {
       historyStore.push(url)
 
       // 通知webview加载脚本
-      this.webview.send('load-commit')
+      // this.webview.send('load-commit')
 
       this.disablePartButton = true
       this.disableDanmakuButton = true
       this.autoHideBar = false
 
-      this.webview.setUserAgent(new Site(url).userAgent)
+      // this.webview.setUserAgent(new Site(url).userAgent)
+
+      const tabsStore = useTabsStore()
+      callViewMethod(tabsStore.selectedTabId, 'setUserAgent', new Site(url).userAgent)
 
       const now = Number(new Date())
       if (now - last.push < 500) {
@@ -144,49 +151,32 @@ export const useAppStore = defineStore('app', {
       updateUrlHooks?.after({
         url: _URL,
       })
-
-      // test
-      // https://v.qq.com/x/cover/pld2wqk8kq044nv/r0035yfoa2m.html
-      // https://m.v.qq.com/x/m/play?cid=u496ep9wpw4rkno&vid=
-      // https://m.v.qq.com/cover/m/mzc00200jtxd9ap.html?vid=d0042iplesm
-      // https://m.v.qq.com/x/play.html?cid=od1kjfd56e3s7n7
-      // const cidArr = /(cid=|\/)([A-Za-z0-9]{15})/.exec(_URL.pathname + _URL.search)
-      // // window.app.logger.debug(cidArr)
-      // if (cidArr) {
-      //   const vidArr = /(vid=|\/)([A-Za-z0-9]{11})(\.|$|&)/.exec(_URL.pathname + _URL.search)
-      //   const cid = cidArr[2]
-      //   const vid = vidArr ? vidArr[2] : ''
-      //   if (_URL.hostname === 'm.v.qq.com') {
-      //     historyStore.pop()
-      //     const url = ref(`https://v.qq.com/x/cover/${cid}`)
-      //     if (vid !== '') {
-      //       url.value += `/${vid}`
-      //     }
-      //     url.value += `.html`
-      //     this.webview.loadURL(url.value, {
-      //       userAgent: userAgent.desktop,
-      //     })
-      //   }
-      //   // if (cid + vid !== lastId) {
-      //   getPartOfQQ(cid, vid)
-      //   // lastId = cid + vid
-      //   // console.log(lastId)
-      //   // }
-      //   this.disableDanmakuButton = true
-      //   this.disablePartButton = true
-      //   this.autoHideBar = true
-      //   return
-      // }
     },
-    go(url: string) {
-      if (this.webview.getURL() === url) return
-      window.app.logger.debug(`go - ${url}`, { label: 'appStore' })
-      // 更新插件列表
-      this.loadPlugins(url)
-      this.webview.src = url
-      this.webview.loadURL(url, {
-        userAgent: new Site(url).userAgent,
-      })
+    go(value: string) {
+      let url = value
+      if (isURL(value)) {
+        url = value.indexOf('://') === -1 ? `http://${value}` : value
+      }
+      const tabsStore = useTabsStore()
+      const selectedTab = tabsStore.selectedTab()
+      if (selectedTab) {
+        console.log(selectedTab.url)
+        console.log(url)
+        if (selectedTab.url === url) return
+        callViewMethod(tabsStore.selectedTabId, 'loadURL', url, {
+          userAgent: new Site(url).userAgent,
+        })
+      }
+      // console.log(new Site(url).userAgent)
+
+      // if (this.webview.getURL() === url) return
+      // window.app.logger.debug(`go - ${url}`, { label: 'appStore' })
+      // // 更新插件列表
+      // this.loadPlugins(url)
+      // this.webview.src = url
+      // this.webview.loadURL(url, {
+      //   userAgent: new Site(url).userAgent,
+      // })
     },
   },
 })

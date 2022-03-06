@@ -21,6 +21,7 @@
       'go',
       partList.value.url.replace('%id', partList.value.parts[index].id),
     )
+    console.log(partList.value.url)
   }
 
   const closeWindow = () => {

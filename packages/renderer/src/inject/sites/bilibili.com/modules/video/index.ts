@@ -32,6 +32,12 @@ const changeVolume = (_ev: Electron.IpcRendererEvent, arg: 'up' | 'down') => {
 const module = {
   start: () => {
     module.stop()
+
+    // 预先加载全屏样式
+    document.documentElement.classList.add('player-mode-webfullscreen', 'player-fullscreen-fix')
+    const styleEntry = addStyle(style)
+    unloadStyle = styleEntry.unload
+
     whenDom(
       ['.bilibili-player-video-web-fullscreen', '.squirtle-video-pagefullscreen'],
       '.bilibili-player-video-control-wrap,#bilibili-player',
@@ -56,10 +62,6 @@ const module = {
         },
       )
     })
-    // 预先加载全屏样式
-    document.documentElement.classList.add('player-mode-webfullscreen', 'player-fullscreen-fix')
-    const styleEntry = addStyle(style)
-    unloadStyle = styleEntry.unload
   },
 
   stop: () => {

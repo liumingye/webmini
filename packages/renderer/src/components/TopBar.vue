@@ -1,6 +1,7 @@
 <script setup lang="ts">
-  import { useAppStore, useHistoryStore } from '@/store'
+  import { useAppStore, useHistoryStore, useTabsStore } from '@/store'
   import { resizeMainWindow, currentWindowType } from '@/utils'
+  import { callViewMethod } from '@/utils/view'
   import { START } from '@/utils/constant'
 
   const ipc = window.ipcRenderer
@@ -21,10 +22,14 @@
   router.beforeEach((to, from) => {
     // 恢复状态
     if (to.name === 'Home') {
+      window.ipcRenderer.invoke(`browserview-show-${appStore.currentWindowID}`)
+
       appStore.autoHideBar = tempStore.autoHideBar
     }
     // 保存状态
     if (from.name === 'Home') {
+      window.ipcRenderer.invoke(`browserview-hide-${appStore.currentWindowID}`)
+
       tempStore.autoHideBar = appStore.autoHideBar
       tempStore.windowType = currentWindowType.value
       resizeMainWindow({ windowType: 'mobile' })
