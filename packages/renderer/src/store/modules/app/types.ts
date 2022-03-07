@@ -1,5 +1,5 @@
 export interface AppStateTypes {
-  webview: Electron.WebviewTag
+  // webview: Electron.WebviewTag
   alwaysOnTop: 'on' | 'off' | 'playing'
   title: string
   windowSize: {

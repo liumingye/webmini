@@ -1,4 +1,4 @@
-import { ipcRenderer } from 'electron'
+// import { ipcRenderer } from 'electron'
 import bilibili from '@/sites/bilibili.com'
 import vqq from '@/sites/v.qq.com'
 
@@ -14,7 +14,7 @@ const applyScript = () => {
 window.addEventListener('DOMContentLoaded', () => {
   console.log('applyScript')
   applyScript()
-  ipcRenderer.on('load-commit', () => {
-    applyScript()
-  })
+  // ipcRenderer.on('load-commit', () => {
+  //   applyScript()
+  // })
 })

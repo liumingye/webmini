@@ -16,16 +16,12 @@ export class View {
       }
     | undefined
 
-  public lastUrl = ''
+  private lastUrl = ''
 
-  public constructor(window?: MainWindow, details?: { url: string; userAgent?: string }) {
+  public constructor(window: MainWindow, details: { url: string; userAgent?: string }) {
     this.browserView = new BrowserView({
       webPreferences: {
-        // preload: 'file://' + resolve(__dirname, '../../dist/inject/index.cjs'),
         preload: `${app.getAppPath()}/dist/inject/index.cjs`,
-        // nodeIntegration: false,
-        // sandbox: true,
-        // plugins: true,
       },
     })
 

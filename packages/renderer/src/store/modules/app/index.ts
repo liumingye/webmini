@@ -1,6 +1,6 @@
 import { AppStateTypes, AppConfig } from './types'
 import { useHistoryStore, usePluginStore, useTabsStore } from '@/store'
-import { callViewMethod } from '@/utils/view'
+import { callViewMethod, loadURL } from '@/utils/view'
 import Site from '@/utils/site'
 import { isURL } from '@/utils/url'
 import { resizeMainWindow } from '@/utils'
@@ -12,7 +12,7 @@ const last = reactive({
 
 export const useAppStore = defineStore('app', {
   state: (): AppStateTypes => ({
-    webview: null as unknown as Electron.WebviewTag,
+    // webview: null as unknown as Electron.WebviewTag,
     alwaysOnTop: 'on',
     title: 'bilimini',
     windowSize: {
@@ -112,6 +112,9 @@ export const useAppStore = defineStore('app', {
     updateURL(url: string) {
       window.app.logger.info(`updateURL - ${url}`, { label: 'appStore' })
 
+      // 更新插件列表
+      this.loadPlugins(url)
+
       resizeMainWindow()
 
       const _URL = new URL(url)
@@ -160,23 +163,12 @@ export const useAppStore = defineStore('app', {
       const tabsStore = useTabsStore()
       const selectedTab = tabsStore.selectedTab()
       if (selectedTab) {
-        console.log(selectedTab.url)
-        console.log(url)
         if (selectedTab.url === url) return
-        callViewMethod(tabsStore.selectedTabId, 'loadURL', url, {
+        this.loadPlugins(url)
+        loadURL(url, {
           userAgent: new Site(url).userAgent,
         })
       }
-      // console.log(new Site(url).userAgent)
-
-      // if (this.webview.getURL() === url) return
-      // window.app.logger.debug(`go - ${url}`, { label: 'appStore' })
-      // // 更新插件列表
-      // this.loadPlugins(url)
-      // this.webview.src = url
-      // this.webview.loadURL(url, {
-      //   userAgent: new Site(url).userAgent,
-      // })
     },
   },
 })

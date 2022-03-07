@@ -1,7 +1,8 @@
 import { CreateProperties } from './type'
 import { useAppStore, useTabsStore } from '@/store'
 import NProgress from 'nprogress' // progress bar
-import { replaceTitle } from '@/utils' // progress bar
+import { replaceTitle } from '@/utils'
+import { callViewMethod } from '@/utils/view'
 
 export class ITab {
   public id = -1
@@ -9,8 +10,6 @@ export class ITab {
   public url = ''
 
   public _title = 'bilimini'
-
-  public isClosing = false
 
   public constructor({ active, url }: CreateProperties, id: number) {
     this.url = url
@@ -42,11 +41,13 @@ export class ITab {
   }
 
   public async select() {
-    if (!this.isClosing) {
-      const appStore = useAppStore()
-      const tabsStore = useTabsStore()
-      tabsStore.selectedTabId = this.id
-      window.ipcRenderer.send(`browserview-show-${appStore.currentWindowID}`)
-    }
+    const tabsStore = useTabsStore()
+    tabsStore.selectedTabId = this.id
+    window.ipcRenderer.send(`browserview-show-${this.id}`)
+  }
+
+  public callViewMethod = (scope: string, ...args: any[]): Promise<any> => {
+    console.log(args)
+    return callViewMethod(this.id, scope, ...args)
   }
 }

@@ -26,8 +26,6 @@ export const useTabsStore = defineStore('tabs', {
           if (event === 'url-updated') {
             const [url] = args
             tab.url = url
-            // 更新插件列表
-            appStore.loadPlugins(url)
             appStore.updateURL(url)
           }
           // if (event === 'load-commit') {
@@ -65,7 +63,7 @@ export const useTabsStore = defineStore('tabs', {
     selectedTab() {
       return this.getTabById(this.selectedTabId)
     },
-    getTabById(id: number) {
+    getTabById(id: number): ITab {
       if (cache.getTabById.id !== id) {
         const tab = this.list.find((x) => x.id === id)
         if (tab) {

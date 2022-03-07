@@ -1,14 +1,16 @@
 <script setup lang="ts">
-  import { useAppStore, useHistoryStore } from '@/store'
+  import { useAppStore, useHistoryStore, useTabsStore } from '@/store'
   import { resizeMainWindow, currentWindowType } from '@/utils'
+  import { callViewMethod } from '@/utils/view'
   import { START } from '@/utils/constant'
 
   const ipc = window.ipcRenderer
   const appStore = useAppStore()
+  const historyStore = useHistoryStore()
+  const tabsStore = useTabsStore()
   const route = useRoute()
   const router = useRouter()
-  const historyStore = useHistoryStore()
-  const webview = computed(() => appStore.webview)
+  // const webview = computed(() => appStore.webview)
   const disableDanmakuButton = computed(() => appStore.disableDanmakuButton)
   const disablePartButton = computed(() => appStore.disablePartButton)
   const title = computed(() => appStore.title)
@@ -103,7 +105,9 @@
   }
 
   const toggleDanmaku = () => {
-    webview.value.executeJavaScript(
+    callViewMethod(
+      tabsStore.selectedTabId,
+      'executeJavaScript',
       "document.querySelector('.bilibili-player-video-danmaku-switch .bui-switch-input,.bpx-player-dm-switch .bui-switch-input').click()",
     )
   }
