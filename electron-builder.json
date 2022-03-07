@@ -8,7 +8,7 @@
   "files": ["dist"],
   "linux": {
     "category": "Video",
-    "target": ["deb", "appimage", "rpm", "snap"]
+    "target": ["appimage", "snap"]
   },
   "snap": {
     "publish": [
@@ -31,10 +31,6 @@
     "target": [
       {
         "target": "nsis",
-        "arch": ["x64", "ia32"]
-      },
-      {
-        "target": "zip",
         "arch": ["x64", "ia32"]
       },
       {
