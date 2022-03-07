@@ -1,6 +1,7 @@
 import { PluginMetadata } from '@/store/modules/plugin/types'
 import { useAppStore, useHistoryStore } from '@/store'
 import { userAgent } from '@/utils/constant'
+import { loadURL } from '@/utils/view'
 
 // const last = reactive({
 //   vid: '',
@@ -50,7 +51,7 @@ export const plugin: PluginMetadata = {
               url.value += `/${vid}`
             }
             url.value += `.html`
-            appStore.webview.loadURL(url.value, {
+            loadURL(url.value, {
               userAgent: userAgent.desktop,
             })
           }

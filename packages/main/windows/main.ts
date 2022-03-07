@@ -5,6 +5,7 @@ import { join } from 'path'
 import Storage from 'electron-json-storage'
 import { Application } from '../application'
 import { ViewManager } from '../viewManager'
+import { throttle } from 'lodash-es'
 
 export class MainWindow extends CommonWindow {
   public viewManager: ViewManager
@@ -38,7 +39,6 @@ export class MainWindow extends CommonWindow {
       maximizable: false,
       alwaysOnTop: true,
       webPreferences: {
-        webviewTag: true,
         preload: join(__dirname, '../preload/index.cjs'), // 预先加载指定的脚本
         // nativeWindowOpen: false,
       },
@@ -64,10 +64,14 @@ export class MainWindow extends CommonWindow {
       }
     })
 
-    this.win.on('resize', () => {
+    const throttled = throttle(() => {
       if (!this.win.isMaximized()) {
         this.viewManager.fixBounds()
       }
+    }, 150)
+
+    this.win.on('resize', () => {
+      throttled()
     })
   }
 }

@@ -81,6 +81,7 @@
     "vite-plugin-windicss": "^1.8.3",
     "windicss": "^3.5.1"
   },
+  "dependencies": {},
   "env": {
     "//": "Used in build scripts",
     "PORT": 3344

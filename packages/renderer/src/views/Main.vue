@@ -1,16 +1,21 @@
 <script setup lang="ts">
-  import { useAppStore, usePluginStore, useTabsStore } from '@/store'
+  import { useAppStore, usePluginStore, useHistoryStore, useTabsStore } from '@/store'
   import { saveWindowSize, initMouseStateDirtyCheck, watchAlwaysOnTop } from '@/utils'
   import { START, userAgent } from '@/utils/constant'
   import { callViewMethod } from '@/utils/view'
   import overlayScrollbars from 'overlayscrollbars'
 
   const appStore = useAppStore()
+  const historyStore = useHistoryStore()
+  const pluginStore = usePluginStore()
+  const tabsStore = useTabsStore()
   const route = useRoute()
   const router = useRouter()
   const showTopBar = computed(() => appStore.showTopBar)
   const autoHideBar = computed(() => appStore.autoHideBar)
   const scrollContainer = ref()
+
+  tabsStore.init()
 
   onMounted(() => {
     saveWindowSize()
@@ -51,11 +56,7 @@
     to.meta.transition = toDepth < fromDepth ? 'slide-right' : 'slide-left'
   })
 
-  const tabsStore = useTabsStore()
-  tabsStore.init()
-
   // 加载内置插件
-  const pluginStore = usePluginStore()
   pluginStore.getBuiltInPlugins().then(() => {
     startupTab()
   })
@@ -76,13 +77,14 @@
     appStore.go(url)
   })
   // 用户按↑、↓键时，把事件传递到webview里去实现修改音量功能
-  // window.ipcRenderer.on('change-volume', (ev, arg) => {
-  // webview.value.send('change-volume', arg)
-  // })
+  window.ipcRenderer.on('change-volume', (ev, arg) => {
+    callViewMethod(tabsStore.selectedTabId, 'send', 'change-volume', arg)
+    // webview.value.send('change-volume', arg)
+  })
   // 按下ESC键
-  // window.ipcRenderer.on('press-esc', () => {
-  // historyStore.goBack()
-  // })
+  window.ipcRenderer.on('press-esc', () => {
+    historyStore.goBack()
+  })
 </script>
 
 <template>

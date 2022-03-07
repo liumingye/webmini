@@ -23,14 +23,13 @@ if (!app.requestSingleInstanceLock()) {
 }
 
 app.commandLine.appendSwitch('--enable-transparent-visuals')
-app.commandLine.appendSwitch(
-  'enable-features',
-  'CSSColorSchemeUARendering, ImpulseScrollAnimations, ParallelDownloading',
-)
+app.commandLine.appendSwitch('--enable-features', 'OverlayScrollbar')
 
-// app.whenReady().then(() => {
+ipcMain.setMaxListeners(0)
+
 // set current data path
 Storage.setDataPath(app.getPath('userData'))
+
 // start app
 const application = Application.instance
 application.start()
@@ -47,5 +46,3 @@ ipcMain.handle(`web-contents-call`, async (e, { webContentsId, method, args = []
     return result
   }
 })
-
-// })

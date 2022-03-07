@@ -35,11 +35,11 @@ export class ViewManager extends EventEmitter {
     })
 
     ipcMain.handle(`browserview-hide-${id}`, () => {
-      this.hide()
+      this.hide(id)
     })
 
     ipcMain.handle(`browserview-show-${id}`, () => {
-      this.show()
+      this.show(id)
     })
 
     // ipcMain.handle(`browserview-clear-${id}`, () => {
@@ -81,8 +81,6 @@ export class ViewManager extends EventEmitter {
     }
 
     this.fixBounds()
-
-    this.emit('activated', id)
   }
 
   public async fixBounds() {
