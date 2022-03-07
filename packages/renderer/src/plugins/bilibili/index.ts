@@ -128,6 +128,13 @@ export const plugin: PluginMetadata = {
           }
         }
 
+        // 专栏页
+        if (url.href.indexOf('//www.bilibili.com/read/cv') >= 0) {
+          historyStore.pop()
+          return
+        }
+
+        // 登录页
         if (url.href.indexOf('//passport.bilibili.com/login') >= 0) {
           loadURL(url.href, {
             userAgent: userAgent.desktop,
