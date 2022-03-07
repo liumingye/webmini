@@ -29,9 +29,9 @@
     "node": ">=14.17.0"
   },
   "dependencies": {
+    "@cliqz/adblocker-electron": "^1.23.6",
     "winston": "^3.6.0",
-    "winston-daily-rotate-file": "^4.6.1",
-    "@cliqz/adblocker-electron": "^1.23.6"
+    "winston-daily-rotate-file": "^4.6.1"
   },
   "devDependencies": {
     "@arco-design/web-vue": "^2.18.0",
