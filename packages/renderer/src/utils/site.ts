@@ -24,6 +24,7 @@ class Site {
   constructor(url: string) {
     this.URL = new URL(url)
     this.completeURL = this.URL.hostname + this.URL.pathname + this.URL.search
+
     if (cache.url === this.completeURL) {
       this.userAgent = cache.userAgent
       this.windowType = cache.windowType

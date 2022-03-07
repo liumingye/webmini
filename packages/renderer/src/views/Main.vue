@@ -75,7 +75,6 @@
 
   // 收到选p消息时跳p
   window.ipcRenderer.on('go', (ev, url) => {
-    console.log(url)
     appStore.go(url)
   })
   // 用户按↑、↓键时，把事件传递到webview里去实现修改音量功能

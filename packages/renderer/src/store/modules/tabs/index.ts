@@ -26,14 +26,8 @@ export const useTabsStore = defineStore('tabs', {
           if (event === 'url-updated') {
             const [url] = args
             tab.url = url
-            appStore.updateURL(url)
+            appStore.updateURL(url, tabId)
           }
-          // if (event === 'load-commit') {
-          //   const [, , isMainFrame] = args
-          //   if (isMainFrame) {
-          //     appStore.updateURL(tab.url)
-          //   }
-          // }
         }
       })
     },

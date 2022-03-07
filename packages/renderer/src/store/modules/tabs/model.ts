@@ -47,7 +47,6 @@ export class ITab {
   }
 
   public callViewMethod = (scope: string, ...args: any[]): Promise<any> => {
-    console.log(args)
     return callViewMethod(this.id, scope, ...args)
   }
 }

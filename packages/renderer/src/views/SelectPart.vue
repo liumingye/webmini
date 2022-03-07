@@ -21,7 +21,6 @@
       'go',
       partList.value.url.replace('%id', partList.value.parts[index].id),
     )
-    console.log(partList.value.url)
   }
 
   const closeWindow = () => {
@@ -38,7 +37,6 @@
 
   // 更新分p列表
   ipc.on('update-part', async (ev, data) => {
-    // console.log(data)
     if (!data) {
       currentWindow.hide()
       return

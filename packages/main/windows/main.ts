@@ -57,7 +57,7 @@ export class MainWindow extends CommonWindow {
     })
 
     window.on('close', () => {
-      if (!this.isDestroyed()) this.viewManager.clear()
+      this.viewManager.clear()
       if (!is.macOS()) {
         process.nextTick(() => {
           app.quit()

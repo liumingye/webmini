@@ -72,6 +72,7 @@ export const plugin: PluginMetadata = {
           const vid = getVidWithP(url.pathname)
           if (vid) {
             if (url.hostname === 'm.bilibili.com') {
+              // callViewMethod(tabsStore.selectedTabId, 'goBack')
               historyStore.pop()
               loadURL(videoUrlPrefix + vid, {
                 userAgent: userAgent.desktop,

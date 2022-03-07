@@ -71,8 +71,6 @@ export const useAppStore = defineStore('app', {
       if (last.domain === _URL.hostname) return
       last.domain = _URL.hostname
 
-      console.log('loadPlugins' + url)
-
       const pluginStore = usePluginStore()
       pluginStore.unloadAllPlugins()
       pluginStore.loadAllPlugins(url)
@@ -109,13 +107,11 @@ export const useAppStore = defineStore('app', {
       window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', onDarkModeChange)
       onDarkModeChange(window.matchMedia('(prefers-color-scheme: dark)'))
     },
-    updateURL(url: string) {
+    updateURL(url: string, tabId: number) {
       window.app.logger.info(`updateURL - ${url}`, { label: 'appStore' })
 
       // 更新插件列表
       this.loadPlugins(url)
-
-      resizeMainWindow()
 
       const _URL = new URL(url)
 
@@ -139,10 +135,8 @@ export const useAppStore = defineStore('app', {
       this.disableDanmakuButton = true
       this.autoHideBar = false
 
-      // this.webview.setUserAgent(new Site(url).userAgent)
-
-      const tabsStore = useTabsStore()
-      callViewMethod(tabsStore.selectedTabId, 'setUserAgent', new Site(url).userAgent)
+      // const tabsStore = useTabsStore()
+      callViewMethod(tabId, 'setUserAgent', new Site(url).userAgent)
 
       const now = Number(new Date())
       if (now - last.push < 500) {
@@ -154,6 +148,8 @@ export const useAppStore = defineStore('app', {
       updateUrlHooks?.after({
         url: _URL,
       })
+
+      resizeMainWindow()
     },
     go(value: string) {
       let url = value

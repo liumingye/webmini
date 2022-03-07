@@ -54,17 +54,23 @@ export class View {
       this.updateURL(this.webContents.getURL())
     })
 
-    this.webContents.addListener('did-start-navigation', async (e, ...args) => {
-      this.emitEvent('load-commit', ...args)
+    this.webContents.addListener('did-start-navigation', async () => {
       this.updateURL(this.webContents.getURL())
     })
 
+    // Make all links open with the browser, not with the application
     this.webContents.setWindowOpenHandler(({ url }) => {
-      this.webContents.loadURL(url)
+      if (url.startsWith('http')) this.webContents.loadURL(url)
       return { action: 'deny' }
     })
 
     this.webContents.loadURL(details.url, details.options)
+
+    this.webContents.session.webRequest.onBeforeSendHeaders((details, callback) => {
+      // 禁止追踪
+      details.requestHeaders['DNT'] = '1'
+      callback({ requestHeaders: details.requestHeaders })
+    })
 
     // 体验不太好 用resize代替
     // this.browserView.setAutoResize({
@@ -77,8 +83,8 @@ export class View {
 
   public updateURL(url: string) {
     if (this.lastUrl === url) return
-    this.emitEvent('url-updated', url)
     this.lastUrl = url
+    this.emitEvent('url-updated', url)
   }
 
   public destroy() {

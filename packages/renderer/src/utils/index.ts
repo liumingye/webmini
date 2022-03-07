@@ -10,11 +10,9 @@ const { screen, currentWindow, logger } = window.app
 export const currentWindowType = ref<windowType>('mobile')
 
 export const resizeMainWindow = (option: { windowType?: windowType } = {}) => {
-  console.log('resizeMainWindow')
   const appStore = useAppStore()
   const tabsStore = useTabsStore()
   const selectedTab = tabsStore.selectedTab()
-
   const targetWindowType = ref<windowType>()
   if (option.windowType) {
     targetWindowType.value = option.windowType

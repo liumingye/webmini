@@ -17,14 +17,14 @@
     "dev": "node scripts/watch.mjs",
     "format": "prettier --write ./packages",
     "stylelint": "stylelint --fix \"packages/**/*.{vue,less,postcss,css,scss}\" --cache --cache-location node_modules/.cache/stylelint/",
-    "prebuild": "yarn lint:eslint && node scripts/build.mjs",
+    "prebuild": "node scripts/build.mjs",
     "build": "yarn prebuild && electron-builder",
-    "release": "yarn build --publish always",
     "build:mac": "yarn build -m",
     "build:win": "yarn build -w",
     "build:linux": "yarn build -l",
     "lint:prettier": "prettier --check ./packages",
-    "lint:eslint": "eslint --cache --cache-location node_modules/.cache/eslint/ --max-warnings 0 ./packages --ext .ts,.tsx,.vue --fix"
+    "lint:eslint": "eslint --cache --cache-location node_modules/.cache/eslint/ --max-warnings 0 ./packages --ext .ts,.tsx,.vue --fix",
+    "release": "yarn build --publish always"
   },
   "engines": {
     "node": ">=14.17.0"

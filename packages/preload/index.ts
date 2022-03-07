@@ -1,5 +1,5 @@
 import { contextBridge, ipcRenderer } from 'electron'
-import { getCurrentWindow, screen, app } from '@electron/remote'
+import { getCurrentWindow, screen, app, session } from '@electron/remote'
 import useLoading from './utils/loading'
 import domReady from './utils/domReady'
 import { Logger, Versions, Cookies, Net } from './apis'
@@ -53,6 +53,7 @@ contextBridge.exposeInMainWorld('app', {
   cookies: new Cookies(),
   versions: new Versions(),
   screen: withPrototype(screen),
+  session: withPrototype(session),
   currentWindow: {
     minimize,
     setBounds,

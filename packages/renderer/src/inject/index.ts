@@ -12,7 +12,6 @@ const applyScript = () => {
 }
 
 window.addEventListener('DOMContentLoaded', () => {
-  console.log('applyScript')
   applyScript()
   // ipcRenderer.on('load-commit', () => {
   //   applyScript()
