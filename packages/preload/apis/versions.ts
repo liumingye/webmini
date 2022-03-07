@@ -4,6 +4,7 @@ import { version } from 'vue'
 import { arch, release, type } from 'os'
 
 const isLinuxSnap = is.linux() && !!process.env['SNAP'] && !!process.env['SNAP_REVISION']
+
 class Versions {
   public App = app.getVersion()
   public 'Vue.js' = version

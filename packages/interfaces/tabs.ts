@@ -1,3 +1,5 @@
+import { LoadURLOptions } from 'electron'
+
 export type TabEvent =
   | 'load-commit'
   | 'url-updated'
@@ -11,3 +13,9 @@ export type TabEvent =
   | 'zoom-updated'
   | 'media-playing'
   | 'media-paused'
+
+export interface CreateProperties {
+  url: string
+  active: boolean
+  options?: LoadURLOptions
+}

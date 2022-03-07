@@ -167,8 +167,10 @@ export const initMouseStateDirtyCheck = () => {
     } else {
       appStore.showTopBar = true
     }
-
-    window.ipcRenderer.invoke(`showTopBar-${appStore.currentWindowID}`, appStore.showTopBar)
+    window.ipcRenderer.invoke(`topBarStatus-${appStore.currentWindowID}`, {
+      autoHideBar: appStore.autoHideBar,
+      showTopBar: appStore.showTopBar,
+    })
   })
 }
 

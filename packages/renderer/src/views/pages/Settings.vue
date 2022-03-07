@@ -31,9 +31,9 @@
           :bordered="false"
           :trigger-props="{ autoFitPopupMinWidth: true }"
         >
-          <a-option value="off"> 关闭 </a-option>
-          <a-option value="on"> 开启 </a-option>
-          <a-option value="playing"> 播放视频时 </a-option>
+          <a-option value="off">关闭</a-option>
+          <a-option value="on">开启</a-option>
+          <a-option value="playing">播放视频时</a-option>
         </a-select>
       </b-settings-tile>
     </b-settings>

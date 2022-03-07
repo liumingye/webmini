@@ -1,7 +1,7 @@
-import { TabsStateTypes, CreateProperties } from './type'
+import { TabsStateTypes } from './type'
 import { ITab } from './model'
 import { useAppStore } from '@/store'
-import { TabEvent } from '~/interfaces/tabs'
+import { TabEvent, CreateProperties } from '~/interfaces/tabs'
 
 const cache: Record<string, any> = {
   getTabById: {

@@ -66,7 +66,9 @@
       {
         url: START,
         active: true,
-        userAgent: userAgent.mobile,
+        options: {
+          userAgent: userAgent.mobile,
+        },
       },
     ])
   }

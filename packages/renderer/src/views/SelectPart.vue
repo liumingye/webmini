@@ -73,7 +73,7 @@
 <template>
   <main id="selectPart">
     <header class="flex p-2 drag">
-      <div class="flex-1 font-bold"> 视频分Part </div>
+      <div class="flex-1 font-bold">视频分Part</div>
       <div class="flex gap-2 no-drag">
         <b-button title="定位" @click="scrollIntoView(true)">
           <icon-target-two />
