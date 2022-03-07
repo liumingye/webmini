@@ -1,6 +1,7 @@
 import { builtinModules } from 'module'
 import { defineConfig } from 'vite'
 import { resolve } from 'path'
+import pkg from '../../../../package.json'
 
 export default defineConfig({
   root: __dirname,
@@ -19,7 +20,7 @@ export default defineConfig({
     },
     emptyOutDir: true,
     rollupOptions: {
-      external: ['electron', ...builtinModules],
+      external: ['electron', ...builtinModules, ...Object.keys(pkg.dependencies || {})],
     },
   },
 })

@@ -1,5 +1,6 @@
 import { builtinModules } from 'module'
 import { defineConfig } from 'vite'
+import pkg from '../../package.json'
 
 export default defineConfig({
   root: __dirname,
@@ -12,7 +13,7 @@ export default defineConfig({
     },
     emptyOutDir: true,
     rollupOptions: {
-      external: ['electron', ...builtinModules, 'winston', 'winston-daily-rotate-file'],
+      external: ['electron', ...builtinModules, ...Object.keys(pkg.dependencies || {})],
     },
   },
 })
