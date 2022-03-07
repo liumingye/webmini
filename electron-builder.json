@@ -1,6 +1,5 @@
 {
   "appId": "org.electron.bilimini",
-  "productName": "bilimini",
   "asar": true,
   "artifactName": "${name}-${version}-${os}-${arch}.${ext}",
   "directories": {

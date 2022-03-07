@@ -110,7 +110,7 @@ export const saveWindowSize = () => {
     const newSize: number[] = [window.innerWidth, window.innerHeight]
     if (currentSize !== newSize) {
       appStore.windowSize[currentWindowType.value] = newSize
-      appStore.saveConfig('windowSize', toRaw(appStore.windowSize))
+      appStore.saveConfig({ windowSize: toRaw(appStore.windowSize) })
     }
     currentWindow.once('resized', resized)
   }, 500)
@@ -119,7 +119,7 @@ export const saveWindowSize = () => {
     if (currentWindow.isDestroyed()) return
     logger.info('moved')
     if (currentWindowType.value === 'mobile') {
-      appStore.saveConfig('windowPosition', currentWindow.getPosition())
+      appStore.saveConfig({ windowPosition: currentWindow.getPosition() })
     }
     currentWindow.once('moved', moved)
   }, 500)
@@ -167,8 +167,10 @@ export const initMouseStateDirtyCheck = () => {
     } else {
       appStore.showTopBar = true
     }
-
-    window.ipcRenderer.invoke(`showTopBar-${appStore.currentWindowID}`, appStore.showTopBar)
+    window.ipcRenderer.invoke(`topBarStatus-${appStore.currentWindowID}`, {
+      autoHideBar: appStore.autoHideBar,
+      showTopBar: appStore.showTopBar,
+    })
   })
 }
 

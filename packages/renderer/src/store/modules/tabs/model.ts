@@ -1,4 +1,4 @@
-import { CreateProperties } from './type'
+import { CreateProperties } from '~/interfaces/tabs'
 import { useAppStore, useTabsStore } from '@/store'
 import NProgress from 'nprogress' // progress bar
 import { replaceTitle } from '@/utils'

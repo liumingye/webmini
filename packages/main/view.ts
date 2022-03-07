@@ -1,6 +1,6 @@
 import { BrowserView, app } from 'electron'
 import { MainWindow } from './windows/main'
-import { TabEvent } from '~/interfaces/tabs'
+import { TabEvent, CreateProperties } from '~/interfaces/tabs'
 
 export class View {
   public browserView: BrowserView
@@ -18,7 +18,7 @@ export class View {
 
   private lastUrl = ''
 
-  public constructor(window: MainWindow, details: { url: string; userAgent?: string }) {
+  public constructor(window: MainWindow, details: CreateProperties) {
     this.browserView = new BrowserView({
       webPreferences: {
         preload: `${app.getAppPath()}/dist/inject/index.cjs`,
@@ -30,10 +30,6 @@ export class View {
     this.webContents.on('context-menu', (e, params) => {
       console.log(params)
       // todo 右键菜单
-      // this.window.viewManager.hide()
-      // setTimeout(() => {
-      //   this.window.viewManager.show()
-      // }, 1000)
     })
 
     this.webContents.addListener('page-title-updated', (e, title) => {
@@ -68,10 +64,7 @@ export class View {
       return { action: 'deny' }
     })
 
-    // details.userAgent && this.browserView.webContents.setUserAgent(details.userAgent)
-    this.webContents.loadURL(details.url, {
-      userAgent: details.userAgent,
-    })
+    this.webContents.loadURL(details.url, details.options)
 
     // 体验不太好 用resize代替
     // this.browserView.setAutoResize({
@@ -92,12 +85,12 @@ export class View {
     ;(this.browserView.webContents as any).destroy()
   }
 
-  // public send(channel: string, ...args: any[]) {
-  //   this.webContents.send(channel, ...args)
-  // }
-
   public get webContents() {
     return this.browserView.webContents
+  }
+
+  public isDestroyed() {
+    return this.browserView.webContents.isDestroyed()
   }
 
   public get id() {

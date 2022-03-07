@@ -19,6 +19,7 @@
     "stylelint": "stylelint --fix \"packages/**/*.{vue,less,postcss,css,scss}\" --cache --cache-location node_modules/.cache/stylelint/",
     "prebuild": "yarn lint:eslint && node scripts/build.mjs",
     "build": "yarn prebuild && electron-builder",
+    "release": "yarn build --publish always",
     "build:mac": "yarn build -m",
     "build:win": "yarn build -w",
     "build:linux": "yarn build -l",

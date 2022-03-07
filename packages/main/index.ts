@@ -22,7 +22,7 @@ if (!app.requestSingleInstanceLock()) {
   process.exit(0)
 }
 
-app.commandLine.appendSwitch('--enable-transparent-visuals')
+// app.commandLine.appendSwitch('--enable-transparent-visuals')
 app.commandLine.appendSwitch('--enable-features', 'OverlayScrollbar')
 
 ipcMain.setMaxListeners(0)

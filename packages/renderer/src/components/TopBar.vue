@@ -181,8 +181,8 @@
 
 <style lang="less" scoped>
   button {
-    background: var(--theme-color-text);
     color: var(--theme-color-bg);
+    background: var(--theme-color-text);
   }
 
   #navi-back {

@@ -4,8 +4,8 @@ import { join } from 'path'
 import { Application } from '../application'
 
 export class SelectPartWindow extends CommonWindow {
-  public constructor(window?: BrowserWindow) {
-    window = new BrowserWindow({
+  public constructor() {
+    const window = new BrowserWindow({
       show: false,
       width: 200,
       height: 300,

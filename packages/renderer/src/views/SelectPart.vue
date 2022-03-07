@@ -73,7 +73,7 @@
 <template>
   <main id="selectPart">
     <header class="flex p-2 drag">
-      <div class="flex-1 font-bold"> 视频分Part </div>
+      <div class="flex-1 font-bold">视频分Part</div>
       <div class="flex gap-2 no-drag">
         <b-button title="定位" @click="scrollIntoView(true)">
           <icon-target-two />
@@ -105,38 +105,38 @@
   #selectPart {
     display: flex;
     flex-direction: column;
-    user-select: none;
-    background: @color-app-bg;
-    color: #fff;
     height: 100%;
+    color: #fff;
+    background: @color-app-bg;
+    user-select: none;
 
     header {
       button {
-        background: #fff;
         color: @color-app-bg;
+        background: #fff;
       }
     }
 
     .item {
+      padding: 0 5px;
       overflow: hidden;
+      line-height: 2.4em;
+      white-space: nowrap;
+      text-overflow: ellipsis;
       border-radius: 4px;
       cursor: pointer;
-      line-height: 2.4em;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      padding: 0 5px;
       opacity: 0.6;
       &.current-ep {
-        opacity: 1;
         font-weight: bold;
+        opacity: 1;
         &::before {
-          content: '●';
           margin-right: 4px;
+          content: '●';
         }
       }
       &:hover {
-        opacity: 1;
         background: rgba(255, 255, 255, 0.16);
+        opacity: 1;
       }
     }
   }

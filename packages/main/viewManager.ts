@@ -10,16 +10,9 @@ export class ViewManager extends EventEmitter {
 
   private window: MainWindow
 
-  public _showTopBar = true
+  public showTopBar = false
 
-  public get showTopBar() {
-    return this._showTopBar
-  }
-
-  public set showTopBar(val: boolean) {
-    this._showTopBar = val
-    this.fixBounds()
-  }
+  public autoHideBar = false
 
   public constructor(window: MainWindow) {
     super()
@@ -46,8 +39,10 @@ export class ViewManager extends EventEmitter {
     //   this.clear()
     // })
 
-    ipcMain.handle(`showTopBar-${id}`, (e, options) => {
-      this.showTopBar = options
+    ipcMain.handle(`topBarStatus-${id}`, (e, { autoHideBar, showTopBar }) => {
+      this.autoHideBar = autoHideBar
+      this.showTopBar = showTopBar
+      this.fixBounds()
     })
 
     // this.setBoundsListener()
@@ -99,8 +94,8 @@ export class ViewManager extends EventEmitter {
       x: 0,
       y: this.showTopBar ? topbarContentHeight : 0,
       width,
-      // height: this.showTopBar ? height - topbarContentHeight : height,
-      height,
+      height: this.autoHideBar ? height : height - topbarContentHeight,
+      // height,
     }
 
     // console.log(newBounds)
@@ -135,11 +130,11 @@ export class ViewManager extends EventEmitter {
 
   public destroy(id: number) {
     console.log('destroy' + id)
-    const view = this.views.get(id)
 
+    const view = this.views.get(id)
     this.views.delete(id)
-    // console.log(view)
-    if (view && !view.browserView.webContents.isDestroyed()) {
+
+    if (view && !view.isDestroyed()) {
       this.window.win.removeBrowserView(view.browserView)
       view.destroy()
     }

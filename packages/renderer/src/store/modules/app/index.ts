@@ -50,14 +50,14 @@ export const useAppStore = defineStore('app', {
         }
       })
     },
-    saveConfig<T extends keyof AppConfig>(key: T, value: AppConfig[T]) {
+    saveConfig<T extends keyof AppConfig>(newJson: Record<T, AppConfig[T]>) {
       const storage = window.app.storage
-      storage.get('config', (error, data: any) => {
+      storage.get('config', (error, oldJson: any) => {
         if (error) {
           window.app.logger.error(error)
           throw error
         }
-        storage.set('config', { ...data, [key]: value }, (error: any) => {
+        storage.set('config', { ...oldJson, ...newJson }, (error: any) => {
           if (error) {
             window.app.logger.error(error)
             throw error

@@ -10,7 +10,7 @@ import { throttle } from 'lodash-es'
 export class MainWindow extends CommonWindow {
   public viewManager: ViewManager
 
-  public constructor(window?: BrowserWindow) {
+  public constructor() {
     const bound: Record<string, number> = {}
 
     const config: any = Storage.getSync('config')
@@ -30,7 +30,7 @@ export class MainWindow extends CommonWindow {
       bound.height = 500
     }
 
-    window = new BrowserWindow({
+    const window = new BrowserWindow({
       ...bound,
       // opacity: 0.5,
       minHeight: 170,
@@ -57,6 +57,7 @@ export class MainWindow extends CommonWindow {
     })
 
     window.on('close', () => {
+      if (!this.isDestroyed()) this.viewManager.clear()
       if (!is.macOS()) {
         process.nextTick(() => {
           app.quit()

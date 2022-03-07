@@ -66,7 +66,9 @@
       {
         url: START,
         active: true,
-        userAgent: userAgent.mobile,
+        options: {
+          userAgent: userAgent.mobile,
+        },
       },
     ])
   }
@@ -105,32 +107,32 @@
 
 <style lang="less" scoped>
   .slide-left-enter-from {
-    opacity: 0;
     transform: translate3d(20%, 0, 0);
+    opacity: 0;
   }
   .slide-left-enter-active {
     transition: all 0.15s ease-out;
   }
   .slide-left-leave-to {
-    opacity: 0;
-    transform: translate3d(-10%, 0, 0);
     position: absolute;
+    transform: translate3d(-10%, 0, 0);
+    opacity: 0;
   }
   .slide-left-leave-active {
     transition: all 0.15s ease-in;
   }
 
   .slide-right-enter-from {
-    opacity: 0;
     transform: translate3d(-10%, 0, 0);
+    opacity: 0;
   }
   .slide-right-enter-active {
     transition: all 0.15s ease-out;
   }
   .slide-right-leave-to {
-    opacity: 0;
-    transform: translate3d(20%, 0, 0);
     position: absolute;
+    transform: translate3d(20%, 0, 0);
+    opacity: 0;
   }
   .slide-right-leave-active {
     transition: all 0.15s ease-in;
@@ -139,9 +141,9 @@
   #main {
     display: flex;
     flex-direction: column;
-    transition: all 0.2s ease;
     height: 100%;
     margin-top: -2rem;
+    transition: all 0.2s ease;
 
     &.autoHideBar {
       display: block;
