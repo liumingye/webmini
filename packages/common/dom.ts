@@ -1,12 +1,15 @@
 /** docoment ready */
-export function domContentLoaded(): Promise<unknown> {
+export function domContentLoaded(
+  condition: DocumentReadyState[] = ['complete', 'interactive'],
+): Promise<unknown> {
   return new Promise<unknown>((resolve) => {
-    const readyState = document.readyState
-    if (readyState === 'complete' || (document && document.body !== null)) {
+    if (condition.includes(document.readyState)) {
       resolve(undefined)
     } else {
-      window.addEventListener('readystatechange', (e) => {
-        if (document.readyState === 'complete') resolve(e)
+      document.addEventListener('readystatechange', (e) => {
+        if (condition.includes(document.readyState)) {
+          resolve(true)
+        }
       })
     }
   })

@@ -30,6 +30,7 @@
     "node": "^12.20.0 || ^14.13.1 || >=16.0.0"
   },
   "dependencies": {
+    "@electron/remote": "^2.0.5",
     "@cliqz/adblocker-electron": "^1.23.6",
     "lodash": "^4.17.21",
     "winston": "^3.6.0",
@@ -39,7 +40,6 @@
     "@arco-design/web-vue": "^2.18.0",
     "@commitlint/cli": "^16.2.1",
     "@commitlint/config-conventional": "^16.2.1",
-    "@electron/remote": "^2.0.5",
     "@types/electron-json-storage": "^4.5.0",
     "@types/lodash": "^4.14.179",
     "@types/nprogress": "^0.2.0",
