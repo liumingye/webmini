@@ -1,11 +1,11 @@
-import { useAppStore, useHistoryStore, useTabsStore } from '@/store'
+import { useAppStore, useTabsStore } from '@/store'
 import { callViewMethod } from '@/utils/view'
 import { TabEvent } from '~/interfaces/tabs'
 import { AppStateTypes } from '@/store/modules/app/types'
+import { currentWindowType } from '@/utils'
 
 export const ipcRendererOn = () => {
   const appStore = useAppStore()
-  const historyStore = useHistoryStore()
   const tabsStore = useTabsStore()
 
   // browser事件
@@ -40,14 +40,19 @@ export const ipcRendererOn = () => {
   })
 
   // 用户按↑、↓键时，把事件传递到webview里去实现修改音量功能
-  window.ipcRenderer.on('change-volume', (ev, arg) => {
-    callViewMethod(tabsStore.selectedTabId, 'send', 'change-volume', arg)
-    // webview.value.send('change-volume', arg)
+  window.ipcRenderer.on('changeVolume', (ev, arg) => {
+    callViewMethod(tabsStore.selectedTabId, 'send', 'changeVolume', arg)
+    // webview.value.send('changeVolume', arg)
+  })
+
+  // setCurrentWindowType
+  window.ipcRenderer.on('setCurrentWindowType', (e, windowType) => {
+    currentWindowType.value = windowType
   })
 
   // 按下ESC键
-  window.ipcRenderer.on('press-esc', () => {
-    historyStore.goBack()
+  window.ipcRenderer.on('pressEsc', () => {
+    tabsStore.selectedTab()?.callViewMethod('goBack')
   })
 
   // setAppState

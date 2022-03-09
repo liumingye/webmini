@@ -1,5 +1,6 @@
 <script setup lang="ts">
-  import { webNav, liveUrlPrefix, videoUrlPrefix } from '@/utils/constant'
+  import { webNav } from '~/common/constant'
+  import { liveUrlPrefix, videoUrlPrefix } from '~/main/plugins/builtIn/bilibili/utils'
   import { useAppStore, useTabsStore } from '@/store'
   import { resizeMainWindow } from '@/utils'
 
@@ -28,7 +29,7 @@
           }
         }
       }
-      if (newUrl === tabsStore.selectedTab().url) {
+      if (newUrl === tabsStore.selectedTab()?.url) {
         resizeMainWindow()
       } else {
         appStore.go(newUrl)

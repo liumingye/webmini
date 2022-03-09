@@ -1,23 +1,17 @@
 <script setup lang="ts">
   import { useAppStore, useTabsStore } from '@/store'
-  import { resizeMainWindow, currentWindowType } from '@/utils'
+  import { resizeMainWindow } from '@/utils'
   import { callViewMethod } from '@/utils/view'
-  import { START } from '@/utils/constant'
+  import { START } from '~/common/constant'
 
   const ipc = window.ipcRenderer
   const appStore = useAppStore()
-  // const historyStore = useHistoryStore()
   const tabsStore = useTabsStore()
   const route = useRoute()
   const router = useRouter()
-  // const webview = computed(() => appStore.webview)
   const disableDanmakuButton = computed(() => appStore.disableDanmakuButton)
   const disablePartButton = computed(() => appStore.disablePartButton)
   const title = computed(() => appStore.title)
-
-  // historyStore.listen((to) => {
-  //   appStore.go(to)
-  // })
 
   const tempStore: Record<string, any> = {}
   router.beforeEach((to, from) => {
@@ -30,16 +24,14 @@
     // 保存状态
     if (from.name === 'Home') {
       window.ipcRenderer.invoke(`browserview-hide-${appStore.currentWindowID}`)
-
       tempStore.autoHideBar = appStore.autoHideBar
-      tempStore.windowType = currentWindowType.value
-      resizeMainWindow({ windowType: 'mobile' })
+      resizeMainWindow('mobile')
       appStore.autoHideBar = false
     }
   })
   router.afterEach((to) => {
     if (to.name === 'Home') {
-      resizeMainWindow({ windowType: tempStore.windowType })
+      resizeMainWindow()
     }
   })
 

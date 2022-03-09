@@ -49,7 +49,7 @@ const module = {
            * 播放器加载完成
            */
           document.querySelector('video')?.addEventListener('ended', ended)
-          ipcRenderer.on('change-volume', changeVolume)
+          ipcRenderer.on('changeVolume', changeVolume)
           abortPromise && abortPromise()
         },
         () => {
@@ -58,7 +58,7 @@ const module = {
            */
           abortPromise = null
           document.querySelector('video')?.removeEventListener('ended', ended)
-          ipcRenderer.off('change-volume', changeVolume)
+          ipcRenderer.off('changeVolume', changeVolume)
         },
       )
     })

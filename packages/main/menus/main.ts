@@ -34,21 +34,21 @@ export const getMainMenu = () => {
           label: '返回',
           accelerator: 'Esc',
           click() {
-            application.mainWindow?.send('press-esc')
+            application.mainWindow?.send('pressEsc')
           },
         },
         {
           label: '提高音量',
           accelerator: 'Up',
           click() {
-            application.mainWindow?.send('change-volume', 'up')
+            application.mainWindow?.send('changeVolume', 'up')
           },
         },
         {
           label: '降低音量',
           accelerator: 'Down',
           click() {
-            application.mainWindow?.send('change-volume', 'down')
+            application.mainWindow?.send('changeVolume', 'down')
           },
         },
       ],

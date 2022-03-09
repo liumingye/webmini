@@ -24,13 +24,13 @@ const module = {
     document.body.classList.add('txp_html_fullscreen', 'txp_html_barrage_on')
     const styleEntry = addStyle(style)
     unloadStyle = styleEntry.unload
-    ipcRenderer.on('change-volume', changeVolume)
+    ipcRenderer.on('changeVolume', changeVolume)
   },
 
   stop: () => {
     document.body.classList.remove('txp_html_fullscreen', 'txp_html_barrage_on')
     unloadStyle && unloadStyle()
-    ipcRenderer.off('change-volume', changeVolume)
+    ipcRenderer.off('changeVolume', changeVolume)
   },
 }
 

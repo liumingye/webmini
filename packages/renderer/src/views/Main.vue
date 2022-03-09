@@ -1,13 +1,12 @@
 <script setup lang="ts">
-  import { useAppStore, usePluginStore, useTabsStore } from '@/store'
+  import { useAppStore, useTabsStore } from '@/store'
   import { saveWindowSize, initMouseStateDirtyCheck, watchAlwaysOnTop } from '@/utils'
-  import { START, userAgent } from '@/utils/constant'
+  import { START, userAgent } from '~/common/constant'
   import { callViewMethod } from '@/utils/view'
   import overlayScrollbars from 'overlayscrollbars'
   import { ipcRendererOn } from '@/utils/ipc'
 
   const appStore = useAppStore()
-  const pluginStore = usePluginStore()
   const tabsStore = useTabsStore()
   const route = useRoute()
   const router = useRouter()
@@ -40,7 +39,10 @@
       (value) => {
         if (value === 'Home') {
           callViewMethod(tabsStore.selectedTabId, 'setAudioMuted', false)
-          appStore.title = tabsStore.selectedTab().title
+          const tab = tabsStore.selectedTab()
+          if (tab) {
+            appStore.title = tab.title
+          }
           return
         }
         callViewMethod(tabsStore.selectedTabId, 'setAudioMuted', true)
@@ -58,9 +60,6 @@
   })
 
   // 加载内置插件
-  pluginStore.getBuiltInPlugins().then(() => {
-    startupTab()
-  })
 
   const startupTab = async () => {
     await tabsStore.addTabs([
@@ -73,20 +72,7 @@
       },
     ])
   }
-
-  // // 收到选p消息时跳p
-  // window.ipcRenderer.on('go', (ev, url) => {
-  //   appStore.go(url)
-  // })
-  // // 用户按↑、↓键时，把事件传递到webview里去实现修改音量功能
-  // window.ipcRenderer.on('change-volume', (ev, arg) => {
-  //   callViewMethod(tabsStore.selectedTabId, 'send', 'change-volume', arg)
-  //   // webview.value.send('change-volume', arg)
-  // })
-  // // 按下ESC键
-  // window.ipcRenderer.on('press-esc', () => {
-  //   historyStore.goBack()
-  // })
+  startupTab()
 </script>
 
 <template>

@@ -33,14 +33,18 @@ export class ViewManager {
       this.show()
     })
 
-    // ipcMain.handle(`browserview-clear-${id}`, () => {
-    //   this.clear()
-    // })
-
     ipcMain.handle(`topBarStatus-${id}`, (e, { autoHideBar, showTopBar }) => {
       this.autoHideBar = autoHideBar
       this.showTopBar = showTopBar
       this.fixBounds()
+    })
+
+    ipcMain.handle(`get-windowType-${id}`, () => {
+      return this.selected?.windowType
+    })
+
+    ipcMain.handle(`resizeWindowSize-${id}`, (e, windowType) => {
+      this.selected?.resizeWindowSize(windowType)
     })
 
     this.select(id, true)

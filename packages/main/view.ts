@@ -4,13 +4,12 @@ import { TabEvent, CreateProperties } from '~/interfaces/tabs'
 import Plugins from './plugins'
 import { registerAndGetData } from './plugins/data'
 import { getHook } from './plugins/hook'
-import { userAgent } from '../renderer/src/utils/constant'
+import { userAgent } from '~/common/constant'
 import { matchPattern } from './utils'
 import is from 'electron-is'
 import { clamp } from 'lodash'
 import Storage from 'electron-json-storage'
-
-type windowType = 'mobile' | 'desktop' | 'mini' | 'feed' | 'login'
+import { windowType } from '~/interfaces/view'
 
 export class View {
   public windowType: windowType = 'mobile'
@@ -219,6 +218,7 @@ export class View {
     bounds.y = clamp(bounds.y, displayBounds.y, displayBounds.height - bounds.height)
     this.window.win.setBounds(bounds, true)
     this.windowType = targetWindowType
+    this.window.send('setCurrentWindowType', targetWindowType)
   }
 
   private getWindowType() {
