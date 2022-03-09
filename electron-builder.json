@@ -7,14 +7,8 @@
   "files": ["dist"],
   "linux": {
     "category": "Video",
-    "target": ["appimage", "snap"]
-  },
-  "snap": {
-    "publish": [
-      {
-        "provider": "github"
-      }
-    ]
+    "target": ["appimage", "snap"],
+    "icon": "build/icons"
   },
   "mac": {
     "category": "public.app-category.video",
@@ -24,17 +18,25 @@
         "arch": ["x64", "arm64"]
       }
     ],
-    "darkModeSupport": true
+    "darkModeSupport": true,
+    "icon": "build/icons/icon.icns"
   },
   "win": {
     "target": [
       {
-        "target": "nsis",
-        "arch": ["x64", "ia32"]
+        "target": "nsis"
       },
       {
         "target": "portable",
         "arch": ["x64", "ia32"]
+      }
+    ],
+    "icon": "build/icons/icon.ico"
+  },
+  "snap": {
+    "publish": [
+      {
+        "provider": "github"
       }
     ]
   },

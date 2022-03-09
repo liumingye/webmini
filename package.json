@@ -30,6 +30,7 @@
     "node": "^12.20.0 || ^14.13.1 || >=16.0.0"
   },
   "dependencies": {
+    "electron-is": "^3.0.0",
     "@electron/remote": "^2.0.5",
     "@cliqz/adblocker-electron": "^1.23.6",
     "lodash": "^4.17.21",
@@ -53,7 +54,6 @@
     "electron-builder": "^22.14.13",
     "electron-devtools-installer": "^3.2.0",
     "electron-fetch": "^1.7.4",
-    "electron-is": "^3.0.0",
     "electron-json-storage": "^4.5.0",
     "eslint": "^8.10.0",
     "eslint-config-prettier": "^8.5.0",
