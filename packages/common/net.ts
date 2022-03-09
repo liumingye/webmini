@@ -13,7 +13,9 @@ const DEFAULT_FETCH_CONFIG: FetchOptions = {
 }
 
 class Net {
-  public electron = is.renderer() ? require('@electron/remote') : require('electron')
+  public electron: typeof Electron = is.renderer()
+    ? require('@electron/remote')
+    : require('electron')
 
   public fetch = <T>(
     url: string,

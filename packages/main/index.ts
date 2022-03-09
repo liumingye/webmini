@@ -35,7 +35,7 @@ Storage.setDataPath(app.getPath('userData'))
 const application = Application.instance
 application.start()
 
-ipcMain.handle(`web-contents-call`, async (e, { webContentsId, method, args = [] }) => {
+ipcMain.handle(`webContentsCall`, async (e, { webContentsId, method, args = [] }) => {
   const wc = webContents.fromId(webContentsId)
   const result = (wc as any)[method](...args)
 

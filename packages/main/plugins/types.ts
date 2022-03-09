@@ -2,7 +2,7 @@ import { addData } from './data'
 import { addHook } from './hook'
 import { WebContents } from 'electron'
 import { Application } from '../application'
-import Net from '~/preload/apis/net'
+import Net from '~/common/net'
 
 export type PluginDataProvider = (...args: any[]) => void | Promise<void>
 

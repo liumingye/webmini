@@ -1,15 +1,20 @@
 import { contextBridge, ipcRenderer } from 'electron'
 import { getCurrentWindow, screen, app, session } from '@electron/remote'
 import useLoading from './utils/loading'
-import domReady from './utils/domReady'
-import { Logger, Versions, Cookies, Net } from './apis'
+import { domContentLoaded } from '~/common/dom'
+import Cookies from '~/common/cookies'
+import Net from '~/common/net'
+import Logger from '~/common/logger'
+import Versions from './utils/versions'
 import Storage from 'electron-json-storage'
 
 const { appendLoading, removeLoading } = useLoading()
-;(async () => {
-  await domReady()
+
+const loading = async () => {
+  await domContentLoaded()
   appendLoading()
-})()
+}
+loading()
 
 Storage.setDataPath(app.getPath('userData'))
 

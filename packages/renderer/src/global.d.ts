@@ -1,6 +1,6 @@
-import type Net from '../../preload/apis/net'
-import type Cookies from '../../preload/apis/cookies'
-import type Versions from '../../preload/apis/versions'
+import type Net from '~/common/net'
+import type Cookies from '~/common/cookies'
+import type Versions from '~/preload/utils/versions'
 import { Logger } from 'winston'
 import Storage from 'electron-json-storage'
 

@@ -1,6 +1,6 @@
 import { AppStateTypes, AppConfig } from './types'
 import { loadURL } from '@/utils/view'
-import { isURL } from '@/utils/url'
+import { isURI } from '~/common/uri'
 
 export const useAppStore = defineStore('app', {
   state: (): AppStateTypes => ({
@@ -65,7 +65,7 @@ export const useAppStore = defineStore('app', {
     },
     go(value: string) {
       let url = value
-      if (isURL(value)) {
+      if (isURI(value)) {
         url = value.indexOf('://') === -1 ? `http://${value}` : value
       }
       loadURL(url)

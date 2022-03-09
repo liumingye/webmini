@@ -5,7 +5,7 @@ import { negate, once } from 'lodash'
 import { WebContents, nativeTheme } from 'electron'
 import { Application } from '../application'
 import { matchPattern } from '../utils'
-import Net from '~/preload/apis/net'
+import Net from '~/common/net'
 
 // export const pluginsMap: { [name: string]: PluginMetadata } = {}
 const getBuiltInPlugins = once(() => {
