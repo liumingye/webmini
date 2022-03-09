@@ -3,9 +3,12 @@ import { readFileSync, writeFileSync } from 'fs'
 import { Session, app } from 'electron'
 import fetch from 'electron-fetch'
 
-const PREFIX = 'https://liumingye.coding.net/p/bilimini/d/AdRules/git/raw/main'
+const PREFIX = 'https://liumingye.coding.net/p/bilimini/d'
 
-export const adsLists = [`${PREFIX}/adguard.txt`, `${PREFIX}/rules/ADgk.txt`]
+export const adsLists = [
+  `${PREFIX}/easylistchina/git/raw/master/easylistchina.txt`,
+  `${PREFIX}/AdRules/git/raw/main/rules/ADgk.txt`,
+]
 
 const adblockerService = async (session: Session) => {
   const blocker = await ElectronBlocker.fromLists(
