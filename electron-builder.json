@@ -1,7 +1,6 @@
 {
   "appId": "org.electron.bilimini",
   "asar": true,
-  "artifactName": "${name}-${version}-${os}-${arch}.${ext}",
   "directories": {
     "output": "release/${version}"
   },
