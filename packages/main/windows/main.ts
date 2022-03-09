@@ -5,7 +5,7 @@ import { join } from 'path'
 import Storage from 'electron-json-storage'
 import { Application } from '../application'
 import { ViewManager } from '../viewManager'
-import { throttle } from 'lodash-es'
+import { throttle } from 'lodash'
 
 export class MainWindow extends CommonWindow {
   public viewManager: ViewManager

@@ -1,7 +1,7 @@
 import { PluginStateTypes, PluginMetadata } from './types'
 import { addHook, getHook, clearHook } from './hook'
 import { registerData, addData, getData, registerAndGetData, clearData } from './data'
-import { negate, once } from 'lodash-es'
+import { negate, once } from 'lodash'
 import { matchPattern } from '@/utils'
 
 export const usePluginStore = defineStore('plugin', {

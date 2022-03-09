@@ -4,6 +4,8 @@ import NProgress from 'nprogress' // progress bar
 import { replaceTitle } from '@/utils'
 import { callViewMethod } from '@/utils/view'
 
+NProgress.configure({ easing: 'ease', speed: 200, trickleSpeed: 50, showSpinner: false })
+
 export class ITab {
   public id = -1
 
@@ -19,7 +21,6 @@ export class ITab {
         this.select()
       })
     }
-    NProgress.configure({ easing: 'ease', speed: 200, trickleSpeed: 50, showSpinner: false })
   }
 
   public get title() {

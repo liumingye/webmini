@@ -1,4 +1,4 @@
-import { net } from '@electron/remote'
+import is from 'electron-is'
 
 export interface FetchOptions {
   method: string
@@ -13,6 +13,8 @@ const DEFAULT_FETCH_CONFIG: FetchOptions = {
 }
 
 class Net {
+  public electron = is.renderer() ? require('@electron/remote') : require('electron')
+
   public fetch = <T>(
     url: string,
     options: Partial<FetchOptions> = {},
@@ -29,7 +31,7 @@ class Net {
       ...options,
     }
     return new Promise((resolve, reject) => {
-      const request = net.request({
+      const request = this.electron.net.request({
         url,
         method: config.method,
         useSessionCookies: true,

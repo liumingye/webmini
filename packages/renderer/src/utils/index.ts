@@ -1,67 +1,67 @@
 import { WatchStopHandle } from 'vue'
-import { useAppStore, useTabsStore } from '@/store'
+import { useAppStore } from '@/store'
 import { windowType } from '@/types'
-import Site from '@/utils/site'
-import { clamp, isString } from 'lodash-es'
-import { debounce } from 'lodash-es'
+import { isString, debounce } from 'lodash'
 
 const { screen, currentWindow, logger } = window.app
 
 export const currentWindowType = ref<windowType>('mobile')
 
+// 废弃
 export const resizeMainWindow = (option: { windowType?: windowType } = {}) => {
-  const appStore = useAppStore()
-  const tabsStore = useTabsStore()
-  const selectedTab = tabsStore.selectedTab()
-  const targetWindowType = ref<windowType>()
-  if (option.windowType) {
-    targetWindowType.value = option.windowType
-  } else {
-    const url = selectedTab.url
-    targetWindowType.value = new Site(url).windowType
-  }
-  if (targetWindowType.value === currentWindowType.value) {
-    return
-  }
-  logger.debug(`targetWindowType - ${targetWindowType.value}`)
-  // We want the new window to open on the same display that the parent is in
-  let displayToUse: Electron.Display | undefined
-  const screen = window.app.screen
-  const displays = screen.getAllDisplays()
-  // Single Display
-  if (displays.length === 1) {
-    displayToUse = displays[0]
-  }
-  // Multi Display
-  else {
-    // on mac there is 1 menu per window so we need to use the monitor where the cursor currently is
-    if (window.app.versions.OS.indexOf('darwin') >= 0) {
-      const cursorPoint = screen.getCursorScreenPoint()
-      displayToUse = screen.getDisplayNearestPoint(cursorPoint)
-    }
-    // fallback to primary display or first display
-    if (!displayToUse) {
-      displayToUse = screen.getPrimaryDisplay() || displays[0]
-    }
-  }
-
-  const displayBounds = displayToUse.bounds
-  const currentSize = window.app.currentWindow.getSize()
-  const leftTopPosition = window.app.currentWindow.getPosition()
-  const rightBottomPosition = {
-    x: leftTopPosition[0] + currentSize[0],
-    y: leftTopPosition[1] + currentSize[1],
-  }
-  const width = appStore.windowSize[targetWindowType.value][0]
-  const height = appStore.windowSize[targetWindowType.value][1]
-  const x = displayBounds.x + rightBottomPosition.x - width
-  const y = displayBounds.y + rightBottomPosition.y - height
-  const bounds: Required<Electron.Rectangle> = { width, height, x, y }
-  // 防止超出屏幕可视范围
-  bounds.x = clamp(bounds.x, displayBounds.x, displayBounds.width - bounds.width)
-  bounds.y = clamp(bounds.y, displayBounds.y, displayBounds.height - bounds.height)
-  window.app.currentWindow.setBounds(bounds, true)
-  currentWindowType.value = targetWindowType.value
+  console.log(option)
+  // const appStore = useAppStore()
+  // const tabsStore = useTabsStore()
+  // const selectedTab = tabsStore.selectedTab()
+  // const targetWindowType = ref<windowType>()
+  // if (option.windowType) {
+  //   targetWindowType.value = option.windowType
+  // } else {
+  //   if (!selectedTab) return
+  //   const url = selectedTab.url
+  //   targetWindowType.value = new Site(url).windowType
+  // }
+  // if (targetWindowType.value === currentWindowType.value) {
+  //   return
+  // }
+  // logger.debug(`targetWindowType - ${targetWindowType.value}`)
+  // // We want the new window to open on the same display that the parent is in
+  // let displayToUse: Electron.Display | undefined
+  // const screen = window.app.screen
+  // const displays = screen.getAllDisplays()
+  // // Single Display
+  // if (displays.length === 1) {
+  //   displayToUse = displays[0]
+  // }
+  // // Multi Display
+  // else {
+  //   // on mac there is 1 menu per window so we need to use the monitor where the cursor currently is
+  //   if (window.app.versions.OS.indexOf('darwin') >= 0) {
+  //     const cursorPoint = screen.getCursorScreenPoint()
+  //     displayToUse = screen.getDisplayNearestPoint(cursorPoint)
+  //   }
+  //   // fallback to primary display or first display
+  //   if (!displayToUse) {
+  //     displayToUse = screen.getPrimaryDisplay() || displays[0]
+  //   }
+  // }
+  // const displayBounds = displayToUse.bounds
+  // const currentSize = window.app.currentWindow.getSize()
+  // const leftTopPosition = window.app.currentWindow.getPosition()
+  // const rightBottomPosition = {
+  //   x: leftTopPosition[0] + currentSize[0],
+  //   y: leftTopPosition[1] + currentSize[1],
+  // }
+  // const width = appStore.windowSize[targetWindowType.value][0]
+  // const height = appStore.windowSize[targetWindowType.value][1]
+  // const x = displayBounds.x + rightBottomPosition.x - width
+  // const y = displayBounds.y + rightBottomPosition.y - height
+  // const bounds: Required<Electron.Rectangle> = { width, height, x, y }
+  // // 防止超出屏幕可视范围
+  // bounds.x = clamp(bounds.x, displayBounds.x, displayBounds.width - bounds.width)
+  // bounds.y = clamp(bounds.y, displayBounds.y, displayBounds.height - bounds.height)
+  // window.app.currentWindow.setBounds(bounds, true)
+  // currentWindowType.value = targetWindowType.value
 }
 
 export const replace = (text: string, map: string[], replacer: string) => {
@@ -121,7 +121,8 @@ export const saveWindowSize = () => {
     }
     currentWindow.once('moved', moved)
   }, 500)
-  currentWindow.once('resized', resized)
+  // 废弃
+  // currentWindow.once('resized', resized)
   currentWindow.once('moved', moved)
 }
 

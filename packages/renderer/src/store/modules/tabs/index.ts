@@ -1,14 +1,7 @@
 import { TabsStateTypes } from './type'
 import { ITab } from './model'
 import { useAppStore } from '@/store'
-import { TabEvent, CreateProperties } from '~/interfaces/tabs'
-
-const cache: Record<string, any> = {
-  getTabById: {
-    id: null,
-    tab: null,
-  },
-}
+import { CreateProperties } from '~/interfaces/tabs'
 
 export const useTabsStore = defineStore('tabs', {
   state: (): TabsStateTypes => ({
@@ -16,21 +9,21 @@ export const useTabsStore = defineStore('tabs', {
     selectedTabId: -1, // webContentsId
   }),
   actions: {
-    init() {
-      const appStore = useAppStore()
-      window.ipcRenderer.on('tab-event', (ev, event: TabEvent, tabId, args) => {
-        const tab = this.getTabById(tabId)
-        if (tab) {
-          if (event === 'title-updated') tab.title = args[0]
-          if (event === 'loading') tab.loading = args[0]
-          if (event === 'url-updated') {
-            const [url] = args
-            tab.url = url
-            appStore.updateURL(url, tabId)
-          }
-        }
-      })
-    },
+    // init() {
+    //   const appStore = useAppStore()
+    //   window.ipcRenderer.on('tabEvent', (ev, event: TabEvent, tabId, args) => {
+    //     const tab = this.getTabById(tabId)
+    //     if (tab) {
+    //       if (event === 'title-updated') tab.title = args[0]
+    //       if (event === 'loading') tab.loading = args[0]
+    //       if (event === 'url-updated') {
+    //         const [url] = args
+    //         tab.url = url
+    //         appStore.updateURL(url, tabId)
+    //       }
+    //     }
+    //   })
+    // },
     createTabs(options: CreateProperties[], ids: number[]) {
       const tabs = options.map((option, i) => {
         const tab = new ITab(option, ids[i])
@@ -57,16 +50,8 @@ export const useTabsStore = defineStore('tabs', {
     selectedTab() {
       return this.getTabById(this.selectedTabId)
     },
-    getTabById(id: number): ITab {
-      if (cache.getTabById.id !== id) {
-        const tab = this.list.find((x) => x.id === id)
-        if (tab) {
-          cache.getTabById.id = id
-          cache.getTabById.tab = tab
-          return tab
-        }
-      }
-      return cache.getTabById.tab
+    getTabById(id: number): ITab | undefined {
+      return this.list.find((x) => x.id === id)
     },
   },
   getters: {},

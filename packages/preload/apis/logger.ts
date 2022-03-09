@@ -1,14 +1,15 @@
 import { createLogger, format, transports } from 'winston'
 import is from 'electron-is'
-import { app } from '@electron/remote'
 import { resolve } from 'path'
 import 'winston-daily-rotate-file'
 import node_console from 'console'
 
-const logDir = app.getPath('logs')
+const electron = is.renderer() ? require('@electron/remote') : require('electron')
+const level = is.dev() ? 'debug' : 'info'
+const logDir = electron.app.getPath('logs')
 
 export default createLogger({
-  level: is.dev() ? 'debug' : 'info',
+  level,
   transports: [
     new transports.DailyRotateFile({
       level: 'debug',

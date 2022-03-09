@@ -1,14 +1,11 @@
 import { AppStateTypes, AppConfig } from './types'
-import { useHistoryStore, usePluginStore, useTabsStore } from '@/store'
-import { callViewMethod, loadURL } from '@/utils/view'
-import Site from '@/utils/site'
+import { loadURL } from '@/utils/view'
 import { isURL } from '@/utils/url'
-import { resizeMainWindow } from '@/utils'
 
-const last = reactive({
-  push: 0,
-  domain: '',
-})
+// const last = reactive({
+//   push: 0,
+//   domain: '',
+// })
 
 export const useAppStore = defineStore('app', {
   state: (): AppStateTypes => ({
@@ -28,6 +25,10 @@ export const useAppStore = defineStore('app', {
     showTopBar: true,
     currentWindowID: window.app.currentWindow.id,
     windowID: {},
+    navigationState: {
+      canGoBack: false,
+      canGoForward: false,
+    },
   }),
   actions: {
     init() {
@@ -49,6 +50,18 @@ export const useAppStore = defineStore('app', {
           this.$state[key] = data[key]
         }
       })
+
+      // // 设置主题
+      // window.ipcRenderer.on('setThemeColor', (ev, theme) => {
+      //   document.body.style.setProperty('--theme-color-bg', theme.bg)
+      //   document.body.style.setProperty('--theme-color-text', theme.text)
+      //   document.body.setAttribute('arco-theme', theme.theme)
+      // })
+
+      // // navigation state
+      // window.ipcRenderer.on('updateNavigationState', (e, data) => {
+      //   this.navigationState = data
+      // })
     },
     saveConfig<T extends keyof AppConfig>(newJson: Record<T, AppConfig[T]>) {
       const storage = window.app.storage
@@ -66,105 +79,73 @@ export const useAppStore = defineStore('app', {
       })
     },
     loadPlugins(url: string) {
-      const _URL = new URL(url)
-
-      if (last.domain === _URL.hostname) return
-      last.domain = _URL.hostname
-
-      const pluginStore = usePluginStore()
-      pluginStore.unloadAllPlugins()
-      pluginStore.loadAllPlugins(url)
-
-      // 主题色更改
-      const themeColorProvider = {
-        light: {
-          bg: '',
-          text: '',
-        },
-        dark: {
-          bg: '',
-          text: '',
-        },
-      }
-      const [themeColor]: Record<string, Record<string, string>>[] = pluginStore.registerAndGetData(
-        'themeColor',
-        themeColorProvider,
-      )
-      let scheme: 'dark' | 'light'
-      const onDarkModeChange = ({ matches }: { matches: boolean }) => {
-        if (matches) {
-          scheme = 'dark'
-        } else {
-          scheme = 'light'
-        }
-        document.body.style.setProperty('--theme-color-bg', themeColor[scheme].bg)
-        document.body.style.setProperty('--theme-color-text', themeColor[scheme].text)
-        document.body.setAttribute('arco-theme', scheme)
-      }
-      window
-        .matchMedia('(prefers-color-scheme: dark)')
-        .removeEventListener('change', onDarkModeChange)
-      window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', onDarkModeChange)
-      onDarkModeChange(window.matchMedia('(prefers-color-scheme: dark)'))
+      console.log(url)
+      // const _URL = new URL(url)
+      // if (last.domain === _URL.hostname) return
+      // last.domain = _URL.hostname
+      // const pluginStore = usePluginStore()
+      // pluginStore.unloadAllPlugins()
+      // pluginStore.loadAllPlugins(url)
     },
     updateURL(url: string, tabId: number) {
       window.app.logger.info(`updateURL - ${url}`, { label: 'appStore' })
+      console.log(tabId)
 
       // 更新插件列表
-      this.loadPlugins(url)
+      // this.loadPlugins(url)
 
-      const _URL = new URL(url)
+      // const _URL = new URL(url)
 
       // hook
-      const pluginStore = usePluginStore()
-      const updateUrlHooks = pluginStore.getHook('updateUrl')
+      // const pluginStore = usePluginStore()
+      // const updateUrlHooks = pluginStore.getHook('updateUrl')
 
-      updateUrlHooks?.before({
-        url: _URL,
-      })
+      // updateUrlHooks?.before({
+      //   url: _URL,
+      // })
 
-      const historyStore = useHistoryStore()
+      // const historyStore = useHistoryStore()
 
       // 历史push
-      historyStore.push(url)
+      // historyStore.push(url)
 
       // 通知webview加载脚本
       // this.webview.send('load-commit')
 
-      this.disablePartButton = true
-      this.disableDanmakuButton = true
-      this.autoHideBar = false
+      // this.disablePartButton = true
+      // this.disableDanmakuButton = true
+      // this.autoHideBar = false
 
       // const tabsStore = useTabsStore()
-      callViewMethod(tabId, 'setUserAgent', new Site(url).userAgent)
+      // callViewMethod(tabId, 'setUserAgent', new Site(url).userAgent)
 
-      const now = Number(new Date())
-      if (now - last.push < 500) {
-        // 两次转跳间隔小于500ms，疑似redirect
-        historyStore.pop()
-      }
-      last.push = now
+      // const now = Number(new Date())
+      // if (now - last.push < 500) {
+      //   // 两次转跳间隔小于500ms，疑似redirect
+      //   historyStore.pop()
+      // }
+      // last.push = now
 
-      updateUrlHooks?.after({
-        url: _URL,
-      })
+      // updateUrlHooks?.after({
+      //   url: _URL,
+      // })
 
-      resizeMainWindow()
+      // resizeMainWindow()
     },
     go(value: string) {
       let url = value
       if (isURL(value)) {
         url = value.indexOf('://') === -1 ? `http://${value}` : value
       }
-      const tabsStore = useTabsStore()
-      const selectedTab = tabsStore.selectedTab()
-      if (selectedTab) {
-        if (selectedTab.url === url) return
-        this.loadPlugins(url)
-        loadURL(url, {
-          userAgent: new Site(url).userAgent,
-        })
-      }
+      // const tabsStore = useTabsStore()
+      // const selectedTab = tabsStore.selectedTab()
+      // if (selectedTab) {
+      // if (selectedTab.url === url) return
+      //   this.loadPlugins(url)
+      loadURL(url, {
+        // userAgent: new Site(url).userAgent,
+      })
+      // }
     },
   },
 })

@@ -23,6 +23,7 @@ if (!app.requestSingleInstanceLock()) {
 }
 
 // app.commandLine.appendSwitch('--enable-transparent-visuals')
+// 叠加滚动条
 app.commandLine.appendSwitch('--enable-features', 'OverlayScrollbar')
 
 ipcMain.setMaxListeners(0)

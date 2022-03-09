@@ -1,11 +1,10 @@
-import { EventEmitter } from 'events'
 import { MainWindow } from './windows/main'
 import { View } from './view'
 import { ipcMain } from 'electron'
 
-export class ViewManager extends EventEmitter {
+export class ViewManager {
   public views = new Map<number, View>()
-  // public incognito: boolean
+
   public selectedId = 0
 
   private window: MainWindow
@@ -15,7 +14,6 @@ export class ViewManager extends EventEmitter {
   public autoHideBar = false
 
   public constructor(window: MainWindow) {
-    super()
     this.window = window
 
     const { id } = window.win
@@ -28,11 +26,11 @@ export class ViewManager extends EventEmitter {
     })
 
     ipcMain.handle(`browserview-hide-${id}`, () => {
-      this.hide(id)
+      this.hide()
     })
 
     ipcMain.handle(`browserview-show-${id}`, () => {
-      this.show(id)
+      this.show()
     })
 
     // ipcMain.handle(`browserview-clear-${id}`, () => {
@@ -45,15 +43,10 @@ export class ViewManager extends EventEmitter {
       this.fixBounds()
     })
 
-    // this.setBoundsListener()
-
-    // this.incognito = incognito
     this.select(id, true)
   }
 
   public select(id: number, focus = true) {
-    // const { selected } = this.selected
-
     const view = this.views.get(id)
 
     if (!view) {
@@ -76,6 +69,8 @@ export class ViewManager extends EventEmitter {
     }
 
     this.fixBounds()
+
+    view.updateNavigationState()
   }
 
   public async fixBounds() {
@@ -142,21 +137,17 @@ export class ViewManager extends EventEmitter {
 
   public clear() {
     this.window.win.setBrowserView(null)
-    this.views.forEach((x) => this.destroy(x.id))
+    this.views.forEach((x) => x.destroy())
   }
 
-  public hide(id?: number) {
-    const browserView = id
-      ? this.views.get(this.selectedId)?.browserView
-      : this.selected?.browserView
+  public hide() {
+    const browserView = this.selected?.browserView
     if (!browserView) return
     this.window.win.removeBrowserView(browserView)
   }
 
-  public show(id?: number) {
-    const browserView = id
-      ? this.views.get(this.selectedId)?.browserView
-      : this.selected?.browserView
+  public show() {
+    const browserView = this.selected?.browserView
     if (!browserView) return
     this.window.win.addBrowserView(browserView)
   }

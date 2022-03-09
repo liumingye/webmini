@@ -15,6 +15,10 @@ export interface AppStateTypes {
   showTopBar: boolean
   currentWindowID: number
   windowID: { mainWindow?: number; selectPartWindow?: number }
+  navigationState: {
+    canGoBack: boolean
+    canGoForward: boolean
+  }
 }
 
 export interface AppConfig extends AppStateTypes {

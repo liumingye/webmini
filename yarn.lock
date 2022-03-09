@@ -1115,16 +1115,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/lodash-es@npm:^4.17.6":
-  version: 4.17.6
-  resolution: "@types/lodash-es@npm:4.17.6::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2F%40types%2Flodash-es%2F-%2Flodash-es-4.17.6.tgz"
-  dependencies:
-    "@types/lodash": "*"
-  checksum: 9bd239dd525086e278821949ce12fbdd4f100a060fed9323fc7ad5661113e1641f28a7ebab617230ed3474680d8f4de705c1928b48252bb684be6ec9eed715db
-  languageName: node
-  linkType: hard
-
-"@types/lodash@npm:*":
+"@types/lodash@npm:^4.14.179":
   version: 4.14.179
   resolution: "@types/lodash@npm:4.14.179::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2F%40types%2Flodash%2F-%2Flodash-4.14.179.tgz"
   checksum: 71faa0c8071732c2b7f0bd092850d3cea96fc7912055d57d819cf2ab399a64150e4190d8a4ea35a0905662ddc118be9d2abd55891d8047c085acf98608156149
@@ -2138,7 +2129,7 @@ __metadata:
     "@commitlint/config-conventional": ^16.2.1
     "@electron/remote": ^2.0.5
     "@types/electron-json-storage": ^4.5.0
-    "@types/lodash-es": ^4.17.6
+    "@types/lodash": ^4.14.179
     "@types/nprogress": ^0.2.0
     "@types/overlayscrollbars": ^1.12.1
     "@typescript-eslint/eslint-plugin": ^5.13.0
@@ -2158,7 +2149,7 @@ __metadata:
     eslint-plugin-vue: ^8.5.0
     husky: ^7.0.4
     less: ^4.1.2
-    lodash-es: ^4.17.21
+    lodash: ^4.17.21
     nprogress: ^0.2.0
     overlayscrollbars: ^1.13.1
     pinia: ^2.0.11
@@ -6218,13 +6209,6 @@ __metadata:
   dependencies:
     signal-exit: ^3.0.2
   checksum: 8de35aace8acbe883cbca3cc3959e88904d57c79dccd4afffc64aea8f9cf7b4c63598d08b8add66fbf381f8fb3ce4fd4c518cd231c797c266b6c790eb7b33abc
-  languageName: node
-  linkType: hard
-
-"lodash-es@npm:^4.17.21":
-  version: 4.17.21
-  resolution: "lodash-es@npm:4.17.21::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Flodash-es%2F-%2Flodash-es-4.17.21.tgz"
-  checksum: 05cbffad6e2adbb331a4e16fbd826e7faee403a1a04873b82b42c0f22090f280839f85b95393f487c1303c8a3d2a010048bf06151a6cbe03eee4d388fb0a12d2
   languageName: node
   linkType: hard
 

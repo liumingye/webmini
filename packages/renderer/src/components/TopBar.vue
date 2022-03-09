@@ -1,12 +1,12 @@
 <script setup lang="ts">
-  import { useAppStore, useHistoryStore, useTabsStore } from '@/store'
+  import { useAppStore, useTabsStore } from '@/store'
   import { resizeMainWindow, currentWindowType } from '@/utils'
   import { callViewMethod } from '@/utils/view'
   import { START } from '@/utils/constant'
 
   const ipc = window.ipcRenderer
   const appStore = useAppStore()
-  const historyStore = useHistoryStore()
+  // const historyStore = useHistoryStore()
   const tabsStore = useTabsStore()
   const route = useRoute()
   const router = useRouter()
@@ -15,9 +15,9 @@
   const disablePartButton = computed(() => appStore.disablePartButton)
   const title = computed(() => appStore.title)
 
-  historyStore.listen((to) => {
-    appStore.go(to)
-  })
+  // historyStore.listen((to) => {
+  //   appStore.go(to)
+  // })
 
   const tempStore: Record<string, any> = {}
   router.beforeEach((to, from) => {
@@ -67,7 +67,7 @@
   const disableBack = computed(() => {
     const is = isHome()
     if (is) {
-      return !historyStore.canGoBack
+      return !appStore.navigationState.canGoBack
     }
     // use _path as dependency to force computed update
     // eslint-disable-next-line
@@ -78,7 +78,7 @@
   const disableForward = computed(() => {
     const is = isHome()
     if (is) {
-      return !historyStore.canGoForward
+      return !appStore.navigationState.canGoForward
     }
     // use _path as dependency to force computed update
     // eslint-disable-next-line
@@ -89,7 +89,8 @@
   const goBack = () => {
     const is = isHome()
     if (is) {
-      historyStore.goBack()
+      tabsStore.selectedTab()?.callViewMethod('goBack')
+      // historyStore.goBack()
       return
     }
     router.back()
@@ -98,7 +99,8 @@
   const goForward = () => {
     const is = isHome()
     if (is) {
-      historyStore.goForward()
+      tabsStore.selectedTab()?.callViewMethod('goForward')
+      // historyStore.goForward()
       return
     }
     router.forward()
@@ -134,7 +136,9 @@
 </script>
 
 <template>
-  <header class="drag flex flex-shrink-0 px-2 h-8 bg-$theme-color-bg gap-1.5 items-center">
+  <header
+    class="drag flex flex-shrink-0 px-2 h-8 bg-$theme-color-bg gap-1.5 items-center transition-colors duration-300"
+  >
     <div class="flex-1 flex gap-1.5">
       <b-button id="navi-back" title="后退" :disabled="disableBack" @click="goBack">
         <icon-left size=".9em" />
