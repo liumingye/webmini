@@ -97,38 +97,6 @@
 </template>
 
 <style lang="less" scoped>
-  .slide-left-enter-from {
-    transform: translate3d(20%, 0, 0);
-    opacity: 0;
-  }
-  .slide-left-enter-active {
-    transition: all 0.15s ease-out;
-  }
-  .slide-left-leave-to {
-    position: absolute;
-    transform: translate3d(-10%, 0, 0);
-    opacity: 0;
-  }
-  .slide-left-leave-active {
-    transition: all 0.15s ease-in;
-  }
-
-  .slide-right-enter-from {
-    transform: translate3d(-10%, 0, 0);
-    opacity: 0;
-  }
-  .slide-right-enter-active {
-    transition: all 0.15s ease-out;
-  }
-  .slide-right-leave-to {
-    position: absolute;
-    transform: translate3d(20%, 0, 0);
-    opacity: 0;
-  }
-  .slide-right-leave-active {
-    transition: all 0.15s ease-in;
-  }
-
   #main {
     margin-top: -2rem;
 

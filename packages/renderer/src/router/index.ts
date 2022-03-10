@@ -16,13 +16,13 @@ const routes: RouteRecordRaw[] = [
       {
         path: 'settings',
         name: 'Settings',
-        component: () => import('@/views/pages/Settings.vue'),
+        component: () => import('@/views/pages/settings/Settings.vue'),
         meta: { title: '设置' },
       },
       {
         path: 'settings/about',
         name: 'About',
-        component: () => import('@/views/pages/About.vue'),
+        component: () => import('@/views/pages/settings/About.vue'),
         meta: { title: '关于' },
       },
     ],

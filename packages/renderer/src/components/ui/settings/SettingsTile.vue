@@ -15,16 +15,18 @@
 </script>
 
 <template>
-  <div
-    class="flex justify-between h-11 leading-11 px-4 bg-$color-bg-1 active:bg-$color-fill-3"
-    @click="handleClick"
-  >
-    <div>{{ props.title }}</div>
-    <slot></slot>
+  <div class="tile leading-11 bg-$color-bg-1 active:bg-$color-fill-3" @click="handleClick">
+    <div class="tile-border flex justify-between ml-4 pr-4">
+      <div>{{ props.title }}</div>
+      <slot></slot>
+    </div>
   </div>
 </template>
 
 <style lang="less" scoped>
+  .tile:not(:last-child) .tile-border {
+    border-bottom: solid 1px var(--color-border-2);
+  }
   :deep(.arco-select) {
     padding: 0;
     .arco-select-view-value {

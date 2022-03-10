@@ -2,6 +2,7 @@
   import { useAppStore } from '@/store'
 
   const appStore = useAppStore()
+  const router = useRouter()
 
   const alwaysOnTop = computed<typeof appStore.alwaysOnTop>({
     get() {
@@ -38,9 +39,7 @@
       </b-settings-tile>
     </b-settings>
     <b-settings>
-      <router-link :to="{ name: 'About' }">
-        <b-settings-tile title="关于 bilimini" />
-      </router-link>
+      <b-settings-tile title="关于 bilimini" @click="router.push({ name: 'About' })" />
       <b-settings-tile title="清理缓存" @click="clearSensitiveDirectories" />
       <b-settings-tile title="重置应用" @click="clearAllUserData" />
     </b-settings>
