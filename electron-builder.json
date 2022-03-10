@@ -5,6 +5,11 @@
     "output": "release/${version}"
   },
   "files": ["dist"],
+  "extraResources": {
+    "from": "./resources/",
+    "to": "./",
+    "filter": ["**/*"]
+  },
   "linux": {
     "category": "Video",
     "target": ["appimage", "snap"],

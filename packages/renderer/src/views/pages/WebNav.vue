@@ -1,8 +1,10 @@
 <script setup lang="ts">
   import { webNav } from '~/common/constant'
-  import { liveUrlPrefix, videoUrlPrefix } from '~/main/plugins/builtIn/bilibili/utils'
   import { useAppStore, useTabsStore } from '@/store'
   import { resizeMainWindow } from '@/utils'
+
+  const videoUrlPrefix = 'https://www.bilibili.com/video/'
+  const liveUrlPrefix = 'https://live.bilibili.com/blanc/'
 
   const router = useRouter()
   const appStore = useAppStore()

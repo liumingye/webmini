@@ -83,7 +83,7 @@ function watchPreload(server) {
  */
 function watchInject(server) {
   return build({
-    configFile: 'packages/renderer/src/inject/vite.config.ts',
+    configFile: 'packages/inject/vite.config.ts',
     mode: 'development',
     plugins: [
       {
@@ -104,7 +104,29 @@ const server = await createServer({
   configFile: 'packages/renderer/vite.config.ts',
 })
 
+/**
+ * @type {(server: import('vite').ViteDevServer) => Promise<import('rollup').RollupWatcher>}
+ */
+function pluginBilibili(server) {
+  return build({
+    configFile: 'resources/plugins/bilibili/vite.config.ts',
+    mode: 'development',
+    plugins: [
+      {
+        name: 'electron-plugin-bilibili',
+        writeBundle() {
+          server.ws.send({ type: 'full-reload' })
+        },
+      },
+    ],
+    build: {
+      watch: true,
+    },
+  })
+}
+
 await server.listen()
 await watchPreload(server)
 await watchInject(server)
+await pluginBilibili(server)
 await watchMain(server)

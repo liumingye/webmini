@@ -1,4 +1,5 @@
 export const START = 'https://m.bilibili.com/'
+
 export const userAgent = {
   desktop:
     'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.3 Safari/605.1.15',
@@ -94,9 +95,9 @@ export const webNav = {
       name: '消息',
       url: 'https://message.bilibili.com/#/reply',
     },
-    {
-      name: '腾讯视频',
-      url: 'http://m.v.qq.com/',
-    },
+    // {
+    //   name: '腾讯视频',
+    //   url: 'http://m.v.qq.com/',
+    // },
   ],
 }

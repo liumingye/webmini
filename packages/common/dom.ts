@@ -8,7 +8,7 @@ export function domContentLoaded(
     } else {
       document.addEventListener('readystatechange', (e) => {
         if (condition.includes(document.readyState)) {
-          resolve(true)
+          resolve(e)
         }
       })
     }

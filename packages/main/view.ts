@@ -1,4 +1,4 @@
-import { BrowserView, app, screen } from 'electron'
+import { BrowserView, screen } from 'electron'
 import { MainWindow } from './windows/main'
 import { TabEvent, CreateProperties } from '~/interfaces/tabs'
 import Plugins from './plugins'
@@ -38,12 +38,12 @@ export class View {
   public constructor(window: MainWindow, details: CreateProperties) {
     this.browserView = new BrowserView({
       webPreferences: {
-        preload: `${app.getAppPath()}/dist/inject/index.cjs`,
+        //   preload: `${app.getAppPath()}/dist/inject/index.cjs`,
       },
     })
+    this.browserView.webContents.loadURL('about:blank')
 
     this.window = window
-    this.plugins = new Plugins(this.browserView.webContents)
 
     this.webContents.on('context-menu', (e, params) => {
       console.log(params)
@@ -88,8 +88,10 @@ export class View {
     this.webContents.setUserAgent(userAgent.mobile)
     this.webContents.session.setUserAgent(userAgent.mobile)
 
-    this.webContents.loadURL(details.url, details.options)
+    this.plugins = new Plugins(this.browserView.webContents)
+    this.plugins.loadTabPlugins(details.url)
 
+    this.webContents.loadURL(details.url, details.options)
     // register session
     this.session.webRequest.onBeforeSendHeaders((details, callback) => {
       // 禁止追踪
@@ -97,14 +99,12 @@ export class View {
 
       // 根据插件配置设置浏览器UA
       if (details.resourceType === 'mainFrame' && details.url.startsWith('http')) {
+        // 设置当前url 给resizeWindowSize使用 使用getUrl获取的不对
         this.url = details.url
 
         const url = new URL(this.url)
 
         const completeURL = url.hostname + url.pathname + url.search
-
-        console.log(1)
-        // 设置当前url 给resizeWindowSize使用 使用getUrl获取的不对
 
         if (this.lastHostName !== url.hostname) {
           this.lastHostName = url.hostname
@@ -124,22 +124,18 @@ export class View {
 
         const [_userAgent]: UA[] = registerAndGetData('userAgent', userAgentProvider)
 
-        // this.userAgent = ''
-
         // 桌面端
         if (_userAgent.desktop.some((value) => completeURL.includes(value))) {
-          console.log('dddddddd ' + completeURL)
+          // console.log('dddddddd ' + completeURL)
           this.userAgent = userAgent.desktop
         }
         // 移动端
         else if (_userAgent.mobile.some((value) => completeURL.includes(value))) {
-          console.log('mmmmmmmmm ' + completeURL)
+          // console.log('mmmmmmmmm ' + completeURL)
           this.userAgent = userAgent.mobile
         } else {
           this.userAgent = userAgent.desktop
         }
-
-        // console.log(this.userAgent)
 
         details.requestHeaders['User-Agent'] = this.userAgent
 
@@ -148,7 +144,6 @@ export class View {
         this.resizeWindowSize()
       }
 
-      // this.browserView.webContents.userAgent = this.userAgent
       callback({ requestHeaders: details.requestHeaders })
     })
 
@@ -170,6 +165,7 @@ export class View {
     updateUrlHooks?.before({
       url,
     })
+    this.emitEvent('title-updated', this.webContents.getTitle())
     this.webContents.setUserAgent(this.userAgent)
     this.webContents.send('load-commit')
     this.emitEvent('url-updated', url)

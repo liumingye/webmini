@@ -1,7 +1,7 @@
 import { builtinModules } from 'module'
 import { defineConfig } from 'vite'
 import { resolve } from 'path'
-import pkg from '../../../../package.json'
+import pkg from '../../../package.json'
 
 export default defineConfig({
   root: __dirname,
@@ -12,9 +12,9 @@ export default defineConfig({
     },
   },
   build: {
-    outDir: '../../../../dist/inject',
+    outDir: './dist',
     lib: {
-      entry: 'index.ts',
+      entry: 'preload/index.ts',
       formats: ['cjs'],
       fileName: () => '[name].cjs',
     },

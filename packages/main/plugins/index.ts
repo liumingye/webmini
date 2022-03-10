@@ -2,14 +2,17 @@ import { PluginMetadata } from './types'
 import { addHook, clearHook } from './hook'
 import { addData, clearData, registerAndGetData } from './data'
 import { negate, once } from 'lodash'
-import { WebContents, nativeTheme } from 'electron'
+import { WebContents, nativeTheme, app } from 'electron'
 import { Application } from '../application'
 import { matchPattern } from '../utils'
 import Net from '~/common/net'
+import is from 'electron-is'
 
 // export const pluginsMap: { [name: string]: PluginMetadata } = {}
 const getBuiltInPlugins = once(() => {
-  const context = import.meta.globEager('./builtIn/*/index.ts')
+  const context = is.dev()
+    ? import.meta.globEager('../../../resources/plugins/*/index.ts')
+    : import.meta.globEager('../../../resources/plugins/*/index.ts')
   const pluginPaths = Object.keys(context)
   return pluginPaths
     .map((path) => {
@@ -54,7 +57,10 @@ class Plugins {
         if (plugin.urlInclude && plugin.urlInclude.every(negate(matchPattern(url)))) {
           return null
         }
-
+        this.webContents.session.setPreloads([
+          ...this.webContents.session.getPreloads(),
+          ...plugin.preloads,
+        ])
         plugin.load({
           addHook,
           addData,
@@ -72,12 +78,17 @@ class Plugins {
    * 载入指定url的所有插件
    */
   public loadTabPlugins(url: string) {
+    console.log('loadTabPlugins')
     // this.url = url
+    this.webContents.session.setPreloads([
+      ...this.webContents.session.getPreloads(),
+      `${app.getAppPath()}/dist/inject/index.cjs`,
+    ])
     const res = this.allPlugins.map(this.loadPlugin(url))
     this.enablePlugins = res
     // this.hookUserAgent()
     this.hookThemeColor()
-    return Promise.allSettled(res)
+    return Promise.all(res)
   }
 
   /**
@@ -88,9 +99,18 @@ class Plugins {
     clearData()
     this.enablePlugins.forEach((x) => {
       if (!x) return
-      x.unload()
+      x.unload({ webContents: this.webContents })
     })
+    this.webContents.session.setPreloads([])
     this.enablePlugins = []
+  }
+
+  public install() {
+    //
+  }
+
+  public uninstall() {
+    //
   }
 
   /**

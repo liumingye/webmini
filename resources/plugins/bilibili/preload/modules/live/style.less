@@ -1,0 +1,35 @@
+body {
+  // 隐藏全屏播放器（在某些情况下会出现）的滚动条
+  overflow: hidden;
+  // 隐藏直播水印
+  .web-player-icon-roomStatus {
+    display: none;
+  }
+  // 隐藏问题反馈
+  .web-player-icon-feedback {
+    display: none;
+  }
+  // 隐藏右侧<按钮
+  #sidebar-vm {
+    display: none;
+  }
+  // 隐藏看板娘
+  #my-dear-haruna-vm {
+    display: none;
+  }
+  // 隐藏全屏右侧<按钮
+  &.player-full-win {
+    .aside-area-toggle-btn {
+      display: none;
+    }
+  }
+  // 隐藏网页全屏和画中画
+  .right-area {
+    > .tip-wrap {
+      &:nth-child(2),
+      &:nth-child(4) {
+        display: none;
+      }
+    }
+  }
+}

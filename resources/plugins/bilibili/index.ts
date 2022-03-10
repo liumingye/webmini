@@ -1,4 +1,4 @@
-import { PluginMetadata } from '../../types'
+import { PluginMetadata } from '../../../packages/main/plugins/types'
 import {
   videoUrlPrefix,
   bangumiUrlPrefix,
@@ -12,6 +12,8 @@ import {
 // import { userAgent } from '~/renderer/src/utils/constant'
 // import { ipcMain } from 'electron'
 // import { loadURL } from '@/utils/view'
+import { resolve } from 'path'
+import is from 'electron-is'
 
 const last = {
   vid: '',
@@ -27,19 +29,16 @@ export const plugin: PluginMetadata = {
     'passport.bilibili.com',
     't.bilibili.com',
   ],
-  options: {
-    windowType: {
-      mini: [
-        /(www|m)\.bilibili\.com\/(video\/(av|BV)|bangumi\/play\/)/,
-        /live\.bilibili\.com\/(blanc|h5|)\/\d+/,
-      ],
-    },
-  },
-  unload: () => {
-    //
-  },
+  preloads: [
+    resolve(
+      __dirname,
+      is.dev()
+        ? '../../resources/plugins/bilibili/dist/index.cjs'
+        : '../../../resources/plugins/bilibili/dist/index.cjs',
+    ),
+  ],
   load: ({ addHook, addData, application, webContents, net }) => {
-    addData('themeColor', (presetBase: Record<string, Record<string, string>>) => {
+    addData('themeColor', (presetBase) => {
       presetBase.light = {
         bg: '#f36f98',
         text: '#fff',
@@ -49,13 +48,13 @@ export const plugin: PluginMetadata = {
         text: '#fff',
       }
     })
-    addData('windowType', (presetBase: Record<string, (string | RegExp)[]>) => {
+    addData('windowType', (presetBase) => {
       presetBase.mini = [
         /(www|m)\.bilibili\.com\/(video\/(av|BV)|bangumi\/play\/)/,
         /live\.bilibili\.com\/(blanc|h5|)\/\d+/,
       ]
     })
-    addData('userAgent', (presetBase: Record<string, string[]>) => {
+    addData('userAgent', (presetBase) => {
       presetBase.desktop = ['passport.bilibili.com/login']
       presetBase.mobile = [
         'm.bilibili.com/',
@@ -69,20 +68,19 @@ export const plugin: PluginMetadata = {
     })
     addHook('updateUrl', {
       after: ({ url }: { url: string }) => {
-        console.log('updateUrl - after - ' + url)
-
         application.mainWindow?.send('setAppState', 'disableDanmakuButton', true)
         application.mainWindow?.send('setAppState', 'autoHideBar', false)
 
-        console.log(url + ' aaaaaa')
         const _URL = new URL(url)
         if (['www.bilibili.com', 'm.bilibili.com'].includes(_URL.hostname)) {
           // 视频
           const vid = getVidWithP(_URL.pathname)
           if (vid) {
             if (_URL.hostname === 'm.bilibili.com') {
+              webContents.once('did-stop-loading', () => {
+                webContents.loadURL(videoUrlPrefix + vid)
+              })
               webContents.goBack()
-              webContents.loadURL(videoUrlPrefix + vid)
             } else if (_URL.hostname === 'www.bilibili.com') {
               if (vid !== last.vid) {
                 getPartOfVideo(application, net, vid)
@@ -101,8 +99,10 @@ export const plugin: PluginMetadata = {
           const bvid = getBvid(_URL.pathname)
           if (bvid) {
             if (_URL.hostname === 'm.bilibili.com') {
+              webContents.once('did-stop-loading', () => {
+                webContents.loadURL(bangumiUrlPrefix + bvid)
+              })
               webContents.goBack()
-              webContents.loadURL(bangumiUrlPrefix + bvid)
             } else if (_URL.hostname === 'www.bilibili.com') {
               getPartOfBangumi(application, net, bvid)
               application.mainWindow?.send('setAppState', 'disableDanmakuButton', false)
@@ -117,8 +117,10 @@ export const plugin: PluginMetadata = {
           const live = /^\/(h5\/||blanc\/)?(\d+).*/.exec(_URL.pathname)
           if (live) {
             if (live[1] === 'h5/') {
+              webContents.once('did-stop-loading', () => {
+                webContents.loadURL(liveUrlPrefix + live[2])
+              })
               webContents.goBack()
-              webContents.loadURL(liveUrlPrefix + live[2])
             } else {
               application.mainWindow?.send('setAppState', 'disableDanmakuButton', false)
               application.mainWindow?.send('setAppState', 'autoHideBar', true)
@@ -131,5 +133,8 @@ export const plugin: PluginMetadata = {
         application.selectPartWindow?.send('update-part', null)
       },
     })
+  },
+  unload: () => {
+    //
   },
 }

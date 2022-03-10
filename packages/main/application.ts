@@ -20,10 +20,17 @@ export class Application {
 
   public start() {
     app.on('second-instance', () => {
-      if (this.mainWindow?.isDestroyed()) return
       // Focus on the main window if the user tried to open another
-      if (this.mainWindow?.win.isMinimized()) this.mainWindow.win.restore()
-      this.mainWindow?.win.focus()
+      const win = this.mainWindow?.win
+      if (win) {
+        if (win.isDestroyed()) {
+          return this.createAllWindow()
+        }
+        if (win.isMinimized()) {
+          win.restore()
+        }
+        win.focus()
+      }
     })
 
     app.on('activate', () => {

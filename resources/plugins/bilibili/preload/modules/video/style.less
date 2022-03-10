@@ -1,0 +1,71 @@
+body {
+  // 隐藏全屏播放器（在某些情况下会出现）的滚动条
+  overflow: hidden !important;
+  // 预先加载全屏样式
+  #bilibili-player {
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    z-index: 100000;
+    left: 0;
+    top: 0;
+    // 控制栏加高
+    @heighten1: 20px;
+
+    .squirtle-controller {
+      height: 44px + @heighten1;
+
+      .squirtle-controller-wrap {
+        height: 29px + @heighten1;
+      }
+    }
+    @heighten2: 6px;
+
+    .bilibili-player-video-control {
+      height: 44px + @heighten2;
+
+      .bilibili-player-video-control-top {
+        bottom: 32px + @heighten2;
+      }
+
+      .bilibili-player-video-control-bottom {
+        height: 29px + @heighten2;
+      }
+    }
+  }
+}
+// 移除video外边框
+.bilibili-player-video {
+  margin: 0 !important;
+}
+
+.bpx-player-video-wrap {
+  border: none !important;
+}
+// 移除弹幕发送栏
+.bilibili-player-video-bottom-area,
+.bpx-player-sending-area {
+  display: none !important;
+}
+// 移除网页全屏按钮
+.bilibili-player-video-btn-widescreen,
+.bilibili-player-video-web-fullscreen,
+.squirtle-pip-wrap,
+.squirtle-widescreen-wrap,
+.squirtle-pagefullscreen-wrap {
+  display: none !important;
+}
+// 移除选集按钮
+.bilibili-player-video-btn-pagelist,
+.squirtle-pagelist-wrap {
+  display: none !important;
+}
+// 隐藏视频标题层
+.bilibili-player-video-top,
+.bpx-player-top-wrap {
+  display: none !important;
+}
+// 强制显示控制栏
+.bilibili-player-video-control {
+  display: flex !important;
+}
