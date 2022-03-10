@@ -62,15 +62,12 @@
   // 加载内置插件
 
   const startupTab = async () => {
-    await tabsStore.addTabs([
-      {
-        url: START,
-        active: true,
-        options: {
-          userAgent: userAgent.mobile,
-        },
+    await tabsStore.addTab({
+      url: START,
+      options: {
+        userAgent: userAgent.mobile,
       },
-    ])
+    })
   }
   startupTab()
 </script>

@@ -9,21 +9,15 @@ export const useTabsStore = defineStore('tabs', {
     selectedTabId: -1, // webContentsId
   }),
   actions: {
-    // init() {
-    //   const appStore = useAppStore()
-    //   window.ipcRenderer.on('tabEvent', (ev, event: TabEvent, tabId, args) => {
-    //     const tab = this.getTabById(tabId)
-    //     if (tab) {
-    //       if (event === 'title-updated') tab.title = args[0]
-    //       if (event === 'loading') tab.loading = args[0]
-    //       if (event === 'url-updated') {
-    //         const [url] = args
-    //         tab.url = url
-    //         appStore.updateURL(url, tabId)
-    //       }
-    //     }
-    //   })
-    // },
+    createTab(options: CreateProperties, id: number) {
+      const tab = new ITab(options, id)
+      if (options.index !== undefined) {
+        this.list.splice(options.index, 0, tab)
+      } else {
+        this.list.push(tab)
+      }
+      return tab
+    },
     createTabs(options: CreateProperties[], ids: number[]) {
       const tabs = options.map((option, i) => {
         const tab = new ITab(option, ids[i])
@@ -31,6 +25,15 @@ export const useTabsStore = defineStore('tabs', {
         return tab
       })
       return tabs
+    },
+    async addTab(options: CreateProperties) {
+      const appStore = useAppStore()
+      const opts = { ...{ active: true }, ...options }
+      const id: number = await window.ipcRenderer.invoke(
+        `view-create-${appStore.currentWindowID}`,
+        opts,
+      )
+      return this.createTab(opts, id)
     },
     async addTabs(options: CreateProperties[]) {
       const appStore = useAppStore()

@@ -14,10 +14,10 @@
     },
   })
   const clearSensitiveDirectories = () => {
-    window.ipcRenderer.send('clearSensitiveDirectories')
+    window.ipcRenderer.send('clear-sensitive-directories')
   }
   const clearAllUserData = () => {
-    window.ipcRenderer.send('clearAllUserData')
+    window.ipcRenderer.send('clear-all-user-data')
   }
 </script>
 

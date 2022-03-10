@@ -60,17 +60,12 @@ export class Application {
         app.quit()
       }
     })
-    ipcMain.on('clearSensitiveDirectories', () => {
+    ipcMain.on('clear-sensitive-directories', () => {
       this.clearSensitiveDirectories()
     })
-    ipcMain.on('clearAllUserData', () => {
+    ipcMain.on('clear-all-user-data', () => {
       this.clearAllUserData()
     })
-
-    // this.mainWindow?.viewManager.create({
-    //   url: `https://tools.liumingye.cn/music`,
-    //   active: true,
-    // })
 
     // 服务
     adblockerService(session.defaultSession)

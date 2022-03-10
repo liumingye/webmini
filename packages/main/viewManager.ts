@@ -17,12 +17,21 @@ export class ViewManager {
     this.window = window
 
     const { id } = window.win
+
+    ipcMain.handle(`view-create-${id}`, (e, details) => {
+      const id = this.create(details, false, false).id
+      return id
+    })
+
     ipcMain.handle(`views-create-${id}`, (e, options) => {
       return options.map((option: any) => {
         const id = this.create(option, false, false).id
-        this.select(id, false)
         return id
       })
+    })
+
+    ipcMain.handle(`view-select-${id}`, (e, id: number, focus: boolean) => {
+      this.select(id, focus)
     })
 
     ipcMain.handle(`browserview-hide-${id}`, () => {
@@ -33,7 +42,7 @@ export class ViewManager {
       this.show()
     })
 
-    ipcMain.handle(`topBarStatus-${id}`, (e, { autoHideBar, showTopBar }) => {
+    ipcMain.handle(`top-bar-status-${id}`, (e, { autoHideBar, showTopBar }) => {
       this.autoHideBar = autoHideBar
       this.showTopBar = showTopBar
       this.fixBounds()
@@ -43,7 +52,7 @@ export class ViewManager {
       return this.selected?.windowType
     })
 
-    ipcMain.handle(`resizeWindowSize-${id}`, (e, windowType) => {
+    ipcMain.handle(`resize-window-size-${id}`, (e, windowType) => {
       this.selected?.resizeWindowSize(windowType)
     })
 
@@ -75,9 +84,11 @@ export class ViewManager {
     this.fixBounds()
 
     view.updateNavigationState()
+
+    // view.getWindowType()
   }
 
-  public fixBounds() {
+  public fixBounds(): void {
     const view = this.selected
 
     if (!view) return
@@ -117,7 +128,6 @@ export class ViewManager {
     this.views.set(id, view)
 
     webContents.once('destroyed', () => {
-      console.log('clear')
       this.views.delete(id)
     })
 
@@ -145,9 +155,7 @@ export class ViewManager {
   }
 
   public hide(): void {
-    const browserView = this.selected?.browserView
-    if (!browserView) return
-    this.window.win.removeBrowserView(browserView)
+    this.window.win.setBrowserView(null)
   }
 
   public show(): void {

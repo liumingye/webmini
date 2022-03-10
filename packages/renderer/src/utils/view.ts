@@ -5,7 +5,7 @@ export const callViewMethod = async (
   method: string,
   ...args: any[]
 ): Promise<any> => {
-  return await window.ipcRenderer.invoke(`webContentsCall`, {
+  return await window.ipcRenderer.invoke(`web-contents-call`, {
     args,
     method,
     webContentsId,

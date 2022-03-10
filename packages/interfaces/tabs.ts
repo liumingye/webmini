@@ -16,6 +16,7 @@ export type TabEvent =
 
 export interface CreateProperties {
   url: string
-  active: boolean
+  active?: boolean
   options?: LoadURLOptions
+  index?: number
 }

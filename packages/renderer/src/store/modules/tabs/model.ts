@@ -41,10 +41,12 @@ export class ITab {
     }
   }
 
-  public select() {
+  public async select() {
+    const appStore = useAppStore()
     const tabsStore = useTabsStore()
     tabsStore.selectedTabId = this.id
-    window.ipcRenderer.send(`browserview-show-${this.id}`)
+    window.ipcRenderer.send(`browserview-show-${appStore.currentWindowID}`)
+    await window.ipcRenderer.invoke(`view-select-${appStore.currentWindowID}`, this.id)
   }
 
   public callViewMethod = (scope: string, ...args: any[]): Promise<any> => {

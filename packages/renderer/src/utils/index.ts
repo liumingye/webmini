@@ -9,7 +9,7 @@ export const currentWindowType = ref<windowType>('mobile')
 
 export const resizeMainWindow = (windowType?: windowType): void => {
   const appStore = useAppStore()
-  window.ipcRenderer.invoke(`resizeWindowSize-${appStore.currentWindowID}`, windowType)
+  window.ipcRenderer.invoke(`resize-window-size-${appStore.currentWindowID}`, windowType)
 }
 
 export const replace = (text: string, map: string[], replacer: string): string => {
@@ -104,7 +104,7 @@ export const initMouseStateDirtyCheck = (): void => {
     } else {
       appStore.showTopBar = true
     }
-    window.ipcRenderer.invoke(`topBarStatus-${appStore.currentWindowID}`, {
+    window.ipcRenderer.invoke(`top-bar-status-${appStore.currentWindowID}`, {
       autoHideBar: appStore.autoHideBar,
       showTopBar: appStore.showTopBar,
     })

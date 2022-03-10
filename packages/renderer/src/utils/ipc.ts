@@ -3,6 +3,7 @@ import { callViewMethod } from '@/utils/view'
 import { TabEvent } from '~/interfaces/tabs'
 import { AppStateTypes } from '@/store/modules/app/types'
 import { currentWindowType } from '@/utils'
+import { CreateProperties } from '~/interfaces/tabs'
 
 export const ipcRendererOn = (): void => {
   const appStore = useAppStore()
@@ -66,4 +67,46 @@ export const ipcRendererOn = (): void => {
       appStore.$state[key] = value
     },
   )
+
+  window.ipcRenderer.on(
+    'create-tab',
+    (e, options: CreateProperties, isNext: boolean, id: number) => {
+      const selectedTab = tabsStore.selectedTab()
+      if (isNext && selectedTab) {
+        const index = tabsStore.list.indexOf(selectedTab) + 1
+        options.index = index
+      }
+      tabsStore.createTab(options, id)
+    },
+  )
+
+  window.ipcRenderer.on('select-next-tab', () => {
+    const selectedTab = tabsStore.selectedTab()
+    if (!selectedTab) return
+    const i = tabsStore.list.indexOf(selectedTab)
+    const nextTab = tabsStore.list[i + 1]
+
+    if (!nextTab) {
+      if (tabsStore.list[0]) {
+        tabsStore.list[0].select()
+      }
+    } else {
+      nextTab.select()
+    }
+  })
+
+  window.ipcRenderer.on('select-previous-tab', () => {
+    const selectedTab = tabsStore.selectedTab()
+    if (!selectedTab) return
+    const i = tabsStore.list.indexOf(selectedTab)
+    const prevTab = tabsStore.list[i - 1]
+
+    if (!prevTab) {
+      if (tabsStore.list[tabsStore.list.length - 1]) {
+        tabsStore.list[tabsStore.list.length - 1].select()
+      }
+    } else {
+      prevTab.select()
+    }
+  })
 }

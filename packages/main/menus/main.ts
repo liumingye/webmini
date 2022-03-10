@@ -96,6 +96,32 @@ export const getMainMenu = () => {
         },
       ],
     },
+    {
+      label: 'DEBUG',
+      submenu: [
+        {
+          label: 'New tab',
+          click() {
+            Application.instance.mainWindow?.viewManager.create({
+              url: 'https://www.baidu.com',
+              active: true,
+            })
+          },
+        },
+        {
+          label: 'Select next tab',
+          click() {
+            Application.instance.mainWindow?.webContents.send('select-next-tab')
+          },
+        },
+        {
+          label: 'Select previous tab',
+          click() {
+            Application.instance.mainWindow?.webContents.send('select-previous-tab')
+          },
+        },
+      ],
+    },
   ]
   return Menu.buildFromTemplate(template)
 }
