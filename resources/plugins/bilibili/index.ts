@@ -36,11 +36,9 @@ export const plugin: PluginMetadata = {
     addData('themeColor', (presetBase) => {
       presetBase.light = {
         bg: '#f36f98',
-        text: '#fff',
       }
       presetBase.dark = {
         bg: '#f36f98',
-        text: '#fff',
       }
     })
     addData('windowType', (presetBase) => {

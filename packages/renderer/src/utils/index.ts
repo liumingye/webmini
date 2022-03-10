@@ -1,7 +1,7 @@
 import { WatchStopHandle } from 'vue'
 import { useAppStore } from '@/store'
 import { windowType } from '~/interfaces/view'
-import { isString, debounce } from 'lodash'
+import { debounce } from 'lodash'
 
 const { screen, currentWindow, logger } = window.app
 
@@ -19,6 +19,7 @@ export const replace = (text: string, map: string[], replacer: string) => {
   return text
 }
 
+// todo 移动到main里 使用hook
 export const replaceTitle = (title: string) => {
   title = replace(
     title,
@@ -32,18 +33,6 @@ export const replaceTitle = (title: string) => {
   )
   title = replace(title, ['bilibili', '哔哩哔哩'], 'bilimini')
   return title
-}
-
-/**
- * 测试字符串是否包含子串或匹配正则
- */
-export const matchPattern = (str: string) => {
-  return (pattern: string | RegExp) => {
-    if (isString(pattern)) {
-      return str.includes(pattern)
-    }
-    return pattern.test(str)
-  }
 }
 
 export const saveWindowSize = () => {
@@ -80,7 +69,6 @@ export const initMouseStateDirtyCheck = () => {
   const autoHideBar = computed(() => appStore.autoHideBar)
   const lastStatus = ref<'OUT' | 'IN'>()
   const Fn = () => {
-    console.log('fn')
     const mousePos = screen.getCursorScreenPoint()
     const windowPos = currentWindow.getPosition()
     const windowSize = currentWindow.getSize()

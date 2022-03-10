@@ -76,15 +76,20 @@
 </script>
 
 <template>
-  <main id="main" :class="['select-none', { showTopBar, autoHideBar }]">
+  <main
+    id="main"
+    class="transition-all flex flex-col h-full"
+    :class="['select-none', { showTopBar, autoHideBar }]"
+  >
     <TopBar />
-    <div ref="scrollContainer" class="relative h-full w-full bg-$color-bg-2 text-$color-text-1">
-      <!-- <WebView v-show="route.name === 'Home'" /> -->
+    <div
+      ref="scrollContainer"
+      class="relative h-full w-full text-$color-text-1"
+      :class="route.name === 'Home' ? 'bg-$theme-color-bg' : 'bg-$color-bg-2'"
+    >
       <router-view v-slot="{ Component }">
         <transition :name="route.meta.transition">
-          <!-- <keep-alive :include="[]"> -->
           <component :is="Component" class="min-h-full min-w-full" />
-          <!-- </keep-alive> -->
         </transition>
       </router-view>
     </div>
@@ -125,12 +130,7 @@
   }
 
   #main {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
     margin-top: -2rem;
-    transition: all 0.2s ease;
-    // background: var(--theme-color-bg);
 
     &.autoHideBar {
       display: block;

@@ -7,6 +7,7 @@ import { Application } from '../application'
 import { matchPattern } from '../utils'
 import Net from '~/common/net'
 import is from 'electron-is'
+import { Color } from '~/common/color'
 
 // export const pluginsMap: { [name: string]: PluginMetadata } = {}
 const getBuiltInPlugins = once(() => {
@@ -138,15 +139,25 @@ class Plugins {
     const [themeColor]: Theme[] = registerAndGetData('themeColor', themeColorProvider)
     const onDarkModeChange = () => {
       const theme = nativeTheme.shouldUseDarkColors ? 'dark' : 'light'
+      if (!themeColor[theme].text) {
+        const baseColor = Color.Format.CSS.parseHex(themeColor[theme].bg)
+        if (baseColor) {
+          const text = baseColor.isDarker() ? baseColor.darken(1) : baseColor.lighten(1)
+          if (text) {
+            themeColor[theme].text = text.toString()
+          }
+        }
+        console.log(baseColor)
+      }
       Application.instance.mainWindow?.send('setThemeColor', {
         theme,
         ...themeColor[theme],
       })
     }
-    nativeTheme.on('updated', () => {
-      onDarkModeChange()
-    })
     onDarkModeChange()
+    nativeTheme.on('updated', () => {
+      onDarkModeChange
+    })
   }
 }
 
