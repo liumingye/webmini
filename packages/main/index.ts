@@ -1,6 +1,6 @@
 import { app, ipcMain, webContents } from 'electron'
 import is from 'electron-is'
-import { appId } from '../../electron-builder.json'
+import { build } from '../../package.json'
 import { release } from 'os'
 import { initialize } from '@electron/remote/main'
 import { Application } from './application'
@@ -10,7 +10,7 @@ import Storage from 'electron-json-storage'
 if (release().startsWith('6.1')) app.disableHardwareAcceleration()
 
 // Set application name for Windows 10+ notifications
-if (is.windows()) app.setAppUserModelId(appId)
+if (is.windows()) app.setAppUserModelId(build.appId)
 
 /**
  * initialize the main-process side of the remote module

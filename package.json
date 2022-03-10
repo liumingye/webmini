@@ -84,6 +84,76 @@
     "vue-router": "^4.0.13",
     "windicss": "^3.5.1"
   },
+  "build": {
+    "appId": "org.electron.bilimini",
+    "asar": true,
+    "directories": {
+      "output": "release/${version}"
+    },
+    "files": [
+      "dist"
+    ],
+    "extraResources": {
+      "from": "./resources/",
+      "to": "./",
+      "filter": [
+        "**/*"
+      ]
+    },
+    "linux": {
+      "category": "Video",
+      "target": [
+        "appimage",
+        "snap"
+      ],
+      "icon": "build/icons"
+    },
+    "mac": {
+      "category": "public.app-category.video",
+      "target": [
+        {
+          "target": "dmg",
+          "arch": [
+            "x64",
+            "arm64"
+          ]
+        }
+      ],
+      "darkModeSupport": true,
+      "icon": "build/icons/icon.icns"
+    },
+    "win": {
+      "target": [
+        {
+          "target": "nsis"
+        },
+        {
+          "target": "portable",
+          "arch": [
+            "x64",
+            "ia32"
+          ]
+        }
+      ],
+      "icon": "build/icons/icon.ico"
+    },
+    "snap": {
+      "publish": [
+        {
+          "provider": "github"
+        }
+      ]
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "deleteAppDataOnUninstall": true
+    },
+    "electronDownload": {
+      "mirror": "https://npm.taobao.org/mirrors/electron/"
+    }
+  },
   "env": {
     "//": "Used in build scripts",
     "PORT": 3344

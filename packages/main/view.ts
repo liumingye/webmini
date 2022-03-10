@@ -42,9 +42,6 @@ export class View {
       },
     })
 
-    // 一定要加这行 不然插件无法第一时间加载
-    this.browserView.webContents.loadURL('about:blank')
-
     this.window = window
 
     this.webContents.on('context-menu', (e, params) => {
@@ -69,17 +66,18 @@ export class View {
     })
 
     this.webContents.addListener('did-navigate', async () => {
+      this.emitEvent('title-updated', this.webContents.getTitle())
       this.updateURL(this.webContents.getURL())
     })
 
-    this.webContents.addListener('did-navigate-in-page', async () => {
-      this.updateURL(this.webContents.getURL())
-    })
+    // this.webContents.addListener('did-navigate-in-page', async () => {
+    //   this.updateURL(this.webContents.getURL())
+    // })
 
-    this.webContents.addListener('did-start-navigation', async () => {
-      this.updateNavigationState()
-      this.updateURL(this.webContents.getURL())
-    })
+    // this.webContents.addListener('did-start-navigation', async () => {
+    // this.updateNavigationState()
+    // this.updateURL(this.webContents.getURL())
+    // })
 
     // Make all links open with the browser, not with the application
     this.webContents.setWindowOpenHandler(({ url }) => {
@@ -91,7 +89,6 @@ export class View {
     this.webContents.session.setUserAgent(userAgent.mobile)
 
     this.plugins = new Plugins(this.browserView.webContents)
-    this.plugins.loadTabPlugins(details.url)
 
     this.webContents.loadURL(details.url, details.options)
 
@@ -168,7 +165,6 @@ export class View {
     updateUrlHooks?.before({
       url,
     })
-    this.emitEvent('title-updated', this.webContents.getTitle())
     this.webContents.setUserAgent(this.userAgent)
     this.webContents.send('load-commit')
     this.emitEvent('url-updated', url)

@@ -3,34 +3,8 @@
 
 # https://github.com/SalhiYassine/next-ts-template/blob/main/.husky/pre-commit
 
-echo '🏗️👷 Styling, testing and building your project before committing'
-
-# Apply Prettier standards
-yarn format ||
-(
-  echo '🤢🤮🤢🤮 Even I cant format that - Your styling looks disgusting. 🤢🤮🤢🤮
-    Fix your damn code yourself.';
-  false;
-)
-
-# Check Prettier standards
-yarn lint:prettier ||
-(
-  echo '🤢🤮🤢🤮 Your Styling does not match the styling guideline implemented 🤢🤮🤢🤮
-    Prettier Check Failed. Run yarn format, add changes and try commit again.';
-  false;
-)
-
-# Check ESLint Standards
-yarn lint:eslint ||
-(
-  echo '😤🏀👋😤 Code Style does not match ESLint standards 😤🏀👋😤 
-    ESLint Check Failed. Make the required changes listed above, add changes and try to commit again.'
-  false; 
-)
-
 # If everything passes... Now we can commit
-echo '🤔🤔🤔🤔... Alright... Code looks good to me... Trying to build now. 🤔🤔🤔🤔'
+echo '🤔🤔🤔🤔 Trying to build now. 🤔🤔🤔🤔'
 
 yarn run prebuild ||
 (
