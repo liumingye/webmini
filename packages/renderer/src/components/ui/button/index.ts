@@ -3,7 +3,7 @@ import { getComponentPrefix } from '../_utils/global-config'
 import _Button from './Button.vue'
 
 const Button = {
-  install: (app: App) => {
+  install: (app: App): void  => {
     const componentPrefix = getComponentPrefix()
     app.component(componentPrefix + 'button', _Button)
   },

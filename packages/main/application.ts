@@ -18,7 +18,7 @@ export class Application {
   public mainWindow: MainWindow | undefined
   public selectPartWindow: SelectPartWindow | undefined
 
-  public start() {
+  public start(): void  {
     app.on('second-instance', () => {
       // Focus on the main window if the user tried to open another
       const win = this.mainWindow?.win
@@ -131,7 +131,7 @@ export class Application {
     return this.selectPartWindow
   }
 
-  public relaunchApp = () => {
+  public relaunchApp = (): void  => {
     const relaunchOptions = {
       execPath: process.execPath,
       args: process.argv,

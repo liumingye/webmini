@@ -1,6 +1,6 @@
 const logger = window.app.logger
 
-export const getPartOfQQ = (cid: string, vid: string) => {
+export const getPartOfQQ = (cid: string, vid: string): void  => {
   // const appStore = useAppStore()
   const net = window.app.net
   logger.debug(cid + vid, {

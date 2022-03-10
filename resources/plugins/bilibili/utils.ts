@@ -10,17 +10,17 @@ export const liveUrlPrefix = 'https://live.bilibili.com/blanc/'
 // const ipc = window.ipcRenderer
 // const logger = window.app.logger
 
-export const getVidWithP = (pathname: string) => {
+export const getVidWithP = (pathname: string): string  => {
   const m = /^\/video\/((av\d+|BV\w+)(?:\/?\?p=\d+)?)/.exec(pathname)
   return m ? m[1] : null
 }
 
-export const getBvid = (pathname: string) => {
+export const getBvid = (pathname: string): string  => {
   const m = /^\/bangumi\/play\/(ss\d+|ep\d+)/.exec(pathname)
   return m ? m[1] : null
 }
 
-export const getPartOfBangumi = (application: Application, net: Net, bvid: string) => {
+export const getPartOfBangumi = (application: Application, net: Net, bvid: string): void  => {
   net.fetch(bangumiUrlPrefix + bvid).then((res) => {
     res.text().then((res) => {
       // 分 P 信息存储在 window.__INITIAL_STATE__= 中 根据 object 类型的特性最后一个 } 后面不会有 , ] } 使用正则匹配
@@ -69,7 +69,7 @@ export const getPartOfBangumi = (application: Application, net: Net, bvid: strin
   })
 }
 
-export const getPartOfVideo = (application: Application, net: Net, vid: string) => {
+export const getPartOfVideo = (application: Application, net: Net, vid: string): void  => {
   net.fetch(videoUrlPrefix + vid).then((res) => {
     res.text().then((res) => {
       // 分 P 信息存储在 window.__INITIAL_STATE__= 中 根据 object 类型的特性最后一个 } 后面不会有 , ] } 使用正则匹配

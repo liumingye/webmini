@@ -7,7 +7,7 @@ const components: Record<string, Plugin> = {
   Settings,
 }
 
-const install = (app: App) => {
+const install = (app: App): void  => {
   for (const key of Object.keys(components)) {
     app.use(components[key])
   }

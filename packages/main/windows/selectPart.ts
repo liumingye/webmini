@@ -30,7 +30,7 @@ export class SelectPartWindow extends CommonWindow {
     super(window)
   }
 
-  public show() {
+  public show(): void  {
     if (this.isDestroyed() || !Application.instance.mainWindow) return
     const p = Application.instance.mainWindow.win.getPosition(),
       s = this.win.getSize(),

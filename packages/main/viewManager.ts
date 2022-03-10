@@ -50,7 +50,7 @@ export class ViewManager {
     this.select(id, true)
   }
 
-  public select(id: number, focus = true) {
+  public select(id: number, focus = true): void  {
     const view = this.views.get(id)
 
     if (!view) {
@@ -127,7 +127,7 @@ export class ViewManager {
     return view
   }
 
-  public destroy(id: number) {
+  public destroy(id: number): void  {
     console.log('destroy' + id)
 
     const view = this.views.get(id)
@@ -139,18 +139,18 @@ export class ViewManager {
     }
   }
 
-  public clear() {
+  public clear(): void  {
     this.window.win.setBrowserView(null)
     this.views.forEach((x) => x.destroy())
   }
 
-  public hide() {
+  public hide(): void  {
     const browserView = this.selected?.browserView
     if (!browserView) return
     this.window.win.removeBrowserView(browserView)
   }
 
-  public show() {
+  public show(): void  {
     const browserView = this.selected?.browserView
     if (!browserView) return
     this.window.win.addBrowserView(browserView)

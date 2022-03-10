@@ -1,5 +1,5 @@
 const COMPONENT_PREFIX = 'b'
 
-export const getComponentPrefix = () => {
+export const getComponentPrefix = (): string  => {
   return `${COMPONENT_PREFIX}-`
 }

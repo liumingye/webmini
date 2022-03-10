@@ -16,7 +16,7 @@ const pluginDataMap = new Map<
  * @param key 标识ID
  * @param data 提供的数据对象, 注入者将把数据添加到其中
  */
-export const registerData = (key: string, ...data: any[]) => {
+export const registerData = (key: string, ...data: any[]): void  => {
   if (pluginDataMap.has(key)) {
     const item = pluginDataMap.get(key)
     if (!item) return
@@ -40,7 +40,7 @@ export const registerData = (key: string, ...data: any[]) => {
  * @param key 标识ID
  * @param provider 数据注入的配置对象
  */
-export const addData = (key: string, provider: PluginDataProvider) => {
+export const addData = (key: string, provider: PluginDataProvider): void  => {
   if (pluginDataMap.has(key)) {
     const item = pluginDataMap.get(key)
     if (!item) return
@@ -88,6 +88,6 @@ export const registerAndGetData = <T extends any[]>(key: string, ...data: T) => 
   return getData(key) as T
 }
 
-export const clearData = () => {
+export const clearData = (): void  => {
   pluginDataMap.clear()
 }

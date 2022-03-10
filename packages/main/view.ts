@@ -158,7 +158,7 @@ export class View {
 
   private lastUrl = ''
 
-  public updateURL(url: string) {
+  public updateURL(url: string): void  {
     if (this.lastUrl === url) return
     this.lastUrl = url
     const updateUrlHooks = getHook('updateUrl')
@@ -173,7 +173,7 @@ export class View {
     })
   }
 
-  public resizeWindowSize(windowType?: windowType) {
+  public resizeWindowSize(windowType?: windowType): void  {
     const targetWindowType = windowType ? windowType : this.getWindowType()
     if (this.windowType === targetWindowType) return
     // We want the new window to open on the same display that the parent is in
@@ -241,7 +241,7 @@ export class View {
     return 'mobile'
   }
 
-  public updateNavigationState() {
+  public updateNavigationState(): void  {
     if (this.browserView.webContents.isDestroyed()) return
 
     if (this.window.viewManager.selectedId === this.id) {
@@ -252,7 +252,7 @@ export class View {
     }
   }
 
-  public destroy() {
+  public destroy(): void  {
     // Cleanup.
     if (this.browserView) {
       // unregister session
@@ -278,7 +278,7 @@ export class View {
     return this.webContents.id
   }
 
-  public emitEvent(event: TabEvent, ...args: any[]) {
+  public emitEvent(event: TabEvent, ...args: any[]): void  {
     this.window.send('tabEvent', event, this.id, args)
   }
 }
