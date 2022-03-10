@@ -26,7 +26,7 @@ export const plugin: PluginMetadata = {
       __dirname,
       is.dev()
         ? '../../resources/plugins/bilibili/dist/index.cjs'
-        : '../../../resources/plugins/bilibili/dist/index.cjs',
+        : '../../../plugins/bilibili/dist/index.cjs',
     ),
   ],
   load: ({ addHook, addData, application, webContents, net }) => {
