@@ -25,7 +25,7 @@
 
 <style lang="less" scoped>
   .tile:not(:last-child) .tile-border {
-    border-bottom: solid 1px var(--color-border-2);
+    border-bottom: solid 1px var(--color-border-1);
   }
   :deep(.arco-select) {
     padding: 0;

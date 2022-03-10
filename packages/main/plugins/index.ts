@@ -156,7 +156,7 @@ class Plugins {
     }
     onDarkModeChange()
     nativeTheme.on('updated', () => {
-      onDarkModeChange
+      onDarkModeChange()
     })
   }
 }
