@@ -75,10 +75,12 @@ export const saveWindowSize = () => {
 }
 
 export const initMouseStateDirtyCheck = () => {
+  console.log('initMouseStateDirtyCheck')
   const appStore = useAppStore()
   const autoHideBar = computed(() => appStore.autoHideBar)
   const lastStatus = ref<'OUT' | 'IN'>()
   const Fn = () => {
+    console.log('fn')
     const mousePos = screen.getCursorScreenPoint()
     const windowPos = currentWindow.getPosition()
     const windowSize = currentWindow.getSize()

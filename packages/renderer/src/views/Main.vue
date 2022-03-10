@@ -130,6 +130,7 @@
     height: 100%;
     margin-top: -2rem;
     transition: all 0.2s ease;
+    // background: var(--theme-color-bg);
 
     &.autoHideBar {
       display: block;

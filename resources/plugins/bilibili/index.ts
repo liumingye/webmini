@@ -8,16 +8,8 @@ import {
   getPartOfBangumi,
   getPartOfVideo,
 } from './utils'
-// import { useAppStore, useHistoryStore } from '@/store'
-// import { userAgent } from '~/renderer/src/utils/constant'
-// import { ipcMain } from 'electron'
-// import { loadURL } from '@/utils/view'
 import { resolve } from 'path'
 import is from 'electron-is'
-
-const last = {
-  vid: '',
-}
 
 export const plugin: PluginMetadata = {
   name: 'bilibili',
@@ -38,6 +30,9 @@ export const plugin: PluginMetadata = {
     ),
   ],
   load: ({ addHook, addData, application, webContents, net }) => {
+    const last = {
+      vid: '',
+    }
     addData('themeColor', (presetBase) => {
       presetBase.light = {
         bg: '#f36f98',

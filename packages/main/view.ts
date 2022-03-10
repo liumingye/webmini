@@ -38,9 +38,11 @@ export class View {
   public constructor(window: MainWindow, details: CreateProperties) {
     this.browserView = new BrowserView({
       webPreferences: {
-        //   preload: `${app.getAppPath()}/dist/inject/index.cjs`,
+        sandbox: true,
       },
     })
+
+    // 一定要加这行 不然插件无法第一时间加载
     this.browserView.webContents.loadURL('about:blank')
 
     this.window = window
@@ -92,6 +94,7 @@ export class View {
     this.plugins.loadTabPlugins(details.url)
 
     this.webContents.loadURL(details.url, details.options)
+
     // register session
     this.session.webRequest.onBeforeSendHeaders((details, callback) => {
       // 禁止追踪

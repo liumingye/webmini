@@ -1,7 +1,5 @@
-// import { useAppStore } from '@/store'
-// import Net from '~/apis/net'
-import { Application } from '../../../packages/main/application'
-import Net from '../../../packages/common/net'
+import type { Application } from '../../../packages/main/application'
+import type Net from '../../../packages/common/net'
 
 export const videoUrlPrefix = 'https://www.bilibili.com/video/'
 export const bangumiUrlPrefix = 'https://www.bilibili.com/bangumi/play/'

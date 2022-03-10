@@ -18,7 +18,6 @@
     // 恢复状态
     if (to.name === 'Home') {
       window.ipcRenderer.invoke(`browserview-show-${appStore.currentWindowID}`)
-
       appStore.autoHideBar = tempStore.autoHideBar
     }
     // 保存状态
