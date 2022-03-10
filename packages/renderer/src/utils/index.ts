@@ -7,12 +7,12 @@ const { screen, currentWindow, logger } = window.app
 
 export const currentWindowType = ref<windowType>('mobile')
 
-export const resizeMainWindow = (windowType?: windowType): void  => {
+export const resizeMainWindow = (windowType?: windowType): void => {
   const appStore = useAppStore()
   window.ipcRenderer.invoke(`resizeWindowSize-${appStore.currentWindowID}`, windowType)
 }
 
-export const replace = (text: string, map: string[], replacer: string): string  => {
+export const replace = (text: string, map: string[], replacer: string): string => {
   map.forEach((value) => {
     text = text.replace(value, replacer)
   })
@@ -20,7 +20,7 @@ export const replace = (text: string, map: string[], replacer: string): string  
 }
 
 // todo 移动到main里 使用hook
-export const replaceTitle = (title: string): string  => {
+export const replaceTitle = (title: string): string => {
   title = replace(
     title,
     [
@@ -35,7 +35,7 @@ export const replaceTitle = (title: string): string  => {
   return title
 }
 
-export const saveWindowSize = (): void  => {
+export const saveWindowSize = (): void => {
   const appStore = useAppStore()
   const resized = debounce(() => {
     // 解决full-reload后会重复绑定事件
@@ -63,7 +63,7 @@ export const saveWindowSize = (): void  => {
   currentWindow.once('moved', moved)
 }
 
-export const initMouseStateDirtyCheck = (): void  => {
+export const initMouseStateDirtyCheck = (): void => {
   console.log('initMouseStateDirtyCheck')
   const appStore = useAppStore()
   const autoHideBar = computed(() => appStore.autoHideBar)
@@ -111,7 +111,7 @@ export const initMouseStateDirtyCheck = (): void  => {
   })
 }
 
-export const watchAlwaysOnTop = (): void  => {
+export const watchAlwaysOnTop = (): void => {
   const appStore = useAppStore()
   let stopWatchWindowType: WatchStopHandle | null
   watchEffect(() => {

@@ -41,7 +41,7 @@ export class ITab {
     }
   }
 
-  public async select() {
+  public select() {
     const tabsStore = useTabsStore()
     tabsStore.selectedTabId = this.id
     window.ipcRenderer.send(`browserview-show-${this.id}`)

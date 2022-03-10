@@ -201,7 +201,7 @@ export function IconConverter(id: string, icon: IIconBase, config: IIconConfig):
 const IconContext = Symbol('icon-context')
 
 // 图标配置Provider
-export const IconProvider = (config: IIconConfig): void  => {
+export const IconProvider = (config: IIconConfig): void => {
   provide(IconContext, config)
 }
 

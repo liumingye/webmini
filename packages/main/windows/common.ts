@@ -9,15 +9,15 @@ export class CommonWindow {
     enable(this.webContents)
   }
 
-  public show(): void  {
+  public show(): void {
     this.win.show()
   }
 
-  public hide(): void  {
+  public hide(): void {
     this.win.hide()
   }
 
-  public toggle(): void  {
+  public toggle(): void {
     if (this.isDestroyed()) return
     if (this.win.isVisible()) {
       this.hide()
@@ -38,7 +38,7 @@ export class CommonWindow {
     return this.win.webContents
   }
 
-  public send(channel: string, ...args: any[]): void  {
+  public send(channel: string, ...args: any[]): void {
     this.webContents.send(channel, ...args)
   }
 }

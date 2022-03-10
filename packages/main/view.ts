@@ -65,7 +65,7 @@ export class View {
       this.updateURL(this.webContents.getURL())
     })
 
-    this.webContents.addListener('did-navigate', async () => {
+    this.webContents.addListener('did-navigate', () => {
       this.emitEvent('title-updated', this.webContents.getTitle())
       this.updateURL(this.webContents.getURL())
     })
@@ -158,7 +158,7 @@ export class View {
 
   private lastUrl = ''
 
-  public updateURL(url: string): void  {
+  public updateURL(url: string): void {
     if (this.lastUrl === url) return
     this.lastUrl = url
     const updateUrlHooks = getHook('updateUrl')
@@ -173,7 +173,7 @@ export class View {
     })
   }
 
-  public resizeWindowSize(windowType?: windowType): void  {
+  public resizeWindowSize(windowType?: windowType): void {
     const targetWindowType = windowType ? windowType : this.getWindowType()
     if (this.windowType === targetWindowType) return
     // We want the new window to open on the same display that the parent is in
@@ -241,7 +241,7 @@ export class View {
     return 'mobile'
   }
 
-  public updateNavigationState(): void  {
+  public updateNavigationState(): void {
     if (this.browserView.webContents.isDestroyed()) return
 
     if (this.window.viewManager.selectedId === this.id) {
@@ -252,7 +252,7 @@ export class View {
     }
   }
 
-  public destroy(): void  {
+  public destroy(): void {
     // Cleanup.
     if (this.browserView) {
       // unregister session
@@ -278,7 +278,7 @@ export class View {
     return this.webContents.id
   }
 
-  public emitEvent(event: TabEvent, ...args: any[]): void  {
+  public emitEvent(event: TabEvent, ...args: any[]): void {
     this.window.send('tabEvent', event, this.id, args)
   }
 }

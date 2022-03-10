@@ -13,7 +13,7 @@ const pluginHookMap = new Map<
  * @param key 标识ID
  * @param provider 代码注入的配置对象
  */
-export const addHook = (key: string, provider: PluginHookProvider): void  => {
+export const addHook = (key: string, provider: PluginHookProvider): void => {
   if (pluginHookMap.has(key)) {
     const map = pluginHookMap.get(key)
     if (!map) return
@@ -47,6 +47,6 @@ export const getHook = (key: string, ...fixedArgs: any[]) => {
   }
 }
 
-export const clearHook = (): void  => {
+export const clearHook = (): void => {
   pluginHookMap.clear()
 }

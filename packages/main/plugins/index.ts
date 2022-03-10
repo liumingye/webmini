@@ -95,7 +95,7 @@ class Plugins {
   /**
    * 卸载所有插件
    */
-  public unloadTabPlugins(): void  {
+  public unloadTabPlugins(): void {
     clearHook()
     clearData()
     this.enablePlugins.forEach((x) => {
@@ -106,18 +106,18 @@ class Plugins {
     this.enablePlugins = []
   }
 
-  public install(): void  {
+  public install(): void {
     //
   }
 
-  public uninstall(): void  {
+  public uninstall(): void {
     //
   }
 
   /**
    * 主题色更改
    */
-  public hookThemeColor(): void  {
+  public hookThemeColor(): void {
     type Color = {
       bg: string
       text: string

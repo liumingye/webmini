@@ -12,7 +12,7 @@ export const callViewMethod = async (
   })
 }
 
-export const loadURL = (url: string, ...args: any[]): void  => {
+export const loadURL = (url: string, ...args: any[]): void => {
   const tabsStore = useTabsStore()
   const tab = tabsStore.selectedTab()
   if (!tab) {

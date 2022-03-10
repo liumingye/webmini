@@ -21,11 +21,7 @@ export const addStyle = (text: string) => {
  * @param options observer的options
  * @returns Promise
  */
-export const whenDom = async (
-  dom: string[],
-  target?: string,
-  options: MutationObserverInit = {},
-) => {
+export const whenDom = (dom: string[], target?: string, options: MutationObserverInit = {}) => {
   let $_reject: any
   let observer: MutationObserver
   const promise = new Promise<void>((resolve, reject) => {

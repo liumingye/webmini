@@ -4,7 +4,7 @@ import { TabEvent } from '~/interfaces/tabs'
 import { AppStateTypes } from '@/store/modules/app/types'
 import { currentWindowType } from '@/utils'
 
-export const ipcRendererOn = (): void  => {
+export const ipcRendererOn = (): void => {
   const appStore = useAppStore()
   const tabsStore = useTabsStore()
 

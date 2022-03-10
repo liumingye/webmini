@@ -38,7 +38,7 @@ export interface IUpdateElectronAppOptions {
 
 const supportedPlatforms = ['darwin', 'win32']
 
-const autoUpdaterService = (opts: IUpdateElectronAppOptions = {}): void  => {
+const autoUpdaterService = (opts: IUpdateElectronAppOptions = {}): void => {
   if (is.dev()) return
   // check for bad input early, so it will be logged during development
   opts = validateInput(opts)
