@@ -17,7 +17,7 @@ const searchObserver = new MutationObserver((mutations) => {
 })
 
 const module = {
-  start: (): void  => {
+  start: (): void => {
     module.stop()
     // 打开app弹窗自动点击取消
     const styleEntry = addStyle(style)
@@ -27,7 +27,7 @@ const module = {
     })
   },
 
-  stop: (): void  => {
+  stop: (): void => {
     // 断开 observer
     searchObserver.disconnect()
     unloadStyle && unloadStyle()
