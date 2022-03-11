@@ -5,7 +5,7 @@ import { isURI } from '~/common/uri'
 export const useAppStore = defineStore('app', {
   state: (): AppStateTypes => ({
     alwaysOnTop: 'on',
-    title: 'bilimini',
+    title: 'webmini',
     windowSize: {
       mobile: [376, 500],
       desktop: [1100, 600],

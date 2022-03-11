@@ -11,7 +11,7 @@ export class ITab {
 
   public url = ''
 
-  public _title = 'bilimini'
+  public _title = 'webmini'
 
   public constructor({ active, url }: CreateProperties, id: number) {
     this.url = url

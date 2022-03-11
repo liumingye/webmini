@@ -10,7 +10,7 @@ function disallowNpm() {
   const execPath = process.env.npm_execpath
   if (!execPath.includes('yarn')) {
     console.log(FG_RED)
-    console.log(`\tbilimini supports only Yarn package manager.`)
+    console.log(`\twebmini supports only Yarn package manager.`)
     console.log(RESET)
     console.log(
       '\n\tPlease visit https://yarnpkg.com/getting-started/install to find instructions on how to install Yarn.\n',

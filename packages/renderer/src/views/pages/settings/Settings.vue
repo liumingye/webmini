@@ -39,7 +39,7 @@
       </b-settings-tile>
     </b-settings>
     <b-settings>
-      <b-settings-tile title="关于 bilimini" @click="router.push({ name: 'About' })" />
+      <b-settings-tile title="关于 webmini" @click="router.push({ name: 'About' })" />
       <b-settings-tile title="清理缓存" @click="clearSensitiveDirectories" />
       <b-settings-tile title="重置应用" @click="clearAllUserData" />
     </b-settings>

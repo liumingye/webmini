@@ -5,7 +5,7 @@ const routes: RouteRecordRaw[] = [
     path: '/',
     name: 'Home',
     component: () => import('@/views/Main.vue'),
-    meta: { title: 'bilimini' },
+    meta: { title: 'webmini' },
     children: [
       {
         path: 'web-nav',

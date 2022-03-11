@@ -82,7 +82,7 @@ export const getMainMenu = () => {
         {
           label: '报告问题',
           click() {
-            shell.openExternal('https://github.com/liumingye/bilimini/issues')
+            shell.openExternal('https://github.com/liumingye/webmini/issues')
           },
         },
         { type: 'separator' },

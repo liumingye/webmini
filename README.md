@@ -1,12 +1,12 @@
-# bilimini
+# webmini
 
 ## 藏起来！哔哩哔哩
 
-![GitHub](https://img.shields.io/github/license/liumingye/bilimini) ![GitHub package.json version](https://img.shields.io/github/package-json/v/liumingye/bilimini) ![GitHub last commit](https://img.shields.io/github/last-commit/liumingye/bilimini) [![Build/release](https://github.com/liumingye/bilimini/actions/workflows/release.yml/badge.svg?branch=main)](https://github.com/liumingye/bilimini/actions/workflows/release.yml)
+![GitHub](https://img.shields.io/github/license/liumingye/webmini) ![GitHub package.json version](https://img.shields.io/github/package-json/v/liumingye/webmini) ![GitHub last commit](https://img.shields.io/github/last-commit/liumingye/webmini) [![Build/release](https://github.com/liumingye/webmini/actions/workflows/release.yml/badge.svg?branch=main)](https://github.com/liumingye/webmini/actions/workflows/release.yml)
 
 ## 💽 安装稳定版
 
-[GitHub](https://github.com/liumingye/bilimini/releases) 或 [Hazel(速度比较快)](https://hazel-liumingye.vercel.app) 提供了已经编译好的稳定版安装包，当然你也可以自己克隆代码编译打包。
+[GitHub](https://github.com/liumingye/webmini/releases) 或 [Hazel(速度比较快)](https://hazel-liumingye.vercel.app) 提供了已经编译好的稳定版安装包，当然你也可以自己克隆代码编译打包。
 
 ## ✨ 特性
 
@@ -36,7 +36,7 @@
 ### 克隆代码
 
 ```bash
-git clone git@github.com:liumingye/bilimini.git
+git clone git@github.com:liumingye/webmini.git
 ```
 
 ### 安装依赖

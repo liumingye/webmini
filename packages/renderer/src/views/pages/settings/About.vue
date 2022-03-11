@@ -7,10 +7,10 @@
     <div class="w-15 mx-auto">
       <img class="w-full h-full" src="@/assets/images/icon.png" />
     </div>
-    <p class="font-bold my-4">bilimini</p>
+    <p class="font-bold my-4">webmini</p>
     <p class="link">
-      <a href="https://github.com/liumingye/bilimini" target="_blank">Github</a>
-      <a href="https://github.com/liumingye/bilimini/issues" target="_blank">报告问题</a>
+      <a href="https://github.com/liumingye/webmini" target="_blank">Github</a>
+      <a href="https://github.com/liumingye/webmini/issues" target="_blank">报告问题</a>
     </p>
     <div class="mt-5">
       <template v-for="(value, key) in versions" :key="key">

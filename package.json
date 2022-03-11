@@ -1,17 +1,17 @@
 {
-  "name": "bilimini",
+  "name": "webmini",
   "version": "1.0.4-beta.4",
   "main": "dist/main/index.cjs",
   "author": "liumingye <liumingye2015@gmail.com>",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/liumingye/bilimini.git"
+    "url": "https://github.com/liumingye/webmini.git"
   },
   "bugs": {
-    "url": "https://github.com/liumingye/bilimini/issues"
+    "url": "https://github.com/liumingye/webmini/issues"
   },
-  "homepage": "https://github.com/liumingye/bilimini",
+  "homepage": "https://github.com/liumingye/webmini",
   "packageManager": "yarn@3.2.0",
   "scripts": {
     "dev": "node scripts/watch.mjs",
@@ -85,7 +85,7 @@
     "windicss": "^3.5.1"
   },
   "build": {
-    "appId": "org.electron.bilimini",
+    "appId": "org.electron.webmini",
     "asar": true,
     "artifactName": "${name}-${version}-${os}-${arch}.${ext}",
     "directories": {
