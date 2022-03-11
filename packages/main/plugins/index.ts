@@ -8,8 +8,9 @@ import { matchPattern } from '../utils'
 import Net from '~/common/net'
 import is from 'electron-is'
 import { Color } from '~/common/color'
+import { MainWindow } from '../windows/main'
 
-// export const pluginsMap: { [name: string]: PluginMetadata } = {}
+export const pluginsMap: { [name: string]: PluginMetadata } = {}
 const getBuiltInPlugins = once(() => {
   const context = is.dev()
     ? import.meta.globEager('../../../resources/plugins/*/index.ts')
@@ -20,7 +21,7 @@ const getBuiltInPlugins = once(() => {
       const module = context[path]
       if ('plugin' in module) {
         const plugin = module.plugin
-        // pluginsMap[plugin.name] = plugin
+        pluginsMap[plugin.name] = plugin
         return plugin
       }
       return undefined
@@ -29,17 +30,16 @@ const getBuiltInPlugins = once(() => {
 })()
 
 class Plugins {
-  // public static instance = new this()
-
   public allPlugins: PluginMetadata[] = getBuiltInPlugins
 
-  public enablePlugins: (PluginMetadata | null)[] = []
+  public enablePlugins: PluginMetadata[] = []
 
-  // public url = ''
+  private window: MainWindow
 
   public webContents: WebContents
 
-  public constructor(webContents: WebContents) {
+  public constructor(window: MainWindow, webContents: WebContents) {
+    this.window = window
     this.webContents = webContents
   }
 
@@ -48,15 +48,14 @@ class Plugins {
    */
   public loadPlugin(url: string) {
     return (plugin: PluginMetadata) => {
-      // const url = this.url
       if (plugin.load) {
         // 若指定了排除URL, 任意URL匹配就不加载
         if (plugin.urlExclude && plugin.urlExclude.some(matchPattern(url))) {
-          return null
+          return undefined
         }
         // 若指定了包含URL, 所有URL都不匹配时不加载
         if (plugin.urlInclude && plugin.urlInclude.every(negate(matchPattern(url)))) {
-          return null
+          return undefined
         }
         this.webContents.session.setPreloads([
           ...this.webContents.session.getPreloads(),
@@ -71,7 +70,7 @@ class Plugins {
         })
         return plugin
       }
-      return null
+      return undefined
     }
   }
 
@@ -79,15 +78,14 @@ class Plugins {
    * 载入指定url的所有插件
    */
   public loadTabPlugins(url: string) {
-    console.log('loadTabPlugins')
-    // this.url = url
     this.webContents.session.setPreloads([
       ...this.webContents.session.getPreloads(),
       `${app.getAppPath()}/dist/inject/index.cjs`,
     ])
-    const res = this.allPlugins.map(this.loadPlugin(url))
+    const res = this.allPlugins
+      .map(this.loadPlugin(url))
+      .filter((it) => it !== undefined) as PluginMetadata[]
     this.enablePlugins = res
-    // this.hookUserAgent()
     this.hookThemeColor()
     return Promise.all(res)
   }
@@ -139,6 +137,7 @@ class Plugins {
     const [themeColor]: Theme[] = registerAndGetData('themeColor', themeColorProvider)
     const onDarkModeChange = () => {
       const theme = nativeTheme.shouldUseDarkColors ? 'dark' : 'light'
+      // 未定义文字颜色则自动获取文字颜色
       if (!themeColor[theme].text) {
         const baseColor = Color.Format.CSS.parseHex(themeColor[theme].bg)
         if (baseColor) {
@@ -147,9 +146,8 @@ class Plugins {
             themeColor[theme].text = text.toString()
           }
         }
-        console.log(baseColor)
       }
-      Application.instance.mainWindow?.send('setThemeColor', {
+      this.window.send('setThemeColor', {
         theme,
         ...themeColor[theme],
       })

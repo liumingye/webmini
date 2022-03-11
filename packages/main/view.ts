@@ -89,7 +89,7 @@ export class View {
     // this.webContents.setUserAgent(this.userAgent)
     // this.session.setUserAgent(this.userAgent)
 
-    this.plugins = new Plugins(this.browserView.webContents)
+    this.plugins = new Plugins(this.window, this.browserView.webContents)
 
     this.webContents.loadURL(details.url, details.options)
 

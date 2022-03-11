@@ -12,6 +12,7 @@
     "strict": true,
     "allowSyntheticDefaultImports": true,
     "skipLibCheck": true,
-    "types": ["vite/client"]
+    "lib": ["esnext", "dom"],
+    "types": ["node", "vite/client"]
   }
 }
