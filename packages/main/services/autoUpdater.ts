@@ -111,7 +111,7 @@ const initUpdater = (opts: IUpdateElectronAppOptions) => {
 
 const validateInput = (opts: IUpdateElectronAppOptions) => {
   const defaults = {
-    host: 'https://hazel-liumingye.vercel.app',
+    host: 'https://webmini.vercel.app',
     updateInterval: '1 hour',
     logger: Logger,
     notifyUser: true,
