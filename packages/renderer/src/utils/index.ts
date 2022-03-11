@@ -127,16 +127,17 @@ export const watchAlwaysOnTop = (): void => {
         currentWindow.setAlwaysOnTop(false)
         break
       default:
-        currentWindow.setAlwaysOnTop(false)
         stopWatchWindowType = watch(
           () => currentWindowType.value,
           (value) => {
             // logger.debug(`currentWindowType - ${value}`)
             if (value === 'mini') {
-              currentWindow.setAlwaysOnTop(true)
-              return
+              return currentWindow.setAlwaysOnTop(true)
             }
             currentWindow.setAlwaysOnTop(false)
+          },
+          {
+            immediate: true,
           },
         )
         break

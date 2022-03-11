@@ -20,6 +20,7 @@ export const plugin: PluginMetadata = {
     'live.bilibili.com',
     'passport.bilibili.com',
     't.bilibili.com',
+    'link.bilibili.com',
   ],
   preloads: [
     resolve(

@@ -1,6 +1,6 @@
 {
   "name": "bilimini",
-  "version": "1.0.4-beta.3",
+  "version": "1.0.4-beta.4",
   "main": "dist/main/index.cjs",
   "author": "liumingye <liumingye2015@gmail.com>",
   "license": "MIT",
@@ -87,6 +87,7 @@
   "build": {
     "appId": "org.electron.bilimini",
     "asar": true,
+    "artifactName": "${name}-${version}-${os}-${arch}.${ext}",
     "directories": {
       "output": "release/${version}"
     },
@@ -112,6 +113,13 @@
       "category": "public.app-category.video",
       "target": [
         {
+          "target": "zip",
+          "arch": [
+            "x64",
+            "arm64"
+          ]
+        },
+        {
           "target": "dmg",
           "arch": [
             "x64",
@@ -128,7 +136,7 @@
           "target": "nsis"
         },
         {
-          "target": "portable",
+          "target": "zip",
           "arch": [
             "x64",
             "ia32"

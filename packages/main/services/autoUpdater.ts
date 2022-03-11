@@ -1,6 +1,7 @@
 import { app, autoUpdater, dialog } from 'electron'
 import ms from 'ms'
 import is from 'electron-is'
+import Logger from '~/common/logger'
 
 export interface ILogger {
   log(message: string): void
@@ -10,10 +11,6 @@ export interface ILogger {
 }
 
 export interface IUpdateElectronAppOptions {
-  /**
-   * @param {String} repo A GitHub repository in the format `owner/repo`.
-   */
-  readonly repo?: string
   /**
    * @param {String} host Defaults to `https://update.electronjs.org`
    */
@@ -46,11 +43,11 @@ const autoUpdaterService = (opts: IUpdateElectronAppOptions = {}): void => {
 }
 
 const initUpdater = (opts: IUpdateElectronAppOptions) => {
-  const { host, repo, updateInterval, logger } = opts
-  const feedURL = `${host}/${repo}/${process.platform}-${process.arch}/${app.getVersion()}`
+  const { host, updateInterval, logger } = opts
+  const feedURL = `${host}/update/${process.platform}/${app.getVersion()}`
 
   const log = (...args: any) => {
-    logger && logger.log(args)
+    logger && logger.info(args)
   }
 
   // exit early on unsupported platforms, e.g. `linux`
@@ -114,10 +111,9 @@ const initUpdater = (opts: IUpdateElectronAppOptions) => {
 
 const validateInput = (opts: IUpdateElectronAppOptions) => {
   const defaults = {
-    host: 'https://update.electronjs.org',
-    repo: 'liumingye/bilimini',
+    host: 'https://hazel-liumingye.vercel.app',
     updateInterval: '1 hour',
-    logger: console,
+    logger: Logger,
     notifyUser: true,
   }
   return Object.assign(defaults, opts)
