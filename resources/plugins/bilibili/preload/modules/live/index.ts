@@ -5,14 +5,14 @@ const addStyle = (window as any).utils.addStyle
 let unloadStyle: () => void
 
 const module = {
-  start: (): void  => {
+  start: (): void => {
     module.stop()
     const styleEntry = addStyle(style)
     unloadStyle = styleEntry.unload
     document.body.classList.add('player-full-win', 'hide-aside-area')
   },
 
-  stop: (): void  => {
+  stop: (): void => {
     unloadStyle && unloadStyle()
     document.body.classList.remove('player-full-win', 'hide-aside-area')
   },

@@ -5,14 +5,14 @@ const addStyle = (window as any).utils.addStyle
 let unloadStyle: () => void
 
 const module = {
-  start: (): void  => {
+  start: (): void => {
     module.stop()
     const styleEntry = addStyle(style)
     unloadStyle = styleEntry.unload
     document.querySelector('.m-head>div:last-child')?.scrollTo({ top: 0 })
   },
 
-  stop: (): void  => {
+  stop: (): void => {
     unloadStyle && unloadStyle()
   },
 }

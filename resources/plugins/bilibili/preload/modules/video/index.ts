@@ -32,7 +32,7 @@ const changeVolume = (_ev: Electron.IpcRendererEvent, arg: 'up' | 'down') => {
 }
 
 const module = {
-  start: (): void  => {
+  start: (): void => {
     module.stop()
 
     // 预先加载全屏样式
@@ -66,7 +66,7 @@ const module = {
     })
   },
 
-  stop: (): void  => {
+  stop: (): void => {
     // 断开 observer
     abortPromise && abortPromise()
     document.documentElement.classList.remove('player-mode-webfullscreen', 'player-fullscreen-fix')
