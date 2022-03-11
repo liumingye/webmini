@@ -287,7 +287,7 @@ export class View {
     return this.webContents.getTitle()
   }
 
-  public updateTitle(): void  {
+  public updateTitle(): void {
     const selected = Application.instance.mainWindow?.viewManager.selected
 
     if (!selected) return
