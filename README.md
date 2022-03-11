@@ -1,21 +1,19 @@
 # webmini
 
-## 藏起来！哔哩哔哩
+## 迷你web应用
 
 ![GitHub](https://img.shields.io/github/license/liumingye/webmini) ![GitHub package.json version](https://img.shields.io/github/package-json/v/liumingye/webmini) ![GitHub last commit](https://img.shields.io/github/last-commit/liumingye/webmini) [![Build/release](https://github.com/liumingye/webmini/actions/workflows/release.yml/badge.svg?branch=main)](https://github.com/liumingye/webmini/actions/workflows/release.yml)
 
 ## 💽 安装稳定版
 
-[GitHub](https://github.com/liumingye/webmini/releases) 或 [Hazel(速度比较快)](https://hazel-liumingye.vercel.app) 提供了已经编译好的稳定版安装包，当然你也可以自己克隆代码编译打包。
+[GitHub](https://github.com/liumingye/webmini/releases) 或 [Hazel(速度比较快)](https://webmini.vercel.app) 提供了已经编译好的稳定版安装包，当然你也可以自己克隆代码编译打包。
 
 ## ✨ 特性
 
 - 小窗口
 - 总在最前
 - 同时支持 Windows/Mac
-
-完美解决只有一块屏幕又想在上班时候刷 b 站的刚需（x  
-大概是这个星球上最适合你的 bilibili 客户端（x2
+- 可拓展
 
 ## 🖥 应用界面
 
@@ -67,7 +65,6 @@ yarn dev
 ```
 yarn build
 yarn build:mac
-yarn build:win32
-yarn build:win64
+yarn build:win
 yarn build:linux
 ```
