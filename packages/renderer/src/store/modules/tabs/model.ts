@@ -29,7 +29,7 @@ export class ITab {
 
   public set title(value: string) {
     const appStore = useAppStore()
-    this._title = replaceTitle(value) || 'bilimini'
+    this._title = replaceTitle(value)
     appStore.title = document.title = this._title
   }
 

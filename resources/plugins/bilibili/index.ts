@@ -61,27 +61,26 @@ export const plugin: PluginMetadata = {
       ]
     })
     addHook('updateUrl', {
-      after: ({ url }: { url: string }) => {
+      after: ({ url }: { url: URL }) => {
         application.mainWindow?.send('setAppState', 'disableDanmakuButton', true)
         application.mainWindow?.send('setAppState', 'autoHideBar', false)
 
-        const _URL = new URL(url)
-        if (['www.bilibili.com', 'm.bilibili.com'].includes(_URL.hostname)) {
+        if (['www.bilibili.com', 'm.bilibili.com'].includes(url.hostname)) {
           // 视频
-          const vid = getVidWithP(_URL.pathname)
+          const vid = getVidWithP(url.pathname)
           if (vid) {
-            if (_URL.hostname === 'm.bilibili.com') {
+            if (url.hostname === 'm.bilibili.com') {
               webContents.once('did-stop-loading', () => {
                 webContents.loadURL(videoUrlPrefix + vid)
               })
               webContents.goBack()
-            } else if (_URL.hostname === 'www.bilibili.com') {
+            } else if (url.hostname === 'www.bilibili.com') {
               if (vid !== last.vid) {
                 getPartOfVideo(application, net, vid)
                 last.vid = vid
                 application.mainWindow?.send('setAppState', 'disableDanmakuButton', false)
                 application.mainWindow?.send('setAppState', 'autoHideBar', true)
-                const m = /p=(\d+)/.exec(_URL.pathname)
+                const m = /p=(\d+)/.exec(url.pathname)
                 const currentPartId = m ? Number(m[1]) - 1 : 0
                 application.selectPartWindow?.send('update-currentPartId', currentPartId)
               }
@@ -90,14 +89,14 @@ export const plugin: PluginMetadata = {
           }
 
           // 番剧
-          const bvid = getBvid(_URL.pathname)
+          const bvid = getBvid(url.pathname)
           if (bvid) {
-            if (_URL.hostname === 'm.bilibili.com') {
+            if (url.hostname === 'm.bilibili.com') {
               webContents.once('did-stop-loading', () => {
                 webContents.loadURL(bangumiUrlPrefix + bvid)
               })
               webContents.goBack()
-            } else if (_URL.hostname === 'www.bilibili.com') {
+            } else if (url.hostname === 'www.bilibili.com') {
               getPartOfBangumi(application, net, bvid)
               application.mainWindow?.send('setAppState', 'disableDanmakuButton', false)
               application.mainWindow?.send('setAppState', 'autoHideBar', true)
@@ -107,8 +106,8 @@ export const plugin: PluginMetadata = {
         }
 
         // 直播
-        if (_URL.hostname === 'live.bilibili.com') {
-          const live = /^\/(h5\/||blanc\/)?(\d+).*/.exec(_URL.pathname)
+        if (url.hostname === 'live.bilibili.com') {
+          const live = /^\/(h5\/||blanc\/)?(\d+).*/.exec(url.pathname)
           if (live) {
             if (live[1] === 'h5/') {
               webContents.once('did-stop-loading', () => {

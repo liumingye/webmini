@@ -88,7 +88,7 @@ export const getMainMenu = () => {
         { type: 'separator' },
         { label: '开发者工具', role: 'toggleDevTools' },
         {
-          label: '审查源码',
+          label: '显示网页检查器',
           accelerator: 'CmdOrCtrl+i',
           click() {
             Application.instance.mainWindow?.viewManager.selected?.webContents.toggleDevTools()

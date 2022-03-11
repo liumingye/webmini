@@ -10,7 +10,7 @@ import is from 'electron-is'
 import { clamp } from 'lodash'
 import Storage from 'electron-json-storage'
 import { windowType } from '~/interfaces/view'
-import { Application } from './application'
+import { getViewMenu } from './menus/view'
 
 export class View {
   public windowType: windowType = 'mobile'
@@ -30,7 +30,7 @@ export class View {
       }
     | undefined
 
-  private url = ''
+  public url = ''
 
   private userAgent = userAgent.mobile
 
@@ -46,8 +46,8 @@ export class View {
     this.window = window
 
     this.webContents.on('context-menu', (e, params) => {
-      console.log(params)
-      // todo 右键菜单
+      const menu = getViewMenu(this.window, params, this.webContents)
+      menu.popup()
     })
 
     this.webContents.addListener('page-title-updated', () => {
@@ -86,8 +86,8 @@ export class View {
       return { action: 'deny' }
     })
 
-    this.webContents.setUserAgent(userAgent.mobile)
-    this.session.setUserAgent(userAgent.mobile)
+    // this.webContents.setUserAgent(this.userAgent)
+    // this.session.setUserAgent(this.userAgent)
 
     this.plugins = new Plugins(this.browserView.webContents)
 
@@ -127,12 +127,10 @@ export class View {
 
         // 桌面端
         if (_userAgent.desktop.some((value) => completeURL.includes(value))) {
-          // console.log('dddddddd ' + completeURL)
           this.userAgent = userAgent.desktop
         }
         // 移动端
         else if (_userAgent.mobile.some((value) => completeURL.includes(value))) {
-          // console.log('mmmmmmmmm ' + completeURL)
           this.userAgent = userAgent.mobile
         } else {
           this.userAgent = userAgent.desktop
@@ -163,15 +161,14 @@ export class View {
     if (this.lastUrl === url) return
     this.lastUrl = url
     const updateUrlHooks = getHook('updateUrl')
-    updateUrlHooks?.before({
-      url,
-    })
+    const data = {
+      url: new URL(url),
+    }
+    updateUrlHooks?.before(data)
     this.webContents.setUserAgent(this.userAgent)
     this.webContents.send('load-commit')
     this.emitEvent('url-updated', url)
-    updateUrlHooks?.after({
-      url,
-    })
+    updateUrlHooks?.after(data)
   }
 
   public resizeWindowSize(windowType?: windowType): void {
@@ -288,7 +285,7 @@ export class View {
   }
 
   public updateTitle(): void {
-    const selected = Application.instance.mainWindow?.viewManager.selected
+    const selected = this.window.viewManager.selected
 
     if (!selected) return
 
