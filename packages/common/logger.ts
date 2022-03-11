@@ -11,14 +11,13 @@ const logName = `${electron.app.name}-%DATE%.log`
 
 export default createLogger({
   level,
-  format: format.timestamp({ format: 'YYYY-MM-dd HH:mm:ss.ms' }),
+  format: format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss.SSS' }),
   transports: [
     new transports.DailyRotateFile({
       level: 'debug',
       filename: resolve(logDir, logName),
       datePattern: 'YYYY-MM-DD',
       zippedArchive: true,
-      json: false,
       maxSize: '10m',
       maxFiles: '7d',
       format: format.combine(
