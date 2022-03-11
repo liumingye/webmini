@@ -121,7 +121,7 @@ export class ViewManager {
     return this.views.get(this.selectedId)
   }
 
-  public create(details: any, isNext = false, sendMessage = true) {
+  public create(details: any, isNext = false, sendMessage = true): View {
     const view = new View(this.window, details)
 
     const { webContents } = view.browserView
