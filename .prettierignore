@@ -1,3 +1,2 @@
 packages/renderer/src/components.d.ts
 packages/renderer/src/auto-imports.d.ts
-packages/inject/**/*.less

@@ -66,11 +66,11 @@ export class ViewManager {
       return
     }
 
-    this.selectedId = id
-
     if (this.selected) {
       this.window.win.removeBrowserView(this.selected.browserView)
     }
+
+    this.selectedId = id
 
     this.window.win.addBrowserView(view.browserView)
 
@@ -80,6 +80,8 @@ export class ViewManager {
     } else {
       this.window.webContents.focus()
     }
+
+    view.updateTitle()
 
     this.fixBounds()
 

@@ -12,7 +12,7 @@
     "url": "https://github.com/liumingye/bilimini/issues"
   },
   "homepage": "https://github.com/liumingye/bilimini",
-  "packageManager": "yarn@3.1.1",
+  "packageManager": "yarn@3.2.0",
   "scripts": {
     "dev": "node scripts/watch.mjs",
     "format": "prettier --write ./packages",
@@ -30,9 +30,9 @@
     "node": "^12.20.0 || ^14.13.1 || >=16.0.0"
   },
   "dependencies": {
-    "electron-is": "^3.0.0",
-    "@electron/remote": "^2.0.5",
     "@cliqz/adblocker-electron": "^1.23.6",
+    "@electron/remote": "^2.0.5",
+    "electron-is": "^3.0.0",
     "lodash": "^4.17.21",
     "winston": "^3.6.0",
     "winston-daily-rotate-file": "^4.6.1"

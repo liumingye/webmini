@@ -1,4 +1,4 @@
-import { BrowserView, screen } from 'electron'
+import { BrowserView, screen, app } from 'electron'
 import { MainWindow } from './windows/main'
 import { TabEvent, CreateProperties } from '~/interfaces/tabs'
 import Plugins from './plugins'
@@ -10,6 +10,7 @@ import is from 'electron-is'
 import { clamp } from 'lodash'
 import Storage from 'electron-json-storage'
 import { windowType } from '~/interfaces/view'
+import { Application } from './application'
 
 export class View {
   public windowType: windowType = 'mobile'
@@ -49,8 +50,8 @@ export class View {
       // todo 右键菜单
     })
 
-    this.webContents.addListener('page-title-updated', (e, title) => {
-      this.emitEvent('title-updated', title)
+    this.webContents.addListener('page-title-updated', () => {
+      this.updateTitle()
     })
 
     this.webContents.addListener('did-start-loading', () => {
@@ -66,7 +67,7 @@ export class View {
     })
 
     this.webContents.addListener('did-navigate', () => {
-      this.emitEvent('title-updated', this.webContents.getTitle())
+      this.updateTitle()
       this.updateURL(this.webContents.getURL())
     })
 
@@ -86,7 +87,7 @@ export class View {
     })
 
     this.webContents.setUserAgent(userAgent.mobile)
-    this.webContents.session.setUserAgent(userAgent.mobile)
+    this.session.setUserAgent(userAgent.mobile)
 
     this.plugins = new Plugins(this.browserView.webContents)
 
@@ -139,7 +140,7 @@ export class View {
 
         details.requestHeaders['User-Agent'] = this.userAgent
 
-        this.webContents.session.setUserAgent(this.userAgent)
+        this.session.setUserAgent(this.userAgent)
 
         this.resizeWindowSize()
       }
@@ -235,7 +236,7 @@ export class View {
       return 'login'
     } else if (completeURL.indexOf('t.bilibili.com/?tab') >= 0) {
       return 'feed'
-    } else if (this.webContents.session.getUserAgent() === userAgent.desktop) {
+    } else if (this.session.getUserAgent() === userAgent.desktop) {
       return 'desktop'
     }
     return 'mobile'
@@ -280,5 +281,17 @@ export class View {
 
   public emitEvent(event: TabEvent, ...args: any[]): void {
     this.window.send('tabEvent', event, this.id, args)
+  }
+
+  public get title() {
+    return this.webContents.getTitle()
+  }
+
+  public updateTitle() {
+    const selected = Application.instance.mainWindow?.viewManager.selected
+
+    if (!selected) return
+
+    this.emitEvent('title-updated', selected.title.trim() === '' ? app.name : selected.title)
   }
 }
