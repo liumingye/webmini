@@ -84,7 +84,7 @@ const initUpdater = (opts: IUpdateElectronAppOptions) => {
           buttons: ['立即更新', '稍后更新'],
           title: `${app.name}更新`,
           message: `发现新版本${releaseName}，重启以应用更新。`,
-          detail: releaseNotes.replace(/<[^>]+>/g, ''),
+          detail: releaseNotes.replace(/(<([^>]+)>)/gi, ''),
         }
 
         dialog.showMessageBox(dialogOpts).then(({ response }) => {
