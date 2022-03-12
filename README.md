@@ -1,6 +1,6 @@
 # webmini
 
-## 迷你web应用
+## 迷你 web 应用
 
 ![GitHub](https://img.shields.io/github/license/liumingye/webmini) ![GitHub package.json version](https://img.shields.io/github/package-json/v/liumingye/webmini) ![GitHub last commit](https://img.shields.io/github/last-commit/liumingye/webmini) [![Build/release](https://github.com/liumingye/webmini/actions/workflows/release.yml/badge.svg?branch=main)](https://github.com/liumingye/webmini/actions/workflows/release.yml)
 
