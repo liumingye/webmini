@@ -164,5 +164,6 @@ export class ViewManager {
     const browserView = this.selected?.browserView
     if (!browserView) return
     this.window.win.addBrowserView(browserView)
+    this.fixBounds()
   }
 }
