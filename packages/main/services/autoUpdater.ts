@@ -1,44 +1,45 @@
-import { app, autoUpdater, dialog } from 'electron'
+import { app, dialog } from 'electron'
+import { autoUpdater } from 'electron-updater'
 import ms from 'ms'
 import is from 'electron-is'
 import Logger from '~/common/logger'
 
-export interface ILogger {
-  log(message: string): void
-  info(message: string): void
-  error(message: string): void
-  warn(message: string): void
-}
-
 export interface IUpdateElectronAppOptions {
   /**
-   * @param {String} host Defaults to `https://update.electronjs.org`
+   * @param {String} host
    */
   readonly host?: string
   /**
-   * @param {String} updateInterval How frequently to check for updates. Defaults to `1 hours`.
-   *                                Minimum allowed interval is `5 minutes`.
+   * @param {String} updateInterval
+   * How frequently to check for updates.
    */
   readonly updateInterval?: string
   /**
-   * @param {Object} logger A custom logger object that defines a `log` function.
-   *                        Defaults to `console`. See electron-log, a module
-   *                        that aggregates logs from main and renderer processes into a single file.
+   * @param {Object} logger
+   * A custom logger object that defines a `log` function.
+   * Defaults to `console`. See electron-log, a module
+   * that aggregates logs from main and renderer processes into a single file.
    */
-  readonly logger?: ILogger
+  readonly logger?: typeof Logger
   /**
-   * @param {Boolean} notifyUser Defaults to `true`.  When enabled the user will be
-   *                             prompted to apply the update immediately after download.
+   * @param {Boolean} notifyUser
+   * When enabled the user will be
+   * prompted to apply the update immediately after download.
    */
   readonly notifyUser?: boolean
 }
 
 const supportedPlatforms = ['darwin', 'win32']
 
-const autoUpdaterService = (opts: IUpdateElectronAppOptions = {}): void => {
+const autoUpdaterService = (): void => {
   if (is.dev()) return
   // check for bad input early, so it will be logged during development
-  opts = validateInput(opts)
+  const opts: IUpdateElectronAppOptions = {
+    host: 'https://webmini.vercel.app',
+    updateInterval: '15 minutes',
+    logger: Logger,
+    notifyUser: true,
+  }
   app.isReady() ? initUpdater(opts) : app.on('ready', () => initUpdater(opts))
 }
 
@@ -61,25 +62,30 @@ const initUpdater = (opts: IUpdateElectronAppOptions) => {
   }
 
   log('feedURL', feedURL)
-  autoUpdater.setFeedURL({ url: feedURL })
+  // autoUpdater.setFeedURL({ url: feedURL })
 
+  // 当更新发生错误的时候触发。
   autoUpdater.on('error', (err) => {
     log('updater error')
     log(err)
   })
 
+  // 当开始检查更新的时候触发
   autoUpdater.on('checking-for-update', () => {
     log('checking-for-update')
   })
 
+  // 发现可更新数据时
   autoUpdater.on('update-available', () => {
     log('update-available; downloading...')
   })
 
+  // 没有可更新数据时
   autoUpdater.on('update-not-available', () => {
     log('update-not-available')
   })
 
+  // 下载完成
   if (opts.notifyUser) {
     autoUpdater.on(
       'update-downloaded',
@@ -107,16 +113,6 @@ const initUpdater = (opts: IUpdateElectronAppOptions) => {
     setInterval(() => {
       autoUpdater.checkForUpdates()
     }, ms(updateInterval))
-}
-
-const validateInput = (opts: IUpdateElectronAppOptions) => {
-  const defaults = {
-    host: 'https://webmini.vercel.app',
-    updateInterval: '1 hour',
-    logger: Logger,
-    notifyUser: true,
-  }
-  return Object.assign(defaults, opts)
 }
 
 export default autoUpdaterService

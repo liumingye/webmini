@@ -1211,6 +1211,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/semver@npm:^7.3.6":
+  version: 7.3.9
+  resolution: "@types/semver@npm:7.3.9::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2F%40types%2Fsemver%2F-%2Fsemver-7.3.9.tgz"
+  checksum: 60bfcfdfa7f937be2c6f4b37ddb6714fb0f27b05fe4cbdfdd596a97d35ed95d13ee410efdd88e72a66449d0384220bf20055ab7d6b5df10de4990fbd20e5cbe0
+  languageName: node
+  linkType: hard
+
 "@types/throttle-debounce@npm:^2.1.0":
   version: 2.1.0
   resolution: "@types/throttle-debounce@npm:2.1.0::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2F%40types%2Fthrottle-debounce%2F-%2Fthrottle-debounce-2.1.0.tgz"
@@ -3612,6 +3619,22 @@ __metadata:
   version: 1.4.75
   resolution: "electron-to-chromium@npm:1.4.75::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Felectron-to-chromium%2F-%2Felectron-to-chromium-1.4.75.tgz"
   checksum: 38ae5e197a100b9f9931a6112b0791659f736ad88ab3cd5534ed07dcc6001964a99de6757cbb708007bc59b0cd1b7cc36aeb5ea2efbfff6bd36ab53e49decb69
+  languageName: node
+  linkType: hard
+
+"electron-updater@npm:^4.6.5":
+  version: 4.6.5
+  resolution: "electron-updater@npm:4.6.5::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Felectron-updater%2F-%2Felectron-updater-4.6.5.tgz"
+  dependencies:
+    "@types/semver": ^7.3.6
+    builder-util-runtime: 8.9.2
+    fs-extra: ^10.0.0
+    js-yaml: ^4.1.0
+    lazy-val: ^1.0.5
+    lodash.escaperegexp: ^4.1.2
+    lodash.isequal: ^4.5.0
+    semver: ^7.3.5
+  checksum: 06b34490fa6213f5c6a01de6f7b3d96eba4e1b7d27e8346747d8b094b9591684f55f92c703e2ee3407c562a240518c0eede699462cc333fcfe2983141941fe98
   languageName: node
   linkType: hard
 
@@ -6151,6 +6174,13 @@ __metadata:
   dependencies:
     signal-exit: ^3.0.2
   checksum: 8de35aace8acbe883cbca3cc3959e88904d57c79dccd4afffc64aea8f9cf7b4c63598d08b8add66fbf381f8fb3ce4fd4c518cd231c797c266b6c790eb7b33abc
+  languageName: node
+  linkType: hard
+
+"lodash.escaperegexp@npm:^4.1.2":
+  version: 4.1.2
+  resolution: "lodash.escaperegexp@npm:4.1.2::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Flodash.escaperegexp%2F-%2Flodash.escaperegexp-4.1.2.tgz"
+  checksum: 6d99452b1cfd6073175a9b741a9b09ece159eac463f86f02ea3bee2e2092923fce812c8d2bf446309cc52d1d61bf9af51c8118b0d7421388e6cead7bd3798f0f
   languageName: node
   linkType: hard
 
@@ -9961,6 +9991,7 @@ __metadata:
     electron-fetch: ^1.7.4
     electron-is: ^3.0.0
     electron-json-storage: ^4.5.0
+    electron-updater: ^4.6.5
     eslint: ^8.10.0
     eslint-config-prettier: ^8.5.0
     eslint-plugin-prettier: ^4.0.0

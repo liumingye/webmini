@@ -1,6 +1,6 @@
 {
   "name": "webmini",
-  "version": "1.0.4",
+  "version": "1.0.3",
   "main": "dist/main/index.cjs",
   "author": "liumingye <liumingye2015@gmail.com>",
   "license": "MIT",
@@ -55,6 +55,7 @@
     "electron-devtools-installer": "^3.2.0",
     "electron-fetch": "^1.7.4",
     "electron-json-storage": "^4.5.0",
+    "electron-updater": "^4.6.5",
     "eslint": "^8.10.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-prettier": "^4.0.0",

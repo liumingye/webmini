@@ -31,7 +31,6 @@ export const replaceTitle = (title: string): string => {
     ],
     '',
   )
-  title = replace(title, ['bilibili', '哔哩哔哩'], 'webmini')
   return title
 }
 

@@ -30,7 +30,7 @@ export default createLogger({
       format: format.combine(format.colorize({ all: true })),
       log: ({ level, message, label, timestamp }, next) => {
         const print = `${timestamp} ${label ? `[${label}] ` : ''}${level}: ${message}`
-        console.log(print)
+        is.renderer() && console.log(print)
         node_console.log(print)
         next()
       },
