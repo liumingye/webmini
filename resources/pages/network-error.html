@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="color-scheme" content="dark light" />
+
+    <style>
+      body {
+        margin: 0;
+        color: #0000008a;
+      }
+
+      .main {
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        max-width: 512px;
+        padding: 0 16px;
+        margin: 0 auto;
+      }
+
+      #main-title {
+        font-size: 24px;
+        font-weight: 500;
+        margin-bottom: 16px;
+      }
+
+      #main-error-code {
+        font-size: 12px;
+      }
+
+      #main-description {
+        margin-bottom: 16px;
+        line-height: 1.5rem;
+      }
+
+      ul {
+        margin-top: 0;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="main">
+      <div id="main-title"></div>
+      <div id="main-description"></div>
+      <div id="main-error-code"></div>
+    </div>
+
+    <script>
+      const _URL = new URL(location.href)
+      const errorURL = _URL.searchParams.get('errorURL')
+      const errorCode = _URL.searchParams.get('errorCode')
+      document.title = errorURL
+
+      const info = {
+        '-6': {
+          title: 'Your file was not found',
+          description: `It may have been moved or deleted.`,
+          code: 'ERR_FILE_NOT_FOUND',
+        },
+        '-10': {
+          title: 'This site can’t be reached',
+          description: `The webpage at <b>${errorURL}</b> might be temporarily down or it may have moved permanently to a new web address.`,
+          code: 'ERR_ACCESS_DENIED',
+        },
+        '-105': {
+          title: 'This site can’t be reached',
+          description: `<b>${errorURL}</b>’s server IP address could not be found.`,
+          code: 'ERR_NAME_NOT_RESOLVED',
+        },
+        '-106': {
+          title: 'No internet',
+          description: `Try: <ul><li>Checking the network cables, modem, and router</li><li>Reconnecting to Wi-Fi</li></ul>`,
+          code: 'ERR_INTERNET_DISCONNECTED',
+        },
+        '-108': {
+          title: 'This site can’t be reached',
+          description: `The webpage at <b>${errorURL}</b> might be temporarily down or it may have moved permanently to a new web address.`,
+          code: 'ERR_ADDRESS_INVALID',
+        },
+        '-109': {
+          title: 'This site can’t be reached',
+          description: `<b>${errorURL}</b> is unreachable.`,
+          code: 'ERR_ADDRESS_UNREACHABLE',
+        },
+        '-300': {
+          title: 'This site can’t be reached',
+          description: `The webpage at <b>${errorURL}</b> might be temporarily down or it may have moved permanently to a new web address.`,
+          code: 'ERR_INVALID_URL',
+        },
+        '-379': {
+          title: 'This site can’t be reached',
+          description: `The webpage at <b>${errorURL}</b> might be temporarily down or it may have moved permanently to a new web address.`,
+          code: 'ERR_HTTP_RESPONSE_CODE_FAILURE',
+        },
+      }
+
+      const errorCodeEl = document.getElementById('main-error-code')
+      const titleEl = document.getElementById('main-title')
+      const descriptionEl = document.getElementById('main-description')
+
+      const { title, description, code, icon } = info[errorCode]
+      titleEl.textContent = title
+      descriptionEl.innerHTML = description
+      errorCodeEl.textContent = code
+
+      const onDarkModeChange = ({ matches }) => {
+        if (matches) {
+          document.body.style.color = '#ffffff8a'
+          document.body.style.backgroundColor = '#000'
+        } else {
+          document.body.style.color = '#0000008a'
+          document.body.style.backgroundColor = '#fff'
+        }
+      }
+      const darkModeMediaQuery = window.matchMedia('(prefers-color-scheme: dark)')
+      darkModeMediaQuery.addEventListener('change', onDarkModeChange)
+      onDarkModeChange(darkModeMediaQuery)
+    </script>
+  </body>
+</html>

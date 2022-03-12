@@ -6,15 +6,12 @@ import { WebContents, nativeTheme, app } from 'electron'
 import { Application } from '../application'
 import { matchPattern } from '../utils'
 import Net from '~/common/net'
-import is from 'electron-is'
 import { Color } from '~/common/color'
 import { MainWindow } from '../windows/main'
 
 export const pluginsMap: { [name: string]: PluginMetadata } = {}
 const getBuiltInPlugins = once(() => {
-  const context = is.dev()
-    ? import.meta.globEager('../../../resources/plugins/*/index.ts')
-    : import.meta.globEager('../../../resources/plugins/*/index.ts')
+  const context = import.meta.globEager('../../../resources/plugins/*/index.ts')
   const pluginPaths = Object.keys(context)
   return pluginPaths
     .map((path) => {

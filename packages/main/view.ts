@@ -4,7 +4,7 @@ import { TabEvent, CreateProperties } from '~/interfaces/tabs'
 import Plugins from './plugins'
 import { registerAndGetData } from './plugins/data'
 import { getHook } from './plugins/hook'
-import { userAgent } from '~/common/constant'
+import { userAgent, ERROR_PROTOCOL, NETWORK_ERROR_HOST } from '~/common/constant'
 import { matchPattern } from './utils'
 import is from 'electron-is'
 import { clamp } from 'lodash'
@@ -71,14 +71,18 @@ export class View {
       this.updateURL(this.webContents.getURL())
     })
 
-    // this.webContents.addListener('did-navigate-in-page', async () => {
-    //   this.updateURL(this.webContents.getURL())
-    // })
-
-    // this.webContents.addListener('did-start-navigation', async () => {
-    // this.updateNavigationState()
-    // this.updateURL(this.webContents.getURL())
-    // })
+    this.webContents.addListener(
+      'did-fail-load',
+      (e, errorCode, errorDescription, errorURL, isMainFrame) => {
+        // ignore -3 (ABORTED) - An operation was aborted (due to user action).
+        if (isMainFrame && errorCode !== -3) {
+          const _URL = new URL(`${ERROR_PROTOCOL}://${NETWORK_ERROR_HOST}`)
+          _URL.searchParams.append('errorCode', errorCode.toString())
+          _URL.searchParams.append('errorURL', errorURL)
+          this.webContents.loadURL(_URL.href)
+        }
+      },
+    )
 
     // Make all links open with the browser, not with the application
     this.webContents.setWindowOpenHandler(({ url }) => {

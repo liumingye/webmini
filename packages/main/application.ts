@@ -6,6 +6,7 @@ import { SelectPartWindow } from './windows/selectPart'
 import { getMainMenu } from './menus/main'
 import adblockerService from './services/adblocker'
 import autoUpdaterService from './services/autoUpdater'
+import { SessionsService } from './services/sessions'
 import installExtension, { VUEJS3_DEVTOOLS } from 'electron-devtools-installer'
 
 export class Application {
@@ -70,10 +71,13 @@ export class Application {
     // 服务
     adblockerService(session.defaultSession)
     autoUpdaterService()
+    new SessionsService()
 
-    // vue devtool
+    // vue-devtools
     if (is.dev()) {
-      installExtension(VUEJS3_DEVTOOLS.id)
+      installExtension(VUEJS3_DEVTOOLS.id, {
+        loadExtensionOptions: { allowFileAccess: true },
+      })
         .then((name) => console.log(`Added Extension:  ${name}`))
         .catch((err) => console.log('An error occurred: ', err))
     }

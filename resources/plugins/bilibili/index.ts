@@ -9,7 +9,6 @@ import {
   getPartOfVideo,
 } from './utils'
 import { resolve } from 'path'
-import is from 'electron-is'
 
 export const plugin: PluginMetadata = {
   name: 'bilibili',
@@ -22,14 +21,7 @@ export const plugin: PluginMetadata = {
     't.bilibili.com',
     'link.bilibili.com',
   ],
-  preloads: [
-    resolve(
-      __dirname,
-      is.dev()
-        ? '../../resources/plugins/bilibili/dist/index.cjs'
-        : '../../../plugins/bilibili/dist/index.cjs',
-    ),
-  ],
+  preloads: [resolve(__dirname, '../../resources/plugins/bilibili/dist/index.cjs')],
   load: ({ addHook, addData, application, webContents, net }) => {
     const last = {
       vid: '',

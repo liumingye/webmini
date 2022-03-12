@@ -4,8 +4,8 @@ import { getCurrentWindow } from '@electron/remote'
 class Cookies {
   private cookies
 
-  constructor() {
-    this.cookies = getCurrentWindow().webContents.session.cookies
+  constructor(cookies = getCurrentWindow().webContents.session.cookies) {
+    this.cookies = cookies
   }
 
   public get = (filter: Electron.CookiesGetFilter) => {

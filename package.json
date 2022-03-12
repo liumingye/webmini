@@ -1,6 +1,6 @@
 {
   "name": "webmini",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "main": "dist/main/index.cjs",
   "author": "liumingye <liumingye2015@gmail.com>",
   "license": "MIT",
@@ -87,31 +87,26 @@
   },
   "build": {
     "appId": "org.electron.webmini",
+    "productName": "webmini",
     "asar": true,
     "artifactName": "${name}-${version}-${os}-${arch}.${ext}",
     "directories": {
-      "output": "release/${version}"
+      "output": "release/${version}",
+      "buildResources": "build/icons"
     },
     "files": [
-      "dist"
+      "dist",
+      "resources/**/*"
     ],
-    "extraResources": {
-      "from": "./resources/",
-      "to": "./",
-      "filter": [
-        "**/*"
-      ]
-    },
     "linux": {
-      "category": "Video",
+      "category": "Network",
       "target": [
         "appimage",
         "snap"
-      ],
-      "icon": "build/icons"
+      ]
     },
     "mac": {
-      "category": "public.app-category.video",
+      "category": "public.app-category.navigation",
       "target": [
         {
           "target": "zip",
@@ -128,8 +123,7 @@
           ]
         }
       ],
-      "darkModeSupport": true,
-      "icon": "build/icons/icon.icns"
+      "darkModeSupport": true
     },
     "win": {
       "target": [
@@ -147,8 +141,7 @@
             "ia32"
           ]
         }
-      ],
-      "icon": "build/icons/icon.ico"
+      ]
     },
     "snap": {
       "publish": [
