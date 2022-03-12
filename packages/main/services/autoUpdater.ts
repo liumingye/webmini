@@ -6,10 +6,6 @@ import Logger from '~/common/logger'
 
 export interface IUpdateElectronAppOptions {
   /**
-   * @param {String} host
-   */
-  readonly host?: string
-  /**
    * @param {String} updateInterval
    * How frequently to check for updates.
    */
@@ -29,13 +25,10 @@ export interface IUpdateElectronAppOptions {
   readonly notifyUser?: boolean
 }
 
-const supportedPlatforms = ['darwin', 'win32']
-
 const autoUpdaterService = (): void => {
   if (is.dev()) return
   // check for bad input early, so it will be logged during development
   const opts: IUpdateElectronAppOptions = {
-    host: 'https://webmini.vercel.app',
     updateInterval: '15 minutes',
     logger: Logger,
     notifyUser: true,
@@ -44,25 +37,19 @@ const autoUpdaterService = (): void => {
 }
 
 const initUpdater = (opts: IUpdateElectronAppOptions) => {
-  const { host, updateInterval, logger } = opts
-  const feedURL = `${host}/update/${process.platform}/${app.getVersion()}`
+  const { updateInterval, logger } = opts
 
   const log = (...args: any) => {
     logger && logger.info(args)
   }
 
-  // exit early on unsupported platforms, e.g. `linux`
-  if (
-    typeof process !== 'undefined' &&
-    process.platform &&
-    !supportedPlatforms.includes(process.platform)
-  ) {
-    log(`Electron's autoUpdater does not support the '${process.platform}' platform`)
-    return
-  }
-
-  log('feedURL', feedURL)
-  // autoUpdater.setFeedURL({ url: feedURL })
+  // 使用 ghproxy 加速下载
+  autoUpdater.netSession.webRequest.onBeforeRequest((details, callback) => {
+    if (/^https:\/\/github.com\/(.*?)\/releases\/download\//.test(details.url)) {
+      return callback({ redirectURL: `https://ghproxy.com/${details.url}` })
+    }
+    callback({})
+  })
 
   // 当更新发生错误的时候触发。
   autoUpdater.on('error', (err) => {
@@ -89,15 +76,15 @@ const initUpdater = (opts: IUpdateElectronAppOptions) => {
   if (opts.notifyUser) {
     autoUpdater.on(
       'update-downloaded',
-      (event, releaseNotes, releaseName, releaseDate, updateURL) => {
-        log('update-downloaded', [event, releaseNotes, releaseName, releaseDate, updateURL])
+      ({ releaseNotes, releaseName, releaseDate, downloadedFile }) => {
+        log('update-downloaded', [releaseNotes, releaseName, releaseDate, downloadedFile])
 
         const dialogOpts = {
           type: 'info',
-          buttons: ['重启', '以后'],
-          title: '发现新版本',
-          message: process.platform === 'win32' ? releaseNotes : releaseName,
-          detail: '新版本已下载完成，重新启动程序以应用更新。',
+          buttons: ['立即更新', '稍后更新'],
+          title: `${app.name}更新`,
+          message: `发现新版本${releaseName}，重启以应用更新。`,
+          detail: releaseNotes.replace(/<[^>]+>/g, ''),
         }
 
         dialog.showMessageBox(dialogOpts).then(({ response }) => {

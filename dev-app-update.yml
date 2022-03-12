@@ -1,2 +1,3 @@
-provider: generic
-url: 'https://webmini.vercel.app/files'
+provider: github
+owner: liumingye
+repo: webmini
