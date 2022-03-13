@@ -8,6 +8,7 @@ import adblockerService from './services/adblocker'
 import autoUpdaterService from './services/autoUpdater'
 import { SessionsService } from './services/sessions'
 import installExtension, { VUEJS3_DEVTOOLS } from 'electron-devtools-installer'
+import AdapterHandler from './plugins/handler'
 
 export class Application {
   public static instance = new this()
@@ -47,8 +48,25 @@ export class Application {
     this.onReady()
   }
 
+  /**
+   * 安装内置插件
+   */
+  public async getBuiltInPlugins() {
+    const baseDir = join(app.getPath('userData'), './plugins')
+    const handler = new AdapterHandler({
+      baseDir,
+    })
+    const plugin = {
+      name: 'webmini-bilibili',
+    }
+    await handler.install([plugin.name], { isDev: false })
+  }
+
   private async onReady() {
     await app.whenReady()
+
+    await this.getBuiltInPlugins()
+
     this.createAllWindow()
     Menu.setApplicationMenu(getMainMenu())
 

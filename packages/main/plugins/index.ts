@@ -8,26 +8,31 @@ import { matchPattern } from '../utils'
 import Net from '~/common/net'
 import { Color } from '~/common/color'
 import { MainWindow } from '../windows/main'
+import AdapterHandler from './handler'
+import { join, resolve } from 'path'
+import fs from 'fs'
+
+const baseDir = join(app.getPath('userData'), './plugins')
 
 export const pluginsMap: { [name: string]: PluginMetadata } = {}
-const getBuiltInPlugins = once(() => {
-  const context = import.meta.globEager('../../../resources/plugins/*/index.ts')
-  const pluginPaths = Object.keys(context)
-  return pluginPaths
-    .map((path) => {
-      const module = context[path]
-      if ('plugin' in module) {
-        const plugin = module.plugin
-        pluginsMap[plugin.name] = plugin
-        return plugin
-      }
-      return undefined
-    })
-    .filter((it) => it !== undefined)
-})()
+// const getBuiltInPlugins = once(() => {
+//   const context = import.meta.globEager('../../../resources/plugins/*/index.ts.bak')
+//   const pluginPaths = Object.keys(context)
+//   return pluginPaths
+//     .map((path) => {
+//       const module = context[path]
+//       if ('plugin' in module) {
+//         const plugin = module.plugin
+//         pluginsMap[plugin.name] = plugin
+//         return plugin
+//       }
+//       return undefined
+//     })
+//     .filter((it) => it !== undefined)
+// })()
 
 class Plugins {
-  public allPlugins: PluginMetadata[] = getBuiltInPlugins
+  public allPlugins: PluginMetadata[]
 
   public enablePlugins: PluginMetadata[] = []
 
@@ -35,9 +40,27 @@ class Plugins {
 
   public webContents: WebContents
 
+  public handler: AdapterHandler
+
   public constructor(window: MainWindow, webContents: WebContents) {
     this.window = window
     this.webContents = webContents
+
+    this.allPlugins = []
+
+    this.handler = new AdapterHandler({
+      baseDir,
+    })
+
+    const plugin = {
+      name: 'webmini-bilibili',
+    }
+    const pluginPath = resolve(baseDir, 'node_modules', plugin.name)
+    const pluginInfo = JSON.parse(fs.readFileSync(join(pluginPath, './package.json'), 'utf8'))
+    const _load = import(resolve(pluginPath, pluginInfo.main))
+    _load.then((res) => {
+      this.allPlugins.push(res.plugin)
+    })
   }
 
   /**
@@ -58,6 +81,7 @@ class Plugins {
           ...this.webContents.session.getPreloads(),
           ...plugin.preloads,
         ])
+        console.log(this.webContents.session.getPreloads())
         plugin.load({
           addHook,
           addData,
@@ -79,6 +103,7 @@ class Plugins {
       ...this.webContents.session.getPreloads(),
       `${app.getAppPath()}/dist/inject/index.cjs`,
     ])
+    console.log(this.allPlugins)
     const res = this.allPlugins
       .map(this.loadPlugin(url))
       .filter((it) => it !== undefined) as PluginMetadata[]

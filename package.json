@@ -32,7 +32,9 @@
   "dependencies": {
     "@cliqz/adblocker-electron": "^1.23.6",
     "@electron/remote": "^2.0.5",
+    "cross-spawn": "^7.0.3",
     "electron-is": "^3.0.0",
+    "fix-path": "^4.0.0",
     "lodash": "^4.17.21",
     "winston": "^3.6.0",
     "winston-daily-rotate-file": "^4.6.1"
@@ -41,6 +43,7 @@
     "@arco-design/web-vue": "^2.18.0",
     "@commitlint/cli": "^16.2.1",
     "@commitlint/config-conventional": "^16.2.1",
+    "@types/cross-spawn": "^6.0.2",
     "@types/electron-json-storage": "^4.5.0",
     "@types/lodash": "^4.14.179",
     "@types/nprogress": "^0.2.0",
