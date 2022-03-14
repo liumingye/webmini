@@ -5,14 +5,15 @@
   import { callViewMethod } from '@/utils/view'
   import overlayScrollbars from 'overlayscrollbars'
   import { ipcRendererOn } from '@/utils/ipc'
+  import NProgress from 'nprogress'
 
   const appStore = useAppStore()
   const tabsStore = useTabsStore()
   const route = useRoute()
   const router = useRouter()
   const showTopBar = computed(() => appStore.showTopBar)
-  const autoHideBar = computed(() => appStore.autoHideBar)
   const scrollContainer = ref()
+  const scrollbars = ref<overlayScrollbars>()
 
   ipcRendererOn()
   // tabsStore.init()
@@ -23,7 +24,7 @@
     initMouseStateDirtyCheck()
     watchAlwaysOnTop()
 
-    overlayScrollbars(scrollContainer.value, {
+    scrollbars.value = overlayScrollbars(scrollContainer.value, {
       scrollbars: {
         autoHide: 'leave',
         clickScrolling: true,
@@ -59,8 +60,25 @@
     to.meta.transition = toDepth < fromDepth ? 'slide-right' : 'slide-left'
   })
 
-  // 加载内置插件
+  // router.beforeEach(() => {
+  //   NProgress.start().inc()
+  //   if (from.name) {
+  //     from.matched[0].meta.scrollTop = scrollbars.value?.scroll().position.y
+  //   }
+  // })
 
+  // router.afterEach(() => {
+  //   NProgress.done()
+  // })
+
+  // router.options.scrollBehavior = (to, from) => {
+  //   if (to.name === from.name) return
+  //   setTimeout(() => {
+  //     scrollbars.value?.scroll({ y: to.meta.scrollTop || 0 })
+  //   }, 0)
+  // }
+
+  // 加载内置插件
   const startupTab = async () => {
     await tabsStore.addTab({
       url: START,
@@ -75,18 +93,16 @@
 <template>
   <main
     id="main"
-    class="transition-all flex flex-col h-full"
-    :class="['select-none', { showTopBar, autoHideBar }]"
+    class="transition-transform h-full select-none"
+    :class="[{ showTopBar }, route.name === 'Home' ? 'bg-$theme-color-bg' : 'bg-$color-bg-2']"
   >
     <TopBar />
-    <div
-      ref="scrollContainer"
-      class="relative h-full w-full text-$color-text-1"
-      :class="route.name === 'Home' ? 'bg-$theme-color-bg' : 'bg-$color-bg-2'"
-    >
+    <div ref="scrollContainer" class="text-$color-text-1 h-[calc(100%-2rem)] w-full">
       <router-view v-slot="{ Component }">
         <transition :name="route.meta.transition">
-          <component :is="Component" class="min-h-full min-w-full" />
+          <keep-alive>
+            <component :is="Component" class="min-h-full bg-$color-bg-1" />
+          </keep-alive>
         </transition>
       </router-view>
     </div>
@@ -95,14 +111,11 @@
 
 <style lang="less" scoped>
   #main {
-    margin-top: -2rem;
-
-    &.autoHideBar {
-      display: block;
-    }
+    will-change: transform;
+    transform: translate3d(0, -2rem, 0);
 
     &.showTopBar {
-      margin-top: 0;
+      transform: translate3d(0, 0, 0);
     }
   }
 </style>

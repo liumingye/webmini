@@ -7,6 +7,7 @@ import Net from '~/common/net'
 import Logger from '~/common/logger'
 import Versions from './utils/versions'
 import Storage from 'electron-json-storage'
+import { StorageService } from '~/main/services/storage'
 
 const { appendLoading, removeLoading } = useLoading()
 
@@ -16,7 +17,7 @@ const loading = async () => {
 }
 loading()
 
-Storage.setDataPath(app.getPath('userData'))
+// Storage.setDataPath(app.getPath('userData'))
 
 // `exposeInMainWorld` can't detect attributes and methods of `prototype`, manually patching it.
 const withPrototype = (obj: Record<string, any>) => {
@@ -54,7 +55,7 @@ const {
 } = getCurrentWindow()
 
 contextBridge.exposeInMainWorld('app', {
-  storage: Storage,
+  storage: StorageService.instance,
   cookies: new Cookies(),
   versions: new Versions(),
   screen: withPrototype(screen),

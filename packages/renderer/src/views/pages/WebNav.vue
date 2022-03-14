@@ -73,7 +73,7 @@
 </script>
 
 <template>
-  <div class="bg-$color-bg-2 px-2 py-4 max-w-200 mx-auto">
+  <div class="px-2 py-4 max-w-200 mx-auto">
     <div class="px-2">
       <a-input-search
         v-model="naviGotoTarget"
@@ -100,5 +100,13 @@
         </div>
       </div>
     </div>
+    <a-space>
+      <router-link :to="{ name: 'Plugins' }">
+        <a-button>插件市场</a-button>
+      </router-link>
+      <router-link :to="{ name: 'Settings' }">
+        <a-button>设置</a-button>
+      </router-link>
+    </a-space>
   </div>
 </template>

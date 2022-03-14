@@ -29,7 +29,7 @@ app.commandLine.appendSwitch('--enable-features', 'OverlayScrollbar')
 ipcMain.setMaxListeners(0)
 
 // set current data path
-Storage.setDataPath(app.getPath('userData'))
+// Storage.setDataPath(app.getPath('userData'))
 
 // start app
 const application = Application.instance

@@ -1,4 +1,4 @@
-import { AdapterHandlerOptions, AdapterInfo } from './types'
+import { AdapterHandlerOptions, AdapterInfo } from '~/interfaces/plugin'
 import fs from 'fs-extra'
 import path from 'path'
 import Net from '~/common/net'

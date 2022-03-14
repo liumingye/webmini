@@ -18,39 +18,37 @@ html {
 
 // 路由动画
 .slide-left-enter-from {
-  transform: translate3d(20%, 0, 0);
-  opacity: 0;
+  transform: translate3d(100%, 0, 0);
 }
-
 .slide-left-enter-active {
-  transition: all 0.15s ease-out;
+  position: fixed;
+  width: 100%;
+  z-index: 9999;
+  transition: transform 0.3s ease-out;
 }
-
 .slide-left-leave-to {
-  position: absolute;
-  transform: translate3d(-100%, 0, 0);
-  opacity: 0;
+  transform: translate3d(-20%, 0, 0);
 }
-
 .slide-left-leave-active {
-  transition: all 0.15s ease-in;
+  position: absolute;
+  width: 100%;
+  transition: transform 0.3s ease-in;
 }
 
 .slide-right-enter-from {
   transform: translate3d(-20%, 0, 0);
-  opacity: 0;
 }
-
 .slide-right-enter-active {
-  transition: all 0.15s ease-out;
+  position: fixed;
+  width: 100%;
+  transition: transform 0.3s ease-out;
 }
-
 .slide-right-leave-to {
-  position: absolute;
   transform: translate3d(100%, 0, 0);
-  opacity: 0;
 }
-
 .slide-right-leave-active {
-  transition: all 0.15s ease-in;
+  position: absolute;
+  width: 100%;
+  z-index: 9999;
+  transition: transform 0.3s ease-in;
 }

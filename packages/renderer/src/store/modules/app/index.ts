@@ -27,38 +27,15 @@ export const useAppStore = defineStore('app', {
   actions: {
     init() {
       const storage = window.app.storage
-      storage.get('config', (error, data) => {
-        if (error) {
-          // 读取出错删除配置文件
-          storage.remove('config', function (error) {
-            if (error) {
-              window.app.logger.error(error)
-              throw error
-            }
-          })
-          window.app.logger.error(error)
-          throw error
-        }
-        for (const key in data) {
-          // @ts-ignore
-          this.$state[key] = data[key]
-        }
-      })
+      const config = storage.get()
+      for (const key in config) {
+        // @ts-ignore
+        this.$state[key] = config[key]
+      }
     },
     saveConfig<T extends keyof AppConfig>(newJson: Record<T, AppConfig[T]>) {
       const storage = window.app.storage
-      storage.get('config', (error, oldJson: any) => {
-        if (error) {
-          window.app.logger.error(error)
-          throw error
-        }
-        storage.set('config', { ...oldJson, ...newJson }, (error: any) => {
-          if (error) {
-            window.app.logger.error(error)
-            throw error
-          }
-        })
-      })
+      storage.update(newJson)
     },
     updateURL(url: string, tabId: number) {
       window.app.logger.info(`updateURL - ${url} - tabId - ${tabId}`, { label: 'appStore' })

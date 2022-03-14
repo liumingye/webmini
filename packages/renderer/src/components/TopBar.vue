@@ -128,7 +128,8 @@
 
 <template>
   <header
-    class="drag flex flex-shrink-0 px-2 h-8 bg-$theme-color-bg gap-1.5 items-center transition-colors duration-300"
+    class="drag flex flex-shrink-0 px-2 h-8 gap-1.5 items-center transition-colors duration-300"
+    :class="route.name"
   >
     <div class="flex-1 flex gap-1.5">
       <b-button id="navi-back" title="后退" :disabled="disableBack" @click="goBack">
@@ -141,7 +142,7 @@
         <icon-home size=".8em" />
       </b-button>
     </div>
-    <div class="truncate text-$theme-color-text text-0.9em" :title="title">
+    <div class="truncate text-0.9em" :title="title">
       {{ title }}
     </div>
     <div class="flex-1 flex gap-1.5 justify-end">
@@ -175,9 +176,22 @@
 </template>
 
 <style lang="less" scoped>
-  button {
-    color: var(--theme-color-bg);
-    background: var(--theme-color-text);
+  header {
+    background: var(--color-bg-1);
+    color: var(--color-text-1);
+    button {
+      color: var(--color-bg-1);
+      background: var(--color-text-1);
+    }
+    &.Home,
+    &.About {
+      background: var(--theme-color-bg) !important;
+      color: var(--theme-color-text) !important;
+      button {
+        color: var(--theme-color-bg);
+        background: var(--theme-color-text);
+      }
+    }
   }
 
   #navi-back {

@@ -1,7 +1,7 @@
 import { BrowserView, screen, app } from 'electron'
 import { MainWindow } from './windows/main'
 import { TabEvent, CreateProperties } from '~/interfaces/tabs'
-import Plugins from './plugins'
+import TabPlugin from './plugins/tab'
 import { registerAndGetData } from './plugins/data'
 import { getHook } from './plugins/hook'
 import { userAgent, ERROR_PROTOCOL, NETWORK_ERROR_HOST } from '~/common/constant'
@@ -19,7 +19,7 @@ export class View {
 
   private window: MainWindow
 
-  private plugins: Plugins
+  private plugins: TabPlugin
 
   public bounds:
     | {
@@ -39,6 +39,7 @@ export class View {
   public constructor(window: MainWindow, details: CreateProperties) {
     this.browserView = new BrowserView({
       webPreferences: {
+        webSecurity: true,
         sandbox: true,
       },
     })
@@ -93,7 +94,7 @@ export class View {
     // this.webContents.setUserAgent(this.userAgent)
     // this.session.setUserAgent(this.userAgent)
 
-    this.plugins = new Plugins(this.window, this.browserView.webContents)
+    this.plugins = new TabPlugin(this.window, this.browserView.webContents)
 
     this.webContents.loadURL(details.url, details.options)
 

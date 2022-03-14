@@ -20,7 +20,8 @@ import 'overlayscrollbars/css/OverlayScrollbars.css'
 // global style
 import '@/assets/css/global.less'
 
-window.app.logger.debug('init')
+import { setGlobalOptions } from 'vue-request'
+import NProgress from 'nprogress'
 
 createApp(App)
   .use(router)
@@ -29,3 +30,13 @@ createApp(App)
   .use(Icon)
   .mount('#app')
   .$nextTick(window.removeLoading)
+
+// NProgress
+NProgress.configure({ easing: 'ease', speed: 200, trickleSpeed: 50, showSpinner: false })
+
+// VueRequest
+setGlobalOptions({
+  manual: true,
+  errorRetryCount: 1,
+  debounceInterval: 250,
+})

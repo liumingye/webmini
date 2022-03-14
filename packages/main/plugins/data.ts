@@ -1,5 +1,5 @@
 /** 执行数据注入, 参数将由插件注册者提供 */
-import { PluginDataProvider } from './types'
+import { PluginDataProvider } from '~/interfaces/plugin'
 
 const pluginDataMap = new Map<
   string,

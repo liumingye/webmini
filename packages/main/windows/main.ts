@@ -1,27 +1,26 @@
 import { CommonWindow } from './common'
-import { BrowserWindow, app, shell } from 'electron'
+import { BrowserWindow, app, shell, BrowserWindowConstructorOptions } from 'electron'
 import is from 'electron-is'
 import { join } from 'path'
-import Storage from 'electron-json-storage'
 import { Application } from '../application'
 import { ViewManager } from '../viewManager'
 import { throttle } from 'lodash'
+import { StorageService } from '../services/storage'
 
 export class MainWindow extends CommonWindow {
   public viewManager: ViewManager
 
   public constructor() {
-    const bound: Record<string, number> = {}
+    const bound: BrowserWindowConstructorOptions = {}
 
-    const config: any = Storage.getSync('config')
+    const windowPosition = StorageService.instance.find('windowPosition')
+    const windowSize = StorageService.instance.find('windowSize')
 
-    const windowPosition = config['windowPosition']
     if (windowPosition) {
       bound.x = windowPosition[0]
       bound.y = windowPosition[1]
     }
 
-    const windowSize = config['windowSize']
     if (windowSize && windowSize['mobile']) {
       bound.width = windowSize['mobile'][0]
       bound.height = windowSize['mobile'][1]
@@ -32,13 +31,14 @@ export class MainWindow extends CommonWindow {
 
     const window = new BrowserWindow({
       ...bound,
-      // opacity: 0.5,
+      // transparent: true,
       minHeight: 170,
       minWidth: 300,
       frame: false, // 是否有边框
       maximizable: false,
       alwaysOnTop: true,
       webPreferences: {
+        webSecurity: false,
         preload: join(__dirname, '../preload/index.cjs'), // 预先加载指定的脚本
         // nativeWindowOpen: false,
       },

@@ -22,7 +22,7 @@
 </script>
 
 <template>
-  <div class="bg-$color-neutral-2 inline-block">
+  <div class="py-0.01 !bg-$color-neutral-2">
     <b-settings>
       <b-settings-tile title="窗口置顶">
         <a-select

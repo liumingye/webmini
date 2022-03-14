@@ -99,9 +99,5 @@ export const webNav = {
       name: '消息',
       url: 'https://message.bilibili.com/#/reply',
     },
-    // {
-    //   name: '腾讯视频',
-    //   url: 'http://m.v.qq.com/',
-    // },
   ],
 }

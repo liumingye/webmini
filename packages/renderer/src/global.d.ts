@@ -2,7 +2,8 @@ import type Net from '~/common/net'
 import type Cookies from '~/common/cookies'
 import type Versions from '~/preload/utils/versions'
 import { Logger } from 'winston'
-import Storage from 'electron-json-storage'
+// import Storage from 'electron-json-storage'
+import { StorageService } from '~/main/services/storage'
 
 declare global {
   interface Window {
@@ -10,7 +11,7 @@ declare global {
     ipcRenderer: Electron.IpcRenderer
     removeLoading: () => void
     app: {
-      storage: typeof Storage
+      storage: typeof StorageService.instance
       cookies: Cookies
       versions: Versions
       screen: Electron.Screen

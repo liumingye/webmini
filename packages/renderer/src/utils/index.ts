@@ -72,7 +72,8 @@ export const initMouseStateDirtyCheck = (): void => {
     const windowPos = currentWindow.getPosition()
     const windowSize = currentWindow.getSize()
     const getTriggerAreaWidth = () => {
-      return lastStatus.value === 'IN' ? 0 : 16
+      return 0
+      // return lastStatus.value === 'IN' ? 0 : 16
     }
     const getTriggerAreaHeight = () => {
       const h = 0.1 * windowSize[1]

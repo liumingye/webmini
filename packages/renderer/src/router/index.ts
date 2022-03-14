@@ -8,19 +8,25 @@ const routes: RouteRecordRaw[] = [
     meta: { title: 'webmini' },
     children: [
       {
-        path: 'web-nav',
+        path: 'webnav',
         name: 'WebNav',
         component: () => import('@/views/pages/WebNav.vue'),
         meta: { title: '导航' },
       },
       {
-        path: 'settings',
+        path: 'webnav/plugins',
+        name: 'Plugins',
+        component: () => import('@/views/pages/plugins/Plugins.vue'),
+        meta: { title: '插件市场' },
+      },
+      {
+        path: 'webnav/settings',
         name: 'Settings',
         component: () => import('@/views/pages/settings/Settings.vue'),
         meta: { title: '设置' },
       },
       {
-        path: 'settings/about',
+        path: 'webnav/settings/about',
         name: 'About',
         component: () => import('@/views/pages/settings/About.vue'),
         meta: { title: '关于' },

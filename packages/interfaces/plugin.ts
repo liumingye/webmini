@@ -1,8 +1,8 @@
-import { addData } from './data'
-import { addHook } from './hook'
+import { addData } from '../main/plugins/data'
+import { addHook } from '../main/plugins/hook'
 import { WebContents } from 'electron'
-import { Application } from '../application'
-import Net from '~/common/net'
+import { Application } from '../main/application'
+import Net from '../common/net'
 
 export type PluginDataProvider = (...args: any[]) => void | Promise<void>
 
@@ -59,28 +59,27 @@ export interface AdapterHandlerOptions {
 }
 
 /**
- * 插件信息, 对应 plugin.json
+ * 插件信息, 对应 package.json
  * @export
  * @interface AdapterInfo
  */
 export interface AdapterInfo {
-  // 插件类型
-  type: 'adapter'
-  // 插件名称 rubick-adapter-xxx
+  // 插件名称
   name: string
   // 可读插件名称
   pluginName: string
-  // 作者
-  author: string
   // 描述
   description: string
+  // 作者
+  author: string
   // 入口文件
   main: string
   // 版本
   version: string
-  // logo地址
-  logo: string
 }
 
-// 插件运行状态
-export type AdapterStatus = 'RUNNING' | 'STOPED' | 'ERROR'
+export enum PluginStatus {
+  INSTALLING = 'installing',
+  COMPLETE = 'complete',
+  UNINSTALLING = 'uninstalling',
+}
