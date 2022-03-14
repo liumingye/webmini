@@ -1,7 +1,7 @@
-import { TabsStateTypes } from './type'
+import type { TabsStateTypes } from './type'
 import { ITab } from './model'
 import { useAppStore } from '@/store'
-import { CreateProperties } from '~/interfaces/tabs'
+import type { CreateProperties } from '~/interfaces/tabs'
 
 export const useTabsStore = defineStore('tabs', {
   state: (): TabsStateTypes => ({

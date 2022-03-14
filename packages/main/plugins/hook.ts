@@ -1,5 +1,5 @@
 /** 针对某种事件进行的代码注入 */
-import { PluginHookProvider } from '~/interfaces/plugin'
+import type { PluginHookProvider } from '~/interfaces/plugin'
 
 const pluginHookMap = new Map<
   string,

@@ -1,4 +1,4 @@
-import { AppStateTypes, AppConfig } from './types'
+import type { AppStateTypes, AppConfig } from './types'
 import { loadURL } from '@/utils/view'
 import { isURI } from '~/common/uri'
 

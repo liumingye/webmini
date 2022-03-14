@@ -1,4 +1,4 @@
-import { PluginMetadata } from '~/interfaces/plugin'
+import type { PluginMetadata } from '~/interfaces/plugin'
 import { addHook, clearHook } from './hook'
 import { addData, clearData, registerAndGetData } from './data'
 import { negate } from 'lodash'

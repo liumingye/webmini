@@ -1,6 +1,6 @@
 import { WatchStopHandle } from 'vue'
 import { useAppStore } from '@/store'
-import { windowType } from '~/interfaces/view'
+import type { windowType } from '~/interfaces/view'
 import { debounce } from 'lodash'
 
 const { screen, currentWindow, logger } = window.app

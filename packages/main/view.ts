@@ -1,6 +1,6 @@
 import { BrowserView, screen, app } from 'electron'
 import { MainWindow } from './windows/main'
-import { TabEvent, CreateProperties } from '~/interfaces/tabs'
+import type { TabEvent, CreateProperties } from '~/interfaces/tabs'
 import TabPlugin from './plugins/tab'
 import { registerAndGetData } from './plugins/data'
 import { getHook } from './plugins/hook'
@@ -8,7 +8,7 @@ import { userAgent, ERROR_PROTOCOL, NETWORK_ERROR_HOST } from '~/common/constant
 import { matchPattern } from './utils'
 import is from 'electron-is'
 import { clamp } from 'lodash'
-import { windowType } from '~/interfaces/view'
+import type { windowType } from '~/interfaces/view'
 import { getViewMenu } from './menus/view'
 import { StorageService } from './services/storage'
 

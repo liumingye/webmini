@@ -1,40 +1,17 @@
 import { contextBridge, ipcRenderer } from 'electron'
-import { getCurrentWindow, screen, app, session } from '@electron/remote'
+import { getCurrentWindow, screen, session } from '@electron/remote'
 import useLoading from './utils/loading'
+import { withPrototype } from '~/common'
 import { domContentLoaded } from '~/common/dom'
 import Cookies from '~/common/cookies'
 import Net from '~/common/net'
 import Logger from '~/common/logger'
 import Versions from './utils/versions'
-import Storage from 'electron-json-storage'
 import { StorageService } from '~/main/services/storage'
 
 const { appendLoading, removeLoading } = useLoading()
 
-const loading = async () => {
-  await domContentLoaded()
-  appendLoading()
-}
-loading()
-
-// Storage.setDataPath(app.getPath('userData'))
-
-// `exposeInMainWorld` can't detect attributes and methods of `prototype`, manually patching it.
-const withPrototype = (obj: Record<string, any>) => {
-  const protos = Object.getPrototypeOf(obj)
-  for (const [key, value] of Object.entries(protos)) {
-    if (Object.prototype.hasOwnProperty.call(obj, key)) continue
-    if (typeof value === 'function') {
-      // Some native APIs, like `NodeJS.EventEmitter['on']`, don't work in the Renderer process. Wrapping them into a function.
-      obj[key] = function (...args: any) {
-        return value.call(obj, ...args)
-      }
-    } else {
-      obj[key] = value
-    }
-  }
-  return obj
-}
+domContentLoaded().then(appendLoading)
 
 // --------- Expose some API to the Renderer process. ---------
 contextBridge.exposeInMainWorld('removeLoading', removeLoading)

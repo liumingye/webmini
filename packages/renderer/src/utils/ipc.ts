@@ -1,9 +1,8 @@
 import { useAppStore, useTabsStore } from '@/store'
 import { callViewMethod } from '@/utils/view'
-import { TabEvent } from '~/interfaces/tabs'
-import { AppStateTypes } from '@/store/modules/app/types'
+import type { TabEvent, CreateProperties } from '~/interfaces/tabs'
+import type { AppStateTypes } from '@/store/modules/app/types'
 import { currentWindowType } from '@/utils'
-import { CreateProperties } from '~/interfaces/tabs'
 
 export const ipcRendererOn = (): void => {
   const appStore = useAppStore()
