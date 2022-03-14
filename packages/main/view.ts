@@ -153,8 +153,8 @@ export class View {
 
     // 体验不太好  用resize代替
     // this.browserView.setAutoResize({
-    //   width: true,
-    //   height: true,
+    //   width: false,
+    //   height: false,
     //   horizontal: false,
     //   vertical: false,
     // })

@@ -38,31 +38,25 @@ export class MainWindow extends CommonWindow {
       maximizable: false,
       alwaysOnTop: true,
       webPreferences: {
-        webSecurity: false,
+        // webSecurity: false,
         preload: join(__dirname, '../preload/index.cjs'), // 预先加载指定的脚本
-        // nativeWindowOpen: false,
       },
     })
 
     super(window)
 
-    window.loadURL(Application.URL)
+    this.win.loadURL(Application.URL)
 
     this.viewManager = new ViewManager(this)
 
     // Make all links open with the browser, not with the application
-    window.webContents.setWindowOpenHandler(({ url }) => {
+    this.webContents.setWindowOpenHandler(({ url }) => {
       if (url.startsWith('https:')) shell.openExternal(url)
       return { action: 'deny' }
     })
 
-    window.on('close', () => {
-      this.viewManager.clear()
-      if (!is.macOS()) {
-        process.nextTick(() => {
-          app.quit()
-        })
-      }
+    this.win.on('close', () => {
+      this.eventClose()
     })
 
     const throttled = throttle(() => {
@@ -74,5 +68,34 @@ export class MainWindow extends CommonWindow {
     this.win.on('resize', () => {
       throttled()
     })
+
+    this.webContents.on('dom-ready', () => {
+      this.eventDomReady()
+    })
+  }
+
+  private eventDomReady() {
+    // 处理跨域
+    this.session.webRequest.onHeadersReceived((details, callback) => {
+      // console.log(details.url)
+      if (
+        details.resourceType === 'xhr' &&
+        details.url.indexOf('https://gitee.com/liumingye/') >= 0 &&
+        details.responseHeaders
+      ) {
+        details.responseHeaders['Access-Control-Allow-Origin'] = ['*']
+      }
+      callback({ responseHeaders: details.responseHeaders })
+    })
+  }
+
+  private eventClose() {
+    this.session.webRequest.onHeadersReceived(null)
+    this.viewManager.clear()
+    if (!is.macOS()) {
+      process.nextTick(() => {
+        app.quit()
+      })
+    }
   }
 }

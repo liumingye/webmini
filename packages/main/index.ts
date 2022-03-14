@@ -4,7 +4,6 @@ import { build } from '../../package.json'
 import { release } from 'os'
 import { initialize } from '@electron/remote/main'
 import { Application } from './application'
-import Storage from 'electron-json-storage'
 
 // Disable GPU Acceleration for Windows 7
 if (release().startsWith('6.1')) app.disableHardwareAcceleration()

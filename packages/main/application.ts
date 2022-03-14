@@ -1,4 +1,4 @@
-import { app, ipcMain, Menu, BrowserWindow, session } from 'electron'
+import { app, Menu, BrowserWindow, session } from 'electron'
 import is from 'electron-is'
 import { join } from 'path'
 import { MainWindow } from './windows/main'
@@ -10,6 +10,7 @@ import { SessionsService } from './services/sessions'
 import installExtension, { VUEJS3_DEVTOOLS } from 'electron-devtools-installer'
 import Plugins from './plugins'
 import ipcMainInit from './ipcMain'
+import type { AdapterInfo } from '~/interfaces/plugin'
 
 export class Application {
   public static instance = new this()
@@ -55,7 +56,7 @@ export class Application {
     const plugins = Plugins.instance
     const localPlugins = plugins.getLocalPlugins()
     if (Object.keys(localPlugins).length === 0) {
-      await plugins.install({ name: 'webmini-bilibili' })
+      await plugins.install({ name: 'webmini-bilibili' } as AdapterInfo)
     }
 
     this.createAllWindow()

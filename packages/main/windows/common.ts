@@ -38,6 +38,10 @@ export class CommonWindow {
     return this.win.webContents
   }
 
+  public get session() {
+    return this.win.webContents.session
+  }
+
   public send(channel: string, ...args: any[]): void {
     this.webContents.send(channel, ...args)
   }
