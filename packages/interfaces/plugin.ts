@@ -76,10 +76,19 @@ export interface AdapterInfo {
   main: string
   // 版本
   version: string
+  // 版本
+  status?: PluginStatus
 }
 
 export enum PluginStatus {
-  INSTALLING = 'installing',
-  COMPLETE = 'complete',
-  UNINSTALLING = 'uninstalling',
+  INSTALLING = 'INSTALLING',
+  INSTALLING_COMPLETE = 'INSTALLING_COMPLETE',
+  INSTALL_FAIL = 'INSTALL_FAIL',
+  UNINSTALLING = 'UNINSTALLING',
+  UNINSTALL_FAIL = 'UNINSTALL_FAIL',
+  UNINSTALL_COMPLETE = 'UNINSTALL_COMPLETE',
+}
+
+export interface pluginInfo {
+  name: string
 }

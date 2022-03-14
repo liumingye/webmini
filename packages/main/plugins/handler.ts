@@ -63,7 +63,7 @@ class AdapterHandler {
   }
 
   // 安装并启动插件
-  async install(adapters: Array<string>, options: { isDev: boolean }) {
+  async install(adapters: Array<string>, options: { isDev: boolean } = { isDev: false }) {
     const installCmd = options.isDev ? 'link' : 'install'
     // 安装
     await this.execCommand(installCmd, adapters)
@@ -84,7 +84,7 @@ class AdapterHandler {
    * @param options
    * @memberof AdapterHandler
    */
-  async uninstall(adapters: string[], options: { isDev: boolean }) {
+  async uninstall(adapters: string[], options: { isDev: boolean } = { isDev: false }) {
     const installCmd = options.isDev ? 'unlink' : 'uninstall'
     // 卸载插件
     await this.execCommand(installCmd, adapters)

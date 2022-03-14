@@ -37,13 +37,14 @@ export class StorageService {
   public find = (data: string, key = this.key) => {
     const config = Storage.getSync(key)
 
-    if (isValidKey(data, config)) {
-      return config[data]
+    if (!isValidKey(data, config)) {
+      return null
     }
-    return null
+
+    return config[data]
   }
 
-  public update = (data: Record<string, any>, key = 'config') => {
+  public update = (data: Record<string, any>, key = this.key) => {
     const oldJson = Storage.getSync(key)
 
     Storage.set(key, { ...oldJson, ...data }, (error: any) => {

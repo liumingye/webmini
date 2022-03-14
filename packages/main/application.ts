@@ -9,6 +9,7 @@ import autoUpdaterService from './services/autoUpdater'
 import { SessionsService } from './services/sessions'
 import installExtension, { VUEJS3_DEVTOOLS } from 'electron-devtools-installer'
 import Plugins from './plugins'
+import ipcMainInit from './ipcMain'
 
 export class Application {
   public static instance = new this()
@@ -52,26 +53,16 @@ export class Application {
     await app.whenReady()
 
     const plugins = Plugins.instance
-    await plugins.install({ name: 'webmini-bilibili' })
+    const localPlugins = plugins.getLocalPlugins()
+    if (Object.keys(localPlugins).length === 0) {
+      await plugins.install({ name: 'webmini-bilibili' })
+    }
 
     this.createAllWindow()
+
     Menu.setApplicationMenu(getMainMenu())
 
-    ipcMain.on('close-main-window', () => {
-      if (is.macOS()) {
-        this.mainWindow?.viewManager.clear()
-        this.mainWindow?.win.close()
-        this.selectPartWindow?.win.close()
-      } else {
-        app.quit()
-      }
-    })
-    ipcMain.on('clear-sensitive-directories', () => {
-      this.clearSensitiveDirectories()
-    })
-    ipcMain.on('clear-all-user-data', () => {
-      this.clearAllUserData()
-    })
+    ipcMainInit()
 
     // 服务
     adblockerService(session.defaultSession)

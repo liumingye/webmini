@@ -8,9 +8,9 @@ import { userAgent, ERROR_PROTOCOL, NETWORK_ERROR_HOST } from '~/common/constant
 import { matchPattern } from './utils'
 import is from 'electron-is'
 import { clamp } from 'lodash'
-import Storage from 'electron-json-storage'
 import { windowType } from '~/interfaces/view'
 import { getViewMenu } from './menus/view'
+import { StorageService } from './services/storage'
 
 export class View {
   public windowType: windowType = 'mobile'
@@ -178,7 +178,9 @@ export class View {
 
   public resizeWindowSize(windowType?: windowType): void {
     const targetWindowType = windowType ? windowType : this.getWindowType()
+
     if (this.windowType === targetWindowType) return
+
     // We want the new window to open on the same display that the parent is in
     let displayToUse: Electron.Display | undefined
     const displays = screen.getAllDisplays()
@@ -205,9 +207,10 @@ export class View {
       x: leftTopPosition[0] + currentSize[0],
       y: leftTopPosition[1] + currentSize[1],
     }
-    const config: any = Storage.getSync('config')
-    const width = config['windowSize'][targetWindowType][0]
-    const height = config['windowSize'][targetWindowType][1]
+    const windowSize = StorageService.instance.find('windowSize')
+    if (!windowSize) return
+    const width = windowSize[targetWindowType][0]
+    const height = windowSize[targetWindowType][1]
     const x = displayBounds.x + rightBottomPosition.x - width
     const y = displayBounds.y + rightBottomPosition.y - height
     const bounds: Required<Electron.Rectangle> = { width, height, x, y }
@@ -215,7 +218,9 @@ export class View {
     bounds.x = clamp(bounds.x, displayBounds.x, displayBounds.width - bounds.width)
     bounds.y = clamp(bounds.y, displayBounds.y, displayBounds.height - bounds.height)
     this.window.win.setBounds(bounds, true)
+
     this.windowType = targetWindowType
+
     this.window.send('setCurrentWindowType', targetWindowType)
   }
 
@@ -230,6 +235,7 @@ export class View {
       'windowType',
       windowTypeProvider,
     )
+
     if (windowType.mini.some(matchPattern(completeURL))) {
       return 'mini'
     }
