@@ -77,10 +77,9 @@ export class MainWindow extends CommonWindow {
   private eventDomReady() {
     // 处理跨域
     this.session.webRequest.onHeadersReceived((details, callback) => {
-      // console.log(details.url)
       if (
         details.resourceType === 'xhr' &&
-        details.url.indexOf('https://gitee.com/liumingye/') >= 0 &&
+        details.url.startsWith('https://gitee.com/liumingye/') &&
         details.responseHeaders
       ) {
         details.responseHeaders['Access-Control-Allow-Origin'] = ['*']

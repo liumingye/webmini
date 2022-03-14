@@ -23,9 +23,12 @@ export class StorageService {
   }
 
   public remove = (data: string, key = this.key) => {
-    const json = Storage.getSync(key)
+    const json = this.get(key)
+
     if (!isValidKey(data, json)) return
+
     delete json[data]
+
     Storage.set(key, { ...json }, (error: any) => {
       if (error) {
         Logger.error(error)
@@ -35,17 +38,17 @@ export class StorageService {
   }
 
   public find = (data: string, key = this.key) => {
-    const config = Storage.getSync(key)
+    const json = this.get(key)
 
-    if (!isValidKey(data, config)) {
+    if (!isValidKey(data, json)) {
       return null
     }
 
-    return config[data]
+    return json[data]
   }
 
   public update = (data: Record<string, any>, key = this.key) => {
-    const oldJson = Storage.getSync(key)
+    const oldJson = this.get(key)
 
     Storage.set(key, { ...oldJson, ...data }, (error: any) => {
       if (error) {

@@ -240,9 +240,9 @@ export class View {
       return 'mini'
     }
     // todo: 特殊大小窗口判断代码移动到插件内
-    else if (completeURL.indexOf('passport.bilibili.com/login') >= 0) {
+    else if (completeURL.startsWith('passport.bilibili.com/login')) {
       return 'login'
-    } else if (completeURL.indexOf('t.bilibili.com/?tab') >= 0) {
+    } else if (completeURL.startsWith('t.bilibili.com/?tab')) {
       return 'feed'
     } else if (this.session.getUserAgent() === userAgent.desktop) {
       return 'desktop'
