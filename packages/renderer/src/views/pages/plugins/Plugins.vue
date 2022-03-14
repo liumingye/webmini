@@ -2,6 +2,7 @@
   import { useRequest } from 'vue-request'
   import { fetchTotalPlugins } from '@/apis/plugin'
   import { type AdapterInfo, PluginStatus } from '~/interfaces/plugin'
+  import { clone } from 'lodash'
 
   const loading = ref(true)
 
@@ -52,12 +53,12 @@
     window.ipcRenderer.off('plugin-status-update', pluginStatusUpdate)
   })
 
-  const install = (_plugin: AdapterInfo) => {
-    window.ipcRenderer.invoke('plugin-install', _plugin)
+  const install = (plugin: AdapterInfo) => {
+    window.ipcRenderer.invoke('plugin-install', clone(plugin))
   }
 
-  const uninstall = (_plugin: AdapterInfo) => {
-    window.ipcRenderer.invoke('plugin-uninstall', _plugin)
+  const uninstall = (plugin: AdapterInfo) => {
+    window.ipcRenderer.invoke('plugin-uninstall', clone(plugin))
   }
 </script>
 
