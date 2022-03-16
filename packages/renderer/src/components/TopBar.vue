@@ -16,12 +16,12 @@
   const tempStore: Record<string, any> = {}
   router.beforeEach((to, from) => {
     // 恢复状态
-    if (to.name === 'Home') {
+    if (to.name === 'Browser') {
       window.ipcRenderer.invoke(`browserview-show-${appStore.currentWindowID}`)
       appStore.autoHideBar = tempStore.autoHideBar
     }
     // 保存状态
-    if (from.name === 'Home') {
+    if (from.name === 'Browser') {
       window.ipcRenderer.invoke(`browserview-hide-${appStore.currentWindowID}`)
       tempStore.autoHideBar = appStore.autoHideBar
       resizeMainWindow('mobile')
@@ -29,7 +29,7 @@
     }
   })
   router.afterEach((to) => {
-    if (to.name === 'Home') {
+    if (to.name === 'Browser') {
       resizeMainWindow()
     }
   })
@@ -38,25 +38,25 @@
     window.app.currentWindow.minimize()
   }
 
-  const isHome = () => {
-    if (router.currentRoute.value.name === 'Home') {
+  const isBrowser = () => {
+    if (router.currentRoute.value.name === 'Browser') {
       return true
     }
     return false
   }
 
-  const naviGoHome = () => {
-    const is = isHome()
+  const naviGoBrowser = () => {
+    const is = isBrowser()
     if (!is) {
       router.push({
-        name: 'Home',
+        name: 'Browser',
       })
     }
     appStore.go(START)
   }
 
   const disableBack = computed(() => {
-    const is = isHome()
+    const is = isBrowser()
     if (is) {
       return !appStore.navigationState.canGoBack
     }
@@ -67,7 +67,7 @@
   })
 
   const disableForward = computed(() => {
-    const is = isHome()
+    const is = isBrowser()
     if (is) {
       return !appStore.navigationState.canGoForward
     }
@@ -78,7 +78,7 @@
   })
 
   const goBack = () => {
-    const is = isHome()
+    const is = isBrowser()
     if (is) {
       tabsStore.selectedTab()?.callViewMethod('goBack')
       // historyStore.goBack()
@@ -88,7 +88,7 @@
   }
 
   const goForward = () => {
-    const is = isHome()
+    const is = isBrowser()
     if (is) {
       tabsStore.selectedTab()?.callViewMethod('goForward')
       // historyStore.goForward()
@@ -138,7 +138,7 @@
       <b-button v-if="!disableForward" title="前进" @click="goForward">
         <icon-right size=".9em" />
       </b-button>
-      <b-button id="navi-home" title="返回首页" @click="naviGoHome">
+      <b-button id="navi-home" title="返回首页" @click="naviGoBrowser">
         <icon-home size=".8em" />
       </b-button>
     </div>
@@ -147,7 +147,7 @@
     </div>
     <div class="flex-1 flex gap-1.5 justify-end">
       <b-button
-        v-if="!disablePartButton && route.name === 'Home'"
+        v-if="!disablePartButton && route.name === 'Browser'"
         id="app-part"
         title="分P列表"
         @click="toggleSelectPartWindow"
@@ -155,7 +155,7 @@
         <span>P</span>
       </b-button>
       <b-button
-        v-if="!disableDanmakuButton && route.name === 'Home'"
+        v-if="!disableDanmakuButton && route.name === 'Browser'"
         id="app-danmaku"
         title="开/关弹幕"
         @click="toggleDanmaku"
@@ -183,7 +183,7 @@
       color: var(--color-bg-1);
       background: var(--color-text-1);
     }
-    &.Home,
+    &.Browser,
     &.About {
       background: var(--theme-color-bg) !important;
       color: var(--theme-color-text) !important;

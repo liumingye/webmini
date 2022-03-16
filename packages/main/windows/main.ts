@@ -45,7 +45,8 @@ export class MainWindow extends CommonWindow {
 
     super(window)
 
-    this.win.loadURL(Application.URL)
+    // this.win.loadURL(Application.URL)
+    this.win.loadURL(`${Application.URL}#/home`)
 
     this.viewManager = new ViewManager(this)
 

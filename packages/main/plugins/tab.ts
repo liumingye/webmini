@@ -4,7 +4,7 @@ import { addData, clearData, registerAndGetData } from './data'
 import { negate } from 'lodash'
 import { WebContents, nativeTheme, app } from 'electron'
 import { Application } from '../application'
-import { matchPattern } from '../utils'
+import { matchPattern, hookThemeColor } from '../utils'
 import Net from '~/common/net'
 import { Color } from '~/common/color'
 import { MainWindow } from '../windows/main'
@@ -35,22 +35,32 @@ class TabPlugin {
         if (plugin.urlExclude && plugin.urlExclude.some(matchPattern(url))) {
           return undefined
         }
+
         // 若指定了包含URL, 所有URL都不匹配时不加载
         if (plugin.urlInclude && plugin.urlInclude.every(negate(matchPattern(url)))) {
           return undefined
         }
+
         this.webContents.session.setPreloads([
           ...this.webContents.session.getPreloads(),
           ...plugin.preloads,
         ])
-        // console.log(this.webContents.session.getPreloads())
+
         plugin.load({
           addHook,
           addData,
           net: new Net(),
-          application: Application.instance,
+          application: {
+            mainWindow: {
+              send: Application.instance.mainWindow?.send,
+            },
+            selectPartWindow: {
+              send: Application.instance.selectPartWindow?.send,
+            },
+          },
           webContents: this.webContents,
         })
+
         return plugin
       }
       return undefined
@@ -65,12 +75,16 @@ class TabPlugin {
       ...this.webContents.session.getPreloads(),
       `${app.getAppPath()}/dist/inject/index.cjs`,
     ])
+
     // console.log(this.allPlugins)
     const res = this.plugins.allPlugins
       .map(this.loadPlugin(url))
       .filter((it) => it !== undefined) as PluginMetadata[]
+
     this.enablePlugins = res
-    this.hookThemeColor()
+
+    hookThemeColor()
+
     return Promise.all(res)
   }
 
@@ -86,55 +100,6 @@ class TabPlugin {
     })
     this.webContents.session.setPreloads([])
     this.enablePlugins = []
-  }
-
-  /**
-   * 主题色更改
-   */
-  public hookThemeColor(): void {
-    type Color = {
-      bg: string
-      text: string
-    }
-    type Theme = {
-      light: Color
-      dark: Color
-    }
-    const themeColorProvider = {
-      light: {
-        bg: '',
-        text: '',
-      },
-      dark: {
-        bg: '',
-        text: '',
-      },
-    }
-    const [themeColor]: Theme[] = registerAndGetData('themeColor', themeColorProvider)
-    const onDarkModeChange = () => {
-      if (this.window.isDestroyed()) return
-
-      const theme = nativeTheme.shouldUseDarkColors ? 'dark' : 'light'
-      // 未定义文字颜色则自动获取文字颜色
-      if (!themeColor[theme].text) {
-        const baseColor = Color.Format.CSS.parseHex(themeColor[theme].bg)
-        if (baseColor) {
-          const text = baseColor.isDarker() ? baseColor.darken(1) : baseColor.lighten(1)
-          if (text) {
-            themeColor[theme].text = text.toString()
-          }
-        }
-      }
-
-      this.window.send('setThemeColor', {
-        theme,
-        ...themeColor[theme],
-      })
-
-      nativeTheme.once('updated', onDarkModeChange)
-    }
-    nativeTheme.once('updated', onDarkModeChange)
-    onDarkModeChange()
   }
 }
 

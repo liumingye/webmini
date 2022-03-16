@@ -37,7 +37,7 @@
         appStore.go(newUrl)
       }
       router.push({
-        name: 'Home',
+        name: 'Browser',
       })
     } catch (error: any) {
       alert(error.message)
@@ -101,7 +101,7 @@
       </div>
     </div>
     <a-space>
-      <router-link :to="{ name: 'Plugins' }">
+      <router-link :to="{ name: 'Plugin' }">
         <a-button>插件市场</a-button>
       </router-link>
       <router-link :to="{ name: 'Settings' }">

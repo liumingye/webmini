@@ -1,9 +1,14 @@
+import { initialize } from '@electron/remote/main'
 import { app, ipcMain, webContents } from 'electron'
 import is from 'electron-is'
-import { build } from '../../package.json'
 import { release } from 'os'
-import { initialize } from '@electron/remote/main'
+import { build } from '../../package.json'
 import { Application } from './application'
+
+if (!app.requestSingleInstanceLock()) {
+  app.quit()
+  process.exit(0)
+}
 
 // Disable GPU Acceleration for Windows 7
 if (release().startsWith('6.1')) app.disableHardwareAcceleration()
@@ -11,15 +16,12 @@ if (release().startsWith('6.1')) app.disableHardwareAcceleration()
 // Set application name for Windows 10+ notifications
 if (is.windows()) app.setAppUserModelId(build.appId)
 
+process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true'
+
 /**
  * initialize the main-process side of the remote module
  */
 initialize()
-
-if (!app.requestSingleInstanceLock()) {
-  app.quit()
-  process.exit(0)
-}
 
 // app.commandLine.appendSwitch('--enable-transparent-visuals')
 // 叠加滚动条

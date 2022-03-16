@@ -1,10 +1,7 @@
 import Storage from 'electron-json-storage'
 import Logger from '~/common/logger'
+import { isValidKey } from '~/common/object'
 import is from 'electron-is'
-
-function isValidKey(key: string | number | symbol, object: object): key is keyof typeof object {
-  return key in object
-}
 
 const electron = is.renderer() ? require('@electron/remote') : require('electron')
 

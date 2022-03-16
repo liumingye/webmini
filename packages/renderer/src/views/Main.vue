@@ -5,7 +5,7 @@
   import { callViewMethod } from '@/utils/view'
   import overlayScrollbars from 'overlayscrollbars'
   import { ipcRendererOn } from '@/utils/ipc'
-  import NProgress from 'nprogress'
+  // import NProgress from 'nprogress'
 
   const appStore = useAppStore()
   const tabsStore = useTabsStore()
@@ -38,7 +38,7 @@
     watch(
       () => route.name,
       (value) => {
-        if (value === 'Home') {
+        if (value === 'Browser') {
           callViewMethod(tabsStore.selectedTabId, 'setAudioMuted', false)
           const tab = tabsStore.selectedTab()
           if (tab) {
@@ -78,23 +78,27 @@
   //   }, 0)
   // }
 
-  // 加载内置插件
-  const startupTab = async () => {
-    await tabsStore.addTab({
-      url: START,
-      options: {
-        userAgent: userAgent.mobile,
-      },
-    })
-  }
-  startupTab()
+  // window.ipcRenderer.invoke('get-local-plugins').then((localPlugins: Record<string, string>) => {
+  //   console.log(localPlugins)
+  //   if (Object.keys(localPlugins).length !== 0) {
+  //     // 加载内置插件
+  //     tabsStore.addTab({
+  //       url: START,
+  //       options: {
+  //         userAgent: userAgent.mobile,
+  //       },
+  //     })
+  //   } else {
+  //     router.replace({ name: 'Plugin' })
+  //   }
+  // })
 </script>
 
 <template>
   <main
     id="main"
     class="transition-transform h-full select-none"
-    :class="[{ showTopBar }, route.name === 'Home' ? 'bg-$theme-color-bg' : 'bg-$color-bg-2']"
+    :class="[{ showTopBar }, route.name === 'Browser' ? 'bg-$theme-color-bg' : 'bg-$color-bg-2']"
   >
     <TopBar />
     <div ref="scrollContainer" class="text-$color-text-1 h-[calc(100%-2rem)] w-full">

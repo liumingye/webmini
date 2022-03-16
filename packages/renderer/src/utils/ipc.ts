@@ -27,6 +27,7 @@ export const ipcRendererOn = (): void => {
     document.body.style.setProperty('--theme-color-bg', theme.bg)
     document.body.style.setProperty('--theme-color-text', theme.text)
     document.body.setAttribute('arco-theme', theme.theme)
+    console.log('setThemeColor')
   })
 
   // navigation state
@@ -108,4 +109,6 @@ export const ipcRendererOn = (): void => {
       prevTab.select()
     }
   })
+
+  window.ipcRenderer.send('ipc-init-complete')
 }

@@ -1,8 +1,9 @@
 <script setup lang="ts">
   import { useRequest } from 'vue-request'
   import { fetchTotalPlugins } from '@/apis/plugin'
-  import { type AdapterInfo, PluginStatus } from '~/interfaces/plugin'
-  import { clone } from 'lodash'
+  import { PluginStatus } from '~/interfaces/plugin'
+  import type { AdapterInfo, LocalPluginInfo } from '~/interfaces/plugin'
+  import { cloneDeep } from 'lodash'
 
   const loading = ref(true)
 
@@ -10,7 +11,7 @@
 
   const pluginStatusUpdate = (e: any, _plugin: AdapterInfo, _status: PluginStatus | undefined) => {
     const plugin = totalPlugins.value?.find((p) => p.name === _plugin.name)
-    if (!plugin) return
+    if (!plugin || !plugin.local) return
     let status = _status
     switch (_status) {
       case PluginStatus.INSTALL_FAIL:
@@ -23,20 +24,31 @@
         status = PluginStatus.INSTALLING_COMPLETE
         break
     }
-    plugin.status = status
+    plugin.local.status = status
   }
 
   onMounted(() => {
-    window.ipcRenderer.invoke('get-local-plugins').then((localPlugins: Record<string, string>) => {
+    window.ipcRenderer.invoke('get-local-plugins').then((localPlugins: LocalPluginInfo[]) => {
       const { run } = useRequest(fetchTotalPlugins, {
         formatResult: (res: any) => {
           return res.data === undefined ? [] : res.data
         },
         onSuccess: (res) => {
           totalPlugins.value = res.map((_res: AdapterInfo) => {
-            _res.status = undefined
-            if (localPlugins[_res.name]) {
-              _res.status = localPlugins[_res.name] as PluginStatus
+            const localPlugin = localPlugins.find((p) => p.name === _res.name)
+            if (!localPlugin) {
+              // 本地不存在
+              _res.local = {} as LocalPluginInfo
+              _res.local.status = undefined
+            } else {
+              // 本地存在
+              _res.local = localPlugin
+              // 防止状态卡在ing中
+              if (_res.local?.status === PluginStatus.UNINSTALLING) {
+                _res.local.status = PluginStatus.INSTALLING_COMPLETE
+              } else if (_res.local?.status === PluginStatus.INSTALLING) {
+                _res.local.status = undefined
+              }
             }
             return _res
           })
@@ -54,11 +66,11 @@
   })
 
   const install = (plugin: AdapterInfo) => {
-    window.ipcRenderer.invoke('plugin-install', clone(plugin))
+    window.ipcRenderer.invoke('plugin-install', cloneDeep(plugin))
   }
 
   const uninstall = (plugin: AdapterInfo) => {
-    window.ipcRenderer.invoke('plugin-uninstall', clone(plugin))
+    window.ipcRenderer.invoke('plugin-uninstall', cloneDeep(plugin))
   }
 </script>
 
@@ -69,7 +81,7 @@
         <a-list-item :key="item.name">
           <a-list-item-meta>
             <template #title>
-              <span class="mr-1">{{ item.pluginName }}</span>
+              <span class="mr-1 align-middle">{{ item.pluginName }}</span>
               <a-tag size="small">v{{ item.version }}</a-tag>
             </template>
             <template #description>
@@ -82,16 +94,16 @@
           </a-list-item-meta>
           <template #actions>
             <div class="ml-2">
-              <template v-if="!item.status">
+              <template v-if="!item.local.status">
                 <a-button @click="install(item)">安装</a-button>
               </template>
-              <template v-else-if="item.status === PluginStatus.INSTALLING">
+              <template v-else-if="item.local.status === PluginStatus.INSTALLING">
                 <a-button disabled>安装中...</a-button>
               </template>
-              <template v-else-if="item.status === PluginStatus.INSTALLING_COMPLETE">
+              <template v-else-if="item.local.status === PluginStatus.INSTALLING_COMPLETE">
                 <a-button @click="uninstall(item)">卸载</a-button>
               </template>
-              <template v-else-if="item.status === PluginStatus.UNINSTALLING">
+              <template v-else-if="item.local.status === PluginStatus.UNINSTALLING">
                 <a-button disabled>卸载中...</a-button>
               </template>
             </div>

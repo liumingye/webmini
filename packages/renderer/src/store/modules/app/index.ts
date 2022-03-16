@@ -26,11 +26,16 @@ export const useAppStore = defineStore('app', {
   }),
   actions: {
     init() {
-      const storage = window.app.storage
-      const config = storage.get()
-      for (const key in config) {
-        // @ts-ignore
-        this.$state[key] = config[key]
+      console.log('init')
+      try {
+        const storage = window.app.storage
+        const config = storage.get()
+        for (const key in config) {
+          // @ts-ignore
+          this.$state[key] = config[key]
+        }
+      } catch (error) {
+        window.app.logger.error(error)
       }
     },
     saveConfig<T extends keyof AppConfig>(newJson: Record<T, AppConfig[T]>) {

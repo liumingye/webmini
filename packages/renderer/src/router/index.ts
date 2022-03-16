@@ -3,30 +3,36 @@ import { createRouter, createWebHashHistory, RouteRecordRaw } from 'vue-router'
 const routes: RouteRecordRaw[] = [
   {
     path: '/',
-    name: 'Home',
+    name: 'Browser',
     component: () => import('@/views/Main.vue'),
-    meta: { title: 'webmini' },
+    meta: { title: '浏览器' },
     children: [
       {
-        path: 'webnav',
+        path: 'home',
+        name: 'Home',
+        component: () => import('@/views/pages/home/Home.vue'),
+        meta: { title: 'webmini' },
+      },
+      {
+        path: 'home/webnav',
         name: 'WebNav',
-        component: () => import('@/views/pages/WebNav.vue'),
+        component: () => import('@/views/pages/home/WebNav.vue'),
         meta: { title: '导航' },
       },
       {
-        path: 'webnav/plugins',
-        name: 'Plugins',
-        component: () => import('@/views/pages/plugins/Plugins.vue'),
+        path: 'plugin',
+        name: 'Plugin',
+        component: () => import('@/views/pages/plugin/Plugin.vue'),
         meta: { title: '插件市场' },
       },
       {
-        path: 'webnav/settings',
+        path: 'settings',
         name: 'Settings',
         component: () => import('@/views/pages/settings/Settings.vue'),
         meta: { title: '设置' },
       },
       {
-        path: 'webnav/settings/about',
+        path: 'settings/about',
         name: 'About',
         component: () => import('@/views/pages/settings/About.vue'),
         meta: { title: '关于' },

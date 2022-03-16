@@ -17,7 +17,9 @@ export class SelectPartWindow extends CommonWindow {
       },
     })
 
-    window.loadURL(`${Application.URL}#/select-part`)
+    super(window)
+
+    this.win.loadURL(`${Application.URL}#/select-part`)
 
     ipcMain.on('toggle-select-part-window', () => {
       this.toggle()
@@ -26,8 +28,6 @@ export class SelectPartWindow extends CommonWindow {
     ipcMain.on('show-select-part-window', () => {
       this.show()
     })
-
-    super(window)
   }
 
   public show(): void {

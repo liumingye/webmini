@@ -11,6 +11,7 @@ import installExtension, { VUEJS3_DEVTOOLS } from 'electron-devtools-installer'
 import Plugins from './plugins'
 import ipcMainInit from './ipcMain'
 import type { AdapterInfo } from '~/interfaces/plugin'
+import { hookThemeColor } from './utils'
 
 export class Application {
   public static instance = new this()
@@ -53,11 +54,11 @@ export class Application {
   private async onReady() {
     await app.whenReady()
 
-    const plugins = Plugins.instance
-    const localPlugins = plugins.getLocalPlugins()
-    if (Object.keys(localPlugins).length === 0) {
-      await plugins.install({ name: 'webmini-bilibili' } as AdapterInfo)
-    }
+    // const plugins = Plugins.instance
+    // const localPlugins = plugins.getLocalPlugins()
+    // if (Object.keys(localPlugins).length === 0) {
+    //   await plugins.install({ name: 'webmini-bilibili' } as AdapterInfo)
+    // }
 
     this.createAllWindow()
 

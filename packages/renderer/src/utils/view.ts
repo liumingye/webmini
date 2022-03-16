@@ -5,6 +5,7 @@ export const callViewMethod = async (
   method: string,
   ...args: any[]
 ): Promise<any> => {
+  if (webContentsId === -1) return
   return await window.ipcRenderer.invoke(`web-contents-call`, {
     args,
     method,

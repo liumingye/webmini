@@ -1,10 +1,10 @@
 import { BrowserWindow } from 'electron'
 import { enable } from '@electron/remote/main'
 
-export class CommonWindow {
+export abstract class CommonWindow {
   public win: BrowserWindow
 
-  public constructor(window: BrowserWindow) {
+  protected constructor(window: BrowserWindow) {
     this.win = window
     enable(this.webContents)
   }
@@ -42,7 +42,7 @@ export class CommonWindow {
     return this.win.webContents.session
   }
 
-  public send(channel: string, ...args: any[]): void {
+  public send = (channel: string, ...args: any[]): void => {
     this.webContents.send(channel, ...args)
   }
 }

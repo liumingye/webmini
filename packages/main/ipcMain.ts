@@ -2,7 +2,8 @@ import { app, ipcMain } from 'electron'
 import { Application } from './application'
 import is from 'electron-is'
 import Plugins from './plugins'
-import type { AdapterInfo } from '~/interfaces/plugin'
+import type { LocalPluginInfo } from '~/interfaces/plugin'
+import { hookThemeColor } from './utils'
 
 export default () => {
   // UI
@@ -28,10 +29,14 @@ export default () => {
   ipcMain.handle('get-local-plugins', () => {
     return Plugins.instance.getLocalPlugins()
   })
-  ipcMain.handle('plugin-install', (e, plugin: AdapterInfo) => {
+  ipcMain.handle('plugin-install', (e, plugin: LocalPluginInfo) => {
     return Plugins.instance.install(plugin)
   })
-  ipcMain.handle('plugin-uninstall', async (e, plugin: AdapterInfo) => {
+  ipcMain.handle('plugin-uninstall', async (e, plugin: LocalPluginInfo) => {
     return await Plugins.instance.uninstall(plugin)
+  })
+
+  ipcMain.on('ipc-init-complete', () => {
+    hookThemeColor()
   })
 }

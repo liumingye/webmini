@@ -1,4 +1,4 @@
-import type { PluginMetadata, AdapterInfo } from '~/interfaces/plugin'
+import type { PluginMetadata, LocalPluginInfo } from '~/interfaces/plugin'
 import { PluginStatus } from '~/interfaces/plugin'
 import { app } from 'electron'
 import AdapterHandler from './handler'
@@ -7,6 +7,7 @@ import fs from 'fs'
 import { StorageService } from '../services/storage'
 import Logger from '~/common/logger'
 import { Application } from '../application'
+import { isValidKey } from '~/common/object'
 
 class Plugins {
   public static instance = new this()
@@ -28,12 +29,8 @@ class Plugins {
 
     //  加载本地插件
     const localPlugins = this.getLocalPlugins()
-    const localPluginsName = Object.keys(localPlugins)
-    localPluginsName.forEach((name) => {
-      const plugin = {
-        name,
-      } as AdapterInfo
-      this.addPlugin(plugin)
+    localPlugins.forEach((p) => {
+      this.addPlugin(p)
     })
   }
 
@@ -42,14 +39,14 @@ class Plugins {
    * @param plugin
    * @returns
    */
-  public async addPlugin(plugin: AdapterInfo) {
+  public async addPlugin(plugin: LocalPluginInfo) {
     try {
-      const pluginPath = this.getPluginPath({ name: plugin.name } as AdapterInfo)
+      const pluginPath = this.getPluginPath(plugin.name)
       const pluginInfo = JSON.parse(fs.readFileSync(join(pluginPath, './package.json'), 'utf8'))
-      const _load = import(resolve(pluginPath, pluginInfo.main))
-      _load.then((res) => {
+      const module = import(resolve(pluginPath, pluginInfo.main))
+      module.then((res) => {
         this.allPlugins.push(res.plugin)
-        return this.allPlugins
+        return res.plugin
       })
     } catch (error) {
       Logger.error(error)
@@ -62,7 +59,7 @@ class Plugins {
    * @param plugin
    * @returns
    */
-  public async deletePlugin(plugin: AdapterInfo) {
+  public async deletePlugin(plugin: LocalPluginInfo) {
     this.allPlugins = this.allPlugins.filter((p) => plugin.name !== p.name)
     return this.allPlugins
   }
@@ -71,8 +68,21 @@ class Plugins {
    * 获取本地插件
    * @returns
    */
-  public getLocalPlugins() {
-    return StorageService.instance.get('plugin')
+  public getLocalPlugins(): LocalPluginInfo[] {
+    const allPlugins = StorageService.instance.get('plugin')
+    return Object.keys(allPlugins)
+      .map((name) => {
+        try {
+          const pluginPath = this.getPluginPath(name)
+          const pluginInfo = JSON.parse(fs.readFileSync(join(pluginPath, './package.json'), 'utf8'))
+          if (isValidKey(name, allPlugins)) {
+            return Object.assign(pluginInfo, { status: allPlugins[name] })
+          }
+        } catch (error) {
+          //
+        }
+      })
+      .filter((it) => it !== undefined)
   }
 
   /**
@@ -80,8 +90,8 @@ class Plugins {
    * @param plugin
    * @returns
    */
-  public getPluginPath(plugin: AdapterInfo) {
-    return resolve(this.baseDir, 'node_modules', plugin.name)
+  public getPluginPath(name: string) {
+    return resolve(this.baseDir, 'node_modules', name)
   }
 
   /**
@@ -89,14 +99,14 @@ class Plugins {
    * @param plugin
    * @returns
    */
-  public async install(plugin: AdapterInfo) {
+  public async install(plugin: LocalPluginInfo) {
     StorageService.instance.update({ [plugin.name]: PluginStatus.INSTALLING }, 'plugin')
     Logger.info(`开始安装 - ${plugin.name}`)
     Application.instance.mainWindow?.send('plugin-status-update', plugin, PluginStatus.INSTALLING)
 
     await this.handler.install([plugin.name])
 
-    const pluginPath = this.getPluginPath({ name: plugin.name } as AdapterInfo)
+    const pluginPath = this.getPluginPath(plugin.name)
 
     // 安装失败
     if (!fs.existsSync(pluginPath)) {
@@ -129,14 +139,14 @@ class Plugins {
    * @param plugin
    * @returns
    */
-  public async uninstall(plugin: AdapterInfo) {
+  public async uninstall(plugin: LocalPluginInfo) {
     StorageService.instance.update({ [plugin.name]: PluginStatus.UNINSTALLING }, 'plugin')
     Logger.info(`开始卸载 - ${plugin.name}`)
     Application.instance.mainWindow?.send('plugin-status-update', plugin, PluginStatus.UNINSTALLING)
 
     await this.handler.uninstall([plugin.name])
 
-    const pluginPath = this.getPluginPath({ name: plugin.name } as AdapterInfo)
+    const pluginPath = this.getPluginPath(plugin.name)
 
     // 卸载失败
     if (fs.existsSync(pluginPath)) {
