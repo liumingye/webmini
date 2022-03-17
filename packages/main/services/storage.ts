@@ -1,7 +1,7 @@
+import is from 'electron-is'
 import Storage from 'electron-json-storage'
 import Logger from '~/common/logger'
 import { isValidKey } from '~/common/object'
-import is from 'electron-is'
 
 const electron = is.renderer() ? require('@electron/remote') : require('electron')
 

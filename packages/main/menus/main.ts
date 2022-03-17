@@ -1,4 +1,4 @@
-import { Menu, MenuItemConstructorOptions, MenuItem, app, shell } from 'electron'
+import { app, Menu, MenuItem, MenuItemConstructorOptions, shell } from 'electron'
 import { Application } from '../application'
 
 export const getMainMenu = () => {

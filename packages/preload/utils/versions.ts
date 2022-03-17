@@ -1,7 +1,7 @@
 import { app } from '@electron/remote'
 import is from 'electron-is'
-import { version } from 'vue'
 import { arch, release, type } from 'os'
+import { version } from 'vue'
 
 const isLinuxSnap = is.linux() && !!process.env['SNAP'] && !!process.env['SNAP_REVISION']
 

@@ -1,17 +1,14 @@
-import { app, Menu, BrowserWindow, session } from 'electron'
+import { app, BrowserWindow, Menu, session } from 'electron'
+import installExtension, { VUEJS3_DEVTOOLS } from 'electron-devtools-installer'
 import is from 'electron-is'
 import { join } from 'path'
-import { MainWindow } from './windows/main'
-import { SelectPartWindow } from './windows/selectPart'
+import ipcMainInit from './ipcMain'
 import { getMainMenu } from './menus/main'
 import adblockerService from './services/adblocker'
 import autoUpdaterService from './services/autoUpdater'
 import { SessionsService } from './services/sessions'
-import installExtension, { VUEJS3_DEVTOOLS } from 'electron-devtools-installer'
-import Plugins from './plugins'
-import ipcMainInit from './ipcMain'
-import type { AdapterInfo } from '~/interfaces/plugin'
-import { hookThemeColor } from './utils'
+import { MainWindow } from './windows/main'
+import { SelectPartWindow } from './windows/selectPart'
 
 export class Application {
   public static instance = new this()
@@ -53,12 +50,6 @@ export class Application {
 
   private async onReady() {
     await app.whenReady()
-
-    // const plugins = Plugins.instance
-    // const localPlugins = plugins.getLocalPlugins()
-    // if (Object.keys(localPlugins).length === 0) {
-    //   await plugins.install({ name: 'webmini-bilibili' } as AdapterInfo)
-    // }
 
     this.createAllWindow()
 

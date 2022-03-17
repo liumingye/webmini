@@ -1,15 +1,15 @@
 <script setup lang="ts">
-  import { useRequest } from 'vue-request'
   import { fetchTotalPlugins } from '@/apis/plugin'
-  import { PluginStatus } from '~/interfaces/plugin'
-  import type { AdapterInfo, LocalPluginInfo } from '~/interfaces/plugin'
   import { cloneDeep } from 'lodash'
+  import { useRequest } from 'vue-request'
+  import type { AdapterInfo, LocalPluginInfo } from '~/interfaces/plugin'
+  import { PluginStatus } from '~/interfaces/plugin'
 
   const loading = ref(true)
 
   const totalPlugins = ref<AdapterInfo[]>()
 
-  const pluginStatusUpdate = (e: any, _plugin: AdapterInfo, _status: PluginStatus | undefined) => {
+  const pluginStatusUpdate = (_e: any, _plugin: AdapterInfo, _status: PluginStatus | undefined) => {
     const plugin = totalPlugins.value?.find((p) => p.name === _plugin.name)
     if (!plugin || !plugin.local) return
     let status = _status

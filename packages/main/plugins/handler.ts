@@ -1,10 +1,9 @@
-import type { AdapterHandlerOptions, AdapterInfo } from '~/interfaces/plugin'
+// import fixPath from 'fix-path'
+import spawn from 'cross-spawn'
 import fs from 'fs-extra'
 import path from 'path'
 import Net from '~/common/net'
-// import fixPath from 'fix-path'
-
-import spawn from 'cross-spawn'
+import type { AdapterHandlerOptions, AdapterInfo } from '~/interfaces/plugin'
 
 // fixPath()
 

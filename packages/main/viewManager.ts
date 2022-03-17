@@ -1,6 +1,6 @@
-import { MainWindow } from './windows/main'
-import { View } from './view'
 import { ipcMain } from 'electron'
+import { View } from './view'
+import type { MainWindow } from './windows/main'
 
 export class ViewManager {
   public views = new Map<number, View>()

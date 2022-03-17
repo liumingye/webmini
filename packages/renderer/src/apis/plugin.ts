@@ -1,5 +1,5 @@
 import request from '@/utils/request'
-import { AxiosPromise } from 'axios'
+import type { AxiosPromise } from 'axios'
 
 export const fetchTotalPlugins = (): AxiosPromise => {
   return request({

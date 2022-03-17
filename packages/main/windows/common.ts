@@ -1,5 +1,5 @@
-import { BrowserWindow } from 'electron'
 import { enable } from '@electron/remote/main'
+import type { BrowserWindow } from 'electron'
 
 export abstract class CommonWindow {
   public win: BrowserWindow

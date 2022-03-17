@@ -41,5 +41,9 @@
     &:not([disabled]):hover {
       background: var(--color-neutral-4);
     }
+
+    &:not([disabled]):active {
+      background: var(--color-neutral-5);
+    }
   }
 </style>

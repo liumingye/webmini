@@ -1,7 +1,7 @@
 import { app, dialog } from 'electron'
+import is from 'electron-is'
 import { autoUpdater } from 'electron-updater'
 import ms from 'ms'
-import is from 'electron-is'
 import Logger from '~/common/logger'
 
 export interface IUpdateElectronAppOptions {

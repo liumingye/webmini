@@ -1,10 +1,9 @@
 <script setup lang="ts">
   import { useAppStore, useTabsStore } from '@/store'
-  import { saveWindowSize, initMouseStateDirtyCheck, watchAlwaysOnTop } from '@/utils'
-  import { START, userAgent } from '~/common/constant'
+  import { initMouseStateDirtyCheck, saveWindowSize, watchAlwaysOnTop } from '@/utils'
+  import { ipcRendererOn } from '@/utils/ipc'
   import { callViewMethod } from '@/utils/view'
   import overlayScrollbars from 'overlayscrollbars'
-  import { ipcRendererOn } from '@/utils/ipc'
   // import NProgress from 'nprogress'
 
   const appStore = useAppStore()

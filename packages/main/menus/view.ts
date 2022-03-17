@@ -1,14 +1,14 @@
 import {
-  ContextMenuParams,
-  WebContents,
-  MenuItemConstructorOptions,
   clipboard,
-  Menu,
+  ContextMenuParams,
   dialog,
+  Menu,
+  MenuItemConstructorOptions,
+  WebContents,
 } from 'electron'
-import { MainWindow } from '../windows/main'
-import { isURI, prefixHttp } from '~/common/uri'
 import { extname } from 'path'
+import { isURI, prefixHttp } from '~/common/uri'
+import { MainWindow } from '../windows/main'
 
 export const saveAs = async (mainWindow: MainWindow) => {
   const selected = mainWindow.viewManager.selected

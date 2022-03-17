@@ -457,13 +457,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@commitlint/cli@npm:^16.2.1":
-  version: 16.2.1
-  resolution: "@commitlint/cli@npm:16.2.1::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2F%40commitlint%2Fcli%2F-%2Fcli-16.2.1.tgz"
+"@commitlint/cli@npm:^16.2.3":
+  version: 16.2.3
+  resolution: "@commitlint/cli@npm:16.2.3::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2F%40commitlint%2Fcli%2F-%2Fcli-16.2.3.tgz"
   dependencies:
     "@commitlint/format": ^16.2.1
     "@commitlint/lint": ^16.2.1
-    "@commitlint/load": ^16.2.1
+    "@commitlint/load": ^16.2.3
     "@commitlint/read": ^16.2.1
     "@commitlint/types": ^16.2.1
     lodash: ^4.17.19
@@ -472,7 +472,7 @@ __metadata:
     yargs: ^17.0.0
   bin:
     commitlint: cli.js
-  checksum: da673e8e037f74b1a4257884d8f55fd6bfaf575283aa15b48a787090d3b81bdb49c8daa92aaa93208e1c026296c451e9d697d53380ea93a1a5c110a10e5794d0
+  checksum: e74a83389a736a87593cdc3665c820f1f8e837c9e834883d3e041b65cd6af85410fa65c1b0b8b1909d31eab3eadf4997e31a309af0fa0d211b6db21dc6fb917e
   languageName: node
   linkType: hard
 
@@ -544,9 +544,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@commitlint/load@npm:^16.2.1":
-  version: 16.2.1
-  resolution: "@commitlint/load@npm:16.2.1::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2F%40commitlint%2Fload%2F-%2Fload-16.2.1.tgz"
+"@commitlint/load@npm:^16.2.3":
+  version: 16.2.3
+  resolution: "@commitlint/load@npm:16.2.3::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2F%40commitlint%2Fload%2F-%2Fload-16.2.3.tgz"
   dependencies:
     "@commitlint/config-validator": ^16.2.1
     "@commitlint/execute-rule": ^16.2.1
@@ -559,7 +559,7 @@ __metadata:
     lodash: ^4.17.19
     resolve-from: ^5.0.0
     typescript: ^4.4.3
-  checksum: 2b2fceff10c02ba61a5fa9c24a8f22156af0be6865a6b3b1543d93861d75b1552d7c86ce9cadd8598248387829feee26d0e0e646f3f0822e7a9bc74023e18fde
+  checksum: 11a34e018431c9639c84427305167a4f3a4ebffab0f42c681c5eba347690b444cf4ea3ce5fde953106b3d615a273b8b6afe34fd4f72fa480512d4f2297636191
   languageName: node
   linkType: hard
 
@@ -704,12 +704,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@electron/remote@npm:^2.0.7":
-  version: 2.0.7
-  resolution: "@electron/remote@npm:2.0.7::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2F%40electron%2Fremote%2F-%2Fremote-2.0.7.tgz"
+"@electron/remote@npm:^2.0.8":
+  version: 2.0.8
+  resolution: "@electron/remote@npm:2.0.8::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2F%40electron%2Fremote%2F-%2Fremote-2.0.8.tgz"
   peerDependencies:
     electron: ">= 13.0.0"
-  checksum: 50e1a1515573e9eacce2a896b580d0fa6b709670ff7d6df53526ada4baafad7789fe45c5b6aab6bf3da432f83e97df388449f5713ca34a9ed9c08de91192233f
+  checksum: d0ef11b3f09d789baf4330c2c021cfc1a997fc5ffdb56e8810ed7fe2fd76cda1a168c0589d2a10284a907fd3829bae14002a58b35c4881473cdd0049f07fbd63
   languageName: node
   linkType: hard
 
@@ -1958,13 +1958,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"autoprefixer@npm:^10.4.2":
-  version: 10.4.2
-  resolution: "autoprefixer@npm:10.4.2::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Fautoprefixer%2F-%2Fautoprefixer-10.4.2.tgz"
+"autoprefixer@npm:^10.4.4":
+  version: 10.4.4
+  resolution: "autoprefixer@npm:10.4.4::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Fautoprefixer%2F-%2Fautoprefixer-10.4.4.tgz"
   dependencies:
-    browserslist: ^4.19.1
-    caniuse-lite: ^1.0.30001297
-    fraction.js: ^4.1.2
+    browserslist: ^4.20.2
+    caniuse-lite: ^1.0.30001317
+    fraction.js: ^4.2.0
     normalize-range: ^0.1.2
     picocolors: ^1.0.0
     postcss-value-parser: ^4.2.0
@@ -1972,7 +1972,7 @@ __metadata:
     postcss: ^8.1.0
   bin:
     autoprefixer: bin/autoprefixer
-  checksum: dbd13e641eaa7d7e3121769c22cc439222f1a9d0371a583d12300849de7287ece1e793767ff9902842dbfd56c4b7c19ed9fe1947c9f343ba2f4f3519dbddfdef
+  checksum: bd42e23d71af0228b6b0b27d0d0b33c95e67562e55eb4ca0e221cf795a06482c90d565d6544a5f4090d8e303b09b200845fa2bcaaa707d1e8777974250dffe1f
   languageName: node
   linkType: hard
 
@@ -2153,7 +2153,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"browserslist@npm:^4.12.0, browserslist@npm:^4.17.5, browserslist@npm:^4.19.1":
+"browserslist@npm:^4.12.0, browserslist@npm:^4.17.5":
   version: 4.20.0
   resolution: "browserslist@npm:4.20.0::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Fbrowserslist%2F-%2Fbrowserslist-4.20.0.tgz"
   dependencies:
@@ -2165,6 +2165,21 @@ __metadata:
   bin:
     browserslist: cli.js
   checksum: 6d77f54bd43e7e1b86c3f10a3aa84b6c198f2ecc8b345ebd42cb9feb1c143554ad62a0eaf1365f28d14589a4d1fb12b367ade3798fa493dab5cff4ca525384aa
+  languageName: node
+  linkType: hard
+
+"browserslist@npm:^4.20.2":
+  version: 4.20.2
+  resolution: "browserslist@npm:4.20.2::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Fbrowserslist%2F-%2Fbrowserslist-4.20.2.tgz"
+  dependencies:
+    caniuse-lite: ^1.0.30001317
+    electron-to-chromium: ^1.4.84
+    escalade: ^3.1.1
+    node-releases: ^2.0.2
+    picocolors: ^1.0.0
+  bin:
+    browserslist: cli.js
+  checksum: 18e09beeae32e69fea45fc3642240fb63027b1460d90e24da86377177dca3d82c80f8fa44469d95109e3962f08eb2a23e03037bd5e1f1ec38e4866e2a8572435
   languageName: node
   linkType: hard
 
@@ -2398,10 +2413,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"caniuse-lite@npm:^1.0.30001109, caniuse-lite@npm:^1.0.30001297, caniuse-lite@npm:^1.0.30001313":
+"caniuse-lite@npm:^1.0.30001109, caniuse-lite@npm:^1.0.30001313":
   version: 1.0.30001314
   resolution: "caniuse-lite@npm:1.0.30001314::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Fcaniuse-lite%2F-%2Fcaniuse-lite-1.0.30001314.tgz"
   checksum: d82e1b8b287b1b2d2ed25c4495fe293276853dd9c77553c722929a6142fc49b3dd5ea21a95f6410d93319434a5bd071c304ea92e93debbcf292a9156cf08b35d
+  languageName: node
+  linkType: hard
+
+"caniuse-lite@npm:^1.0.30001317":
+  version: 1.0.30001317
+  resolution: "caniuse-lite@npm:1.0.30001317::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Fcaniuse-lite%2F-%2Fcaniuse-lite-1.0.30001317.tgz"
+  checksum: 0a5fc7fb8c54dde515c2d468e5fc9e0cf2e82dd40d596cdffed90f64c50b5dadd0ab0c25e04769d86488b3115f949abd31d54d1f74d0029b45fa8206a031f47a
   languageName: node
   linkType: hard
 
@@ -3448,6 +3470,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"electron-to-chromium@npm:^1.4.84":
+  version: 1.4.86
+  resolution: "electron-to-chromium@npm:1.4.86::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Felectron-to-chromium%2F-%2Felectron-to-chromium-1.4.86.tgz"
+  checksum: 41d9f8ef28bba0cbc79a7662fb067dc47f418ca6a7a0df5f251a231e05cc2c7dfe40b6328e3da68661218ca1e682476caf8147b4fe35508b96d2e264a14a1992
+  languageName: node
+  linkType: hard
+
 "electron-updater@npm:^4.6.5":
   version: 4.6.5
   resolution: "electron-updater@npm:4.6.5::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Felectron-updater%2F-%2Felectron-updater-4.6.5.tgz"
@@ -4377,7 +4406,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"fraction.js@npm:^4.1.2":
+"fraction.js@npm:^4.2.0":
   version: 4.2.0
   resolution: "fraction.js@npm:4.2.0::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Ffraction.js%2F-%2Ffraction.js-4.2.0.tgz"
   checksum: 8c76a6e21dedea87109d6171a0ac77afa14205794a565d71cb10d2925f629a3922da61bf45ea52dbc30bce4d8636dc0a27213a88cbd600eab047d82f9a3a94c5
@@ -7351,7 +7380,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"postcss@npm:^8.1.10, postcss@npm:^8.3.11, postcss@npm:^8.4.0, postcss@npm:^8.4.6, postcss@npm:^8.4.8":
+"postcss@npm:^8.1.10, postcss@npm:^8.3.11, postcss@npm:^8.4.0, postcss@npm:^8.4.6":
   version: 8.4.8
   resolution: "postcss@npm:8.4.8::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Fpostcss%2F-%2Fpostcss-8.4.8.tgz"
   dependencies:
@@ -7359,6 +7388,17 @@ __metadata:
     picocolors: ^1.0.0
     source-map-js: ^1.0.2
   checksum: 8e42def1ea98a4ac800d2b8937b19c83c6722da6c39ded72b1877eb743922f51b6e93be3667284b685ac18e8b583f21d97f24e0a73161c70fe8dc6901e614b87
+  languageName: node
+  linkType: hard
+
+"postcss@npm:^8.4.12":
+  version: 8.4.12
+  resolution: "postcss@npm:8.4.12::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Fpostcss%2F-%2Fpostcss-8.4.12.tgz"
+  dependencies:
+    nanoid: ^3.3.1
+    picocolors: ^1.0.0
+    source-map-js: ^1.0.2
+  checksum: 248e3d0f9bbb8efaafcfda7f91627a29bdc9a19f456896886330beb28c5abea0e14c7901b35191928602e2eccbed496b1e94097d27a0b2a980854cd00c7a835f
   languageName: node
   linkType: hard
 
@@ -7385,12 +7425,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prettier@npm:^2.5.1":
-  version: 2.5.1
-  resolution: "prettier@npm:2.5.1::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Fprettier%2F-%2Fprettier-2.5.1.tgz"
+"prettier@npm:^2.6.0":
+  version: 2.6.0
+  resolution: "prettier@npm:2.6.0::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Fprettier%2F-%2Fprettier-2.6.0.tgz"
   bin:
     prettier: bin-prettier.js
-  checksum: 21b9408476ea1c544b0e45d51ceb94a84789ff92095abb710942d780c862d0daebdb29972d47f6b4d0f7ebbfb0ffbf56cc2cfa3e3e9d1cca54864af185b15b66
+  checksum: 3e527ad62279676778a8404d18174d7ca2365ada4caba6eebbcdd9907d1187afd3bc6ade5b4e5f5d4549bb9fb71e45ca8930d71500017635524f8fc05bc52e93
   languageName: node
   linkType: hard
 
@@ -8573,9 +8613,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"stylelint@npm:^14.5.3":
-  version: 14.5.3
-  resolution: "stylelint@npm:14.5.3::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Fstylelint%2F-%2Fstylelint-14.5.3.tgz"
+"stylelint@npm:^14.6.0":
+  version: 14.6.0
+  resolution: "stylelint@npm:14.6.0::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Fstylelint%2F-%2Fstylelint-14.6.0.tgz"
   dependencies:
     balanced-match: ^2.0.0
     colord: ^2.9.2
@@ -8602,7 +8642,7 @@ __metadata:
     normalize-path: ^3.0.0
     normalize-selector: ^0.2.0
     picocolors: ^1.0.0
-    postcss: ^8.4.6
+    postcss: ^8.4.12
     postcss-media-query-parser: ^0.2.3
     postcss-resolve-nested-selector: ^0.1.1
     postcss-safe-parser: ^6.0.0
@@ -8620,7 +8660,7 @@ __metadata:
     write-file-atomic: ^4.0.1
   bin:
     stylelint: bin/stylelint.js
-  checksum: 5fadb61263e003fe791d6c8a31c48825e015a5fee909b0a484baad8d4a46622425409f18d2734a01e91405c825a5b3ccad943ed2298cd4f7df4a0a605c4d0292
+  checksum: cb28abd153b0edea03ad0133bc9be789a315f9138e7254f5da372677cef67954da081cffb696a59fee7958d3d3781566acb9e8ab99e453fe4398ef91f0495378
   languageName: node
   linkType: hard
 
@@ -9252,9 +9292,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"unplugin-auto-import@npm:^0.6.4":
-  version: 0.6.4
-  resolution: "unplugin-auto-import@npm:0.6.4::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Funplugin-auto-import%2F-%2Funplugin-auto-import-0.6.4.tgz"
+"unplugin-auto-import@npm:^0.6.6":
+  version: 0.6.6
+  resolution: "unplugin-auto-import@npm:0.6.6::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Funplugin-auto-import%2F-%2Funplugin-auto-import-0.6.6.tgz"
   dependencies:
     "@antfu/utils": ^0.5.0
     "@rollup/pluginutils": ^4.2.0
@@ -9267,7 +9307,7 @@ __metadata:
   peerDependenciesMeta:
     "@vueuse/core":
       optional: true
-  checksum: 6d80ccd6a5f63299236f7e9c98a4a184e500313d4235fb9d9f7bca5f2e687812805f0db0225ee85cb009006e43c3255eb92571db28feb614f6b48bf4320158bb
+  checksum: 89c28ef3d4133216680a932aef1f7f46894f1c65d8732bb93c5efe9125a699cce0a25d5347b91a4897c30e9b00028961492b5eb418cd08aa1c83b267d90b5b94
   languageName: node
   linkType: hard
 
@@ -9613,9 +9653,9 @@ __metadata:
   dependencies:
     "@arco-design/web-vue": ^2.19.0
     "@cliqz/adblocker-electron": ^1.23.6
-    "@commitlint/cli": ^16.2.1
+    "@commitlint/cli": ^16.2.3
     "@commitlint/config-conventional": ^16.2.1
-    "@electron/remote": ^2.0.7
+    "@electron/remote": ^2.0.8
     "@types/cross-spawn": ^6.0.2
     "@types/electron-json-storage": ^4.5.0
     "@types/lodash": ^4.14.180
@@ -9625,7 +9665,7 @@ __metadata:
     "@typescript-eslint/parser": ^5.15.0
     "@vitejs/plugin-vue": ^2.2.4
     "@vitejs/plugin-vue-jsx": ^1.3.8
-    autoprefixer: ^10.4.2
+    autoprefixer: ^10.4.4
     axios: ^0.26.1
     cross-spawn: ^7.0.3
     electron: ^17.1.2
@@ -9645,17 +9685,17 @@ __metadata:
     nprogress: ^0.2.0
     overlayscrollbars: ^1.13.1
     pinia: ^2.0.12
-    postcss: ^8.4.8
+    postcss: ^8.4.12
     postcss-html: ^1.3.0
     postcss-less: ^6.0.0
-    prettier: ^2.5.1
-    stylelint: ^14.5.3
+    prettier: ^2.6.0
+    stylelint: ^14.6.0
     stylelint-config-rational-order: ^0.1.2
     stylelint-config-recommended-vue: ^1.3.0
     stylelint-config-standard: ^25.0.0
     stylelint-order: ^5.0.0
     typescript: ^4.6.2
-    unplugin-auto-import: ^0.6.4
+    unplugin-auto-import: ^0.6.6
     unplugin-vue-components: ^0.18.0
     vite: ^2.8.6
     vite-plugin-optimize-persist: ^0.1.2

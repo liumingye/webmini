@@ -1,7 +1,7 @@
 import { ElectronBlocker } from '@cliqz/adblocker-electron'
-import { readFileSync, writeFileSync } from 'fs'
-import { Session, app } from 'electron'
+import { app, Session } from 'electron'
 import fetch from 'electron-fetch'
+import { readFileSync, writeFileSync } from 'fs'
 
 const PREFIX = 'https://liumingye.coding.net/p/bilimini/d'
 

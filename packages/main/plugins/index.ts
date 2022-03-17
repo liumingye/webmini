@@ -1,13 +1,13 @@
-import type { PluginMetadata, LocalPluginInfo, AdapterInfo } from '~/interfaces/plugin'
-import { PluginStatus } from '~/interfaces/plugin'
 import { app } from 'electron'
-import AdapterHandler from './handler'
-import { join, resolve } from 'path'
 import fs from 'fs'
-import { StorageService } from '../services/storage'
+import { join, resolve } from 'path'
 import Logger from '~/common/logger'
-import { Application } from '../application'
 import { isValidKey } from '~/common/object'
+import type { AdapterInfo, LocalPluginInfo, PluginMetadata } from '~/interfaces/plugin'
+import { PluginStatus } from '~/interfaces/plugin'
+import { Application } from '../application'
+import { StorageService } from '../services/storage'
+import AdapterHandler from './handler'
 
 class Plugins {
   public static instance = new this()
@@ -81,7 +81,7 @@ class Plugins {
             const pluginInfo = JSON.parse(
               fs.readFileSync(join(pluginPath, './package.json'), 'utf8'),
             )
-            return Object.assign(pluginInfo, { status: allPlugins[name] })
+            return { ...pluginInfo, status: allPlugins[name] }
           }
         } catch (error) {
           //

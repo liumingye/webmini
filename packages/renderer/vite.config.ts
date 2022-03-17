@@ -1,14 +1,14 @@
-import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
-import pkg from '../../package.json'
-import { resolve } from 'path'
 import vueJsx from '@vitejs/plugin-vue-jsx'
-import WindiCSS from 'vite-plugin-windicss'
+import { resolve } from 'path'
+import AutoImport from 'unplugin-auto-import/vite'
+import { ArcoResolver } from 'unplugin-vue-components/resolvers'
+import Components from 'unplugin-vue-components/vite'
+import { defineConfig } from 'vite'
 import OptimizationPersist from 'vite-plugin-optimize-persist'
 import PkgConfig from 'vite-plugin-package-config'
-import AutoImport from 'unplugin-auto-import/vite'
-import Components from 'unplugin-vue-components/vite'
-import { ArcoResolver } from 'unplugin-vue-components/resolvers'
+import WindiCSS from 'vite-plugin-windicss'
+import pkg from '../../package.json'
 // import { dirResolver, DirResolverHelper } from 'vite-auto-import-resolvers'
 
 // https://vitejs.dev/config/
@@ -24,7 +24,7 @@ export default defineConfig({
     vue(),
     // 按需加载
     Components({
-      dts: './src/components.d.ts',
+      dts: 'src/components.d.ts',
       resolvers: [ArcoResolver({ importStyle: false })],
     }),
     // tsx 支持
@@ -33,10 +33,25 @@ export default defineConfig({
     WindiCSS(),
     // api 自动按需引入
     AutoImport({
-      dts: './src/auto-imports.d.ts',
-      imports: ['vue', 'pinia', 'vue-router'],
+      dts: 'src/auto-imports.d.ts',
+      // global imports to register
+      imports: [
+        // presets
+        'vue',
+        'pinia',
+        'vue-router',
+        // custom
+        {
+          axios: [
+            // default imports
+            ['default', 'axios'], // import { default as axios } from 'axios',
+          ],
+        },
+      ],
+      // Generate corresponding .eslintrc-auto-import.json file.
       eslintrc: {
         enabled: true,
+        globalsPropValue: 'readonly',
       },
     }),
   ],

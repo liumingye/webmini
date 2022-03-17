@@ -1,7 +1,7 @@
-import { CommonWindow } from './common'
 import { BrowserWindow, ipcMain } from 'electron'
 import { join } from 'path'
 import { Application } from '../application'
+import { CommonWindow } from './common'
 
 export class SelectPartWindow extends CommonWindow {
   public constructor() {

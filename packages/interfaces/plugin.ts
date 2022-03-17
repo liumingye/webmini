@@ -1,7 +1,7 @@
-import type { addData } from '../main/plugins/data'
-import type { addHook } from '../main/plugins/hook'
 import type { WebContents } from 'electron'
 import type Net from '../common/net'
+import type { addData } from '../main/plugins/data'
+import type { addHook } from '../main/plugins/hook'
 import type { CommonWindow } from '../main/windows/common'
 
 export type PluginDataProvider = (...args: any[]) => void | Promise<void>

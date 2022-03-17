@@ -1,8 +1,8 @@
 import { app, ipcMain } from 'electron'
-import { Application } from './application'
 import is from 'electron-is'
-import Plugins from './plugins'
 import type { AdapterInfo } from '~/interfaces/plugin'
+import { Application } from './application'
+import Plugins from './plugins'
 import { hookThemeColor } from './utils'
 
 export default () => {

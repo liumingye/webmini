@@ -1,6 +1,7 @@
 <script setup lang="ts">
   import { useAppStore } from '@/store'
   import overlayScrollbars from 'overlayscrollbars'
+  import { IconClose } from '@arco-design/web-vue/es/icon'
 
   const { currentWindow } = window.app
   const ipc = window.ipcRenderer
@@ -36,7 +37,7 @@
   }
 
   // 更新分p列表
-  ipc.on('update-part', async (ev, data) => {
+  ipc.on('update-part', async (_ev, data) => {
     if (!data) {
       currentWindow.hide()
       return
@@ -49,7 +50,7 @@
     }
   })
 
-  ipc.on('update-currentPartId', async (ev, data) => {
+  ipc.on('update-currentPartId', async (_ev, data) => {
     if (!partList.value) return
     partList.value.currentPartId = data
   })
@@ -74,10 +75,10 @@
       <div class="flex-1 font-bold">视频分Part</div>
       <div class="flex gap-2 no-drag">
         <b-button title="定位" @click="scrollIntoView(true)">
-          <icon-target-two />
+          <icon-target-two size=".8em" />
         </b-button>
         <b-button title="关闭" @click="closeWindow">
-          <icon-close-small />
+          <IconClose size=".7em" />
         </b-button>
       </div>
     </header>
@@ -111,7 +112,6 @@
     header {
       button {
         color: @color-app-bg;
-        background: #fff;
       }
     }
 

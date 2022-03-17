@@ -1,11 +1,11 @@
-import { CommonWindow } from './common'
-import { BrowserWindow, app, shell, BrowserWindowConstructorOptions } from 'electron'
+import { app, BrowserWindow, BrowserWindowConstructorOptions, shell } from 'electron'
 import is from 'electron-is'
+import { throttle } from 'lodash'
 import { join } from 'path'
 import { Application } from '../application'
-import { ViewManager } from '../viewManager'
-import { throttle } from 'lodash'
 import { StorageService } from '../services/storage'
+import { ViewManager } from '../viewManager'
+import { CommonWindow } from './common'
 
 export class MainWindow extends CommonWindow {
   public viewManager: ViewManager

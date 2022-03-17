@@ -2,6 +2,13 @@
   import { useAppStore, useTabsStore } from '@/store'
   import { resizeMainWindow } from '@/utils'
   import { callViewMethod } from '@/utils/view'
+  import {
+    IconHome,
+    IconLeft,
+    IconRight,
+    IconClose,
+    IconSettings,
+  } from '@arco-design/web-vue/es/icon'
   import { START } from '~/common/constant'
 
   const ipc = window.ipcRenderer
@@ -111,7 +118,7 @@
 
   const showNav = () => {
     router.push({
-      name: 'WebNav',
+      name: 'Home',
     })
   }
 
@@ -133,13 +140,13 @@
   >
     <div class="flex-1 flex gap-1.5">
       <b-button id="navi-back" title="后退" :disabled="disableBack" @click="goBack">
-        <icon-left size=".9em" />
+        <IconLeft size=".8em" />
       </b-button>
       <b-button v-if="!disableForward" title="前进" @click="goForward">
-        <icon-right size=".9em" />
+        <IconRight size=".8em" />
       </b-button>
       <b-button id="navi-home" title="返回首页" @click="naviGoBrowser">
-        <icon-home size=".8em" />
+        <IconHome size=".8em" />
       </b-button>
     </div>
     <div class="truncate text-0.9em" :title="title">
@@ -166,10 +173,10 @@
         <icon-windmill size=".8em" />
       </b-button>
       <b-button title="设置" :disabled="route.name === 'Settings'" @click="showSettings">
-        <icon-setting-two size=".8em" />
+        <IconSettings size=".8em" />
       </b-button>
       <b-button title="退出" @click="turnOff" @click.right="minimize">
-        <icon-close-small size=".85em" />
+        <IconClose size=".7em" />
       </b-button>
     </div>
   </header>
@@ -186,20 +193,22 @@
       color: var(--theme-color-text) !important;
       button {
         color: var(--theme-color-text);
-        background: rgba(50, 50, 50, 0.2);
+        background: rgba(70, 70, 70, 0.2);
 
         &:not([disabled]):hover {
-          background: rgba(50, 50, 50, 0.8);
+          background: rgba(70, 70, 70, 0.4);
+        }
+
+        &:not([disabled]):active {
+          background: rgba(70, 70, 70, 0.6);
         }
       }
     }
   }
 
   #navi-back {
-    span {
-      :deep(svg) {
-        margin-left: -1px;
-      }
+    :deep(svg) {
+      margin-left: -1px;
     }
   }
   #app-danmaku,

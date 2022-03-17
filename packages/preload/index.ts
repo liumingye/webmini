@@ -1,13 +1,13 @@
-import { contextBridge, ipcRenderer } from 'electron'
 import { getCurrentWindow, screen, session } from '@electron/remote'
-import useLoading from './utils/loading'
+import { contextBridge, ipcRenderer } from 'electron'
 import { withPrototype } from '~/common'
-import { domContentLoaded } from '~/common/dom'
 import Cookies from '~/common/cookies'
-import Net from '~/common/net'
+import { domContentLoaded } from '~/common/dom'
 import Logger from '~/common/logger'
-import Versions from './utils/versions'
+import Net from '~/common/net'
 import { StorageService } from '~/main/services/storage'
+import useLoading from './utils/loading'
+import Versions from './utils/versions'
 
 const { appendLoading, removeLoading } = useLoading()
 

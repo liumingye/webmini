@@ -1,8 +1,8 @@
-import { isString } from 'lodash'
 import { nativeTheme } from 'electron'
-import { registerAndGetData } from '../plugins/data'
-import { Application } from '../application'
+import { isString } from 'lodash'
 import { Color } from '~/common/color'
+import { Application } from '../application'
+import { registerAndGetData } from '../plugins/data'
 
 export const matchPattern = (str: string) => {
   return (pattern: string | RegExp) => {
