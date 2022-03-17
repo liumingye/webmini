@@ -324,6 +324,7 @@ export class Color {
   }
 
   /**
+   * 计算两种颜色的对比度
    * http://www.w3.org/TR/WCAG20/#contrast-ratiodef
    * Returns the contrast ration number in the set [1, 21].
    */
@@ -363,35 +364,42 @@ export class Color {
     return lum1 < lum2
   }
 
+  /** 颜色转亮 */
   lighten(factor: number): Color {
     return new Color(
       new HSLA(this.hsla.h, this.hsla.s, this.hsla.l + this.hsla.l * factor, this.hsla.a),
     )
   }
 
+  /** 颜色转暗 */
   darken(factor: number): Color {
     return new Color(
       new HSLA(this.hsla.h, this.hsla.s, this.hsla.l - this.hsla.l * factor, this.hsla.a),
     )
   }
 
+  /** 设置不透明度 */
   transparent(factor: number): Color {
     const { r, g, b, a } = this.rgba
     return new Color(new RGBA(r, g, b, a * factor))
   }
 
+  /** 是否为透明的 */
   isTransparent(): boolean {
     return this.rgba.a === 0
   }
 
+  /** 是否为不透明的 */
   isOpaque(): boolean {
     return this.rgba.a === 1
   }
 
+  /** 反色 */
   opposite(): Color {
     return new Color(new RGBA(255 - this.rgba.r, 255 - this.rgba.g, 255 - this.rgba.b, this.rgba.a))
   }
 
+  /** 混色 */
   blend(c: Color): Color {
     const rgba = c.rgba
 

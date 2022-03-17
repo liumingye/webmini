@@ -63,47 +63,52 @@ export interface AdapterHandlerOptions {
   registry?: string
 }
 
-/**
- * 插件信息, 对应 package.json
- * @export
- * @interface AdapterInfo
- */
-
+/** 本地插件信息 */
 export interface LocalPluginInfo {
-  // 插件名称
+  /** 插件名称 */
   name: string
-  // 可读插件名称
+  /** 可读插件名称 */
   displayName: string
-  // 开始页
+  /** 开始页 */
   start: string
-  // 图标
+  /** 图标 */
   icon: string
-  // 状态
+  /** 状态 */
   status?: PluginStatus
 }
 
+/**
+ * 在线插件信息
+ * https://gitee.com/liumingye/webmini-database/blob/master/plugins.json
+ * @export
+ * @interface AdapterInfo
+ */
 export interface AdapterInfo {
-  // 插件名称
+  /** 插件名称 */
   name: string
-  // 可读插件名称
+  /** 可读插件名称 */
   pluginName: string
-  // 描述
+  /** 描述 */
   description: string
-  // 作者
+  /** 作者 */
   author: string
-  // 入口文件
-  main: string
-  // 版本
+  /** 版本 */
   version: string
-  // 本地插件信息
+  /** 本地插件信息 */
   local?: LocalPluginInfo
 }
 
 export enum PluginStatus {
+  /** 安装中 */
   INSTALLING = 'INSTALLING',
+  /** 安装完成 */
   INSTALLING_COMPLETE = 'INSTALLING_COMPLETE',
+  /** 安装失败 */
   INSTALL_FAIL = 'INSTALL_FAIL',
+  /** 卸载中 */
   UNINSTALLING = 'UNINSTALLING',
+  /** 卸载失败 */
   UNINSTALL_FAIL = 'UNINSTALL_FAIL',
+  /** 卸载完成 */
   UNINSTALL_COMPLETE = 'UNINSTALL_COMPLETE',
 }

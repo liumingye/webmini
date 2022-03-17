@@ -1,4 +1,4 @@
-import type { PluginMetadata, LocalPluginInfo } from '~/interfaces/plugin'
+import type { PluginMetadata, LocalPluginInfo, AdapterInfo } from '~/interfaces/plugin'
 import { PluginStatus } from '~/interfaces/plugin'
 import { app } from 'electron'
 import AdapterHandler from './handler'
@@ -30,7 +30,7 @@ class Plugins {
     //  加载本地插件
     const localPlugins = this.getLocalPlugins()
     localPlugins.forEach((p) => {
-      this.addPlugin(p)
+      this.addPlugin(p.name)
     })
   }
 
@@ -39,9 +39,9 @@ class Plugins {
    * @param plugin
    * @returns
    */
-  public async addPlugin(plugin: LocalPluginInfo) {
+  public async addPlugin(name: string) {
     try {
-      const pluginPath = this.getPluginPath(plugin.name)
+      const pluginPath = this.getPluginPath(name)
       const pluginInfo = JSON.parse(fs.readFileSync(join(pluginPath, './package.json'), 'utf8'))
       const module = import(resolve(pluginPath, pluginInfo.main))
       module.then((res) => {
@@ -59,8 +59,8 @@ class Plugins {
    * @param plugin
    * @returns
    */
-  public async deletePlugin(plugin: LocalPluginInfo) {
-    this.allPlugins = this.allPlugins.filter((p) => plugin.name !== p.name)
+  public async deletePlugin(name: string) {
+    this.allPlugins = this.allPlugins.filter((p) => name !== p.name)
     return this.allPlugins
   }
 
@@ -73,9 +73,14 @@ class Plugins {
     return Object.keys(allPlugins)
       .map((name) => {
         try {
-          const pluginPath = this.getPluginPath(name)
-          const pluginInfo = JSON.parse(fs.readFileSync(join(pluginPath, './package.json'), 'utf8'))
-          if (isValidKey(name, allPlugins)) {
+          if (
+            isValidKey(name, allPlugins) &&
+            allPlugins[name] === PluginStatus.INSTALLING_COMPLETE
+          ) {
+            const pluginPath = this.getPluginPath(name)
+            const pluginInfo = JSON.parse(
+              fs.readFileSync(join(pluginPath, './package.json'), 'utf8'),
+            )
             return Object.assign(pluginInfo, { status: allPlugins[name] })
           }
         } catch (error) {
@@ -99,12 +104,12 @@ class Plugins {
    * @param plugin
    * @returns
    */
-  public async install(plugin: LocalPluginInfo) {
+  public async install(plugin: AdapterInfo) {
     StorageService.instance.update({ [plugin.name]: PluginStatus.INSTALLING }, 'plugin')
     Logger.info(`开始安装 - ${plugin.name}`)
     Application.instance.mainWindow?.send('plugin-status-update', plugin, PluginStatus.INSTALLING)
 
-    await this.handler.install([plugin.name])
+    await this.handler.install([`${plugin.name}@${plugin.version}`])
 
     const pluginPath = this.getPluginPath(plugin.name)
 
@@ -129,7 +134,7 @@ class Plugins {
       PluginStatus.INSTALLING_COMPLETE,
     )
 
-    this.addPlugin(plugin)
+    this.addPlugin(plugin.name)
 
     return true
   }
@@ -139,7 +144,7 @@ class Plugins {
    * @param plugin
    * @returns
    */
-  public async uninstall(plugin: LocalPluginInfo) {
+  public async uninstall(plugin: AdapterInfo) {
     StorageService.instance.update({ [plugin.name]: PluginStatus.UNINSTALLING }, 'plugin')
     Logger.info(`开始卸载 - ${plugin.name}`)
     Application.instance.mainWindow?.send('plugin-status-update', plugin, PluginStatus.UNINSTALLING)
@@ -170,7 +175,7 @@ class Plugins {
       PluginStatus.UNINSTALL_COMPLETE,
     )
 
-    this.deletePlugin(plugin)
+    this.deletePlugin(plugin.name)
 
     return true
   }

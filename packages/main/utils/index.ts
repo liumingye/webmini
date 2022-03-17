@@ -40,6 +40,7 @@ export const hookThemeColor = (): void => {
     if (Application.instance.mainWindow?.isDestroyed()) return
 
     const theme = nativeTheme.shouldUseDarkColors ? 'dark' : 'light'
+
     // 未定义文字颜色则自动获取文字颜色
     if (!themeColor[theme].text) {
       const baseColor = Color.Format.CSS.parseHex(themeColor[theme].bg)
@@ -58,7 +59,6 @@ export const hookThemeColor = (): void => {
       ...themeColor[theme],
     })
   }
-  nativeTheme.removeListener('updated', onDarkModeChange)
-  nativeTheme.addListener('updated', onDarkModeChange)
+  nativeTheme.removeListener('updated', onDarkModeChange).addListener('updated', onDarkModeChange)
   onDarkModeChange()
 }

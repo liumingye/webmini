@@ -179,17 +179,18 @@
   header {
     background: var(--color-bg-1);
     color: var(--color-text-1);
-    button {
-      color: var(--color-bg-1);
-      background: var(--color-text-1);
-    }
+
     &.Browser,
     &.About {
       background: var(--theme-color-bg) !important;
       color: var(--theme-color-text) !important;
       button {
-        color: var(--theme-color-bg);
-        background: var(--theme-color-text);
+        color: var(--theme-color-text);
+        background: rgba(50, 50, 50, 0.2);
+
+        &:not([disabled]):hover {
+          background: rgba(50, 50, 50, 0.8);
+        }
       }
     }
   }

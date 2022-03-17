@@ -22,7 +22,7 @@
 <template>
   <button
     :disabled="disabled"
-    class="inline-flex justify-center items-center rounded-1 w-4 h-4 bg-$color-bg-3 opacity-50 cursor-pointer transition-opacity no-drag"
+    class="inline-flex justify-center items-center rounded-1 w-4 h-4 bg-$color-bg-3 cursor-pointer transition-opacity no-drag"
     @click="handleClick"
   >
     <slot></slot>
@@ -32,13 +32,14 @@
 <style lang="less" scoped>
   button {
     color: var(--color-text-1);
+    background: var(--color-neutral-3);
 
     &[disabled] {
-      opacity: 0.2;
+      opacity: 0.4;
     }
 
     &:not([disabled]):hover {
-      opacity: 1;
+      background: var(--color-neutral-4);
     }
   }
 </style>

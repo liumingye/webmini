@@ -66,10 +66,12 @@
   })
 
   const install = (plugin: AdapterInfo) => {
+    console.log(plugin)
     window.ipcRenderer.invoke('plugin-install', cloneDeep(plugin))
   }
 
   const uninstall = (plugin: AdapterInfo) => {
+    console.log(plugin)
     window.ipcRenderer.invoke('plugin-uninstall', cloneDeep(plugin))
   }
 </script>
