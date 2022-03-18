@@ -20,19 +20,19 @@ const routes: RouteRecordRaw[] = [
         meta: { title: '导航' },
       },
       {
-        path: 'plugin',
+        path: 'home/plugin',
         name: 'Plugin',
         component: () => import('@/views/pages/plugin/Plugin.vue'),
         meta: { title: '插件市场' },
       },
       {
-        path: 'settings',
+        path: 'home/settings',
         name: 'Settings',
         component: () => import('@/views/pages/settings/Settings.vue'),
         meta: { title: '设置' },
       },
       {
-        path: 'settings/about',
+        path: 'home/settings/about',
         name: 'About',
         component: () => import('@/views/pages/settings/About.vue'),
         meta: { title: '关于' },

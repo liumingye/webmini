@@ -2,13 +2,7 @@
   import { useAppStore, useTabsStore } from '@/store'
   import { resizeMainWindow } from '@/utils'
   import { callViewMethod } from '@/utils/view'
-  import {
-    IconHome,
-    IconLeft,
-    IconRight,
-    IconClose,
-    IconSettings,
-  } from '@arco-design/web-vue/es/icon'
+  import { IconCompass, IconLeft, IconRight, IconClose,IconMinus } from '@arco-design/web-vue/es/icon'
   import { START } from '~/common/constant'
 
   const ipc = window.ipcRenderer
@@ -52,12 +46,16 @@
     return false
   }
 
+  const go = (name: string | symbol) => {
+    router.push({
+      name: name,
+    })
+  }
+
   const naviGoBrowser = () => {
     const is = isBrowser()
     if (!is) {
-      router.push({
-        name: 'Browser',
-      })
+      go('Browser')
     }
     appStore.go(START)
   }
@@ -116,18 +114,6 @@
     ipc.send('toggle-select-part-window')
   }
 
-  const showNav = () => {
-    router.push({
-      name: 'Home',
-    })
-  }
-
-  const showSettings = () => {
-    router.push({
-      name: 'Settings',
-    })
-  }
-
   const turnOff = () => {
     ipc.send('close-main-window')
   }
@@ -145,8 +131,8 @@
       <b-button v-if="!disableForward" title="前进" @click="goForward">
         <IconRight size=".8em" />
       </b-button>
-      <b-button id="navi-home" title="返回首页" @click="naviGoBrowser">
-        <IconHome size=".8em" />
+      <b-button id="navi-home" title="浏览器" @click="naviGoBrowser">
+        <IconCompass size=".8em" />
       </b-button>
     </div>
     <div class="truncate text-0.9em" :title="title">
@@ -169,13 +155,13 @@
       >
         <span>弹</span>
       </b-button>
-      <b-button title="导航" :disabled="route.name === 'WebNav'" @click="showNav">
+      <b-button title="主页" :disabled="route.name === 'Home'" @click="go('Home')">
         <icon-windmill size=".8em" />
       </b-button>
-      <b-button title="设置" :disabled="route.name === 'Settings'" @click="showSettings">
-        <IconSettings size=".8em" />
+      <b-button title="最小化" @click="minimize">
+        <IconMinus size=".7em" />
       </b-button>
-      <b-button title="退出" @click="turnOff" @click.right="minimize">
+      <b-button title="退出" @click="turnOff">
         <IconClose size=".7em" />
       </b-button>
     </div>

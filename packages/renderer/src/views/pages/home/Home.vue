@@ -1,33 +1,30 @@
 <script setup lang="ts">
   import { useAppStore } from '@/store'
-  import type { LocalPluginInfo } from '~/interfaces/plugin'
   import { IconBookmark } from '@arco-design/web-vue/es/icon'
+  import type { LocalPluginInfo } from '~/interfaces/plugin'
 
   const appStore = useAppStore()
   const router = useRouter()
-  const localPlugins = ref<LocalPluginInfo[]>()
+
+  const localPlugins = computed(() => appStore.localPlugins)
 
   onMounted(() => {
-    window.ipcRenderer.invoke('get-local-plugins').then((_localPlugins: LocalPluginInfo[]) => {
-      localPlugins.value = _localPlugins
-      localPlugins.value.push(_localPlugins[0])
-      localPlugins.value.push(_localPlugins[0])
-      localPlugins.value.push(_localPlugins[0])
-      localPlugins.value.push(_localPlugins[0])
-      localPlugins.value.push(_localPlugins[0])
-      localPlugins.value.push(_localPlugins[0])
-      localPlugins.value.push(_localPlugins[0])
-      localPlugins.value.push(_localPlugins[0])
-      localPlugins.value.push(_localPlugins[0])
-      // console.log(_localPlugins)
-    })
+    appStore.getLocalPlugins()
   })
 
-  const open = (url: string) => {
+  const go = (name: string | symbol) => {
     router.push({
-      name: 'Browser',
+      name: name,
     })
-    appStore.go(url)
+  }
+
+  const open = (item: LocalPluginInfo) => {
+    if (item.name === 'Router') {
+      go(item.start)
+    } else {
+      go('Browser')
+      appStore.go(item.start)
+    }
   }
 </script>
 
@@ -36,28 +33,34 @@
     <div
       class="max-w-186 mx-auto grid justify-items-center 3sm:grid-cols-[repeat(auto-fill,25%)] 2sm:grid-cols-[repeat(auto-fill,20%)] sm:grid-cols-[repeat(auto-fill,16.666%)] grid-cols-[repeat(auto-fill,11.111%)]"
     >
-      <div
-        v-for="item in localPlugins"
-        :key="item.name"
-        class="w-16 mb-3"
-        @click="open(item.start)"
-      >
+      <div v-for="item in localPlugins" :key="item.name" class="w-16 mb-3">
         <div
-          class="mx-auto rounded-lg shadow-md shadow-dark-100/25 w-12 h-12 active:(filter brightness-80)"
-          :style="{
-            backgroundImage: `url(${item.icon})`,
-            backgroundSize: 'contain',
-            backgroundRepeat: 'no-repeat',
-          }"
-        ></div>
-        <div class="mt-1 text-center truncate text-xs">{{ item.displayName }}</div>
+          class="overflow-hidden mx-auto rounded-lg shadow-md shadow-dark-100/25 w-12 h-12 active:(filter brightness-80)"
+          @click="open(item)"
+        >
+          <template v-if="item.name === 'Router'">
+            <div class="w-full h-full flex justify-center items-center bg-$color-neutral-1">
+              <component :is="item.icon" size="1.6rem" />
+            </div>
+          </template>
+          <template v-else>
+            <div
+              class="w-full h-full bg-no-repeat bg-contain"
+              :style="{
+                backgroundImage: `url(${item.icon})`,
+              }"
+            ></div>
+          </template>
+        </div>
+        <div class="mt-1 text-center truncate text-xs" @click="open(item)">{{
+          item.displayName
+        }}</div>
         <div class="mt-1 flex gap-1 justify-center">
-          <b-button title="进入" class="">
-            <IconBookmark size=".8em" @click.stop="open(item.start)" />
-          </b-button>
-          <b-button title="导航" class="" @click.stop="">
-            <IconBookmark size=".8em" />
-          </b-button>
+          <template v-if="item.name !== 'Router'">
+            <b-button title="导航" class="" @click.stop="">
+              <IconBookmark size=".8em" />
+            </b-button>
+          </template>
         </div>
       </div>
     </div>

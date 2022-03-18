@@ -1,26 +1,45 @@
 <script setup lang="ts">
-  import { fetchTotalPlugins } from '@/apis/plugin'
+  import { useAppStore } from '@/store'
+  import { Message } from '@arco-design/web-vue'
   import { cloneDeep } from 'lodash'
-  import { useRequest } from 'vue-request'
-  import type { AdapterInfo, LocalPluginInfo } from '~/interfaces/plugin'
+  import type { AdapterInfo } from '~/interfaces/plugin'
   import { PluginStatus } from '~/interfaces/plugin'
+
+  const appStore = useAppStore()
 
   const loading = ref(true)
 
-  const totalPlugins = ref<AdapterInfo[]>()
+  const totalPlugins = computed(() => appStore.totalPlugins)
 
-  const pluginStatusUpdate = (_e: any, _plugin: AdapterInfo, _status: PluginStatus | undefined) => {
+  const message = (content: string) => {
+    Message.info({ content, position: 'bottom', closable: true })
+  }
+
+  const pluginStatusUpdate = (_e: any, _plugin: AdapterInfo, status: PluginStatus | undefined) => {
     const plugin = totalPlugins.value?.find((p) => p.name === _plugin.name)
     if (!plugin || !plugin.local) return
-    let status = _status
-    switch (_status) {
+    switch (status) {
+      case PluginStatus.INSTALLING_COMPLETE:
+        message(`插件 ${plugin.name} 安装完成!`)
+        // 异步执行 因为 Storage.getSync 会卡一会
+        setTimeout(() => {
+          appStore.getLocalPlugins()
+        }, 100)
+        break
       case PluginStatus.INSTALL_FAIL:
+        message(`插件 ${plugin.name} 安装失败!`)
         status = undefined
         break
       case PluginStatus.UNINSTALL_COMPLETE:
+        message(`插件 ${plugin.name} 卸载完成!`)
         status = undefined
+        // 异步执行 因为 Storage.getSync 会卡一会
+        setTimeout(() => {
+          appStore.getLocalPlugins()
+        }, 100)
         break
       case PluginStatus.UNINSTALL_FAIL:
+        message(`插件 ${plugin.name} 卸载失败!`)
         status = PluginStatus.INSTALLING_COMPLETE
         break
     }
@@ -28,36 +47,14 @@
   }
 
   onMounted(() => {
-    window.ipcRenderer.invoke('get-local-plugins').then((localPlugins: LocalPluginInfo[]) => {
-      const { run } = useRequest(fetchTotalPlugins, {
-        formatResult: (res: any) => {
-          return res.data === undefined ? [] : res.data
-        },
-        onSuccess: (res) => {
-          totalPlugins.value = res.map((_res: AdapterInfo) => {
-            const localPlugin = localPlugins.find((p) => p.name === _res.name)
-            if (!localPlugin) {
-              // 本地不存在
-              _res.local = {} as LocalPluginInfo
-              _res.local.status = undefined
-            } else {
-              // 本地存在
-              _res.local = localPlugin
-              // 防止状态卡在ing中
-              if (_res.local?.status === PluginStatus.UNINSTALLING) {
-                _res.local.status = PluginStatus.INSTALLING_COMPLETE
-              } else if (_res.local?.status === PluginStatus.INSTALLING) {
-                _res.local.status = undefined
-              }
-            }
-            return _res
-          })
-          loading.value = false
-          // console.log(totalPlugins.value)
-        },
+    appStore
+      .getTotalPlugins()
+      .then(() => {
+        loading.value = false
       })
-      run()
-    })
+      .catch(() => {
+        //
+      })
     window.ipcRenderer.on('plugin-status-update', pluginStatusUpdate)
   })
 
@@ -66,12 +63,10 @@
   })
 
   const install = (plugin: AdapterInfo) => {
-    console.log(plugin)
     window.ipcRenderer.invoke('plugin-install', cloneDeep(plugin))
   }
 
   const uninstall = (plugin: AdapterInfo) => {
-    console.log(plugin)
     window.ipcRenderer.invoke('plugin-uninstall', cloneDeep(plugin))
   }
 </script>

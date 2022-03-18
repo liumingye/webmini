@@ -1,6 +1,11 @@
-import type { AppStateTypes, AppConfig } from './types'
 import { loadURL } from '@/utils/view'
 import { isURI } from '~/common/uri'
+import type { AdapterInfo, LocalPluginInfo } from '~/interfaces/plugin'
+import { PluginStatus } from '~/interfaces/plugin'
+import type { AppConfig, AppStateTypes } from './types'
+import { fetchTotalPlugins } from '@/apis/plugin'
+import { useRequest } from 'vue-request'
+import { IconSettings, IconApps } from '@arco-design/web-vue/es/icon'
 
 export const useAppStore = defineStore('app', {
   state: (): AppStateTypes => ({
@@ -23,6 +28,8 @@ export const useAppStore = defineStore('app', {
       canGoBack: false,
       canGoForward: false,
     },
+    localPlugins: [],
+    totalPlugins: [],
   }),
   actions: {
     init() {
@@ -51,6 +58,61 @@ export const useAppStore = defineStore('app', {
         url = value.indexOf('://') === -1 ? `http://${value}` : value
       }
       loadURL(url)
+    },
+    getLocalPlugins() {
+      window.ipcRenderer.invoke('get-local-plugins').then((localPlugins: LocalPluginInfo[]) => {
+        localPlugins.push({
+          name: 'Router',
+          displayName: '插件市场',
+          start: 'Plugin',
+          icon: shallowRef(IconApps),
+        })
+        localPlugins.push({
+          name: 'Router',
+          displayName: '设置',
+          start: 'Settings',
+          icon: shallowRef(IconSettings),
+        })
+        this.localPlugins = localPlugins
+      })
+    },
+    getTotalPlugins() {
+      if (this.localPlugins.length === 0) {
+        Promise.all([this.getLocalPlugins()])
+      }
+      return new Promise((resolve, reject) => {
+        const { run } = useRequest(fetchTotalPlugins, {
+          formatResult: (res) => {
+            return res.data === undefined ? [] : res.data
+          },
+          onSuccess: (res: AdapterInfo[]) => {
+            this.totalPlugins = res.map((info) => {
+              const localPlugin = this.localPlugins.find((p) => p.name === info.name)
+              if (!localPlugin) {
+                // 本地不存在
+                info.local = {} as LocalPluginInfo
+                info.local.status = undefined
+              } else {
+                // 本地存在
+                info.local = localPlugin
+                // 防止状态卡在ing中
+                if (info.local?.status === PluginStatus.UNINSTALLING) {
+                  info.local.status = PluginStatus.INSTALLING_COMPLETE
+                } else if (info.local?.status === PluginStatus.INSTALLING) {
+                  info.local.status = undefined
+                }
+              }
+              return info
+            })
+            resolve(this.localPlugins)
+          },
+          onError(error) {
+            window.app.logger.error(error)
+            reject(error)
+          },
+        })
+        run()
+      })
     },
   },
 })

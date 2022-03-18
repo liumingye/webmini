@@ -1,4 +1,5 @@
 <script setup lang="ts">
+  import { IconGithub, IconBug } from '@arco-design/web-vue/es/icon'
   const versions = window.app.versions
 </script>
 
@@ -9,8 +10,12 @@
     </div>
     <p class="font-bold my-4">webmini</p>
     <p class="link">
-      <a href="https://github.com/liumingye/webmini" target="_blank">Github</a>
-      <a href="https://github.com/liumingye/webmini/issues" target="_blank">报告问题</a>
+      <a href="https://github.com/liumingye/webmini" target="_blank">
+        <IconGithub class="mr-1" />Github
+      </a>
+      <a href="https://github.com/liumingye/webmini/issues" target="_blank">
+        <IconBug class="mr-1" />报告问题
+      </a>
     </p>
     <div class="mt-5">
       <template v-for="(value, key) in versions" :key="key">

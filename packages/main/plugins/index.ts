@@ -70,7 +70,7 @@ class Plugins {
    */
   public getLocalPlugins(): LocalPluginInfo[] {
     const allPlugins = StorageService.instance.get('plugin')
-    return Object.keys(allPlugins)
+    const res = Object.keys(allPlugins)
       .map((name) => {
         try {
           if (
@@ -84,10 +84,11 @@ class Plugins {
             return { ...pluginInfo, status: allPlugins[name] }
           }
         } catch (error) {
-          //
+          Logger.error(error)
         }
       })
       .filter((it) => it !== undefined)
+    return res
   }
 
   /**

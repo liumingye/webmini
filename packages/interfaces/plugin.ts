@@ -3,6 +3,8 @@ import type Net from '../common/net'
 import type { addData } from '../main/plugins/data'
 import type { addHook } from '../main/plugins/hook'
 import type { CommonWindow } from '../main/windows/common'
+import type Icon from '@arco-design/web-vue/es/icon'
+import type { ShallowRef } from 'vue'
 
 export type PluginDataProvider = (...args: any[]) => void | Promise<void>
 
@@ -72,7 +74,8 @@ export interface LocalPluginInfo {
   /** 开始页 */
   start: string
   /** 图标 */
-  icon: string
+  icon: string | any
+  // icon: string | ShallowRef<typeof Icon>
   /** 状态 */
   status?: PluginStatus
 }

@@ -1,3 +1,5 @@
+import type { AdapterInfo, LocalPluginInfo } from '~/interfaces/plugin'
+
 export interface AppStateTypes {
   alwaysOnTop: 'on' | 'off' | 'playing'
   title: string
@@ -18,6 +20,8 @@ export interface AppStateTypes {
     canGoBack: boolean
     canGoForward: boolean
   }
+  localPlugins: LocalPluginInfo[]
+  totalPlugins: AdapterInfo[]
 }
 
 export interface AppConfig extends AppStateTypes {
