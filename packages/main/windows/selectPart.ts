@@ -2,6 +2,7 @@ import { BrowserWindow, ipcMain } from 'electron'
 import { join } from 'path'
 import { Application } from '../application'
 import { CommonWindow } from './common'
+import { getDisplayBounds } from '../utils'
 
 export class SelectPartWindow extends CommonWindow {
   public constructor() {
@@ -31,11 +32,26 @@ export class SelectPartWindow extends CommonWindow {
   }
 
   public show(): void {
-    if (this.isDestroyed() || !Application.instance.mainWindow) return
-    const p = Application.instance.mainWindow.win.getPosition(),
-      s = this.win.getSize(),
-      pos = [p[0] - s[0], p[1]]
-    this.win.setPosition(pos[0], pos[1])
+    const mainWindow = Application.instance.mainWindow
+
+    if (this.isDestroyed() || !mainWindow) return
+
+    const mainPos = mainWindow.win.getPosition()
+    const selectPartSize = this.win.getSize()
+
+    // 默认显示在窗口左面
+    // the default display in the window on the left
+    let x: number = mainPos[0] - selectPartSize[0]
+    const y: number = mainPos[1]
+
+    // 超出显示器 显示在窗口右面
+    // beyond the display in the window is on the right
+    if (x < getDisplayBounds().x) {
+      const mainSize = mainWindow.win.getSize()
+      x = mainPos[0] + mainSize[0]
+    }
+
+    this.win.setPosition(x, y)
     this.win.show()
   }
 }
