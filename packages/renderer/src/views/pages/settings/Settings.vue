@@ -10,7 +10,8 @@
     },
     set(value) {
       appStore.alwaysOnTop = value
-      appStore.saveConfig({ alwaysOnTop: value })
+      appStore.saveConfig('alwaysOnTop', value)
+      // appStore.saveConfig({ alwaysOnTop: value })
     },
   })
   const clearSensitiveDirectories = () => {

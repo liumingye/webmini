@@ -39,7 +39,7 @@
           @click="open(item)"
         >
           <template v-if="item.name === 'Router'">
-            <div class="w-full h-full flex justify-center items-center bg-$color-neutral-1">
+            <div class="w-full h-full flex justify-center items-center bg-$color-neutral-2">
               <component :is="item.icon" size="1.6rem" />
             </div>
           </template>

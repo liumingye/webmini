@@ -114,8 +114,8 @@
 
 <style lang="less" scoped>
   #main {
-    will-change: transform;
     transform: translate3d(0, -2rem, 0);
+    will-change: transform;
 
     &.showTopBar {
       transform: translate3d(0, 0, 0);

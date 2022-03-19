@@ -5,11 +5,11 @@ import Logger from '~/common/logger'
 import { isValidKey } from '~/common/object'
 import type { AdapterInfo, LocalPluginInfo, PluginMetadata } from '~/interfaces/plugin'
 import { PluginStatus } from '~/interfaces/plugin'
-import { Application } from '../application'
-import { StorageService } from '../services/storage'
-import AdapterHandler from './handler'
+import { Application } from '../../application'
+import { StorageService } from '../../services/storage'
+import { AdapterHandler } from './index'
 
-class Plugins {
+export class Plugin {
   public static instance = new this()
 
   public baseDir = join(app.getPath('userData'), './plugins')
@@ -28,9 +28,10 @@ class Plugins {
     })
 
     //  加载本地插件
-    const localPlugins = this.getLocalPlugins()
-    localPlugins.forEach((p) => {
-      this.addPlugin(p.name)
+    this.getLocalPlugins().then((localPlugins) => {
+      localPlugins.forEach((p) => {
+        this.addPlugin(p.name)
+      })
     })
   }
 
@@ -68,20 +69,21 @@ class Plugins {
    * 获取本地插件
    * @returns
    */
-  public getLocalPlugins(): LocalPluginInfo[] {
-    const allPlugins = StorageService.instance.get('plugin')
-    const res = Object.keys(allPlugins)
+  public async getLocalPlugins(): Promise<LocalPluginInfo[]> {
+    const pluginDb = await StorageService.instance.get('pluginDb')
+    if (!pluginDb) return []
+    const res = Object.keys(pluginDb.data)
       .map((name) => {
         try {
           if (
-            isValidKey(name, allPlugins) &&
-            allPlugins[name] === PluginStatus.INSTALLING_COMPLETE
+            isValidKey(name, pluginDb.data) &&
+            pluginDb.data[name] === PluginStatus.INSTALLING_COMPLETE
           ) {
             const pluginPath = this.getPluginPath(name)
             const pluginInfo = JSON.parse(
               fs.readFileSync(join(pluginPath, './package.json'), 'utf8'),
             )
-            return { ...pluginInfo, status: allPlugins[name] }
+            return { ...pluginInfo, status: pluginDb.data[name] }
           }
         } catch (error) {
           Logger.error(error)
@@ -101,14 +103,39 @@ class Plugins {
   }
 
   /**
+   * 更新插件状态
+   * @param plugin
+   * @param status
+   */
+  private async updateStatus(plugin: AdapterInfo, status: PluginStatus) {
+    Application.instance.mainWindow?.send('plugin-status-update', plugin, status)
+
+    const oldDb = await StorageService.instance.get('pluginDb')
+
+    if (status === PluginStatus.UNINSTALL_FAIL) {
+      status = PluginStatus.INSTALLING_COMPLETE
+    }
+
+    const newDb = oldDb ? { ...oldDb.data, [plugin.name]: status } : { [plugin.name]: status }
+
+    if ([PluginStatus.INSTALL_FAIL, PluginStatus.UNINSTALL_COMPLETE].includes(status)) {
+      delete newDb[plugin.name]
+    }
+
+    await StorageService.instance.put({
+      _id: 'pluginDb',
+      data: newDb,
+    })
+  }
+
+  /**
    * 安装插件
    * @param plugin
    * @returns
    */
   public async install(plugin: AdapterInfo) {
-    StorageService.instance.update({ [plugin.name]: PluginStatus.INSTALLING }, 'plugin')
     Logger.info(`开始安装 - ${plugin.name}`)
-    Application.instance.mainWindow?.send('plugin-status-update', plugin, PluginStatus.INSTALLING)
+    this.updateStatus(plugin, PluginStatus.INSTALLING)
 
     await this.handler.install([`${plugin.name}@${plugin.version}`])
 
@@ -116,24 +143,15 @@ class Plugins {
 
     // 安装失败
     if (!fs.existsSync(pluginPath)) {
-      StorageService.instance.remove(plugin.name, 'plugin')
       Logger.info(`安装失败 - ${plugin.name}`)
-      Application.instance.mainWindow?.send(
-        'plugin-status-update',
-        plugin,
-        PluginStatus.INSTALL_FAIL,
-      )
+      this.updateStatus(plugin, PluginStatus.INSTALL_FAIL)
+
       return false
     }
 
     // 安装成功
-    StorageService.instance.update({ [plugin.name]: PluginStatus.INSTALLING_COMPLETE }, 'plugin')
     Logger.info(`安装成功 - ${plugin.name}`)
-    Application.instance.mainWindow?.send(
-      'plugin-status-update',
-      plugin,
-      PluginStatus.INSTALLING_COMPLETE,
-    )
+    this.updateStatus(plugin, PluginStatus.INSTALLING_COMPLETE)
 
     this.addPlugin(plugin.name)
 
@@ -146,9 +164,8 @@ class Plugins {
    * @returns
    */
   public async uninstall(plugin: AdapterInfo) {
-    StorageService.instance.update({ [plugin.name]: PluginStatus.UNINSTALLING }, 'plugin')
     Logger.info(`开始卸载 - ${plugin.name}`)
-    Application.instance.mainWindow?.send('plugin-status-update', plugin, PluginStatus.UNINSTALLING)
+    this.updateStatus(plugin, PluginStatus.UNINSTALLING)
 
     await this.handler.uninstall([plugin.name])
 
@@ -156,30 +173,18 @@ class Plugins {
 
     // 卸载失败
     if (fs.existsSync(pluginPath)) {
-      StorageService.instance.update({ [plugin.name]: PluginStatus.INSTALLING }, 'plugin')
       Logger.info(`卸载失败 - ${plugin.name}`)
-      Application.instance.mainWindow?.send(
-        'plugin-status-update',
-        plugin,
-        PluginStatus.UNINSTALL_FAIL,
-      )
+      this.updateStatus(plugin, PluginStatus.UNINSTALL_FAIL)
 
       return false
     }
 
     // 卸载成功
-    StorageService.instance.remove(plugin.name, 'plugin')
     Logger.info(`卸载成功 - ${plugin.name}`)
-    Application.instance.mainWindow?.send(
-      'plugin-status-update',
-      plugin,
-      PluginStatus.UNINSTALL_COMPLETE,
-    )
+    this.updateStatus(plugin, PluginStatus.UNINSTALL_COMPLETE)
 
     this.deletePlugin(plugin.name)
 
     return true
   }
 }
-
-export default Plugins

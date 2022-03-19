@@ -11,7 +11,7 @@ import type { AdapterHandlerOptions, AdapterInfo } from '~/interfaces/plugin'
  * 系统插件管理器
  * @class AdapterHandler
  */
-class AdapterHandler {
+export class AdapterHandler {
   // 插件安装地址
   public baseDir: string
   // 插件源地址
@@ -137,5 +137,3 @@ class AdapterHandler {
     })
   }
 }
-
-export default AdapterHandler

@@ -11,41 +11,24 @@ export class MainWindow extends CommonWindow {
   public viewManager: ViewManager
 
   public constructor() {
-    const bound: BrowserWindowConstructorOptions = {}
-
-    const windowPosition = StorageService.instance.find('windowPosition')
-    const windowSize = StorageService.instance.find('windowSize')
-
-    if (windowPosition) {
-      bound.x = windowPosition[0]
-      bound.y = windowPosition[1]
-    }
-
-    if (windowSize && windowSize['mobile']) {
-      bound.width = windowSize['mobile'][0]
-      bound.height = windowSize['mobile'][1]
-    } else {
-      bound.width = 376
-      bound.height = 500
-    }
-
     const window = new BrowserWindow({
-      ...bound,
-      // transparent: true,
+      show: false,
+      width: 300,
+      height: 500,
       minHeight: 170,
       minWidth: 300,
       frame: false, // 是否有边框
       maximizable: false,
       alwaysOnTop: true,
       webPreferences: {
-        // webSecurity: false,
         preload: join(__dirname, '../preload/index.cjs'), // 预先加载指定的脚本
       },
     })
 
     super(window)
 
-    // this.win.loadURL(Application.URL)
+    this.setBound()
+
     this.win.loadURL(`${Application.URL}#/home`)
 
     this.viewManager = new ViewManager(this)
@@ -73,6 +56,23 @@ export class MainWindow extends CommonWindow {
     this.webContents.on('dom-ready', () => {
       this.eventDomReady()
     })
+  }
+
+  private async setBound() {
+    const appDb = await StorageService.instance.get('appDb')
+    const bound: BrowserWindowConstructorOptions = {}
+    if (appDb) {
+      if (appDb.data.windowPosition) {
+        bound.x = appDb.data.windowPosition[0]
+        bound.y = appDb.data.windowPosition[1]
+      }
+      if (appDb.data.windowSize) {
+        bound.width = appDb.data.windowSize['mobile'][0]
+        bound.height = appDb.data.windowSize['mobile'][1]
+      }
+    }
+    this.win.setBounds(bound)
+    this.show()
   }
 
   private eventDomReady() {

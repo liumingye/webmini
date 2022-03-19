@@ -5,7 +5,6 @@ import Cookies from '~/common/cookies'
 import { domContentLoaded } from '~/common/dom'
 import Logger from '~/common/logger'
 import Net from '~/common/net'
-import { StorageService } from '~/main/services/storage'
 import useLoading from './utils/loading'
 import Versions from './utils/versions'
 
@@ -32,7 +31,6 @@ const {
 } = getCurrentWindow()
 
 contextBridge.exposeInMainWorld('app', {
-  storage: StorageService.instance,
   cookies: new Cookies(),
   versions: new Versions(),
   screen: withPrototype(screen),

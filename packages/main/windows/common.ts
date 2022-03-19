@@ -2,10 +2,7 @@ import { enable } from '@electron/remote/main'
 import type { BrowserWindow } from 'electron'
 
 export abstract class CommonWindow {
-  public win: BrowserWindow
-
-  protected constructor(window: BrowserWindow) {
-    this.win = window
+  protected constructor(public win: BrowserWindow) {
     enable(this.webContents)
   }
 

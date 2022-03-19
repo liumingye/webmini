@@ -1,4 +1,4 @@
-import { app, BrowserWindow, Menu, session } from 'electron'
+import { app, BrowserWindow, Menu, session, dialog } from 'electron'
 import installExtension, { VUEJS3_DEVTOOLS } from 'electron-devtools-installer'
 import is from 'electron-is'
 import { join } from 'path'
@@ -140,8 +140,22 @@ export class Application {
   }
 
   public clearAllUserData = (): void => {
-    const { webContents } = this.getFocusedWindow()
+    const focusedWindow = this.getFocusedWindow()
+    const answer = dialog.showMessageBoxSync(focusedWindow, {
+      type: 'question',
+      title: `确认重置应用?`,
+      message: `确认重置应用?`,
+      detail: `你的浏览器数据将被清空，包括缓存、本地存储、登录状态`,
+      buttons: ['确认', '取消'],
+    })
+
+    if (answer === 1) {
+      return
+    }
+
+    const { webContents } = focusedWindow
     webContents.session.flushStorageData()
+    webContents.session.clearCache()
     webContents.session.clearStorageData()
     this.relaunchApp()
   }
@@ -153,6 +167,7 @@ export class Application {
   public clearSensitiveDirectories = (restart = true): void => {
     const { webContents } = this.getFocusedWindow()
     webContents.session.flushStorageData()
+    webContents.session.clearCache()
     webContents.session.clearStorageData({
       storages: ['appcache', 'cachestorage', 'serviceworkers', 'shadercache', 'indexdb', 'websql'],
     })

@@ -20,15 +20,18 @@ html {
 .slide-left-enter-from {
   transform: translate3d(100%, 0, 0);
 }
+
 .slide-left-enter-active {
   position: fixed;
-  width: 100%;
   z-index: 9999;
+  width: 100%;
   transition: transform 0.25s ease-out;
 }
+
 .slide-left-leave-to {
   transform: translate3d(-20%, 0, 0);
 }
+
 .slide-left-leave-active {
   position: absolute;
   width: 100%;
@@ -38,17 +41,20 @@ html {
 .slide-right-enter-from {
   transform: translate3d(-20%, 0, 0);
 }
+
 .slide-right-enter-active {
   position: fixed;
   width: 100%;
   transition: transform 0.25s ease-out;
 }
+
 .slide-right-leave-to {
   transform: translate3d(100%, 0, 0);
 }
+
 .slide-right-leave-active {
   position: absolute;
-  width: 100%;
   z-index: 9999;
+  width: 100%;
   transition: transform 0.25s ease-in;
 }

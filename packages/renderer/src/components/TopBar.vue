@@ -2,7 +2,13 @@
   import { useAppStore, useTabsStore } from '@/store'
   import { resizeMainWindow } from '@/utils'
   import { callViewMethod } from '@/utils/view'
-  import { IconCompass, IconLeft, IconRight, IconClose,IconMinus } from '@arco-design/web-vue/es/icon'
+  import {
+    IconCompass,
+    IconLeft,
+    IconRight,
+    IconClose,
+    IconMinus,
+  } from '@arco-design/web-vue/es/icon'
   import { START } from '~/common/constant'
 
   const ipc = window.ipcRenderer
@@ -170,13 +176,13 @@
 
 <style lang="less" scoped>
   header {
-    background: var(--color-bg-1);
     color: var(--color-text-1);
+    background: var(--color-bg-1);
 
     &.Browser,
     &.About {
-      background: var(--theme-color-bg) !important;
       color: var(--theme-color-text) !important;
+      background: var(--theme-color-bg) !important;
       button {
         color: var(--theme-color-text);
         background: rgba(70, 70, 70, 0.2);

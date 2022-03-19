@@ -2,26 +2,22 @@ import { app, WebContents } from 'electron'
 import { negate } from 'lodash'
 import Net from '~/common/net'
 import type { PluginMetadata } from '~/interfaces/plugin'
-import { Application } from '../application'
-import { hookThemeColor, matchPattern } from '../utils'
-import { MainWindow } from '../windows/main'
+import { Application } from '../../application'
+import { hookThemeColor, matchPattern } from '../../utils'
+import { MainWindow } from '../../windows/main'
 import { addData, clearData } from './data'
 import { addHook, clearHook } from './hook'
-import Plugins from './index'
+import { Plugin } from './index'
+import { StorageService } from '../../services/storage'
+import axios from 'axios'
 
-class TabPlugin {
+export class TabPlugin {
   public enablePlugins: PluginMetadata[] = []
 
-  private window: MainWindow
+  public plugins: Plugin
 
-  public webContents: WebContents
-
-  public plugins: Plugins
-
-  public constructor(window: MainWindow, webContents: WebContents) {
-    this.window = window
-    this.webContents = webContents
-    this.plugins = Plugins.instance
+  public constructor(private window: MainWindow, public webContents: WebContents) {
+    this.plugins = Plugin.instance
   }
 
   /**
@@ -58,6 +54,8 @@ class TabPlugin {
             },
           },
           webContents: this.webContents,
+          db: new StorageService(plugin.name),
+          axios,
         })
 
         return plugin
@@ -101,5 +99,3 @@ class TabPlugin {
     this.enablePlugins = []
   }
 }
-
-export default TabPlugin

@@ -21,10 +21,7 @@
     switch (status) {
       case PluginStatus.INSTALLING_COMPLETE:
         message(`插件 ${plugin.name} 安装完成!`)
-        // 异步执行 因为 Storage.getSync 会卡一会
-        setTimeout(() => {
-          appStore.getLocalPlugins()
-        }, 100)
+        appStore.getLocalPlugins()
         break
       case PluginStatus.INSTALL_FAIL:
         message(`插件 ${plugin.name} 安装失败!`)
@@ -33,10 +30,7 @@
       case PluginStatus.UNINSTALL_COMPLETE:
         message(`插件 ${plugin.name} 卸载完成!`)
         status = undefined
-        // 异步执行 因为 Storage.getSync 会卡一会
-        setTimeout(() => {
-          appStore.getLocalPlugins()
-        }, 100)
+        appStore.getLocalPlugins()
         break
       case PluginStatus.UNINSTALL_FAIL:
         message(`插件 ${plugin.name} 卸载失败!`)

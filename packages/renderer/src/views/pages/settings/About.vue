@@ -11,10 +11,12 @@
     <p class="font-bold my-4">webmini</p>
     <p class="link">
       <a href="https://github.com/liumingye/webmini" target="_blank">
-        <IconGithub class="mr-1" />Github
+        <IconGithub class="mr-1" />
+        <span>Github</span>
       </a>
       <a href="https://github.com/liumingye/webmini/issues" target="_blank">
-        <IconBug class="mr-1" />报告问题
+        <IconBug class="mr-1" />
+        <span>报告问题</span>
       </a>
     </p>
     <div class="mt-5">

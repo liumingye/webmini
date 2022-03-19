@@ -1004,7 +1004,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/debug@npm:^4.1.6":
+"@types/debug@npm:*, @types/debug@npm:^4.1.6":
   version: 4.1.7
   resolution: "@types/debug@npm:4.1.7::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2F%40types%2Fdebug%2F-%2Fdebug-4.1.7.tgz"
   dependencies:
@@ -1162,6 +1162,186 @@ __metadata:
     "@types/node": "*"
     xmlbuilder: ">=11.0.1"
   checksum: b8f9e6b21fb41a7e8ea5250717da972cde40b120109d5d2ed79e0a25406a9f6793abcba048d9b8ecc3df4b25735d9e4223b4d8a56dff893665c4a8c8573b77ad
+  languageName: node
+  linkType: hard
+
+"@types/pouchdb-adapter-cordova-sqlite@npm:*":
+  version: 1.0.1
+  resolution: "@types/pouchdb-adapter-cordova-sqlite@npm:1.0.1::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2F%40types%2Fpouchdb-adapter-cordova-sqlite%2F-%2Fpouchdb-adapter-cordova-sqlite-1.0.1.tgz"
+  dependencies:
+    "@types/pouchdb-core": "*"
+  checksum: e8332b0fc8b66db449f9ab7042236d95c3f3577e0e03d1c73a024f819076c9eabd85235855926a60c6595f82494031e76c9c66836443785be65bbd957ddf1e15
+  languageName: node
+  linkType: hard
+
+"@types/pouchdb-adapter-fruitdown@npm:*":
+  version: 6.1.3
+  resolution: "@types/pouchdb-adapter-fruitdown@npm:6.1.3::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2F%40types%2Fpouchdb-adapter-fruitdown%2F-%2Fpouchdb-adapter-fruitdown-6.1.3.tgz"
+  dependencies:
+    "@types/pouchdb-core": "*"
+  checksum: 533bade1eaed86e7b8a1f8941009eed2f4c5a4e99ef26820814846a792765f6735b19585ccb9167fdaf90b1e68e70cd0dbc9b5996174cf222a8e088da6117a9d
+  languageName: node
+  linkType: hard
+
+"@types/pouchdb-adapter-http@npm:*":
+  version: 6.1.3
+  resolution: "@types/pouchdb-adapter-http@npm:6.1.3::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2F%40types%2Fpouchdb-adapter-http%2F-%2Fpouchdb-adapter-http-6.1.3.tgz"
+  dependencies:
+    "@types/pouchdb-core": "*"
+  checksum: ce7299690c4f355b2da180dc7012abfc08f9e470e379dc07363b4ded466592cc72a2be23bd8be50d248d98f00b48a8218e27e8a10e16eaf381166bcf48407f35
+  languageName: node
+  linkType: hard
+
+"@types/pouchdb-adapter-idb@npm:*":
+  version: 6.1.4
+  resolution: "@types/pouchdb-adapter-idb@npm:6.1.4::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2F%40types%2Fpouchdb-adapter-idb%2F-%2Fpouchdb-adapter-idb-6.1.4.tgz"
+  dependencies:
+    "@types/pouchdb-core": "*"
+  checksum: 5c559f99d09e1fd1280a03817b0351bb475864b008a03e3605e88c59038a5179ba06ea1716282571122defc2c3feda4675bf6dffff3da0451319b71548029fea
+  languageName: node
+  linkType: hard
+
+"@types/pouchdb-adapter-leveldb@npm:*":
+  version: 6.1.3
+  resolution: "@types/pouchdb-adapter-leveldb@npm:6.1.3::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2F%40types%2Fpouchdb-adapter-leveldb%2F-%2Fpouchdb-adapter-leveldb-6.1.3.tgz"
+  dependencies:
+    "@types/pouchdb-core": "*"
+  checksum: ebd3b6b643a32456275866dc5d2418d6979d48cd3efade2fdf59387e8bb86df104fcea693daf374d34795f328aa3974a0101fb08a9807506c6f706443f589667
+  languageName: node
+  linkType: hard
+
+"@types/pouchdb-adapter-localstorage@npm:*":
+  version: 6.1.3
+  resolution: "@types/pouchdb-adapter-localstorage@npm:6.1.3::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2F%40types%2Fpouchdb-adapter-localstorage%2F-%2Fpouchdb-adapter-localstorage-6.1.3.tgz"
+  dependencies:
+    "@types/pouchdb-core": "*"
+  checksum: d848a712e353f56c05bdfd8978100dda74c5754d63b3c198eaca7b680308490aeb802ace6228b4718894f8a3a6adc0150d5c4dec680de95dbe4eef25d01ac4bc
+  languageName: node
+  linkType: hard
+
+"@types/pouchdb-adapter-memory@npm:*":
+  version: 6.1.3
+  resolution: "@types/pouchdb-adapter-memory@npm:6.1.3::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2F%40types%2Fpouchdb-adapter-memory%2F-%2Fpouchdb-adapter-memory-6.1.3.tgz"
+  dependencies:
+    "@types/pouchdb-core": "*"
+  checksum: 655e93f3789df31c7642753186b2bb9679fa5280788477225bd65d7fb063177039fabf78a41c97f79e16cde08478c567e73b9a68c885d990f8852f63abe06da6
+  languageName: node
+  linkType: hard
+
+"@types/pouchdb-adapter-node-websql@npm:*":
+  version: 6.1.3
+  resolution: "@types/pouchdb-adapter-node-websql@npm:6.1.3::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2F%40types%2Fpouchdb-adapter-node-websql%2F-%2Fpouchdb-adapter-node-websql-6.1.3.tgz"
+  dependencies:
+    "@types/pouchdb-adapter-websql": "*"
+    "@types/pouchdb-core": "*"
+  checksum: d786387adff4920b18ba2ed1e92a1a7506a57c83f9d5beb45f166c0001e1e4c7b6a203d15d060a4f628b26e384179b41f6b9e585e6c0bb91302aed6fe3535337
+  languageName: node
+  linkType: hard
+
+"@types/pouchdb-adapter-websql@npm:*":
+  version: 6.1.4
+  resolution: "@types/pouchdb-adapter-websql@npm:6.1.4::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2F%40types%2Fpouchdb-adapter-websql%2F-%2Fpouchdb-adapter-websql-6.1.4.tgz"
+  dependencies:
+    "@types/pouchdb-core": "*"
+  checksum: 820eb7eb7e19f2a13a7ed55c2cb8aa64d788ce0cf6f956527688c63d9ad8cdfa71dfb7173344f2c31dd613e07a20a8a2f34b03d2a3f075019c5c76428d26e9b2
+  languageName: node
+  linkType: hard
+
+"@types/pouchdb-browser@npm:*":
+  version: 6.1.3
+  resolution: "@types/pouchdb-browser@npm:6.1.3::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2F%40types%2Fpouchdb-browser%2F-%2Fpouchdb-browser-6.1.3.tgz"
+  dependencies:
+    "@types/pouchdb-adapter-http": "*"
+    "@types/pouchdb-adapter-idb": "*"
+    "@types/pouchdb-adapter-websql": "*"
+    "@types/pouchdb-core": "*"
+    "@types/pouchdb-mapreduce": "*"
+    "@types/pouchdb-replication": "*"
+  checksum: 4d3a1d8fcaf60c7d1bab14e9ec0d09d905e5ca1b4c7dc21d58a25fcb78b98cfd75b7d79353d32419785272f90b4d9e569686b2a17f7a83bb3abb7c45aca3c17c
+  languageName: node
+  linkType: hard
+
+"@types/pouchdb-core@npm:*":
+  version: 7.0.10
+  resolution: "@types/pouchdb-core@npm:7.0.10::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2F%40types%2Fpouchdb-core%2F-%2Fpouchdb-core-7.0.10.tgz"
+  dependencies:
+    "@types/debug": "*"
+    "@types/pouchdb-find": "*"
+  checksum: 4cb272e572fbc99d95ab90baff5c49809704fa5a962831a339e1bcf07c681521197087d87d1226bedb8abbdd028927acdd184e65675d06b859eca69cb3398026
+  languageName: node
+  linkType: hard
+
+"@types/pouchdb-find@npm:*":
+  version: 6.3.7
+  resolution: "@types/pouchdb-find@npm:6.3.7::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2F%40types%2Fpouchdb-find%2F-%2Fpouchdb-find-6.3.7.tgz"
+  dependencies:
+    "@types/pouchdb-core": "*"
+  checksum: 425cbfac52eb7776c5ba5f07fd6b6d5cda03d2f8a95565a181da82083c6e566ebfaca5fd6c1f5698e8b39b884caca08e801fe0f85e0873df27ee902efdf0b120
+  languageName: node
+  linkType: hard
+
+"@types/pouchdb-http@npm:*":
+  version: 6.1.3
+  resolution: "@types/pouchdb-http@npm:6.1.3::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2F%40types%2Fpouchdb-http%2F-%2Fpouchdb-http-6.1.3.tgz"
+  dependencies:
+    "@types/pouchdb-adapter-http": "*"
+    "@types/pouchdb-core": "*"
+  checksum: 659d7b244afa840950308e3df2c3a3b8f942e6c1aff46bc912859a9f97262b6eb518d7b04ce305fb4dea431c137ba488eb65964bcc70c27465431d47aa56bc24
+  languageName: node
+  linkType: hard
+
+"@types/pouchdb-mapreduce@npm:*":
+  version: 6.1.6
+  resolution: "@types/pouchdb-mapreduce@npm:6.1.6::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2F%40types%2Fpouchdb-mapreduce%2F-%2Fpouchdb-mapreduce-6.1.6.tgz"
+  dependencies:
+    "@types/pouchdb-core": "*"
+  checksum: 9836e3f988d7e75718bda5e7fe408c63d9ca7a9d1af17463c4903d1fd06801a6e5f2da0591dd2ee987fb4ef19398288ed262c6e60134d2397d922f63495f6a05
+  languageName: node
+  linkType: hard
+
+"@types/pouchdb-node@npm:*":
+  version: 6.1.4
+  resolution: "@types/pouchdb-node@npm:6.1.4::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2F%40types%2Fpouchdb-node%2F-%2Fpouchdb-node-6.1.4.tgz"
+  dependencies:
+    "@types/pouchdb-adapter-http": "*"
+    "@types/pouchdb-adapter-leveldb": "*"
+    "@types/pouchdb-core": "*"
+    "@types/pouchdb-mapreduce": "*"
+    "@types/pouchdb-replication": "*"
+  checksum: 719f21d51140a3e5198e896dd431dcd9dd71c81c51880049a0129ad5ad90dc2492f9957aae5ab7b4dae5d51318ae51f22d12ef6569b69c401cff09db1a27ea67
+  languageName: node
+  linkType: hard
+
+"@types/pouchdb-replication@npm:*":
+  version: 6.4.3
+  resolution: "@types/pouchdb-replication@npm:6.4.3::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2F%40types%2Fpouchdb-replication%2F-%2Fpouchdb-replication-6.4.3.tgz"
+  dependencies:
+    "@types/pouchdb-core": "*"
+    "@types/pouchdb-find": "*"
+  checksum: 5cda9d072758404c5aa10171b5672f8dcecf52ae1c7cf353a72d81da66f76bcef8ed07de23c8fbfcb3b0162098dd42544cd8b13c8bd01209d56e553fa3a87093
+  languageName: node
+  linkType: hard
+
+"@types/pouchdb@npm:^6.4.0":
+  version: 6.4.0
+  resolution: "@types/pouchdb@npm:6.4.0::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2F%40types%2Fpouchdb%2F-%2Fpouchdb-6.4.0.tgz"
+  dependencies:
+    "@types/pouchdb-adapter-cordova-sqlite": "*"
+    "@types/pouchdb-adapter-fruitdown": "*"
+    "@types/pouchdb-adapter-http": "*"
+    "@types/pouchdb-adapter-idb": "*"
+    "@types/pouchdb-adapter-leveldb": "*"
+    "@types/pouchdb-adapter-localstorage": "*"
+    "@types/pouchdb-adapter-memory": "*"
+    "@types/pouchdb-adapter-node-websql": "*"
+    "@types/pouchdb-adapter-websql": "*"
+    "@types/pouchdb-browser": "*"
+    "@types/pouchdb-core": "*"
+    "@types/pouchdb-http": "*"
+    "@types/pouchdb-mapreduce": "*"
+    "@types/pouchdb-node": "*"
+    "@types/pouchdb-replication": "*"
+  checksum: 442dd5c0a74c4cf95ea48b182d518edc681a4e49a76fc5c42027cc404ea4f99b8d982a311c48f010f78087b7d60abfe8f9231b9d8bc2c59ff2e38796c196a623
   languageName: node
   linkType: hard
 
@@ -1568,6 +1748,41 @@ __metadata:
   languageName: node
   linkType: hard
 
+"abort-controller@npm:3.0.0":
+  version: 3.0.0
+  resolution: "abort-controller@npm:3.0.0::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Fabort-controller%2F-%2Fabort-controller-3.0.0.tgz"
+  dependencies:
+    event-target-shim: ^5.0.0
+  checksum: 170bdba9b47b7e65906a28c8ce4f38a7a369d78e2271706f020849c1bfe0ee2067d4261df8bbb66eb84f79208fd5b710df759d64191db58cfba7ce8ef9c54b75
+  languageName: node
+  linkType: hard
+
+"abstract-leveldown@npm:^6.2.1":
+  version: 6.3.0
+  resolution: "abstract-leveldown@npm:6.3.0::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Fabstract-leveldown%2F-%2Fabstract-leveldown-6.3.0.tgz"
+  dependencies:
+    buffer: ^5.5.0
+    immediate: ^3.2.3
+    level-concat-iterator: ~2.0.0
+    level-supports: ~1.0.0
+    xtend: ~4.0.0
+  checksum: 121a8509d8c6a540e656c2a69e5b8d853d4df71072011afefc868b98076991bb00120550e90643de9dc18889c675f62413409eeb4c8c204663124c7d215e4ec3
+  languageName: node
+  linkType: hard
+
+"abstract-leveldown@npm:~6.2.1, abstract-leveldown@npm:~6.2.3":
+  version: 6.2.3
+  resolution: "abstract-leveldown@npm:6.2.3::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Fabstract-leveldown%2F-%2Fabstract-leveldown-6.2.3.tgz"
+  dependencies:
+    buffer: ^5.5.0
+    immediate: ^3.2.3
+    level-concat-iterator: ~2.0.0
+    level-supports: ~1.0.0
+    xtend: ~4.0.0
+  checksum: 00202b2eb7955dd7bc04f3e44d225e60160cedb8f96fe6ae0e6dca9c356d57071f001ece8ae1d53f48095c4c036d92b3440f2bc7666730610ddea030f9fbde4a
+  languageName: node
+  linkType: hard
+
 "acorn-jsx@npm:^5.3.1":
   version: 5.3.2
   resolution: "acorn-jsx@npm:5.3.2::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Facorn-jsx%2F-%2Facorn-jsx-5.3.2.tgz"
@@ -1787,6 +2002,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"argsarray@npm:0.0.1":
+  version: 0.0.1
+  resolution: "argsarray@npm:0.0.1::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Fargsarray%2F-%2Fargsarray-0.0.1.tgz"
+  checksum: 0042accbc0a2d855ad5af56df49291e0e4cae7456f42d486f4cb05518c8e1939bf8aca7dece89d846349d615793fae2cea8ebb20a8207c0f22dafb88b1536819
+  languageName: node
+  linkType: hard
+
 "arr-diff@npm:^4.0.0":
   version: 4.0.0
   resolution: "arr-diff@npm:4.0.0::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Farr-diff%2F-%2Farr-diff-4.0.0.tgz"
@@ -1916,15 +2138,6 @@ __metadata:
   version: 0.9.2
   resolution: "async@npm:0.9.2::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Fasync%2F-%2Fasync-0.9.2.tgz"
   checksum: 87dbf129292b8a6c32a4e07f43f462498162aa86f404a7e11f978dbfdf75cfb163c26833684bb07b9d436083cd604cbbf730a57bfcbe436c6ae1ed266cdc56bb
-  languageName: node
-  linkType: hard
-
-"async@npm:^2.0.0":
-  version: 2.6.3
-  resolution: "async@npm:2.6.3::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Fasync%2F-%2Fasync-2.6.3.tgz"
-  dependencies:
-    lodash: ^4.17.14
-  checksum: 5e5561ff8fca807e88738533d620488ac03a5c43fce6c937451f7e35f943d33ad06c24af3f681a48cca3d2b0002b3118faff0a128dc89438a9bf0226f712c499
   languageName: node
   linkType: hard
 
@@ -2221,6 +2434,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"buffer-from@npm:1.1.1":
+  version: 1.1.1
+  resolution: "buffer-from@npm:1.1.1::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Fbuffer-from%2F-%2Fbuffer-from-1.1.1.tgz"
+  checksum: ccc53b69736008bff764497367c4d24879ba7122bc619ee499ff47eef3a5b885ca496e87272e7ebffa0bec3804c83f84041c616f6e3318f40624e27c1d80f045
+  languageName: node
+  linkType: hard
+
 "buffer-from@npm:^1.0.0":
   version: 1.1.2
   resolution: "buffer-from@npm:1.1.2::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Fbuffer-from%2F-%2Fbuffer-from-1.1.2.tgz"
@@ -2228,7 +2448,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"buffer@npm:^5.1.0":
+"buffer@npm:^5.1.0, buffer@npm:^5.5.0, buffer@npm:^5.6.0":
   version: 5.7.1
   resolution: "buffer@npm:5.7.1::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Fbuffer%2F-%2Fbuffer-5.7.1.tgz"
   dependencies:
@@ -2574,6 +2794,13 @@ __metadata:
     strip-ansi: ^6.0.0
     wrap-ansi: ^7.0.0
   checksum: ce2e8f578a4813806788ac399b9e866297740eecd4ad1823c27fd344d78b22c5f8597d548adbcc46f0573e43e21e751f39446c5a5e804a12aace402b7a315d7f
+  languageName: node
+  linkType: hard
+
+"clone-buffer@npm:1.0.0":
+  version: 1.0.0
+  resolution: "clone-buffer@npm:1.0.0::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Fclone-buffer%2F-%2Fclone-buffer-1.0.0.tgz"
+  checksum: a39a35e7fd081e0f362ba8195bd15cbc8205df1fbe4598bb4e09c1f9a13c0320a47ab8a61a8aa83561e4ed34dc07666d73254ee952ddd3985e4286b082fe63b9
   languageName: node
   linkType: hard
 
@@ -3092,6 +3319,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"deferred-leveldown@npm:~5.3.0":
+  version: 5.3.0
+  resolution: "deferred-leveldown@npm:5.3.0::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Fdeferred-leveldown%2F-%2Fdeferred-leveldown-5.3.0.tgz"
+  dependencies:
+    abstract-leveldown: ~6.2.1
+    inherits: ^2.0.3
+  checksum: 5631e153528bb9de1aa60d59a5065d1a519374c5e4c1d486f2190dba4008dcf5c2ee8dd7f2f81396fc4d5a6bb6e7d0055e3dfe68afe00da02adaa3bf329addf7
+  languageName: node
+  linkType: hard
+
 "define-properties@npm:^1.1.3":
   version: 1.1.3
   resolution: "define-properties@npm:1.1.3::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Fdefine-properties%2F-%2Fdefine-properties-1.1.3.tgz"
@@ -3338,6 +3575,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"double-ended-queue@npm:2.1.0-0":
+  version: 2.1.0-0
+  resolution: "double-ended-queue@npm:2.1.0-0::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Fdouble-ended-queue%2F-%2Fdouble-ended-queue-2.1.0-0.tgz"
+  checksum: 3030cf9dcf6f8e7d8cb6ae5b7304890445d7c32233a614e400ba7b378086ad76f5822d0e501afd5ffe0af1de4bcb842fa23d4c79174d54f6566399435fafc271
+  languageName: node
+  linkType: hard
+
 "duplexer3@npm:^0.1.4":
   version: 0.1.4
   resolution: "duplexer3@npm:0.1.4::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Fduplexer3%2F-%2Fduplexer3-0.1.4.tgz"
@@ -3414,20 +3658,6 @@ __metadata:
     electron-is-dev: ^0.3.0
     semver: ^5.5.0
   checksum: 1a0236e07caed9743dad4a4fa9d271da655b5a444c65483a5d6ddd1bd9a173ab9b992cdaeaeca866dcc9b1d2764c4eb64f9d81266bf187494ae0fcb02c66d9ac
-  languageName: node
-  linkType: hard
-
-"electron-json-storage@npm:^4.5.0":
-  version: 4.5.0
-  resolution: "electron-json-storage@npm:4.5.0::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Felectron-json-storage%2F-%2Felectron-json-storage-4.5.0.tgz"
-  dependencies:
-    async: ^2.0.0
-    lockfile: ^1.0.4
-    lodash: ^4.0.1
-    mkdirp: ^0.5.1
-    rimraf: ^2.5.1
-    write-file-atomic: ^2.4.2
-  checksum: 25b0cbfed7c0020b4ce0e9422933ea717441efbfb5918751b6acd115b4a375bdcdca2cb5564b7c1aa16ef56aa0d845b89e83d69f2e9bdccdc3e8c71cc354f858
   languageName: node
   linkType: hard
 
@@ -3534,6 +3764,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"encoding-down@npm:^6.3.0":
+  version: 6.3.0
+  resolution: "encoding-down@npm:6.3.0::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Fencoding-down%2F-%2Fencoding-down-6.3.0.tgz"
+  dependencies:
+    abstract-leveldown: ^6.2.1
+    inherits: ^2.0.3
+    level-codec: ^9.0.0
+    level-errors: ^2.0.0
+  checksum: 74043e6d9061a470614ff61d708c849259ab32932a428fd5ddfb0878719804f56a52f59b31cccd95fddc2e636c0fd22dc3e02481fb98d5bf1bdbbbc44ca09bdc
+  languageName: node
+  linkType: hard
+
 "encoding@npm:^0.1.13":
   version: 0.1.13
   resolution: "encoding@npm:0.1.13::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Fencoding%2F-%2Fencoding-0.1.13.tgz"
@@ -3549,6 +3791,15 @@ __metadata:
   dependencies:
     once: ^1.4.0
   checksum: 530a5a5a1e517e962854a31693dbb5c0b2fc40b46dad2a56a2deec656ca040631124f4795823acc68238147805f8b021abbe221f4afed5ef3c8e8efc2024908b
+  languageName: node
+  linkType: hard
+
+"end-stream@npm:~0.1.0":
+  version: 0.1.0
+  resolution: "end-stream@npm:0.1.0::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Fend-stream%2F-%2Fend-stream-0.1.0.tgz"
+  dependencies:
+    write-stream: ~0.4.3
+  checksum: c866e3b4577ff52fc2aa4cf11ddfbaee3433974b4ec6f4b274991294d7cc439ee7a345e9f82f2354d6bc352221f0cedc8c3b422ae317d4851546a7b8be2edf99
   languageName: node
   linkType: hard
 
@@ -3587,7 +3838,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"errno@npm:^0.1.1":
+"errno@npm:^0.1.1, errno@npm:~0.1.1":
   version: 0.1.8
   resolution: "errno@npm:0.1.8::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Ferrno%2F-%2Ferrno-0.1.8.tgz"
   dependencies:
@@ -4050,6 +4301,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"event-target-shim@npm:^5.0.0":
+  version: 5.0.1
+  resolution: "event-target-shim@npm:5.0.1::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Fevent-target-shim%2F-%2Fevent-target-shim-5.0.1.tgz"
+  checksum: 1ffe3bb22a6d51bdeb6bf6f7cf97d2ff4a74b017ad12284cc9e6a279e727dc30a5de6bb613e5596ff4dc3e517841339ad09a7eec44266eccb1aa201a30448166
+  languageName: node
+  linkType: hard
+
 "execa@npm:^5.0.0":
   version: 5.1.1
   resolution: "execa@npm:5.1.1::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Fexeca%2F-%2Fexeca-5.1.1.tgz"
@@ -4247,6 +4505,15 @@ __metadata:
   version: 4.2.1
   resolution: "fecha@npm:4.2.1::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Ffecha%2F-%2Ffecha-4.2.1.tgz"
   checksum: 26993474949d94cd2de5eee7dfe283d671d5cd61acdba8819df478cbc86495273363f4a7e98d15ee51563110a38328d268982a6e9048169bce8f15aeba5931f9
+  languageName: node
+  linkType: hard
+
+"fetch-cookie@npm:0.10.1":
+  version: 0.10.1
+  resolution: "fetch-cookie@npm:0.10.1::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Ffetch-cookie%2F-%2Ffetch-cookie-0.10.1.tgz"
+  dependencies:
+    tough-cookie: ^2.3.3 || ^3.0.1 || ^4.0.0
+  checksum: cf297501c6eb70bfe0e4f4e85f4d6d3ac6447030a867229b588d94c8eb0e53f6594601c06eb6a7db071bf2f24d5b9111abcae9f885e4c72ab41ce2a0bed2628b
   languageName: node
   linkType: hard
 
@@ -4801,7 +5068,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"graceful-fs@npm:^4.1.11, graceful-fs@npm:^4.1.2, graceful-fs@npm:^4.1.6, graceful-fs@npm:^4.2.0, graceful-fs@npm:^4.2.6":
+"graceful-fs@npm:^4.1.2, graceful-fs@npm:^4.1.6, graceful-fs@npm:^4.2.0, graceful-fs@npm:^4.2.6":
   version: 4.2.9
   resolution: "graceful-fs@npm:4.2.9::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Fgraceful-fs%2F-%2Fgraceful-fs-4.2.9.tgz"
   checksum: 68ea4e07ff2c041ada184f9278b830375f8e0b75154e3f080af6b70f66172fabb4108d19b3863a96b53fc068a310b9b6493d86d1291acc5f3861eb4b79d26ad6
@@ -5072,6 +5339,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"immediate@npm:3.3.0, immediate@npm:^3.2.3":
+  version: 3.3.0
+  resolution: "immediate@npm:3.3.0::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Fimmediate%2F-%2Fimmediate-3.3.0.tgz"
+  checksum: 634b4305101e2452eba6c07d485bf3e415995e533c94b9c3ffbc37026fa1be34def6e4f2276b0dc2162a3f91628564a4bfb26280278b89d3ee54624e854d2f5f
+  languageName: node
+  linkType: hard
+
 "immediate@npm:~3.0.5":
   version: 3.0.6
   resolution: "immediate@npm:3.0.6::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Fimmediate%2F-%2Fimmediate-3.0.6.tgz"
@@ -5165,7 +5439,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"inherits@npm:2, inherits@npm:^2.0.0, inherits@npm:^2.0.1, inherits@npm:^2.0.3, inherits@npm:~2.0.3":
+"inherits@npm:2, inherits@npm:2.0.4, inherits@npm:^2.0.0, inherits@npm:^2.0.1, inherits@npm:^2.0.3, inherits@npm:^2.0.4, inherits@npm:~2.0.1, inherits@npm:~2.0.3":
   version: 2.0.4
   resolution: "inherits@npm:2.0.4::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Finherits%2F-%2Finherits-2.0.4.tgz"
   checksum: 4a48a733847879d6cf6691860a6b1e3f0f4754176e4d71494c41f3475553768b10f84b5ce1d40fbd0e34e6bfbb864ee35858ad4dd2cf31e02fc4a154b724d7f1
@@ -5575,6 +5849,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"isarray@npm:0.0.1":
+  version: 0.0.1
+  resolution: "isarray@npm:0.0.1::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Fisarray%2F-%2Fisarray-0.0.1.tgz"
+  checksum: 49191f1425681df4a18c2f0f93db3adb85573bcdd6a4482539d98eac9e705d8961317b01175627e860516a2fc45f8f9302db26e5a380a97a520e272e2a40a8d4
+  languageName: node
+  linkType: hard
+
 "isarray@npm:1.0.0, isarray@npm:~1.0.0":
   version: 1.0.0
   resolution: "isarray@npm:1.0.0::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Fisarray%2F-%2Fisarray-1.0.0.tgz"
@@ -5907,6 +6188,118 @@ __metadata:
   languageName: node
   linkType: hard
 
+"level-codec@npm:9.0.2, level-codec@npm:^9.0.0":
+  version: 9.0.2
+  resolution: "level-codec@npm:9.0.2::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Flevel-codec%2F-%2Flevel-codec-9.0.2.tgz"
+  dependencies:
+    buffer: ^5.6.0
+  checksum: 289003d51b8afcdd24c4d318606abf2bae81975e4b527d7349abfdbacc8fef26711f2f24e2d20da0e1dce0bb216a856c9433ccb9ca25fa78a96aed9f51e506ed
+  languageName: node
+  linkType: hard
+
+"level-concat-iterator@npm:~2.0.0":
+  version: 2.0.1
+  resolution: "level-concat-iterator@npm:2.0.1::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Flevel-concat-iterator%2F-%2Flevel-concat-iterator-2.0.1.tgz"
+  checksum: 562583ef1292215f8e749c402510cb61c4d6fccf4541082b3d21dfa5ecde9fcccfe52bdcb5cfff9d2384e7ce5891f44df9439a6ddb39b0ffe31015600b4a828a
+  languageName: node
+  linkType: hard
+
+"level-errors@npm:^2.0.0, level-errors@npm:~2.0.0":
+  version: 2.0.1
+  resolution: "level-errors@npm:2.0.1::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Flevel-errors%2F-%2Flevel-errors-2.0.1.tgz"
+  dependencies:
+    errno: ~0.1.1
+  checksum: aca5d7670e2a40609db8d7743fce289bb5202c0bc13e4a78f81f36a6642e9abc0110f48087d3d3c2c04f023d70d4ee6f2db0e20c63d29b3fda323a67bfff6526
+  languageName: node
+  linkType: hard
+
+"level-iterator-stream@npm:~4.0.0":
+  version: 4.0.2
+  resolution: "level-iterator-stream@npm:4.0.2::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Flevel-iterator-stream%2F-%2Flevel-iterator-stream-4.0.2.tgz"
+  dependencies:
+    inherits: ^2.0.4
+    readable-stream: ^3.4.0
+    xtend: ^4.0.2
+  checksum: 239e2c7e62bffb485ed696bcd3b98de7a2bc455d13be4fce175ae3544fe9cda81c2ed93d3e88b61380ae6d28cce02511862d77b86fb2ba5b5cf00471f3c1eccc
+  languageName: node
+  linkType: hard
+
+"level-js@npm:^5.0.0":
+  version: 5.0.2
+  resolution: "level-js@npm:5.0.2::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Flevel-js%2F-%2Flevel-js-5.0.2.tgz"
+  dependencies:
+    abstract-leveldown: ~6.2.3
+    buffer: ^5.5.0
+    inherits: ^2.0.3
+    ltgt: ^2.1.2
+  checksum: 3c7f75979bb8c042e95a58245b8fe1230bb0f56a11ee418e08156e3eadda371efae6eb7b9bf10bf1e08e0b1b2a25d80c026858ca99ffd49109d6541e3d9d3b37
+  languageName: node
+  linkType: hard
+
+"level-packager@npm:^5.1.0":
+  version: 5.1.1
+  resolution: "level-packager@npm:5.1.1::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Flevel-packager%2F-%2Flevel-packager-5.1.1.tgz"
+  dependencies:
+    encoding-down: ^6.3.0
+    levelup: ^4.3.2
+  checksum: befe2aa54f2010a6ecf7ddce392c8dee225e1839205080a2704d75e560e28b01191b345494696196777b70d376e3eaae4c9e7c330cc70d3000839f5b18dd78f2
+  languageName: node
+  linkType: hard
+
+"level-supports@npm:~1.0.0":
+  version: 1.0.1
+  resolution: "level-supports@npm:1.0.1::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Flevel-supports%2F-%2Flevel-supports-1.0.1.tgz"
+  dependencies:
+    xtend: ^4.0.2
+  checksum: 5d6bdb88cf00c3d9adcde970db06a548c72c5a94bf42c72f998b58341a105bfe2ea30d313ce1e84396b98cc9ddbc0a9bd94574955a86e929f73c986e10fc0df0
+  languageName: node
+  linkType: hard
+
+"level-write-stream@npm:1.0.0":
+  version: 1.0.0
+  resolution: "level-write-stream@npm:1.0.0::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Flevel-write-stream%2F-%2Flevel-write-stream-1.0.0.tgz"
+  dependencies:
+    end-stream: ~0.1.0
+  checksum: 459edbd913adfbb3f4ab49c210a5ebb83b102098b0d949be5db598453f3af828eb64189f65933f0d0ae0353399bd0726a4b43b6aff4e1d9ce2b52d2147baba27
+  languageName: node
+  linkType: hard
+
+"level@npm:6.0.1":
+  version: 6.0.1
+  resolution: "level@npm:6.0.1::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Flevel%2F-%2Flevel-6.0.1.tgz"
+  dependencies:
+    level-js: ^5.0.0
+    level-packager: ^5.1.0
+    leveldown: ^5.4.0
+  checksum: bd4981f94162469a82a6c98d267d814d9d4a7beed4fc3d18fbe3b156f71cf4c6d35b424d14c46d401dbf0cd91425e842950a7cd17ddf7bf57acdab5af4c278da
+  languageName: node
+  linkType: hard
+
+"leveldown@npm:5.6.0, leveldown@npm:^5.4.0":
+  version: 5.6.0
+  resolution: "leveldown@npm:5.6.0::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Fleveldown%2F-%2Fleveldown-5.6.0.tgz"
+  dependencies:
+    abstract-leveldown: ~6.2.1
+    napi-macros: ~2.0.0
+    node-gyp: latest
+    node-gyp-build: ~4.1.0
+  checksum: 06d4683170d7fc661acd65457e531b42ad66480e9339d3154ba6d0de38ff0503d7d017c1c6eba12732b5488ecd2915c70c8dc3a7d67f4a836f3de34b8a993949
+  languageName: node
+  linkType: hard
+
+"levelup@npm:4.4.0, levelup@npm:^4.3.2":
+  version: 4.4.0
+  resolution: "levelup@npm:4.4.0::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Flevelup%2F-%2Flevelup-4.4.0.tgz"
+  dependencies:
+    deferred-leveldown: ~5.3.0
+    level-errors: ~2.0.0
+    level-iterator-stream: ~4.0.0
+    level-supports: ~1.0.0
+    xtend: ~4.0.0
+  checksum: 5a09e34c78cd7c23f9f6cb73563f1ebe8121ffc5f9f5f232242529d4fbdd40e8d1ffb337d2defa0b842334e0dbd4028fbfe7a072eebfe2c4d07174f0aa4aabca
+  languageName: node
+  linkType: hard
+
 "leven@npm:^2.1.0":
   version: 2.1.0
   resolution: "leven@npm:2.1.0::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Fleven%2F-%2Fleven-2.1.0.tgz"
@@ -5987,15 +6380,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lockfile@npm:^1.0.4":
-  version: 1.0.4
-  resolution: "lockfile@npm:1.0.4::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Flockfile%2F-%2Flockfile-1.0.4.tgz"
-  dependencies:
-    signal-exit: ^3.0.2
-  checksum: 8de35aace8acbe883cbca3cc3959e88904d57c79dccd4afffc64aea8f9cf7b4c63598d08b8add66fbf381f8fb3ce4fd4c518cd231c797c266b6c790eb7b33abc
-  languageName: node
-  linkType: hard
-
 "lodash.escaperegexp@npm:^4.1.2":
   version: 4.1.2
   resolution: "lodash.escaperegexp@npm:4.1.2::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Flodash.escaperegexp%2F-%2Flodash.escaperegexp-4.1.2.tgz"
@@ -6024,7 +6408,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lodash@npm:^4.0.1, lodash@npm:^4.17.10, lodash@npm:^4.17.11, lodash@npm:^4.17.14, lodash@npm:^4.17.15, lodash@npm:^4.17.19, lodash@npm:^4.17.21, lodash@npm:^4.17.4":
+"lodash@npm:^4.17.10, lodash@npm:^4.17.11, lodash@npm:^4.17.14, lodash@npm:^4.17.15, lodash@npm:^4.17.19, lodash@npm:^4.17.21, lodash@npm:^4.17.4":
   version: 4.17.21
   resolution: "lodash@npm:4.17.21::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Flodash%2F-%2Flodash-4.17.21.tgz"
   checksum: eb835a2e51d381e561e508ce932ea50a8e5a68f4ebdd771ea240d3048244a8d13658acbd502cd4829768c56f2e16bdd4340b9ea141297d472517b83868e677f7
@@ -6097,6 +6481,13 @@ __metadata:
   version: 7.4.4
   resolution: "lru-cache@npm:7.4.4::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Flru-cache%2F-%2Flru-cache-7.4.4.tgz"
   checksum: c042ac73b48c1eddd22cc061eb41c4738c2eb71818ba503f625df4b3199d789281d7a2da18a017095a1304b5808f9d91fff7a77d69e3fefecef2b460460ed6d6
+  languageName: node
+  linkType: hard
+
+"ltgt@npm:2.2.1, ltgt@npm:^2.1.2":
+  version: 2.2.1
+  resolution: "ltgt@npm:2.2.1::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Fltgt%2F-%2Fltgt-2.2.1.tgz"
+  checksum: 7e3874296f7538bc8087b428ac4208008d7b76916354b34a08818ca7c83958c1df10ec427eeeaad895f6b81e41e24745b18d30f89abcc21d228b94f6961d50a2
   languageName: node
   linkType: hard
 
@@ -6611,6 +7002,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"napi-macros@npm:~2.0.0":
+  version: 2.0.0
+  resolution: "napi-macros@npm:2.0.0::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Fnapi-macros%2F-%2Fnapi-macros-2.0.0.tgz"
+  checksum: 30384819386977c1f82034757014163fa60ab3c5a538094f778d38788bebb52534966279956f796a92ea771c7f8ae072b975df65de910d051ffbdc927f62320c
+  languageName: node
+  linkType: hard
+
 "natural-compare@npm:^1.4.0":
   version: 1.4.0
   resolution: "natural-compare@npm:1.4.0::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Fnatural-compare%2F-%2Fnatural-compare-1.4.0.tgz"
@@ -6644,6 +7042,24 @@ __metadata:
   dependencies:
     node-gyp: latest
   checksum: 938922b3d7cb34ee137c5ec39df6289a3965e8cab9061c6848863324c21a778a81ae3bc955554c56b6b86962f6ccab2043dd5fa3f33deab633636bd28039333f
+  languageName: node
+  linkType: hard
+
+"node-fetch@npm:2.6.0":
+  version: 2.6.0
+  resolution: "node-fetch@npm:2.6.0::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Fnode-fetch%2F-%2Fnode-fetch-2.6.0.tgz"
+  checksum: 2b741e9315c1c07df4a291d0b304892fa7e8d623fe789fedd53f9bcb8d09102b07591b4b93e552a65dfc457eee9d5d879d0440aefdb64f2d78e7cb78cbad28e9
+  languageName: node
+  linkType: hard
+
+"node-gyp-build@npm:~4.1.0":
+  version: 4.1.1
+  resolution: "node-gyp-build@npm:4.1.1::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Fnode-gyp-build%2F-%2Fnode-gyp-build-4.1.1.tgz"
+  bin:
+    node-gyp-build: ./bin.js
+    node-gyp-build-optional: ./optional.js
+    node-gyp-build-test: ./build-test.js
+  checksum: 959d42221cc44b92700003efae741652bc4e379e4cf375830ddde03ba43c89f99694bf0883078ed0d4e03ffe2f85decab0572e04068d3900b8538d165dbc17df
   languageName: node
   linkType: hard
 
@@ -7402,6 +7818,34 @@ __metadata:
   languageName: node
   linkType: hard
 
+"pouchdb@npm:^7.2.2":
+  version: 7.2.2
+  resolution: "pouchdb@npm:7.2.2::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Fpouchdb%2F-%2Fpouchdb-7.2.2.tgz"
+  dependencies:
+    abort-controller: 3.0.0
+    argsarray: 0.0.1
+    buffer-from: 1.1.1
+    clone-buffer: 1.0.0
+    double-ended-queue: 2.1.0-0
+    fetch-cookie: 0.10.1
+    immediate: 3.3.0
+    inherits: 2.0.4
+    level: 6.0.1
+    level-codec: 9.0.2
+    level-write-stream: 1.0.0
+    leveldown: 5.6.0
+    levelup: 4.4.0
+    ltgt: 2.2.1
+    node-fetch: 2.6.0
+    readable-stream: 1.1.14
+    spark-md5: 3.0.1
+    through2: 3.0.2
+    uuid: 8.1.0
+    vuvuzela: 1.0.3
+  checksum: 340ccb785721d6e5cbb4ed15fe31a7b871870abf82f4e23b6cf69d0487a203ad51bd4c4144520efa67cd11db45af6acb94661962792304655574a0f7e79e18e6
+  languageName: node
+  linkType: hard
+
 "prelude-ls@npm:^1.2.1":
   version: 1.2.1
   resolution: "prelude-ls@npm:1.2.1::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Fprelude-ls%2F-%2Fprelude-ls-1.2.1.tgz"
@@ -7479,6 +7923,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"psl@npm:^1.1.33":
+  version: 1.8.0
+  resolution: "psl@npm:1.8.0::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Fpsl%2F-%2Fpsl-1.8.0.tgz"
+  checksum: 6150048ed2da3f919478bee8a82f3828303bc0fc730fb015a48f83c9977682c7b28c60ab01425a72d82a2891a1681627aa530a991d50c086b48a3be27744bde7
+  languageName: node
+  linkType: hard
+
 "pump@npm:^3.0.0":
   version: 3.0.0
   resolution: "pump@npm:3.0.0::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Fpump%2F-%2Fpump-3.0.0.tgz"
@@ -7489,7 +7940,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"punycode@npm:^2.1.0":
+"punycode@npm:^2.1.0, punycode@npm:^2.1.1":
   version: 2.1.1
   resolution: "punycode@npm:2.1.1::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Fpunycode%2F-%2Fpunycode-2.1.1.tgz"
   checksum: 823bf443c6dd14f669984dea25757b37993f67e8d94698996064035edd43bed8a5a17a9f12e439c2b35df1078c6bec05a6c86e336209eb1061e8025c481168e8
@@ -7604,7 +8055,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"readable-stream@npm:3, readable-stream@npm:^3.0.0, readable-stream@npm:^3.1.1, readable-stream@npm:^3.4.0, readable-stream@npm:^3.6.0":
+"readable-stream@npm:1.1.14":
+  version: 1.1.14
+  resolution: "readable-stream@npm:1.1.14::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Freadable-stream%2F-%2Freadable-stream-1.1.14.tgz"
+  dependencies:
+    core-util-is: ~1.0.0
+    inherits: ~2.0.1
+    isarray: 0.0.1
+    string_decoder: ~0.10.x
+  checksum: 17dfeae3e909945a4a1abc5613ea92d03269ef54c49288599507fc98ff4615988a1c39a999dcf9aacba70233d9b7040bc11a5f2bfc947e262dedcc0a8b32b5a0
+  languageName: node
+  linkType: hard
+
+"readable-stream@npm:2 || 3, readable-stream@npm:3, readable-stream@npm:^3.0.0, readable-stream@npm:^3.1.1, readable-stream@npm:^3.4.0, readable-stream@npm:^3.6.0":
   version: 3.6.0
   resolution: "readable-stream@npm:3.6.0::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Freadable-stream%2F-%2Freadable-stream-3.6.0.tgz"
   dependencies:
@@ -7627,6 +8090,13 @@ __metadata:
     string_decoder: ~1.1.1
     util-deprecate: ~1.0.1
   checksum: e4920cf7549a60f8aaf694d483a0e61b2a878b969d224f89b3bc788b8d920075132c4b55a7494ee944c7b6a9a0eada28a7f6220d80b0312ece70bbf08eeca755
+  languageName: node
+  linkType: hard
+
+"readable-stream@npm:~0.0.2":
+  version: 0.0.4
+  resolution: "readable-stream@npm:0.0.4::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Freadable-stream%2F-%2Freadable-stream-0.0.4.tgz"
+  checksum: f00795b10b12d72a3ec0eebeb7d657d325d9eb135576e00bba8fc6651ca3ae429a1c8fbc8f4b95f7808d13beb58af0c71a99373cf7003c57db543daf28cb4cb4
   languageName: node
   linkType: hard
 
@@ -7893,17 +8363,6 @@ __metadata:
   bin:
     rimraf: ./bin.js
   checksum: 3ea587b981a19016297edb96d1ffe48af7e6af69660e3b371dbfc73722a73a0b0e9be5c88089fbeeb866c389c1098e07f64929c7414290504b855f54f901ab10
-  languageName: node
-  linkType: hard
-
-"rimraf@npm:^2.5.1":
-  version: 2.7.1
-  resolution: "rimraf@npm:2.7.1::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Frimraf%2F-%2Frimraf-2.7.1.tgz"
-  dependencies:
-    glob: ^7.1.3
-  bin:
-    rimraf: ./bin.js
-  checksum: cdc7f6eacb17927f2a075117a823e1c5951792c6498ebcce81ca8203454a811d4cf8900314154d3259bb8f0b42ab17f67396a8694a54cae3283326e57ad250cd
   languageName: node
   linkType: hard
 
@@ -8298,6 +8757,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"spark-md5@npm:3.0.1":
+  version: 3.0.1
+  resolution: "spark-md5@npm:3.0.1::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Fspark-md5%2F-%2Fspark-md5-3.0.1.tgz"
+  checksum: 613a7f4e20929b832406ef2ed925d696d4d004455360b07ba1a829975fc12a005d745db370cb261ecc827c3dedf3b431a9337f4bab1f1954df776f41a05aaabe
+  languageName: node
+  linkType: hard
+
 "spdx-correct@npm:^3.0.0":
   version: 3.1.1
   resolution: "spdx-correct@npm:3.1.1::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Fspdx-correct%2F-%2Fspdx-correct-3.1.1.tgz"
@@ -8441,6 +8907,13 @@ __metadata:
   dependencies:
     safe-buffer: ~5.2.0
   checksum: 8417646695a66e73aefc4420eb3b84cc9ffd89572861fe004e6aeb13c7bc00e2f616247505d2dbbef24247c372f70268f594af7126f43548565c68c117bdeb56
+  languageName: node
+  linkType: hard
+
+"string_decoder@npm:~0.10.x":
+  version: 0.10.31
+  resolution: "string_decoder@npm:0.10.31::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Fstring_decoder%2F-%2Fstring_decoder-0.10.31.tgz"
+  checksum: fe00f8e303647e5db919948ccb5ce0da7dea209ab54702894dd0c664edd98e5d4df4b80d6fabf7b9e92b237359d21136c95bf068b2f7760b772ca974ba970202
   languageName: node
   linkType: hard
 
@@ -8851,6 +9324,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"through2@npm:3.0.2":
+  version: 3.0.2
+  resolution: "through2@npm:3.0.2::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Fthrough2%2F-%2Fthrough2-3.0.2.tgz"
+  dependencies:
+    inherits: ^2.0.4
+    readable-stream: 2 || 3
+  checksum: 47c9586c735e7d9cbbc1029f3ff422108212f7cc42e06d5cc9fff7901e659c948143c790e0d0d41b1b5f89f1d1200bdd200c7b72ad34f42f9edbeb32ea49e8b7
+  languageName: node
+  linkType: hard
+
 "through2@npm:^4.0.0":
   version: 4.0.2
   resolution: "through2@npm:4.0.2::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Fthrough2%2F-%2Fthrough2-4.0.2.tgz"
@@ -8952,6 +9435,17 @@ __metadata:
     regex-not: ^1.0.2
     safe-regex: ^1.1.0
   checksum: 4ed4a619059b64e204aad84e4e5f3ea82d97410988bcece7cf6cbfdbf193d11bff48cf53842d88b8bb00b1bfc0d048f61f20f0709e6f393fd8fe0122662d9db4
+  languageName: node
+  linkType: hard
+
+"tough-cookie@npm:^2.3.3 || ^3.0.1 || ^4.0.0":
+  version: 4.0.0
+  resolution: "tough-cookie@npm:4.0.0::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Ftough-cookie%2F-%2Ftough-cookie-4.0.0.tgz"
+  dependencies:
+    psl: ^1.1.33
+    punycode: ^2.1.1
+    universalify: ^0.1.2
+  checksum: 0891b37eb7d17faa3479d47f0dce2e3007f2583094ad272f2670d120fbcc3df3b0b0a631ba96ecad49f9e2297d93ff8995ce0d3292d08dd7eabe162f5b224d69
   languageName: node
   linkType: hard
 
@@ -9278,7 +9772,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"universalify@npm:^0.1.0":
+"universalify@npm:^0.1.0, universalify@npm:^0.1.2":
   version: 0.1.2
   resolution: "universalify@npm:0.1.2::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Funiversalify%2F-%2Funiversalify-0.1.2.tgz"
   checksum: 40cdc60f6e61070fe658ca36016a8f4ec216b29bf04a55dce14e3710cc84c7448538ef4dad3728d0bfe29975ccd7bfb5f414c45e7b78883567fb31b246f02dff
@@ -9448,6 +9942,15 @@ __metadata:
   version: 1.0.2
   resolution: "util-deprecate@npm:1.0.2::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Futil-deprecate%2F-%2Futil-deprecate-1.0.2.tgz"
   checksum: 474acf1146cb2701fe3b074892217553dfcf9a031280919ba1b8d651a068c9b15d863b7303cb15bd00a862b498e6cf4ad7b4a08fb134edd5a6f7641681cb54a2
+  languageName: node
+  linkType: hard
+
+"uuid@npm:8.1.0":
+  version: 8.1.0
+  resolution: "uuid@npm:8.1.0::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Fuuid%2F-%2Fuuid-8.1.0.tgz"
+  bin:
+    uuid: dist/bin/uuid
+  checksum: 4fc4f12e5c704947cce132df07e6e8a20ca34dcbba4a5aef7a24cf76e0e13830cf7cdd69035a916caf2a00fa011876ceabc098d01f5827adc174ca5defdc8c99
   languageName: node
   linkType: hard
 
@@ -9647,6 +10150,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"vuvuzela@npm:1.0.3":
+  version: 1.0.3
+  resolution: "vuvuzela@npm:1.0.3::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Fvuvuzela%2F-%2Fvuvuzela-1.0.3.tgz"
+  checksum: 9e20220fda2e7cad1c3482c0831f3959ab113ec7ff818ea528c885cf495e7850a15d8392459eaaa4d0df024faf9ba27d287d48392fcae8579f921a2ffaeea96f
+  languageName: node
+  linkType: hard
+
 "webmini@workspace:.":
   version: 0.0.0-use.local
   resolution: "webmini@workspace:."
@@ -9661,6 +10171,7 @@ __metadata:
     "@types/lodash": ^4.14.180
     "@types/nprogress": ^0.2.0
     "@types/overlayscrollbars": ^1.12.1
+    "@types/pouchdb": ^6.4.0
     "@typescript-eslint/eslint-plugin": ^5.15.0
     "@typescript-eslint/parser": ^5.15.0
     "@vitejs/plugin-vue": ^2.2.4
@@ -9673,7 +10184,6 @@ __metadata:
     electron-devtools-installer: ^3.2.0
     electron-fetch: ^1.7.4
     electron-is: ^3.0.0
-    electron-json-storage: ^4.5.0
     electron-updater: ^4.6.5
     eslint: ^8.11.0
     eslint-config-prettier: ^8.5.0
@@ -9688,6 +10198,7 @@ __metadata:
     postcss: ^8.4.12
     postcss-html: ^1.3.0
     postcss-less: ^6.0.0
+    pouchdb: ^7.2.2
     prettier: ^2.6.0
     stylelint: ^14.6.0
     stylelint-config-rational-order: ^0.1.2
@@ -9834,17 +10345,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"write-file-atomic@npm:^2.4.2":
-  version: 2.4.3
-  resolution: "write-file-atomic@npm:2.4.3::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Fwrite-file-atomic%2F-%2Fwrite-file-atomic-2.4.3.tgz"
-  dependencies:
-    graceful-fs: ^4.1.11
-    imurmurhash: ^0.1.4
-    signal-exit: ^3.0.2
-  checksum: 2db81f92ae974fd87ab4a5e7932feacaca626679a7c98fcc73ad8fcea5a1950eab32fa831f79e9391ac99b562ca091ad49be37a79045bd65f595efbb8f4596ae
-  languageName: node
-  linkType: hard
-
 "write-file-atomic@npm:^3.0.0":
   version: 3.0.3
   resolution: "write-file-atomic@npm:3.0.3::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Fwrite-file-atomic%2F-%2Fwrite-file-atomic-3.0.3.tgz"
@@ -9864,6 +10364,15 @@ __metadata:
     imurmurhash: ^0.1.4
     signal-exit: ^3.0.7
   checksum: 8f780232533ca6223c63c9b9c01c4386ca8c625ebe5017a9ed17d037aec19462ae17109e0aa155bff5966ee4ae7a27b67a99f55caf3f32ffd84155e9da3929fc
+  languageName: node
+  linkType: hard
+
+"write-stream@npm:~0.4.3":
+  version: 0.4.3
+  resolution: "write-stream@npm:0.4.3::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Fwrite-stream%2F-%2Fwrite-stream-0.4.3.tgz"
+  dependencies:
+    readable-stream: ~0.0.2
+  checksum: b5ad4421fee1a9aeb5a9ad6f035b9b48a80d9c6664dbc3900f7f51a588978d7fc592a13f043648cf6b988ba247fa8c712d7f1e6b9639b634642133983290cc4f
   languageName: node
   linkType: hard
 
@@ -9904,7 +10413,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"xtend@npm:^4.0.0, xtend@npm:^4.0.1":
+"xtend@npm:^4.0.0, xtend@npm:^4.0.1, xtend@npm:^4.0.2, xtend@npm:~4.0.0":
   version: 4.0.2
   resolution: "xtend@npm:4.0.2::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Fxtend%2F-%2Fxtend-4.0.2.tgz"
   checksum: ac5dfa738b21f6e7f0dd6e65e1b3155036d68104e67e5d5d1bde74892e327d7e5636a076f625599dc394330a731861e87343ff184b0047fef1360a7ec0a5a36a

@@ -1,57 +1,23 @@
-import is from 'electron-is'
-import Storage from 'electron-json-storage'
-import Logger from '~/common/logger'
-import { isValidKey } from '~/common/object'
-
-const electron = is.renderer() ? require('@electron/remote') : require('electron')
+import { app } from 'electron'
+import LocalDb from '../core/db'
+import type { Model } from '../core/db/types'
 
 export class StorageService {
   public static instance = new this()
 
-  public key = 'app'
+  public localDb: LocalDb
 
-  public constructor() {
-    Storage.setDataPath(electron.app.getPath('userData') + '/config')
+  public constructor(public key = 'WEBMINI_DB_DEFAULT') {
+    this.localDb = new LocalDb(app.getPath('userData'))
   }
 
-  public get = (key = this.key) => {
-    const config = Storage.getSync(key)
-    return config
+  public async get(id: string, key = this.key) {
+    return await this.localDb.get(key, id)
   }
 
-  public remove = (data: string, key = this.key) => {
-    const json = this.get(key)
-
-    if (!isValidKey(data, json)) return
-
-    delete json[data]
-
-    Storage.set(key, { ...json }, (error: any) => {
-      if (error) {
-        Logger.error(error)
-        throw error
-      }
-    })
-  }
-
-  public find = (data: string, key = this.key) => {
-    const json = this.get(key)
-
-    if (!isValidKey(data, json)) {
-      return null
-    }
-
-    return json[data]
-  }
-
-  public update = (data: Record<string, any>, key = this.key) => {
-    const oldJson = this.get(key)
-
-    Storage.set(key, { ...oldJson, ...data }, (error: any) => {
-      if (error) {
-        Logger.error(error)
-        throw error
-      }
-    })
+  public async put(doc: PouchDB.Core.PutDocument<Model>, key = this.key) {
+    const result = await this.localDb.get(key, doc._id)
+    doc._rev = result ? result._rev : ''
+    return await this.localDb.put(key, doc)
   }
 }

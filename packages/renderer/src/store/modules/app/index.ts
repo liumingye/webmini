@@ -32,22 +32,25 @@ export const useAppStore = defineStore('app', {
     totalPlugins: [],
   }),
   actions: {
-    init() {
-      console.log('init')
-      try {
-        const storage = window.app.storage
-        const config = storage.get()
-        for (const key in config) {
+    async init() {
+      // console.log('init')
+      const appDb = await window.ipcRenderer.invoke('db-get', 'appDb')
+      if (appDb) {
+        for (const key in appDb.data) {
           // @ts-ignore
-          this.$state[key] = config[key]
+          this.$state[key] = appDb.data[key]
         }
-      } catch (error) {
-        window.app.logger.error(error)
+      } else {
+        this.saveConfig('windowSize', toRaw(this.windowSize))
       }
     },
-    saveConfig<T extends keyof AppConfig>(newJson: Record<T, AppConfig[T]>) {
-      const storage = window.app.storage
-      storage.update(newJson)
+    async saveConfig<T extends keyof AppConfig>(key: T, value: AppConfig[T]) {
+      const oldDb = await window.ipcRenderer.invoke('db-get', 'appDb')
+      const newDb = oldDb ? { ...oldDb.data, [key]: value } : { [key]: value }
+      window.ipcRenderer.invoke('db-put', {
+        _id: 'appDb',
+        data: newDb,
+      })
     },
     updateURL(url: string, tabId: number) {
       window.app.logger.info(`updateURL - ${url} - tabId - ${tabId}`, { label: 'appStore' })

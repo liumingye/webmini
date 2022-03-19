@@ -5,9 +5,9 @@ import { ERROR_PROTOCOL, NETWORK_ERROR_HOST, userAgent } from '~/common/constant
 import type { CreateProperties, TabEvent } from '~/interfaces/tabs'
 import type { windowType } from '~/interfaces/view'
 import { getViewMenu } from './menus/view'
-import { registerAndGetData } from './plugins/data'
-import { getHook } from './plugins/hook'
-import TabPlugin from './plugins/tab'
+import { registerAndGetData } from './core/plugin/data'
+import { getHook } from './core/plugin/hook'
+import { TabPlugin } from './core/plugin'
 import { StorageService } from './services/storage'
 import { matchPattern } from './utils'
 import type { MainWindow } from './windows/main'
@@ -176,7 +176,7 @@ export class View {
     updateUrlHooks?.after(data)
   }
 
-  public resizeWindowSize(windowType?: windowType): void {
+  public async resizeWindowSize(windowType?: windowType): Promise<void> {
     const targetWindowType = windowType ? windowType : this.getWindowType()
 
     if (this.windowType === targetWindowType) return
@@ -207,10 +207,10 @@ export class View {
       x: leftTopPosition[0] + currentSize[0],
       y: leftTopPosition[1] + currentSize[1],
     }
-    const windowSize = StorageService.instance.find('windowSize')
-    if (!windowSize) return
-    const width = windowSize[targetWindowType][0]
-    const height = windowSize[targetWindowType][1]
+    const appDb = await StorageService.instance.get('appDb')
+    if (!appDb) return
+    const width = appDb.data.windowSize[targetWindowType][0]
+    const height = appDb.data.windowSize[targetWindowType][1]
     const x = displayBounds.x + rightBottomPosition.x - width
     const y = displayBounds.y + rightBottomPosition.y - height
     const bounds: Required<Electron.Rectangle> = { width, height, x, y }

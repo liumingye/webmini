@@ -2,7 +2,7 @@ import { nativeTheme } from 'electron'
 import { isString } from 'lodash'
 import { Color } from '~/common/color'
 import { Application } from '../application'
-import { registerAndGetData } from '../plugins/data'
+import { registerAndGetData } from '../core/plugin/data'
 
 export const matchPattern = (str: string) => {
   return (pattern: string | RegExp) => {
