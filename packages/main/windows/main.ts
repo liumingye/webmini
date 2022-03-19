@@ -6,9 +6,12 @@ import { Application } from '../application'
 import { StorageService } from '../services/storage'
 import { ViewManager } from '../viewManager'
 import { CommonWindow } from './common'
+import { Sessions } from '../models/sessions'
 
 export class MainWindow extends CommonWindow {
   public viewManager: ViewManager
+
+  public sess: Sessions | undefined
 
   public constructor() {
     const window = new BrowserWindow({
@@ -77,20 +80,17 @@ export class MainWindow extends CommonWindow {
 
   private eventDomReady() {
     // 处理跨域
-    this.session.webRequest.onHeadersReceived((details, callback) => {
-      if (
-        details.resourceType === 'xhr' &&
-        details.url.startsWith('https://gitee.com/liumingye/') &&
-        details.responseHeaders
-      ) {
+    this.sess = new Sessions(this.session)
+    this.sess.register('onHeadersReceived', (details) => {
+      if (details.resourceType === 'xhr' && details.responseHeaders) {
         details.responseHeaders['Access-Control-Allow-Origin'] = ['*']
       }
-      callback({ responseHeaders: details.responseHeaders })
+      return { responseHeaders: details.responseHeaders }
     })
   }
 
   private eventClose() {
-    this.session.webRequest.onHeadersReceived(null)
+    this.sess?.destroy()
     this.viewManager.clear()
     if (!is.macOS()) {
       process.nextTick(() => {
