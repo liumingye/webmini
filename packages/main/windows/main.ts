@@ -43,14 +43,15 @@ export class MainWindow extends CommonWindow {
       this.eventClose()
     })
 
-    const throttled = throttle(() => {
+    const resizedThrottled = throttle(() => {
       if (!this.win.isMaximized()) {
         this.viewManager.fixBounds()
       }
     }, 150)
 
-    this.win.on('resize', () => {
-      throttled()
+    // setAutoResize 会有偏移bug 窗口大小改变后 修复一下
+    this.win.on('resized', () => {
+      resizedThrottled()
     })
 
     this.webContents.on('dom-ready', () => {

@@ -151,13 +151,12 @@ export class View {
       callback({ requestHeaders: details.requestHeaders })
     })
 
-    // 体验不太好  用resize代替
-    // this.browserView.setAutoResize({
-    //   width: false,
-    //   height: false,
-    //   horizontal: false,
-    //   vertical: false,
-    // })
+    this.browserView.setAutoResize({
+      width: true,
+      height: true,
+      horizontal: false,
+      vertical: false,
+    })
   }
 
   private lastUrl = ''

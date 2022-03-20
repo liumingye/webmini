@@ -36,6 +36,7 @@ export const replaceTitle = (title: string): string => {
 
 export const saveWindowSize = (): void => {
   const appStore = useAppStore()
+
   const resized = debounce(() => {
     // 解决full-reload后会重复绑定事件
     if (currentWindow.isDestroyed()) return
@@ -45,77 +46,99 @@ export const saveWindowSize = (): void => {
     if (currentSize !== newSize) {
       appStore.windowSize[currentWindowType.value] = newSize
       appStore.saveConfig('windowSize', toRaw(appStore.windowSize))
-      // appStore.saveConfig({ windowSize: toRaw(appStore.windowSize) })
     }
     currentWindow.once('resized', resized)
   }, 500)
+
   const moved = debounce(() => {
     // 解决full-reload后会重复绑定事件
     if (currentWindow.isDestroyed()) return
     logger.info('moved')
     if (currentWindowType.value === 'mobile') {
       appStore.saveConfig('windowPosition', currentWindow.getPosition())
-      // appStore.saveConfig({ windowPosition: currentWindow.getPosition() })
     }
     currentWindow.once('moved', moved)
   }, 500)
+
   // todo 移动到 main 里
   currentWindow.once('resized', resized)
   currentWindow.once('moved', moved)
 }
 
+/**
+ * 监测鼠标进入离开窗口, 显示隐藏 topbar
+ */
 export const initMouseStateDirtyCheck = (): void => {
-  console.log('initMouseStateDirtyCheck')
+  // console.log('initMouseStateDirtyCheck')
   const appStore = useAppStore()
   const autoHideBar = computed(() => appStore.autoHideBar)
-  const lastStatus = ref<'OUT' | 'IN'>()
+  let lastStatus: 'OUT' | 'IN'
+
   const Fn = () => {
-    const mousePos = screen.getCursorScreenPoint()
-    const windowPos = currentWindow.getPosition()
+    const { x, y } = screen.getCursorScreenPoint()
+    const [posX, posY] = currentWindow.getPosition()
     const windowSize = currentWindow.getSize()
+
     const getTriggerAreaWidth = () => {
       return 0
-      // return lastStatus.value === 'IN' ? 0 : 16
+      // return lastStatus === 'IN' ? 0 : 16
     }
+
     const getTriggerAreaHeight = () => {
       const h = 0.1 * windowSize[1]
-      const minHeight = lastStatus.value === 'IN' ? 120 : 36
+      const minHeight = lastStatus === 'IN' ? 120 : 32
       return h > minHeight ? h : minHeight
     }
+
     if (
-      mousePos.x > windowPos[0] &&
-      mousePos.x < windowPos[0] + windowSize[0] - getTriggerAreaWidth() &&
-      mousePos.y > windowPos[1] - 10 &&
-      mousePos.y < windowPos[1] + getTriggerAreaHeight()
+      x > posX &&
+      x < posX + windowSize[0] - getTriggerAreaWidth() &&
+      y > posY - 10 &&
+      y < posY + getTriggerAreaHeight()
     ) {
-      if (lastStatus.value === 'OUT') {
+      if (lastStatus === 'OUT') {
         appStore.showTopBar = true
-        lastStatus.value = 'IN'
+        lastStatus = 'IN'
       }
-      return
-    }
-    appStore.showTopBar = false
-    lastStatus.value = 'OUT'
-  }
-  const timeout = ref()
-  watchEffect(() => {
-    logger.debug(`watchEffect - autoHideBar - ${autoHideBar.value}`, { label: 'Main.vue' })
-    clearInterval(timeout.value)
-    if (autoHideBar.value) {
-      timeout.value = setInterval(Fn, 200)
     } else {
-      appStore.showTopBar = true
+      appStore.showTopBar = false
+      lastStatus = 'OUT'
     }
-    window.ipcRenderer.invoke(`top-bar-status-${appStore.currentWindowID}`, {
-      autoHideBar: appStore.autoHideBar,
-      showTopBar: appStore.showTopBar,
-    })
-  })
+  }
+
+  let timeout: NodeJS.Timeout
+
+  watch(
+    () => autoHideBar.value,
+    (value) => {
+      logger.debug(`watchEffect - autoHideBar - ${value}`, { label: 'Main.vue' })
+
+      clearInterval(timeout)
+
+      if (value) {
+        timeout = setInterval(Fn, 150)
+      } else {
+        appStore.showTopBar = true
+      }
+    },
+  )
+
+  watch(
+    () => [appStore.autoHideBar, appStore.showTopBar],
+    () => {
+      window.ipcRenderer.invoke(`top-bar-status-${appStore.currentWindowID}`, {
+        autoHideBar: appStore.autoHideBar,
+        showTopBar: appStore.showTopBar,
+      })
+    },
+  )
 }
 
 export const watchAlwaysOnTop = (): void => {
   const appStore = useAppStore()
+
   let stopWatchWindowType: WatchStopHandle | null
+
   watchEffect(() => {
     if (stopWatchWindowType) {
       stopWatchWindowType()
@@ -132,7 +155,6 @@ export const watchAlwaysOnTop = (): void => {
         stopWatchWindowType = watch(
           () => currentWindowType.value,
           (value) => {
-            // logger.debug(`currentWindowType - ${value}`)
             if (value === 'mini') {
               return currentWindow.setAlwaysOnTop(true)
             }

@@ -86,8 +86,6 @@ export class ViewManager {
     this.fixBounds()
 
     view.updateNavigationState()
-
-    // view.getWindowType()
   }
 
   public fixBounds(): void {
