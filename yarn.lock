@@ -1013,13 +1013,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/electron-json-storage@npm:^4.5.0":
-  version: 4.5.0
-  resolution: "@types/electron-json-storage@npm:4.5.0::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2F%40types%2Felectron-json-storage%2F-%2Felectron-json-storage-4.5.0.tgz"
-  checksum: 0ce33c9fe756588f59e1ed24919f91ceb89dd78d5abf2e191d6a68b07800aadb0302feda87900d4f1c8df2142d189db99f5cd5f00b377be4d67022996c9ec8eb
-  languageName: node
-  linkType: hard
-
 "@types/filesystem@npm:*":
   version: 0.0.32
   resolution: "@types/filesystem@npm:0.0.32::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2F%40types%2Ffilesystem%2F-%2Ffilesystem-0.0.32.tgz"
@@ -10167,7 +10160,6 @@ __metadata:
     "@commitlint/config-conventional": ^16.2.1
     "@electron/remote": ^2.0.8
     "@types/cross-spawn": ^6.0.2
-    "@types/electron-json-storage": ^4.5.0
     "@types/lodash": ^4.14.180
     "@types/nprogress": ^0.2.0
     "@types/overlayscrollbars": ^1.12.1

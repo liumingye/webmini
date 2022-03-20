@@ -9,8 +9,9 @@ import { registerAndGetData } from './core/plugin/data'
 import { getHook } from './core/plugin/hook'
 import { TabPlugin } from './core/plugin'
 import { StorageService } from './services/storage'
-import { matchPattern } from './utils'
+import { matchPattern, getDisplayBounds } from './utils'
 import type { MainWindow } from './windows/main'
+import { Sessions } from './models/sessions'
 
 export class View {
   public windowType: windowType = 'mobile'
@@ -20,6 +21,8 @@ export class View {
   private window: MainWindow
 
   private plugins: TabPlugin
+
+  private sess: Sessions
 
   public bounds:
     | {
@@ -99,7 +102,8 @@ export class View {
     this.webContents.loadURL(details.url, details.options)
 
     // register session
-    this.session.webRequest.onBeforeSendHeaders((details, callback) => {
+    this.sess = new Sessions(this.session)
+    this.sess.register('onBeforeSendHeaders', (details) => {
       // 禁止追踪
       details.requestHeaders['DNT'] = '1'
 
@@ -147,8 +151,7 @@ export class View {
 
         this.resizeWindowSize()
       }
-
-      callback({ requestHeaders: details.requestHeaders })
+      return { requestHeaders: details.requestHeaders }
     })
 
     this.browserView.setAutoResize({
@@ -180,26 +183,7 @@ export class View {
 
     if (this.windowType === targetWindowType) return
 
-    // We want the new window to open on the same display that the parent is in
-    let displayToUse: Electron.Display | undefined
-    const displays = screen.getAllDisplays()
-    // Single Display
-    if (displays.length === 1) {
-      displayToUse = displays[0]
-    }
-    // Multi Display
-    else {
-      // on mac there is 1 menu per window so we need to use the monitor where the cursor currently is
-      if (is.macOS()) {
-        const cursorPoint = screen.getCursorScreenPoint()
-        displayToUse = screen.getDisplayNearestPoint(cursorPoint)
-      }
-      // fallback to primary display or first display
-      if (!displayToUse) {
-        displayToUse = screen.getPrimaryDisplay() || displays[0]
-      }
-    }
-    const displayBounds = displayToUse.bounds
+    const displayBounds = getDisplayBounds()
     const currentSize = this.window.win.getSize()
     const leftTopPosition = this.window.win.getPosition()
     const rightBottomPosition = {
@@ -262,12 +246,11 @@ export class View {
 
   public destroy(): void {
     // Cleanup.
-    if (this.browserView) {
-      // unregister session
-      this.session.webRequest.onBeforeSendHeaders(null)
-      ;(this.browserView.webContents as any).destroy()
-      this.browserView = null as any
-    }
+    if (!this.browserView) return
+    // unregister session
+    this.sess.destroy()
+    ;(this.browserView.webContents as any).destroy()
+    this.browserView = null as any
   }
 
   public get session() {

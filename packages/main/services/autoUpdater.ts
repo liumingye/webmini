@@ -3,6 +3,7 @@ import is from 'electron-is'
 import { autoUpdater } from 'electron-updater'
 import ms from 'ms'
 import Logger from '~/common/logger'
+import { sample } from 'lodash'
 
 export interface IUpdateElectronAppOptions {
   /**
@@ -44,12 +45,13 @@ const initUpdater = (opts: IUpdateElectronAppOptions) => {
   }
 
   // 使用 ghproxy 加速下载
-  autoUpdater.netSession.webRequest.onBeforeRequest((details, callback) => {
-    if (/^https:\/\/github.com\/(.*?)\/releases\/download\//.test(details.url)) {
-      return callback({ redirectURL: `https://ghproxy.com/${details.url}` })
-    }
-    callback({})
-  })
+  autoUpdater.netSession.webRequest.onBeforeRequest(
+    { urls: ['https://github.com/*/releases/download/*'] },
+    ({ url }, callback) => {
+      const proxyNode = ['https://ghproxy.com/', 'https://mirror.ghproxy.com/']
+      return callback({ redirectURL: `${sample(proxyNode)}${url}` })
+    },
+  )
 
   // 当更新发生错误的时候触发。
   autoUpdater.on('error', (err) => {

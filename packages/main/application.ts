@@ -6,9 +6,9 @@ import ipcMainInit from './ipcMain'
 import { getMainMenu } from './menus/main'
 import adblockerService from './services/adblocker'
 import autoUpdaterService from './services/autoUpdater'
-import { SessionsService } from './services/sessions'
 import { MainWindow } from './windows/main'
 import { SelectPartWindow } from './windows/selectPart'
+import { registerProtocol } from './models/protocol'
 
 export class Application {
   public static instance = new this()
@@ -57,10 +57,12 @@ export class Application {
 
     ipcMainInit()
 
-    // 服务
+    // service
     adblockerService(session.defaultSession)
     autoUpdaterService()
-    new SessionsService()
+
+    // protocol
+    registerProtocol(session.defaultSession)
 
     // vue-devtools
     if (is.dev()) {
