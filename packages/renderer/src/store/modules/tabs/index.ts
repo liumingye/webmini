@@ -6,7 +6,7 @@ import type { CreateProperties } from '~/interfaces/tabs'
 export const useTabsStore = defineStore('tabs', {
   state: (): TabsStateTypes => ({
     list: [],
-    selectedTabId: -1, // webContentsId
+    tabId: -1, // webContentsId
   }),
   actions: {
     createTab(options: CreateProperties, id: number) {
@@ -50,11 +50,11 @@ export const useTabsStore = defineStore('tabs', {
       )
       return this.createTabs(options, ids)
     },
-    selectedTab() {
-      return this.getTabById(this.selectedTabId)
+    getFocusedTab(): ITab | undefined {
+      return this.getTabById(this.tabId)
     },
-    getTabById(id: number): ITab | undefined {
-      return this.list.find((x) => x.id === id)
+    getTabById(tabId: number): ITab | undefined {
+      return this.list.find((tab) => tab.id === tabId)
     },
   },
   getters: {},

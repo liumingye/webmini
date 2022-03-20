@@ -1,6 +1,6 @@
-import { ITab } from './model'
+import type { ITab } from './model'
 
 export interface TabsStateTypes {
   list: ITab[]
-  selectedTabId: number
+  tabId: number
 }

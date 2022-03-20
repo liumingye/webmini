@@ -12,13 +12,11 @@ import { AdapterHandler } from './index'
 export class Plugin {
   public static instance = new this()
 
-  public baseDir = join(app.getPath('userData'), './plugins')
+  public readonly allPlugins: PluginMetadata[]
 
-  public allPlugins: PluginMetadata[]
+  public readonly baseDir = join(app.getPath('userData'), './plugins')
 
-  public enablePlugins: PluginMetadata[] = []
-
-  public handler: AdapterHandler
+  public readonly handler: AdapterHandler
 
   public constructor() {
     this.allPlugins = []
@@ -61,7 +59,11 @@ export class Plugin {
    * @returns
    */
   public async deletePlugin(name: string) {
-    this.allPlugins = this.allPlugins.filter((p) => name !== p.name)
+    const index = this.allPlugins.findIndex((p) => name === p.name)
+    if (index >= 0) {
+      await this.allPlugins[index].unload()
+      this.allPlugins.splice(index, 1)
+    }
     return this.allPlugins
   }
 

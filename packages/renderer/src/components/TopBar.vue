@@ -93,7 +93,7 @@
   const goBack = () => {
     const is = isBrowser()
     if (is) {
-      tabsStore.selectedTab()?.callViewMethod('goBack')
+      tabsStore.getFocusedTab()?.callViewMethod('goBack')
       // historyStore.goBack()
       return
     }
@@ -103,7 +103,7 @@
   const goForward = () => {
     const is = isBrowser()
     if (is) {
-      tabsStore.selectedTab()?.callViewMethod('goForward')
+      tabsStore.getFocusedTab()?.callViewMethod('goForward')
       // historyStore.goForward()
       return
     }
@@ -112,7 +112,7 @@
 
   const toggleDanmaku = () => {
     callViewMethod(
-      tabsStore.selectedTabId,
+      tabsStore.tabId,
       'executeJavaScript',
       "document.querySelector('.bilibili-player-video-danmaku-switch .bui-switch-input,.bpx-player-dm-switch .bui-switch-input').click()",
     )

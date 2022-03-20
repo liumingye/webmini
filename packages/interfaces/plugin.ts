@@ -34,26 +34,26 @@ export interface PluginLoadParameters {
   axios: typeof axios
 }
 
-export interface PluginUnloadParameters {
-  webContents: WebContents
-}
-
 /** 插件基本信息 */
 export interface PluginMinimalData {
   /** 插件名称 */
   name: string
+  /** preloads */
   preloads: string[]
   /** 初始化函数, 可在其中注册数据, 添加代码注入等 */
   load: (params: PluginLoadParameters) => void | Promise<void>
-  unload: (params: PluginUnloadParameters) => void | Promise<void>
+  /** 卸载函数 */
+  unload: () => void | Promise<void>
   /** 设置匹配的URL, 不匹配则不运行此组件 */
   urlInclude?: (string | RegExp)[]
   /** 设置不匹配的URL, 不匹配则不运行此组件, 优先级高于`urlInclude` */
   urlExclude?: (string | RegExp)[]
 }
+
 type PartialRequired<Target, Props extends keyof Target> = Target & {
   [P in Props]-?: Target[P]
 }
+
 export type PluginMetadata = PartialRequired<PluginMinimalData, 'name'>
 
 /**
@@ -71,13 +71,13 @@ export interface AdapterHandlerOptions {
 /** 本地插件信息 */
 export interface LocalPluginInfo {
   /** 插件名称 */
-  name: string
+  readonly name: string
   /** 可读插件名称 */
-  displayName: string
+  readonly displayName: string
   /** 开始页 */
-  start: string
+  readonly start: string
   /** 图标 */
-  icon: string | ShallowRef<any>
+  readonly icon?: string | ShallowRef<any>
   /** 状态 */
   status?: PluginStatus
 }
@@ -90,15 +90,15 @@ export interface LocalPluginInfo {
  */
 export interface AdapterInfo {
   /** 插件名称 */
-  name: string
+  readonly name: string
   /** 可读插件名称 */
-  pluginName: string
+  readonly pluginName: string
   /** 描述 */
-  description: string
+  readonly description: string
   /** 作者 */
-  author: string
+  readonly author: string
   /** 版本 */
-  version: string
+  readonly version: string
   /** 本地插件信息 */
   local?: LocalPluginInfo
 }

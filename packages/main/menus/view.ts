@@ -155,7 +155,7 @@ export const getViewMenu = (
         {
           label: '打开URL ' + trimmedText,
           click: () => {
-            mainWindow.viewManager.create(
+            mainWindow.viewManager.registerViewContainer(
               {
                 url: prefixHttp(trimmedText),
                 active: true,
@@ -226,7 +226,7 @@ export const getViewMenu = (
         accelerator: 'CmdOrCtrl+U',
         click: () => {
           const viewManager = mainWindow.viewManager
-          viewManager.create(
+          viewManager.registerViewContainer(
             {
               url: `view-source:${viewManager.selected?.url}`,
               active: true,

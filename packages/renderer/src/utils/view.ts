@@ -15,7 +15,7 @@ export const callViewMethod = async (
 
 export const loadURL = (url: string, ...args: any[]): void => {
   const tabsStore = useTabsStore()
-  const tab = tabsStore.selectedTab()
+  const tab = tabsStore.getFocusedTab()
   if (!tab) {
     tabsStore.addTabs([{ url, active: true, ...args }])
   } else {

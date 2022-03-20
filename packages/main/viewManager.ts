@@ -3,15 +3,15 @@ import { View } from './view'
 import type { MainWindow } from './windows/main'
 
 export class ViewManager {
-  public views = new Map<number, View>()
+  private readonly viewContainer = new Map<number, View>()
 
   public selectedId = 0
 
   private window: MainWindow
 
-  public showTopBar = false
+  private showTopBar = false
 
-  public autoHideBar = false
+  private autoHideBar = false
 
   public constructor(window: MainWindow) {
     this.window = window
@@ -19,13 +19,13 @@ export class ViewManager {
     const { id } = window.win
 
     ipcMain.handle(`view-create-${id}`, (e, details) => {
-      const id = this.create(details, false, false).id
+      const id = this.registerViewContainer(details, false, false).id
       return id
     })
 
     ipcMain.handle(`views-create-${id}`, (e, options) => {
       return options.map((option: any) => {
-        const id = this.create(option, false, false).id
+        const id = this.registerViewContainer(option, false, false).id
         return id
       })
     })
@@ -60,7 +60,7 @@ export class ViewManager {
   }
 
   public select(id: number, focus = true): void {
-    const view = this.views.get(id)
+    const view = this.viewContainer.get(id)
 
     if (!view) {
       return
@@ -95,9 +95,6 @@ export class ViewManager {
 
     const { width, height } = this.window.win.getContentBounds()
 
-    // const topbarContentHeight = await this.window.webContents.executeJavaScript(
-    //   `document.getElementsByTagName('header')[0].offsetHeight`,
-    // )
     const topbarContentHeight = 32
 
     const newBounds = {
@@ -105,10 +102,8 @@ export class ViewManager {
       y: this.showTopBar ? topbarContentHeight : 0,
       width,
       height: this.autoHideBar ? height : height - topbarContentHeight,
-      // height,
     }
 
-    // console.log(newBounds)
     if (newBounds !== view.bounds) {
       view.browserView.setBounds(newBounds)
       view.bounds = newBounds
@@ -116,19 +111,19 @@ export class ViewManager {
   }
 
   public get selected() {
-    return this.views.get(this.selectedId)
+    return this.viewContainer.get(this.selectedId)
   }
 
-  public create(details: any, isNext = false, sendMessage = true): View {
+  public registerViewContainer(details: any, isNext = false, sendMessage = true): View {
     const view = new View(this.window, details)
 
     const { webContents } = view.browserView
     const { id } = view
 
-    this.views.set(id, view)
+    this.viewContainer.set(id, view)
 
     webContents.once('destroyed', () => {
-      this.views.delete(id)
+      this.viewContainer.delete(id)
     })
 
     if (sendMessage) {
@@ -137,11 +132,11 @@ export class ViewManager {
     return view
   }
 
-  public destroy(id: number): void {
-    console.log('destroy' + id)
+  public deregisterViewContainer(id: number): void {
+    console.log('deregisterViewContainer' + id)
 
-    const view = this.views.get(id)
-    this.views.delete(id)
+    const view = this.viewContainer.get(id)
+    this.viewContainer.delete(id)
 
     if (view && !view.isDestroyed()) {
       this.window.win.removeBrowserView(view.browserView)
@@ -149,9 +144,11 @@ export class ViewManager {
     }
   }
 
-  public clear(): void {
+  public clearViewContainer(): void {
     this.window.win.setBrowserView(null)
-    this.views.forEach((x) => x.destroy())
+    this.viewContainer.forEach((x) => {
+      this.deregisterViewContainer(x.id)
+    })
   }
 
   public hide(): void {

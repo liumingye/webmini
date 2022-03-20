@@ -93,7 +93,7 @@ export class TabPlugin {
     clearData()
     this.enablePlugins.forEach((x) => {
       if (!x) return
-      x.unload({ webContents: this.webContents })
+      x.unload()
     })
     this.webContents.session.setPreloads([])
     this.enablePlugins = []

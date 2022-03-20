@@ -1,17 +1,16 @@
-import { app, BrowserView, screen } from 'electron'
-import is from 'electron-is'
+import { app, BrowserView } from 'electron'
 import { clamp } from 'lodash'
 import { ERROR_PROTOCOL, NETWORK_ERROR_HOST, userAgent } from '~/common/constant'
 import type { CreateProperties, TabEvent } from '~/interfaces/tabs'
 import type { windowType } from '~/interfaces/view'
-import { getViewMenu } from './menus/view'
+import { TabPlugin } from './core/plugin'
 import { registerAndGetData } from './core/plugin/data'
 import { getHook } from './core/plugin/hook'
-import { TabPlugin } from './core/plugin'
-import { StorageService } from './services/storage'
-import { matchPattern, getDisplayBounds } from './utils'
-import type { MainWindow } from './windows/main'
+import { getViewMenu } from './menus/view'
 import { Sessions } from './models/sessions'
+import { StorageService } from './services/storage'
+import { getDisplayBounds, matchPattern } from './utils'
+import type { MainWindow } from './windows/main'
 
 export class View {
   public windowType: windowType = 'mobile'
@@ -153,13 +152,6 @@ export class View {
       }
       return { requestHeaders: details.requestHeaders }
     })
-
-    this.browserView.setAutoResize({
-      width: true,
-      height: true,
-      horizontal: false,
-      vertical: false,
-    })
   }
 
   private lastUrl = ''
@@ -249,6 +241,7 @@ export class View {
     if (!this.browserView) return
     // unregister session
     this.sess.destroy()
+    this.plugins.unloadTabPlugins()
     ;(this.browserView.webContents as any).destroy()
     this.browserView = null as any
   }

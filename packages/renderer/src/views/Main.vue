@@ -38,14 +38,14 @@
       () => route.name,
       (value) => {
         if (value === 'Browser') {
-          callViewMethod(tabsStore.selectedTabId, 'setAudioMuted', false)
-          const tab = tabsStore.selectedTab()
+          callViewMethod(tabsStore.tabId, 'setAudioMuted', false)
+          const tab = tabsStore.getFocusedTab()
           if (tab) {
             appStore.title = tab.title
           }
           return
         }
-        callViewMethod(tabsStore.selectedTabId, 'setAudioMuted', true)
+        callViewMethod(tabsStore.tabId, 'setAudioMuted', true)
         if (route.meta.title) {
           appStore.title = route.meta.title
         }

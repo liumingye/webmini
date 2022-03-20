@@ -31,7 +31,7 @@
           }
         }
       }
-      if (newUrl === tabsStore.selectedTab()?.url) {
+      if (newUrl === tabsStore.getFocusedTab()?.url) {
         resizeMainWindow()
       } else {
         appStore.go(newUrl)

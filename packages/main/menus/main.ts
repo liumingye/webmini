@@ -102,7 +102,7 @@ export const getMainMenu = () => {
         {
           label: 'New tab',
           click() {
-            Application.instance.mainWindow?.viewManager.create({
+            Application.instance.mainWindow?.viewManager.registerViewContainer({
               url: 'https://www.baidu.com',
               active: true,
             })

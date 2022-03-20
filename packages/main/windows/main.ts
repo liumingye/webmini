@@ -13,6 +13,8 @@ export class MainWindow extends CommonWindow {
 
   public sess: Sessions | undefined
 
+  private isMoving = false
+
   public constructor() {
     const window = new BrowserWindow({
       show: false,
@@ -30,7 +32,9 @@ export class MainWindow extends CommonWindow {
 
     super(window)
 
-    this.setBound()
+    this.setBoundsFromDb().then(() => {
+      this.show()
+    })
 
     this.win.loadURL(`${Application.URL}#/home`)
 
@@ -42,27 +46,36 @@ export class MainWindow extends CommonWindow {
       return { action: 'deny' }
     })
 
+    this.webContents.on('dom-ready', () => {
+      this.eventDomReady()
+    })
+
     this.win.on('close', () => {
       this.eventClose()
     })
 
-    const resizedThrottled = throttle(() => {
-      if (!this.win.isMaximized()) {
-        this.viewManager.fixBounds()
-      }
-    }, 150)
-
-    // setAutoResize 会有偏移bug 窗口大小改变后 修复一下
-    this.win.on('resized', () => {
-      resizedThrottled()
+    this.win.on('resize', () => {
+      this.resizedThrottled()
     })
 
-    this.webContents.on('dom-ready', () => {
-      this.eventDomReady()
+    this.win.on('move', () => {
+      this.isMoving = true
+    })
+
+    this.win.on('moved', () => {
+      this.isMoving = false
     })
   }
 
-  private async setBound() {
+  private resizedThrottled = throttle(() => {
+    //在 windows，移动窗口也会触发 resize，这里做一下判断
+    if (!this.win.isMaximized() && !this.isMoving) {
+      console.log('resizedThrottled')
+      this.viewManager.fixBounds()
+    }
+  }, 150)
+
+  private async setBoundsFromDb() {
     const appDb = await StorageService.instance.get('appDb')
     const bound: BrowserWindowConstructorOptions = {}
     if (appDb) {
@@ -74,9 +87,8 @@ export class MainWindow extends CommonWindow {
         bound.width = appDb.data.windowSize['mobile'][0]
         bound.height = appDb.data.windowSize['mobile'][1]
       }
+      this.win.setBounds(bound)
     }
-    this.win.setBounds(bound)
-    this.show()
   }
 
   private eventDomReady() {
@@ -92,7 +104,7 @@ export class MainWindow extends CommonWindow {
 
   private eventClose() {
     this.sess?.destroy()
-    this.viewManager.clear()
+    this.viewManager.clearViewContainer()
     if (!is.macOS()) {
       process.nextTick(() => {
         app.quit()

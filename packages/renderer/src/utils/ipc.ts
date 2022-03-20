@@ -41,7 +41,7 @@ export const ipcRendererOn = (): void => {
 
   // 用户按↑、↓键时，把事件传递到webview里去实现修改音量功能
   window.ipcRenderer.on('changeVolume', (ev, arg) => {
-    callViewMethod(tabsStore.selectedTabId, 'send', 'changeVolume', arg)
+    callViewMethod(tabsStore.tabId, 'send', 'changeVolume', arg)
     // webview.value.send('changeVolume', arg)
   })
 
@@ -52,7 +52,7 @@ export const ipcRendererOn = (): void => {
 
   // 按下ESC键
   window.ipcRenderer.on('pressEsc', () => {
-    tabsStore.selectedTab()?.callViewMethod('goBack')
+    tabsStore.getFocusedTab()?.callViewMethod('goBack')
   })
 
   // setAppState
@@ -70,7 +70,7 @@ export const ipcRendererOn = (): void => {
   window.ipcRenderer.on(
     'create-tab',
     (e, options: CreateProperties, isNext: boolean, id: number) => {
-      const selectedTab = tabsStore.selectedTab()
+      const selectedTab = tabsStore.getFocusedTab()
       if (isNext && selectedTab) {
         const index = tabsStore.list.indexOf(selectedTab) + 1
         options.index = index
@@ -80,7 +80,7 @@ export const ipcRendererOn = (): void => {
   )
 
   window.ipcRenderer.on('select-next-tab', () => {
-    const selectedTab = tabsStore.selectedTab()
+    const selectedTab = tabsStore.getFocusedTab()
     if (!selectedTab) return
     const i = tabsStore.list.indexOf(selectedTab)
     const nextTab = tabsStore.list[i + 1]
@@ -95,7 +95,7 @@ export const ipcRendererOn = (): void => {
   })
 
   window.ipcRenderer.on('select-previous-tab', () => {
-    const selectedTab = tabsStore.selectedTab()
+    const selectedTab = tabsStore.getFocusedTab()
     if (!selectedTab) return
     const i = tabsStore.list.indexOf(selectedTab)
     const prevTab = tabsStore.list[i - 1]

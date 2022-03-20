@@ -1,8 +1,8 @@
-import type { CreateProperties } from '~/interfaces/tabs'
 import { useAppStore, useTabsStore } from '@/store'
-import NProgress from 'nprogress' // progress bar
 import { replaceTitle } from '@/utils'
 import { callViewMethod } from '@/utils/view'
+import NProgress from 'nprogress' // progress bar
+import type { CreateProperties } from '~/interfaces/tabs'
 
 export class ITab {
   public id = -1
@@ -42,7 +42,7 @@ export class ITab {
   public async select() {
     const appStore = useAppStore()
     const tabsStore = useTabsStore()
-    tabsStore.selectedTabId = this.id
+    tabsStore.tabId = this.id
     await window.ipcRenderer.invoke(`view-select-${appStore.currentWindowID}`, this.id)
   }
 

@@ -10,7 +10,7 @@ export default () => {
   // UI
   ipcMain.on('close-main-window', () => {
     if (is.macOS()) {
-      Application.instance.mainWindow?.viewManager.clear()
+      Application.instance.mainWindow?.viewManager.clearViewContainer()
       Application.instance.mainWindow?.win.close()
       Application.instance.selectPartWindow?.win.close()
     } else {
