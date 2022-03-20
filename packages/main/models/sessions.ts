@@ -42,12 +42,16 @@ export class Sessions {
   }
 
   public register<T extends keyof Listener>(event: T, listener: Listener[T]) {
-    if (event === 'onBeforeRequest') {
-      this.beforeRequestList.push(listener as Listener['onBeforeRequest'])
-    } else if (event === 'onBeforeSendHeaders') {
-      this.beforeSendHeadersList.push(listener as Listener['onBeforeSendHeaders'])
-    } else if (event === 'onHeadersReceived') {
-      this.headersReceivedList.push(listener as Listener['onHeadersReceived'])
+    switch (event) {
+      case 'onBeforeRequest':
+        this.beforeRequestList.push(listener as Listener['onBeforeRequest'])
+        break
+      case 'onBeforeSendHeaders':
+        this.beforeSendHeadersList.push(listener as Listener['onBeforeSendHeaders'])
+        break
+      case 'onHeadersReceived':
+        this.headersReceivedList.push(listener as Listener['onHeadersReceived'])
+        break
     }
     // returns a cancellation function
     return () => {

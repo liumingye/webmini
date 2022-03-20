@@ -9,7 +9,6 @@
     IconClose,
     IconMinus,
   } from '@arco-design/web-vue/es/icon'
-  import { START } from '~/common/constant'
 
   const ipc = window.ipcRenderer
   const appStore = useAppStore()
@@ -63,8 +62,11 @@
     if (!is) {
       go('Browser')
     }
-    appStore.go(START)
   }
+
+  const disableBrowser = computed(() => {
+    return tabsStore.list.length === 0 || isBrowser()
+  })
 
   const disableBack = computed(() => {
     const is = isBrowser()
@@ -137,7 +139,7 @@
       <b-button v-if="!disableForward" title="前进" @click="goForward">
         <IconRight size=".8em" />
       </b-button>
-      <b-button id="navi-home" title="浏览器" @click="naviGoBrowser">
+      <b-button id="navi-home" title="浏览器" :disabled="disableBrowser" @click="naviGoBrowser">
         <IconCompass size=".8em" />
       </b-button>
     </div>

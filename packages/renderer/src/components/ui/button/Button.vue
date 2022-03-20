@@ -22,7 +22,7 @@
 <template>
   <button
     :disabled="disabled"
-    class="inline-flex justify-center items-center rounded-1 w-4 h-4 bg-$color-bg-3 cursor-pointer transition-opacity no-drag"
+    class="inline-flex justify-center items-center rounded-1 w-4 h-4 cursor-pointer no-drag transition"
     @click="handleClick"
   >
     <slot></slot>
