@@ -1,5 +1,6 @@
 <script setup lang="ts">
   import { useAppStore } from '@/store'
+  import { IconPushpin, IconQuestion } from '@arco-design/web-vue/es/icon'
 
   const appStore = useAppStore()
   const router = useRouter()
@@ -32,11 +33,18 @@
         <a-option value="off">关闭</a-option>
         <a-option value="on">开启</a-option>
         <a-option value="playing">播放视频时</a-option>
+        <template #icon>
+          <IconPushpin />
+        </template>
       </b-settings-tile>
       <!-- <b-settings-tile v-model="switchTest" title="测试" type="switch" /> -->
     </b-settings>
     <b-settings>
-      <b-settings-tile title="关于 webmini" type="router" @click="router.push({ name: 'About' })" />
+      <b-settings-tile title="关于 webmini" type="router" @click="router.push({ name: 'About' })">
+        <template #icon>
+          <IconQuestion />
+        </template>
+      </b-settings-tile>
       <b-settings-tile title="清理缓存" @click="clearSensitiveDirectories" />
       <b-settings-tile title="重置应用" @click="clearAllUserData" />
     </b-settings>

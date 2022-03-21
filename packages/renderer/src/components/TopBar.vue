@@ -45,7 +45,7 @@
   }
 
   const isBrowser = () => {
-    if (router.currentRoute.value.name === 'Browser') {
+    if (route.name === 'Browser') {
       return true
     }
     return false
@@ -139,22 +139,6 @@
       <b-button v-if="!disableForward" title="前进" @click="goForward">
         <IconRight size=".8em" />
       </b-button>
-      <b-button id="navi-home" title="浏览器" :disabled="disableBrowser" @click="naviGoBrowser">
-        <IconCompass size=".8em" />
-      </b-button>
-    </div>
-    <div class="truncate text-0.9em" :title="title">
-      {{ title }}
-    </div>
-    <div class="flex-1 flex gap-1.5 justify-end">
-      <b-button
-        v-if="!disablePartButton && route.name === 'Browser'"
-        id="app-part"
-        title="分P列表"
-        @click="toggleSelectPartWindow"
-      >
-        <span>P</span>
-      </b-button>
       <b-button
         v-if="!disableDanmakuButton && route.name === 'Browser'"
         id="app-danmaku"
@@ -163,7 +147,23 @@
       >
         <span>弹</span>
       </b-button>
-      <b-button title="主页" :disabled="route.name === 'Home'" @click="go('Home')">
+      <b-button
+        v-if="!disablePartButton && route.name === 'Browser'"
+        id="app-part"
+        title="分P列表"
+        @click="toggleSelectPartWindow"
+      >
+        <span>P</span>
+      </b-button>
+    </div>
+    <div class="truncate text-0.9em" :title="title">
+      {{ title }}
+    </div>
+    <div class="flex-1 flex gap-1.5 justify-end">
+      <b-button v-if="!disableBrowser" title="浏览器" @click="naviGoBrowser">
+        <IconCompass size=".8em" />
+      </b-button>
+      <b-button v-if="route.name !== 'Home'" title="主页" @click="go('Home')">
         <icon-windmill size=".8em" />
       </b-button>
       <b-button title="最小化" @click="minimize">

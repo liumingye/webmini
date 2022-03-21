@@ -41,8 +41,9 @@
 
 <template>
   <div class="tile leading-11 bg-$color-bg-2 active:bg-$color-fill-3" @click="handleClick">
-    <div class="tile-border flex items-center justify-between ml-4 pr-4">
-      <div>{{ title }}</div>
+    <div class="tile-border flex items-center justify-between ml-4 pr-4 gap-2">
+      <slot name="icon"></slot>
+      <div class="flex-grow">{{ title }}</div>
       <template v-if="type === 'select'">
         <a-select
           v-model="value"

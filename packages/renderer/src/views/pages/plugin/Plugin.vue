@@ -66,7 +66,8 @@
 </script>
 
 <template>
-  <div class="!bg-$color-neutral-2 p-3">
+  <div class="!bg-$color-neutral-2 p-2">
+    <a-alert type="warning" class="mb-2">webmini需要Node.js环境，请确保安装了Node.js</a-alert>
     <a-list :loading="loading" :data="totalPlugins" size="small">
       <template #item="{ item }">
         <a-list-item :key="item.name">

@@ -70,6 +70,7 @@ export class View {
     })
 
     this.webContents.addListener('did-navigate', () => {
+      this.updateNavigationState()
       this.updateTitle()
       this.updateURL(this.webContents.getURL())
     })
