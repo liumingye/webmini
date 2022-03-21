@@ -76,21 +76,6 @@
   //     scrollbars.value?.scroll({ y: to.meta.scrollTop || 0 })
   //   }, 0)
   // }
-
-  // window.ipcRenderer.invoke('get-local-plugins').then((localPlugins: Record<string, string>) => {
-  //   console.log(localPlugins)
-  //   if (Object.keys(localPlugins).length !== 0) {
-  //     // 加载内置插件
-  //     tabsStore.addTab({
-  //       url: START,
-  //       options: {
-  //         userAgent: userAgent.mobile,
-  //       },
-  //     })
-  //   } else {
-  //     router.replace({ name: 'Plugin' })
-  //   }
-  // })
 </script>
 
 <template>

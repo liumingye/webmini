@@ -89,6 +89,16 @@
     "vue-router": "^4.0.14",
     "windicss": "^3.5.1"
   },
+  "electronLanguagesInfoPlistStrings": {
+    "en": {
+      "CFBundleDisplayName": "WebMini",
+      "CFBundleName": "WebMini"
+    },
+    "zh_CN": {
+      "CFBundleDisplayName": "WebMini",
+      "CFBundleName": "WebMini"
+    }
+  },
   "build": {
     "appId": "org.electron.webmini",
     "productName": "webmini",
@@ -102,6 +112,7 @@
       "dist",
       "resources/**/*"
     ],
+    "afterPack": "./build/buildAfterPack.js",
     "linux": {
       "category": "Network",
       "target": [
@@ -111,6 +122,9 @@
     },
     "mac": {
       "category": "public.app-category.navigation",
+      "extendInfo": {
+        "LSHasLocalizedDisplayName": true
+      },
       "target": [
         {
           "target": "zip",
@@ -181,7 +195,10 @@
       "include": [
         "@arco-design/web-vue",
         "@arco-design/web-vue/es/icon",
+        "@electron/remote",
         "axios",
+        "electron",
+        "electron-is",
         "less",
         "lodash",
         "nprogress",
@@ -189,7 +206,9 @@
         "pinia",
         "vue",
         "vue-request",
-        "vue-router"
+        "vue-router",
+        "winston",
+        "winston-daily-rotate-file"
       ]
     }
   }

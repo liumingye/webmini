@@ -53,7 +53,7 @@ export const hookThemeColor = (): void => {
       }
     }
 
-    console.log('主题色更改')
+    // console.log('主题色更改')
 
     Application.instance.mainWindow?.send('setThemeColor', {
       theme,

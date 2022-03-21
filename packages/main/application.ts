@@ -13,11 +13,8 @@ import { registerProtocol } from './models/protocol'
 export class Application {
   public static instance = new this()
 
-  public static URL = is.dev()
-    ? `http://${process.env['VITE_DEV_SERVER_HOST']}:${process.env['VITE_DEV_SERVER_PORT']}`
-    : `file://${join(app.getAppPath(), 'dist/renderer/index.html')}`
-
   public mainWindow: MainWindow | undefined
+  
   public selectPartWindow: SelectPartWindow | undefined
 
   public start(): void {

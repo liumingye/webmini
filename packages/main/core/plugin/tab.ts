@@ -14,7 +14,7 @@ import axios from 'axios'
 export class TabPlugin {
   public enablePlugins: PluginMetadata[] = []
 
-  public plugins: Plugin
+  public readonly plugins: Plugin
 
   public constructor(private window: MainWindow, public webContents: WebContents) {
     this.plugins = Plugin.instance

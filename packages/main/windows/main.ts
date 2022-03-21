@@ -2,11 +2,11 @@ import { app, BrowserWindow, BrowserWindowConstructorOptions, shell } from 'elec
 import is from 'electron-is'
 import { throttle } from 'lodash'
 import { join } from 'path'
-import { Application } from '../application'
 import { StorageService } from '../services/storage'
 import { ViewManager } from '../viewManager'
 import { CommonWindow } from './common'
 import { Sessions } from '../models/sessions'
+import { getUrl } from '../utils/getUrl'
 
 export class MainWindow extends CommonWindow {
   public viewManager: ViewManager
@@ -36,7 +36,7 @@ export class MainWindow extends CommonWindow {
       this.show()
     })
 
-    this.win.loadURL(`${Application.URL}#/home`)
+    this.win.loadURL(getUrl('index', 'home'))
 
     this.viewManager = new ViewManager(this)
 
@@ -58,6 +58,14 @@ export class MainWindow extends CommonWindow {
       this.resizedThrottled()
     })
 
+    this.win.on('resized', () => {
+      // const [width, height] = this.win.getSize()
+      // const isMaximized = this.win.isMaximized()
+      // const isFullScreen = this.win.isFullScreen()
+      // if (isMaximized || isFullScreen) return
+      // todo 保存窗口大小 窗口位置
+    })
+
     this.win.on('move', () => {
       this.isMoving = true
     })
@@ -68,9 +76,8 @@ export class MainWindow extends CommonWindow {
   }
 
   private resizedThrottled = throttle(() => {
-    //在 windows，移动窗口也会触发 resize，这里做一下判断
-    if (!this.win.isMaximized() && !this.isMoving) {
-      console.log('resizedThrottled')
+    // [Windows] 移动窗口也会触发 resize 事件，这里做一下判断
+    if (!this.isMoving) {
       this.viewManager.fixBounds()
     }
   }, 150)

@@ -11,12 +11,15 @@
     set(value) {
       appStore.alwaysOnTop = value
       appStore.saveConfig('alwaysOnTop', value)
-      // appStore.saveConfig({ alwaysOnTop: value })
     },
   })
+
+  // const switchTest = ref(false)
+
   const clearSensitiveDirectories = () => {
     window.ipcRenderer.send('clear-sensitive-directories')
   }
+
   const clearAllUserData = () => {
     window.ipcRenderer.send('clear-all-user-data')
   }
@@ -25,22 +28,15 @@
 <template>
   <div class="py-0.01 !bg-$color-neutral-2">
     <b-settings>
-      <b-settings-tile title="窗口置顶">
-        <a-select
-          v-model="alwaysOnTop"
-          :style="{ width: '120px' }"
-          placeholder="Select"
-          :bordered="false"
-          :trigger-props="{ autoFitPopupMinWidth: true }"
-        >
-          <a-option value="off">关闭</a-option>
-          <a-option value="on">开启</a-option>
-          <a-option value="playing">播放视频时</a-option>
-        </a-select>
+      <b-settings-tile v-model="alwaysOnTop" title="窗口置顶" type="select">
+        <a-option value="off">关闭</a-option>
+        <a-option value="on">开启</a-option>
+        <a-option value="playing">播放视频时</a-option>
       </b-settings-tile>
+      <!-- <b-settings-tile v-model="switchTest" title="测试" type="switch" /> -->
     </b-settings>
     <b-settings>
-      <b-settings-tile title="关于 webmini" @click="router.push({ name: 'About' })" />
+      <b-settings-tile title="关于 webmini" type="router" @click="router.push({ name: 'About' })" />
       <b-settings-tile title="清理缓存" @click="clearSensitiveDirectories" />
       <b-settings-tile title="重置应用" @click="clearAllUserData" />
     </b-settings>

@@ -2,6 +2,7 @@ import { WatchStopHandle } from 'vue'
 import { useAppStore } from '@/store'
 import type { windowType } from '~/interfaces/view'
 import { debounce } from 'lodash'
+import { Timer } from '~/common/timer'
 
 const { screen, currentWindow, logger } = window.app
 
@@ -106,17 +107,17 @@ export const initMouseStateDirtyCheck = (): void => {
     }
   }
 
-  let timeout: NodeJS.Timeout
+  const time = new Timer(Fn, 150, { mode: 'interval' })
 
   watch(
     () => autoHideBar.value,
     (value) => {
       logger.debug(`watchEffect - autoHideBar - ${value}`, { label: 'Main.vue' })
 
-      clearInterval(timeout)
+      time.clear()
 
       if (value) {
-        timeout = setInterval(Fn, 150)
+        time.start()
       } else {
         appStore.showTopBar = true
       }

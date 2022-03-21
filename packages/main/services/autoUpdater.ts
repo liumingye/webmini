@@ -4,6 +4,21 @@ import { autoUpdater } from 'electron-updater'
 import ms from 'ms'
 import Logger from '~/common/logger'
 import { sample } from 'lodash'
+import { Timer } from '~/common/timer'
+
+//             Uninitialized
+//                   |
+//                 Idle  ---------
+// (unavailable) /   |            |
+//           CheckingForUpdate    |
+//                   |            | (error)
+//            UpdateAvailable     |
+//                   |            |
+//              Downloading ------
+//                   |
+//              Downloaded
+//                   |
+//              Installing
 
 export interface IUpdateElectronAppOptions {
   /**
@@ -44,7 +59,7 @@ const initUpdater = (opts: IUpdateElectronAppOptions) => {
     logger && logger.info(args)
   }
 
-  // 使用 ghproxy 加速下载
+  // using ghproxy accelerate download
   autoUpdater.netSession.webRequest.onBeforeRequest(
     { urls: ['https://github.com/*/releases/download/*'] },
     ({ url }, callback) => {
@@ -53,28 +68,28 @@ const initUpdater = (opts: IUpdateElectronAppOptions) => {
     },
   )
 
-  // 当更新发生错误的时候触发。
+  // an error occurred while updating the trigger
   autoUpdater.on('error', (err) => {
     log('updater error')
     log(err)
   })
 
-  // 当开始检查更新的时候触发
+  // when start to check the update trigger
   autoUpdater.on('checking-for-update', () => {
     log('checking-for-update')
   })
 
-  // 发现可更新数据时
+  // can update the data
   autoUpdater.on('update-available', () => {
     log('update-available; downloading...')
   })
 
-  // 没有可更新数据时
+  // no can update the data
   autoUpdater.on('update-not-available', () => {
     log('update-not-available')
   })
 
-  // 下载完成
+  // the download is complete
   if (opts.notifyUser) {
     autoUpdater.on(
       'update-downloaded',
@@ -98,10 +113,16 @@ const initUpdater = (opts: IUpdateElectronAppOptions) => {
 
   // check for updates right away and keep checking later
   autoUpdater.checkForUpdates()
-  updateInterval &&
-    setInterval(() => {
-      autoUpdater.checkForUpdates()
-    }, ms(updateInterval))
+  if (updateInterval) {
+    const timer = new Timer(
+      () => {
+        autoUpdater.checkForUpdates()
+      },
+      ms(updateInterval),
+      { mode: 'interval' },
+    )
+    timer.start()
+  }
 }
 
 export default autoUpdaterService

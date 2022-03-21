@@ -3,6 +3,7 @@ import { join } from 'path'
 import { Application } from '../application'
 import { CommonWindow } from './common'
 import { getDisplayBounds } from '../utils'
+import { getUrl } from '../utils/getUrl'
 
 export class SelectPartWindow extends CommonWindow {
   public constructor() {
@@ -20,7 +21,7 @@ export class SelectPartWindow extends CommonWindow {
 
     super(window)
 
-    this.win.loadURL(`${Application.URL}#/select-part`)
+    this.win.loadURL(getUrl('index', 'select-part'))
 
     ipcMain.on('toggle-select-part-window', () => {
       this.toggle()

@@ -35,7 +35,7 @@ export class Plugin {
 
   /**
    * 添加插件
-   * @param plugin
+   * @param name
    * @returns
    */
   public async addPlugin(name: string) {
@@ -55,7 +55,7 @@ export class Plugin {
 
   /**
    * 删除插件
-   * @param plugin
+   * @param name
    * @returns
    */
   public async deletePlugin(name: string) {
@@ -97,7 +97,7 @@ export class Plugin {
 
   /**
    * 获取插件路径
-   * @param plugin
+   * @param name
    * @returns
    */
   public getPluginPath(name: string) {
@@ -137,7 +137,7 @@ export class Plugin {
    */
   public async install(plugin: AdapterInfo) {
     Logger.info(`开始安装 - ${plugin.name}`)
-    this.updateStatus(plugin, PluginStatus.INSTALLING)
+    await this.updateStatus(plugin, PluginStatus.INSTALLING)
 
     await this.handler.install([`${plugin.name}@${plugin.version}`])
 
@@ -146,14 +146,14 @@ export class Plugin {
     // 安装失败
     if (!fs.existsSync(pluginPath)) {
       Logger.info(`安装失败 - ${plugin.name}`)
-      this.updateStatus(plugin, PluginStatus.INSTALL_FAIL)
+      await this.updateStatus(plugin, PluginStatus.INSTALL_FAIL)
 
       return false
     }
 
     // 安装成功
     Logger.info(`安装成功 - ${plugin.name}`)
-    this.updateStatus(plugin, PluginStatus.INSTALLING_COMPLETE)
+    await this.updateStatus(plugin, PluginStatus.INSTALLING_COMPLETE)
 
     this.addPlugin(plugin.name)
 
@@ -167,7 +167,7 @@ export class Plugin {
    */
   public async uninstall(plugin: AdapterInfo) {
     Logger.info(`开始卸载 - ${plugin.name}`)
-    this.updateStatus(plugin, PluginStatus.UNINSTALLING)
+    await this.updateStatus(plugin, PluginStatus.UNINSTALLING)
 
     await this.handler.uninstall([plugin.name])
 
@@ -176,14 +176,14 @@ export class Plugin {
     // 卸载失败
     if (fs.existsSync(pluginPath)) {
       Logger.info(`卸载失败 - ${plugin.name}`)
-      this.updateStatus(plugin, PluginStatus.UNINSTALL_FAIL)
+      await this.updateStatus(plugin, PluginStatus.UNINSTALL_FAIL)
 
       return false
     }
 
     // 卸载成功
     Logger.info(`卸载成功 - ${plugin.name}`)
-    this.updateStatus(plugin, PluginStatus.UNINSTALL_COMPLETE)
+    await this.updateStatus(plugin, PluginStatus.UNINSTALL_COMPLETE)
 
     this.deletePlugin(plugin.name)
 

@@ -7,6 +7,9 @@ export abstract class CommonWindow {
   }
 
   public show(): void {
+    if (this.win.isMinimized()) {
+      this.win.restore()
+    }
     this.win.show()
   }
 
@@ -15,7 +18,7 @@ export abstract class CommonWindow {
   }
 
   public toggle(): void {
-    if (this.isDestroyed()) return
+    if (!this.win || this.isDestroyed()) return
     if (this.win.isVisible()) {
       this.hide()
     } else {
@@ -24,6 +27,7 @@ export abstract class CommonWindow {
   }
 
   public isDestroyed() {
+    if (!this.win) return true
     return this.win.isDestroyed()
   }
 
