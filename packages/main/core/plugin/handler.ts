@@ -9,7 +9,6 @@ import fixPath from '../../utils/shell/fixPath'
 const npm = /^win/.test(process.platform) ? 'npm.cmd' : 'npm'
 
 fixPath()
-Logger.info(JSON.stringify(process.env))
 
 /**
  * 系统插件管理器
