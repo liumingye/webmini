@@ -52,9 +52,15 @@ export class MainWindow extends CommonWindow {
       this.eventClose()
     })
 
-    this.win.on('resize', () => {
-      this.resizedThrottled()
-    })
+    /**
+     * [mac] 下 setAutoResize 会有偏移
+     * 这里关闭 setAutoResize 使用 fixBounds 手动改变大小
+     */
+    if (is.macOS()) {
+      this.win.on('resize', () => {
+        this.resizedThrottled()
+      })
+    }
 
     this.win.on('resized', () => {
       // const [width, height] = this.win.getSize()

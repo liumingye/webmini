@@ -21,7 +21,9 @@
     switch (status) {
       case PluginStatus.INSTALLING_COMPLETE:
         message(`插件 ${plugin.name} 安装完成!`)
-        appStore.getLocalPlugins()
+        setTimeout(() => {
+          appStore.getLocalPlugins()
+        }, 50)
         break
       case PluginStatus.INSTALL_FAIL:
         message(`插件 ${plugin.name} 安装失败!`)

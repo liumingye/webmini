@@ -1,4 +1,5 @@
 import { ipcMain } from 'electron'
+import is from 'electron-is'
 import { View } from './view'
 import type { MainWindow } from './windows/main'
 
@@ -86,6 +87,17 @@ export class ViewManager {
     this.fixBounds()
 
     view.updateNavigationState()
+
+    /**
+     * [mac] 下 setAutoResize 会有偏移
+     * 这里关闭 setAutoResize 使用 fixBounds 手动改变大小
+     */
+    if (!is.macOS()) {
+      view.browserView.setAutoResize({
+        width: true,
+        height: true,
+      })
+    }
   }
 
   public fixBounds(): void {
