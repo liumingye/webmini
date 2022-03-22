@@ -11,9 +11,7 @@ import { getUrl } from '../utils/getUrl'
 export class MainWindow extends CommonWindow {
   public viewManager: ViewManager
 
-  public sess: Sessions | undefined
-
-  private isMoving = false
+  private sess: Sessions | undefined
 
   public constructor() {
     const window = new BrowserWindow({
@@ -65,21 +63,10 @@ export class MainWindow extends CommonWindow {
       // if (isMaximized || isFullScreen) return
       // todo 保存窗口大小 窗口位置
     })
-
-    this.win.on('move', () => {
-      this.isMoving = true
-    })
-
-    this.win.on('moved', () => {
-      this.isMoving = false
-    })
   }
 
   private resizedThrottled = throttle(() => {
-    // [Windows] 移动窗口也会触发 resize 事件，这里做一下判断
-    if (!this.isMoving) {
-      this.viewManager.fixBounds()
-    }
+    this.viewManager.fixBounds()
   }, 150)
 
   private async setBoundsFromDb() {
