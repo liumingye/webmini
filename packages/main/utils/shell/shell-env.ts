@@ -23,23 +23,6 @@ const parseEnv = (env: string) => {
   return returnValue
 }
 
-export async function shellEnv(shell = defaultShell) {
-  if (process.platform === 'win32') {
-    return process.env
-  }
-
-  try {
-    const { stdout } = await execa(shell, args, { env })
-    return parseEnv(stdout)
-  } catch (error) {
-    if (shell) {
-      throw error
-    } else {
-      return process.env
-    }
-  }
-}
-
 export function shellEnvSync(shell = defaultShell) {
   if (process.platform === 'win32') {
     return process.env

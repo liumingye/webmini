@@ -3,7 +3,6 @@ import type Cookies from '~/common/cookies'
 import type Versions from '~/preload/utils/versions'
 import type { Logger } from 'winston'
 import type { StorageService } from '~/main/services/storage'
-import type { Timer } from '~/common/timer'
 
 declare global {
   interface Window {
@@ -15,7 +14,6 @@ declare global {
       cookies: Cookies
       versions: Versions
       screen: Electron.Screen
-      cookie: string
       currentWindow: Electron.BrowserWindow
       net: Net
       logger: Logger

@@ -20,7 +20,7 @@ export const replace = (text: string, map: string[], replacer: string): string =
   return text
 }
 
-// todo 移动到main里 使用hook
+// todo 移动到插件里 使用hook
 export const replaceTitle = (title: string): string => {
   title = replace(
     title,
