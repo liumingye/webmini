@@ -1,11 +1,15 @@
-// import fixPath from 'fix-path'
-import spawn from 'cross-spawn'
+import { spawn } from 'child_process'
 import fs from 'fs-extra'
 import path from 'path'
+import Logger from '~/common/logger'
 import Net from '~/common/net'
 import type { AdapterHandlerOptions, AdapterInfo } from '~/interfaces/plugin'
+import fixPath from '../../utils/shell/fixPath'
 
-// fixPath()
+const npm = /^win/.test(process.platform) ? 'npm.cmd' : 'npm'
+
+fixPath()
+Logger.info(JSON.stringify(process.env))
 
 /**
  * 系统插件管理器
@@ -109,28 +113,32 @@ export class AdapterHandler {
   private async execCommand(cmd: string, modules: string[]): Promise<string> {
     return new Promise((resolve: any, reject: any) => {
       let args: string[] = [cmd].concat(modules).concat('--color=always').concat('--save')
+
       if (cmd !== 'uninstall') args = args.concat(`--registry=${this.registry}`)
-      const npm = spawn('npm', args, {
+
+      const _npm = spawn(npm, args, {
         cwd: this.baseDir,
+        env: process.env,
       })
 
       let output = ''
-      npm.stdout
+      _npm.stdout
         ?.on('data', (data: string) => {
           output += data // 获取输出日志
         })
         .pipe(process.stdout)
 
-      npm.stderr
+      _npm.stderr
         ?.on('data', (data: string) => {
           output += data // 获取报错日志
         })
         .pipe(process.stderr)
 
-      npm.on('close', (code: number) => {
+      _npm.on('close', (code: number) => {
         if (!code) {
           resolve({ code: 0, data: output }) // 如果没有报错就输出正常日志
         } else {
+          Logger.error({ code: code, data: output })
           reject({ code: code, data: output }) // 如果报错就输出报错日志
         }
       })
