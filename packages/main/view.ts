@@ -77,7 +77,7 @@ export class View {
 
     this.webContents.addListener(
       'did-fail-load',
-      (e, errorCode, errorDescription, errorURL, isMainFrame) => {
+      (_e, errorCode, _errorDescription, errorURL, isMainFrame) => {
         // ignore -3 (ABORTED) - An operation was aborted (due to user action).
         if (isMainFrame && errorCode !== -3) {
           const _URL = new URL(`${ERROR_PROTOCOL}://${NETWORK_ERROR_HOST}`)
@@ -94,9 +94,6 @@ export class View {
       return { action: 'deny' }
     })
 
-    // this.webContents.setUserAgent(this.userAgent)
-    // this.session.setUserAgent(this.userAgent)
-
     this.plugins = new TabPlugin(this.window, this.browserView.webContents)
 
     this.webContents.loadURL(details.url, details.options)
@@ -104,12 +101,13 @@ export class View {
     // register session
     this.sess = new Sessions(this.session)
     this.sess.register('onBeforeSendHeaders', (details) => {
-      // 禁止追踪
+      // ban on track
       details.requestHeaders['DNT'] = '1'
 
-      // 根据插件配置设置浏览器UA
+      // according to the browser plug-in configuration settings for ua
       if (details.resourceType === 'mainFrame' && details.url.startsWith('http')) {
-        // 设置当前url 给resizeWindowSize使用 使用getUrl获取的不对
+        // set the current url
+        // 给resizeWindowSize使用 使用getUrl获取的不对
         this.url = details.url
 
         const url = new URL(this.url)
@@ -134,11 +132,11 @@ export class View {
 
         const [_userAgent]: UA[] = registerAndGetData('userAgent', userAgentProvider)
 
-        // 桌面端
+        // the desktop
         if (_userAgent.desktop.some((value) => completeURL.includes(value))) {
           this.userAgent = userAgent.desktop
         }
-        // 移动端
+        // the mobile
         else if (_userAgent.mobile.some((value) => completeURL.includes(value))) {
           this.userAgent = userAgent.mobile
         } else {
@@ -147,7 +145,7 @@ export class View {
 
         details.requestHeaders['User-Agent'] = this.userAgent
 
-        this.session.setUserAgent(this.userAgent)
+        this.sess.userAgent = this.userAgent
 
         this.resizeWindowSize()
       }
@@ -220,7 +218,7 @@ export class View {
       return 'login'
     } else if (completeURL.startsWith('t.bilibili.com/?tab')) {
       return 'feed'
-    } else if (this.session.getUserAgent() === userAgent.desktop) {
+    } else if (this.sess.userAgent === userAgent.desktop) {
       return 'desktop'
     }
     return 'mobile'

@@ -1,7 +1,6 @@
 import { app, BrowserWindow, Menu, session, dialog } from 'electron'
 import installExtension, { VUEJS3_DEVTOOLS } from 'electron-devtools-installer'
 import is from 'electron-is'
-import { join } from 'path'
 import ipcMainInit from './ipcMain'
 import { getMainMenu } from './menus/main'
 import adblockerService from './services/adblocker'
@@ -14,7 +13,7 @@ export class Application {
   public static instance = new this()
 
   public mainWindow: MainWindow | undefined
-  
+
   public selectPartWindow: SelectPartWindow | undefined
 
   public start(): void {

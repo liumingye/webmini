@@ -40,11 +40,7 @@
       <!-- <b-settings-tile v-model="switchTest" title="测试" type="switch" /> -->
     </b-settings>
     <b-settings>
-      <b-settings-tile title="关于 webmini" type="router" @click="router.push({ name: 'About' })">
-        <template #icon>
-          <IconQuestion />
-        </template>
-      </b-settings-tile>
+      <b-settings-tile title="关于 webmini" type="router" @click="router.push({ name: 'About' })" />
       <b-settings-tile title="清理缓存" @click="clearSensitiveDirectories" />
       <b-settings-tile title="重置应用" @click="clearAllUserData" />
     </b-settings>

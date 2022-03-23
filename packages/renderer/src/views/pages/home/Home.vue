@@ -12,9 +12,10 @@
     appStore.getLocalPlugins()
   })
 
-  const go = (name: string | symbol) => {
+  const go = (name: string | symbol, params = {}) => {
     router.push({
-      name: name,
+      name,
+      params,
     })
   }
 
@@ -58,7 +59,7 @@
           }}</div>
           <div class="mt-1.3 flex gap-1 justify-center">
             <template v-if="item.name !== 'Router'">
-              <b-button title="导航" class="" @click.stop="">
+              <b-button title="导航" class="" @click="go('WebNav', { name: item.name })">
                 <IconBookmark size=".8em" />
               </b-button>
             </template>

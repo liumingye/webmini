@@ -100,13 +100,5 @@
         </div>
       </div>
     </div>
-    <a-space>
-      <router-link :to="{ name: 'Plugin' }">
-        <a-button>插件市场</a-button>
-      </router-link>
-      <router-link :to="{ name: 'Settings' }">
-        <a-button>设置</a-button>
-      </router-link>
-    </a-space>
   </div>
 </template>
