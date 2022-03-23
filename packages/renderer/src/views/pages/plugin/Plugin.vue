@@ -89,14 +89,22 @@
             </template>
           </a-list-item-meta>
           <template #actions>
-            <div class="ml-2">
+            <div class="ml-2 flex flex-col gap-1">
+              <template v-if="item.local.status === PluginStatus.UPGRADE">
+                <a-button @click="install(item)">升级</a-button>
+              </template>
               <template v-if="!item.local.status">
                 <a-button @click="install(item)">安装</a-button>
               </template>
               <template v-else-if="item.local.status === PluginStatus.INSTALLING">
                 <a-button disabled>安装中...</a-button>
               </template>
-              <template v-else-if="item.local.status === PluginStatus.INSTALLING_COMPLETE">
+              <template
+                v-else-if="
+                  item.local.status === PluginStatus.INSTALLING_COMPLETE ||
+                  item.local.status === PluginStatus.UPGRADE
+                "
+              >
                 <a-button @click="uninstall(item)">卸载</a-button>
               </template>
               <template v-else-if="item.local.status === PluginStatus.UNINSTALLING">

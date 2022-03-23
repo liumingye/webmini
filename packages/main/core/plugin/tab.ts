@@ -5,11 +5,12 @@ import type { PluginMetadata } from '~/interfaces/plugin'
 import { Application } from '../../application'
 import { hookThemeColor, matchPattern } from '../../utils'
 import { MainWindow } from '../../windows/main'
-import { addData, clearData } from './data'
+import { addData, clearData, registerData } from './data'
 import { addHook, clearHook } from './hook'
 import { Plugin } from './index'
 import { StorageService } from '../../services/storage'
 import axios from 'axios'
+import Cookies from '~/common/cookies'
 
 export class TabPlugin {
   public enablePlugins: PluginMetadata[] = []
@@ -41,6 +42,11 @@ export class TabPlugin {
           ...plugin.preloads,
         ])
 
+        registerData('webNav', {
+          search: {},
+          nav: {},
+        })
+
         plugin.load({
           addHook,
           addData,
@@ -56,6 +62,7 @@ export class TabPlugin {
           webContents: this.webContents,
           db: new StorageService(plugin.name),
           axios,
+          cookies: new Cookies(),
         })
 
         return plugin

@@ -1,4 +1,4 @@
-import { LoadURLOptions } from 'electron'
+import type { LoadURLOptions } from 'electron'
 
 export type TabEvent = 'url-updated' | 'title-updated' | 'loading'
 

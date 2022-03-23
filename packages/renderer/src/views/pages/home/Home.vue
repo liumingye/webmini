@@ -1,6 +1,5 @@
 <script setup lang="ts">
   import { useAppStore } from '@/store'
-  import { IconBookmark } from '@arco-design/web-vue/es/icon'
   import type { LocalPluginInfo } from '~/interfaces/plugin'
 
   const appStore = useAppStore()
@@ -12,10 +11,9 @@
     appStore.getLocalPlugins()
   })
 
-  const go = (name: string | symbol, params = {}) => {
+  const go = (name: string | symbol) => {
     router.push({
       name,
-      params,
     })
   }
 
@@ -57,13 +55,6 @@
           <div class="mt-1.3 text-center truncate text-xs" @click="open(item)">{{
             item.displayName
           }}</div>
-          <div class="mt-1.3 flex gap-1 justify-center">
-            <template v-if="item.name !== 'Router'">
-              <b-button title="导航" class="" @click="go('WebNav', { name: item.name })">
-                <IconBookmark size=".8em" />
-              </b-button>
-            </template>
-          </div>
         </template>
       </div>
     </div>

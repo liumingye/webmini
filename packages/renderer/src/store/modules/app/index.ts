@@ -69,12 +69,14 @@ export const useAppStore = defineStore('app', {
           displayName: '插件市场',
           start: 'Plugin',
           icon: shallowRef(IconApps),
+          version: '',
         })
         localPlugins.push({
           name: 'Router',
           displayName: '设置',
           start: 'Settings',
           icon: shallowRef(IconSettings),
+          version: '',
         })
         this.localPlugins = localPlugins
       })
@@ -98,8 +100,12 @@ export const useAppStore = defineStore('app', {
               } else {
                 // 本地存在
                 info.local = localPlugin
+                // 可升级
+                if (info.version !== localPlugin.version) {
+                  info.local.status = PluginStatus.UPGRADE
+                }
                 // 防止状态卡在ing中
-                if (info.local?.status === PluginStatus.UNINSTALLING) {
+                else if (info.local?.status === PluginStatus.UNINSTALLING) {
                   info.local.status = PluginStatus.INSTALLING_COMPLETE
                 } else if (info.local?.status === PluginStatus.INSTALLING) {
                   info.local.status = undefined

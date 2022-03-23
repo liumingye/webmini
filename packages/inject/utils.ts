@@ -56,7 +56,7 @@ export const whenDom = (dom: string[], target?: string, options: MutationObserve
   return {
     promise,
     abort: () => {
-      observer.disconnect()
+      observer && observer.disconnect()
       $_reject()
     },
   }

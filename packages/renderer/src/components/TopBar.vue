@@ -8,6 +8,7 @@
     IconRight,
     IconClose,
     IconMinus,
+    IconBookmark,
   } from '@arco-design/web-vue/es/icon'
 
   const ipc = window.ipcRenderer
@@ -138,6 +139,9 @@
       </b-button>
       <b-button v-if="!disableForward" title="前进" @click="goForward">
         <IconRight size=".8em" />
+      </b-button>
+      <b-button v-if="isBrowser()" title="导航" @click="go('WebNav')">
+        <IconBookmark size=".7em" />
       </b-button>
       <b-button
         v-if="!disableDanmakuButton && route.name === 'Browser'"
