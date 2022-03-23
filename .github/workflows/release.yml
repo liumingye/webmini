@@ -14,7 +14,8 @@ jobs:
     # Platforms to build on/for
     strategy:
       matrix:
-        os: [macos-latest, ubuntu-latest, windows-latest]
+        # os: [macos-latest, ubuntu-latest, windows-latest]
+        os: [ubuntu-latest, windows-latest]
 
     steps:
       - name: Check out Git repository
@@ -36,6 +37,7 @@ jobs:
       - name: Yarn install
         run: |
           yarn
+
       - name: Build  & release app
         run: |
           yarn release

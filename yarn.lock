@@ -394,59 +394,59 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@cliqz/adblocker-content@npm:^1.23.6":
-  version: 1.23.6
-  resolution: "@cliqz/adblocker-content@npm:1.23.6::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2F%40cliqz%2Fadblocker-content%2F-%2Fadblocker-content-1.23.6.tgz"
+"@cliqz/adblocker-content@npm:^1.23.7":
+  version: 1.23.7
+  resolution: "@cliqz/adblocker-content@npm:1.23.7::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2F%40cliqz%2Fadblocker-content%2F-%2Fadblocker-content-1.23.7.tgz"
   dependencies:
-    "@cliqz/adblocker-extended-selectors": ^1.23.6
-  checksum: 1a43d33cde44f01764cedfa98045d0c4d00ea942df9efbaf284c36d7996d94446e68fb13aa2414b44915649b705ff92d124c00b636cb2e12a4373281508b2066
+    "@cliqz/adblocker-extended-selectors": ^1.23.7
+  checksum: 5fb7abec2ba69beacb48863d9d88b840d2520c520396e65273f6cef4702aa141962fa7ff2cd2124540ad0ebd892eeb2e732ec12d2d638810f10d18ddeec9548f
   languageName: node
   linkType: hard
 
-"@cliqz/adblocker-electron-preload@npm:^1.23.6":
-  version: 1.23.6
-  resolution: "@cliqz/adblocker-electron-preload@npm:1.23.6::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2F%40cliqz%2Fadblocker-electron-preload%2F-%2Fadblocker-electron-preload-1.23.6.tgz"
+"@cliqz/adblocker-electron-preload@npm:^1.23.7":
+  version: 1.23.7
+  resolution: "@cliqz/adblocker-electron-preload@npm:1.23.7::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2F%40cliqz%2Fadblocker-electron-preload%2F-%2Fadblocker-electron-preload-1.23.7.tgz"
   dependencies:
-    "@cliqz/adblocker-content": ^1.23.6
+    "@cliqz/adblocker-content": ^1.23.7
   peerDependencies:
     electron: ">11"
-  checksum: 647e9ae95d89a06ae89f9e824dd9529593fd86fc8c08c13ea8970aa386ccb50cb580bdd4aaf6b39ed0051464933d7849256efddbe4f4096bd9e4056a5aeabd77
+  checksum: 8cc01ddc9d35a6d3873671cc733a072683e41188bbf74dc99ffc0468083582b0cd70791f575b28bb22afc0fa45fc5c2420e4ba41fdbaf56ab6e842b3eb66b18b
   languageName: node
   linkType: hard
 
-"@cliqz/adblocker-electron@npm:^1.23.6":
-  version: 1.23.6
-  resolution: "@cliqz/adblocker-electron@npm:1.23.6::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2F%40cliqz%2Fadblocker-electron%2F-%2Fadblocker-electron-1.23.6.tgz"
+"@cliqz/adblocker-electron@npm:^1.23.7":
+  version: 1.23.7
+  resolution: "@cliqz/adblocker-electron@npm:1.23.7::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2F%40cliqz%2Fadblocker-electron%2F-%2Fadblocker-electron-1.23.7.tgz"
   dependencies:
-    "@cliqz/adblocker": ^1.23.6
-    "@cliqz/adblocker-electron-preload": ^1.23.6
+    "@cliqz/adblocker": ^1.23.7
+    "@cliqz/adblocker-electron-preload": ^1.23.7
     tldts-experimental: ^5.6.21
   peerDependencies:
     electron: ">11"
-  checksum: 3fa79cc3b518cc5814b2f840e6e38f2fa45a0f7a79179fe21e087ff21184387e337c475730e57f2976703e3ffd300b8ba11aabb01754543f20922a74ffb3c097
+  checksum: 8a4c5e5a5bb8601043c4523976325055163cd45e47d8353ad6281ead9b8575e4e378a2590bb5f06f58cdef5b3b634c1b710ce8bba6d78b329da0b103b040f57a
   languageName: node
   linkType: hard
 
-"@cliqz/adblocker-extended-selectors@npm:^1.23.6":
-  version: 1.23.6
-  resolution: "@cliqz/adblocker-extended-selectors@npm:1.23.6::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2F%40cliqz%2Fadblocker-extended-selectors%2F-%2Fadblocker-extended-selectors-1.23.6.tgz"
-  checksum: 0d49440c5e47ed5b12add6f6a22ccdef26ad9bf28496b8ade939548825cf52b000877f73a065ec5fe8326236fb044ed256fc4d8dc54d7c1cd3c4f85649180f80
+"@cliqz/adblocker-extended-selectors@npm:^1.23.7":
+  version: 1.23.7
+  resolution: "@cliqz/adblocker-extended-selectors@npm:1.23.7::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2F%40cliqz%2Fadblocker-extended-selectors%2F-%2Fadblocker-extended-selectors-1.23.7.tgz"
+  checksum: 50c19a8aa4c2311ee79a0b97c1d1588e5dcde6db44b37fac298310684ebe997e74b7d20bbe4e6a68c2d3b7d6387c80a22d6a9a86ee02fc725e98d48efa038504
   languageName: node
   linkType: hard
 
-"@cliqz/adblocker@npm:^1.23.6":
-  version: 1.23.6
-  resolution: "@cliqz/adblocker@npm:1.23.6::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2F%40cliqz%2Fadblocker%2F-%2Fadblocker-1.23.6.tgz"
+"@cliqz/adblocker@npm:^1.23.7":
+  version: 1.23.7
+  resolution: "@cliqz/adblocker@npm:1.23.7::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2F%40cliqz%2Fadblocker%2F-%2Fadblocker-1.23.7.tgz"
   dependencies:
-    "@cliqz/adblocker-content": ^1.23.6
-    "@cliqz/adblocker-extended-selectors": ^1.23.6
+    "@cliqz/adblocker-content": ^1.23.7
+    "@cliqz/adblocker-extended-selectors": ^1.23.7
     "@remusao/guess-url-type": ^1.1.2
     "@remusao/small": ^1.1.2
     "@remusao/smaz": ^1.7.1
-    "@types/chrome": ^0.0.178
+    "@types/chrome": ^0.0.180
     "@types/firefox-webext-browser": ^94.0.0
     tldts-experimental: ^5.6.21
-  checksum: 81e78e9c6ad936312f975a3c80b2cb08377834787e29b96c1a89473910594a3912449de7686c5aa50ef0ce462c6b225345eae9e22dccb570ba3a606397060ff9
+  checksum: 47b0531ec7963d49a6117cdbb40f7b53103ea81bffc97b69c0d83a32ddf69a5062735f4c3a799bfce6059b0bdf4d24535c212f8c20a0dabd17c6d8e96122ec63
   languageName: node
   linkType: hard
 
@@ -985,13 +985,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/chrome@npm:^0.0.178":
-  version: 0.0.178
-  resolution: "@types/chrome@npm:0.0.178::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2F%40types%2Fchrome%2F-%2Fchrome-0.0.178.tgz"
+"@types/chrome@npm:^0.0.180":
+  version: 0.0.180
+  resolution: "@types/chrome@npm:0.0.180::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2F%40types%2Fchrome%2F-%2Fchrome-0.0.180.tgz"
   dependencies:
     "@types/filesystem": "*"
     "@types/har-format": "*"
-  checksum: 6b38bd864c146e6f0f4ec1d3f1dfc2f96c1ad32c36f8adf84b820ea9c6379d3bbe4f5de273d53aaaba804bb1f237b8dc7bd8bd12e5a3284ebe2e706e37a40791
+  checksum: b564442488cfceb18069ead55148762c392761a2174f1a5d3fb6077bfd7b9067b6008c1f41c0b0f118bf2155bbdd81d214723f2dddff15905c706f485d945090
   languageName: node
   linkType: hard
 
@@ -3619,12 +3619,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"electron-fetch@npm:^1.7.4":
-  version: 1.7.4
-  resolution: "electron-fetch@npm:1.7.4::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Felectron-fetch%2F-%2Felectron-fetch-1.7.4.tgz"
+"electron-fetch@npm:^1.8.0":
+  version: 1.8.0
+  resolution: "electron-fetch@npm:1.8.0::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Felectron-fetch%2F-%2Felectron-fetch-1.8.0.tgz"
   dependencies:
     encoding: ^0.1.13
-  checksum: f48ea19df5779d71eda27dd3abaea7066fc632633dee5c1cd501173eab5c80d6e04224ffafffcc8008fd8116f09dd8db18152c24f0f3608e775cec6ad97ea1c4
+  checksum: 87211067312f151d36823fd7ca48aa828fc5c6e8ed1ff33799911296e1d008659a3054a64ff2472dddc27ebf0f25d5629cf926a8fc67b2889fba37242e1f22f3
   languageName: node
   linkType: hard
 
@@ -9789,9 +9789,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"unplugin-vue-components@npm:^0.18.3":
-  version: 0.18.3
-  resolution: "unplugin-vue-components@npm:0.18.3::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Funplugin-vue-components%2F-%2Funplugin-vue-components-0.18.3.tgz"
+"unplugin-vue-components@npm:^0.18.4":
+  version: 0.18.4
+  resolution: "unplugin-vue-components@npm:0.18.4::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Funplugin-vue-components%2F-%2Funplugin-vue-components-0.18.4.tgz"
   dependencies:
     "@antfu/utils": ^0.5.0
     "@rollup/pluginutils": ^4.2.0
@@ -9812,7 +9812,7 @@ __metadata:
       optional: true
     "@babel/traverse":
       optional: true
-  checksum: 2ae4db613b837e316d096bc750f8e5ceedd24d5a39017fd5ea6a074fd0b9e201f382f2db3328c1ed0ad875891ef8469d1edc509bf9202617366a7ec6544df14c
+  checksum: 59ee5acc319eab176d1b09be1f0ef505abd888867bcbd6a84a67684c9e96de79292681840be788f70f072898ebba89aebcdaec1c77d9c858cf47ba2c52d5a705
   languageName: node
   linkType: hard
 
@@ -10146,7 +10146,7 @@ __metadata:
   resolution: "webmini@workspace:."
   dependencies:
     "@arco-design/web-vue": ^2.20.1
-    "@cliqz/adblocker-electron": ^1.23.6
+    "@cliqz/adblocker-electron": ^1.23.7
     "@commitlint/cli": ^16.2.3
     "@commitlint/config-conventional": ^16.2.1
     "@electron/remote": ^2.0.8
@@ -10163,7 +10163,7 @@ __metadata:
     electron: ^17.1.2
     electron-builder: ^22.14.13
     electron-devtools-installer: ^3.2.0
-    electron-fetch: ^1.7.4
+    electron-fetch: ^1.8.0
     electron-is: ^3.0.0
     electron-updater: ^4.6.5
     eslint: ^8.11.0
@@ -10188,7 +10188,7 @@ __metadata:
     stylelint-order: ^5.0.0
     typescript: ^4.6.2
     unplugin-auto-import: ^0.6.6
-    unplugin-vue-components: ^0.18.3
+    unplugin-vue-components: ^0.18.4
     vite: ^2.8.6
     vite-plugin-optimize-persist: ^0.1.2
     vite-plugin-package-config: ^0.1.1
