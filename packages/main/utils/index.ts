@@ -42,18 +42,26 @@ export const hookThemeColor = (): void => {
 
     const theme = nativeTheme.shouldUseDarkColors ? 'dark' : 'light'
 
+    if (!themeColor[theme].bg) {
+      const color = Application.instance.mainWindow?.viewManager.selected?.themeColor
+      if (color) {
+        themeColor[theme].bg = color
+      }
+    }
+
     // 未定义文字颜色则自动获取文字颜色
     if (!themeColor[theme].text) {
       const baseColor = Color.Format.CSS.parseHex(themeColor[theme].bg)
       if (baseColor) {
-        const text = baseColor.isDarker() ? baseColor.darken(1) : baseColor.lighten(1)
+        const text = baseColor.isDarker() ? baseColor.lighten(1) : baseColor.darken(1)
+        console.log('isDarker', baseColor.isDarker())
         if (text) {
           themeColor[theme].text = text.toString()
         }
       }
     }
 
-    // console.log('主题色更改')
+    console.log('主题色更改', themeColor)
 
     Application.instance.mainWindow?.send('setThemeColor', {
       theme,

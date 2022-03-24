@@ -1,4 +1,4 @@
-import { app, BrowserView } from 'electron'
+import { app, BrowserView, nativeTheme } from 'electron'
 import { clamp } from 'lodash'
 import { ERROR_PROTOCOL, NETWORK_ERROR_HOST, userAgent } from '~/common/constant'
 import type { CreateProperties, TabEvent } from '~/interfaces/tabs'
@@ -9,7 +9,7 @@ import { getHook } from './core/plugin/hook'
 import { getViewMenu } from './menus/view'
 import { Sessions } from './models/sessions'
 import { StorageService } from './services/storage'
-import { getDisplayBounds, matchPattern } from './utils'
+import { getDisplayBounds, matchPattern, hookThemeColor } from './utils'
 import type { MainWindow } from './windows/main'
 
 export class View {
@@ -36,7 +36,11 @@ export class View {
 
   private userAgent = userAgent.mobile
 
+  private lastUrl = ''
+
   private lastHostName = ''
+
+  public themeColor: string | null = null
 
   public constructor(window: MainWindow, details: CreateProperties) {
     this.browserView = new BrowserView({
@@ -45,6 +49,9 @@ export class View {
         sandbox: true,
       },
     })
+
+    this.onDarkModeChange()
+    nativeTheme.addListener('updated', this.onDarkModeChange)
 
     this.window = window
 
@@ -58,6 +65,7 @@ export class View {
     })
 
     this.webContents.addListener('did-start-loading', () => {
+      this.themeColor = null
       this.updateNavigationState()
       this.emitEvent('loading', true)
       this.updateURL(this.webContents.getURL())
@@ -73,6 +81,12 @@ export class View {
       this.updateNavigationState()
       this.updateTitle()
       this.updateURL(this.webContents.getURL())
+    })
+
+    this.webContents.addListener('did-change-theme-color', (e, data) => {
+      this.themeColor = data
+      hookThemeColor()
+      // console.log('did-change-theme-color', data)
     })
 
     this.webContents.addListener(
@@ -120,7 +134,7 @@ export class View {
           this.plugins.loadTabPlugins(url.href)
         }
 
-        type UA = {
+        type UserAgent = {
           mobile: string[]
           desktop: string[]
         }
@@ -130,7 +144,7 @@ export class View {
           desktop: [],
         }
 
-        const [_userAgent]: UA[] = registerAndGetData('userAgent', userAgentProvider)
+        const [_userAgent]: UserAgent[] = registerAndGetData('userAgent', userAgentProvider)
 
         // the desktop
         if (_userAgent.desktop.some((value) => completeURL.includes(value))) {
@@ -153,7 +167,11 @@ export class View {
     })
   }
 
-  private lastUrl = ''
+  private onDarkModeChange() {
+    if (!this.browserView) return
+    const backgroundColor = nativeTheme.shouldUseDarkColors ? '#000' : '#FFF'
+    this.browserView.setBackgroundColor(backgroundColor)
+  }
 
   public updateURL(url: string): void {
     if (this.lastUrl === url) return
@@ -238,37 +256,59 @@ export class View {
   public destroy(): void {
     // Cleanup.
     if (!this.browserView) return
+    // removeListener updated
+    nativeTheme.removeListener('updated', this.onDarkModeChange)
     // unregister session
     this.sess.destroy()
+    // unload plugins
     this.plugins.unloadTabPlugins()
+    // destroy
     ;(this.browserView.webContents as any).destroy()
     this.browserView = null as any
   }
 
-  public get session() {
+  public get session(): Electron.Session {
     return this.webContents.session
   }
 
-  public get webContents() {
+  public get webContents(): Electron.WebContents {
     return this.browserView.webContents
   }
 
-  public isDestroyed() {
+  /**
+   * 网页是否被摧毁
+   * @returns {boolean}
+   */
+  public isDestroyed(): boolean {
     return this.browserView.webContents.isDestroyed()
   }
 
-  public get id() {
+  /**
+   * 获取 webContents id
+   */
+  public get id(): number {
     return this.webContents.id
   }
 
+  /**
+   * 发送事件
+   * @param event
+   * @param args
+   */
   public emitEvent(event: TabEvent, ...args: any[]): void {
     this.window.send('tabEvent', event, this.id, args)
   }
 
-  public get title() {
+  /**
+   * 获取网页标题
+   */
+  public get title(): string {
     return this.webContents.getTitle()
   }
 
+  /**
+   * 发送更新标题事件
+   */
   public updateTitle(): void {
     const selected = this.window.viewManager.selected
 

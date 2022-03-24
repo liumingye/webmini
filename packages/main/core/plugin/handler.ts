@@ -10,6 +10,10 @@ const npm = /^win/.test(process.platform) ? 'npm.cmd' : 'npm'
 
 fixPath()
 
+// https://registry.npmmirror.com/webmini-bilibili
+// "tarball":"https://registry.npmmirror.com/webmini-bilibili/-/webmini-bilibili-0.0.10.tgz",
+// https://cdn.npmmirror.com/packages/webmini-bilibili/0.0.10/webmini-bilibili-0.0.10.tgz
+
 /**
  * 系统插件管理器
  * @class AdapterHandler
@@ -33,7 +37,7 @@ export class AdapterHandler {
     }
     this.baseDir = options.baseDir
 
-    const register = options.registry || 'https://registry.npm.taobao.org'
+    const register = options.registry || 'https://registry.npmmirror.com'
 
     this.registry = register
   }
