@@ -229,7 +229,7 @@ export class View {
     this.window.send('setCurrentWindowType', targetWindowType)
   }
 
-  private getWindowType(pluginName?: string) {
+  private getWindowType() {
     const _URL = new URL(this.url)
     const completeURL = _URL.hostname + _URL.pathname + _URL.search
 
@@ -239,8 +239,8 @@ export class View {
 
     let windowType: Record<string, (string | RegExp)[]> = windowTypeProvider
 
-    if (pluginName) {
-      windowType = registerAndGetData(pluginName, 'windowType', windowTypeProvider)[0]
+    if (this.plugins.length !== 0) {
+      windowType = registerAndGetData(this.plugins[0].name, 'windowType', windowTypeProvider)[0]
     }
 
     if (windowType.mini.some(matchPattern(completeURL))) {
