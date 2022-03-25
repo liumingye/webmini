@@ -9,7 +9,7 @@ export const ipcRendererOn = (): void => {
   const tabsStore = useTabsStore()
 
   // browser事件
-  window.ipcRenderer.on('tabEvent', (ev, event: TabEvent, tabId, args) => {
+  window.ipcRenderer.on('tab-event', (ev, event: TabEvent, tabId, args) => {
     const tab = tabsStore.getTabById(tabId)
     if (tab) {
       if (event === 'title-updated') tab.title = args[0]
@@ -45,8 +45,8 @@ export const ipcRendererOn = (): void => {
     // webview.value.send('changeVolume', arg)
   })
 
-  // setCurrentWindowType
-  window.ipcRenderer.on('setCurrentWindowType', (e, windowType) => {
+  // set-currentWindow-type
+  window.ipcRenderer.on('set-currentWindow-type', (e, windowType) => {
     currentWindowType.value = windowType
   })
 

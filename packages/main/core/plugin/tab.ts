@@ -4,7 +4,7 @@ import Net from '~/common/net'
 import type { PluginMetadata, PluginDataProvider } from '~/interfaces/plugin'
 import { Application } from '../../application'
 import { hookThemeColor, matchPattern } from '../../utils'
-import { addData, clearData, registerData } from './data'
+import { addData, removeData, destroyData, registerData } from './data'
 import { addHook, clearHook } from './hook'
 import { Plugin } from './index'
 import { StorageService } from '../../services/storage'
@@ -41,10 +41,7 @@ export class TabPlugin {
           ...plugin.preloads,
         ])
 
-        registerData(plugin.name, 'webNav', {
-          search: {},
-          nav: {},
-        })
+        registerData(plugin.name, 'webNav', {})
 
         plugin.load({
           // addHook: (key: string, ...data: any[]) => {
@@ -108,12 +105,12 @@ export class TabPlugin {
     if (plugins) {
       // 释放指定插件
       plugins.forEach((item) => {
-        clearData(item.name)
+        removeData(item.name)
         item.unload()
       })
     } else {
       // 释放全部插件
-      clearData()
+      destroyData()
       this.enablePlugins.forEach((x) => {
         if (!x) return
         x.unload()

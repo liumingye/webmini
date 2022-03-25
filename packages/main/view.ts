@@ -88,11 +88,11 @@ export class View {
 
     this.webContents.addListener('did-change-theme-color', (e, data) => {
       this.themeColor = data
-      if (this.plugins.length === 0) {
-        hookThemeColor()
+      if (this.plugins.length) {
+        hookThemeColor(this.plugins[0].name)
         return
       }
-      hookThemeColor(this.plugins[0].name)
+      hookThemeColor()
       // console.log('did-change-theme-color', data)
     })
 
@@ -141,7 +141,7 @@ export class View {
           this.plugins = this.tabPlugin.loadTabPlugins(url.href)
         }
 
-        if (this.plugins.length !== 0) {
+        if (this.plugins.length) {
           type UserAgent = {
             mobile: string[]
             desktop: string[]
@@ -152,27 +152,29 @@ export class View {
             desktop: [],
           }
 
-          const [_userAgent]: UserAgent[] = registerAndGetData(
+          const [userAgentData]: UserAgent[] = registerAndGetData(
             this.plugins[0].name,
             'userAgent',
             userAgentProvider,
           )
 
           // the desktop
-          if (_userAgent.desktop.some((value) => completeURL.includes(value))) {
+          if (userAgentData.desktop.some((value) => completeURL.includes(value))) {
             this.userAgent = userAgent.desktop
           }
           // the mobile
-          else if (_userAgent.mobile.some((value) => completeURL.includes(value))) {
+          else if (userAgentData.mobile.some((value) => completeURL.includes(value))) {
             this.userAgent = userAgent.mobile
           } else {
             this.userAgent = userAgent.desktop
           }
 
           details.requestHeaders['User-Agent'] = this.userAgent
-
-          this.sess.userAgent = this.userAgent
+        } else {
+          this.userAgent = userAgent.desktop
         }
+
+        this.sess.userAgent = this.userAgent
 
         this.resizeWindowSize()
       }
@@ -226,28 +228,29 @@ export class View {
 
     this.windowType = targetWindowType
 
-    this.window.send('setCurrentWindowType', targetWindowType)
+    this.window.send('set-currentWindow-type', targetWindowType)
   }
 
   private getWindowType() {
     const _URL = new URL(this.url)
     const completeURL = _URL.hostname + _URL.pathname + _URL.search
 
-    const windowTypeProvider = {
-      mini: [],
+    if (this.plugins.length) {
+      const windowTypeProvider = {
+        mini: [],
+      }
+      const [windowType] = registerAndGetData(
+        this.plugins[0].name,
+        'windowType',
+        windowTypeProvider,
+      )
+      if (windowType.mini.some(matchPattern(completeURL))) {
+        return 'mini'
+      }
     }
 
-    let windowType: Record<string, (string | RegExp)[]> = windowTypeProvider
-
-    if (this.plugins.length !== 0) {
-      windowType = registerAndGetData(this.plugins[0].name, 'windowType', windowTypeProvider)[0]
-    }
-
-    if (windowType.mini.some(matchPattern(completeURL))) {
-      return 'mini'
-    }
     // todo: 特殊大小窗口判断代码移动到插件内
-    else if (completeURL.startsWith('passport.bilibili.com/login')) {
+    if (completeURL.startsWith('passport.bilibili.com/login')) {
       return 'login'
     } else if (completeURL.startsWith('t.bilibili.com/?tab')) {
       return 'feed'
@@ -311,7 +314,7 @@ export class View {
    * @param args
    */
   public emitEvent(event: TabEvent, ...args: any[]): void {
-    this.window.send('tabEvent', event, this.id, args)
+    this.window.send('tab-event', event, this.id, args)
   }
 
   /**

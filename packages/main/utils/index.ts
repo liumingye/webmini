@@ -61,8 +61,8 @@ export const hookThemeColor = (pluginName?: string): void => {
     if (!themeColor[theme].text) {
       const baseColor = Color.Format.CSS.parseHex(themeColor[theme].bg)
       if (baseColor) {
-        const text = baseColor.isDarker() ? baseColor.lighten(1) : baseColor.darken(1)
-        console.log('isDarker', baseColor.isDarker())
+        const text = baseColor.isDarker() ? baseColor.lighten(100) : baseColor.darken(100)
+        // console.log('isDarker', baseColor.isDarker())
         if (text) {
           themeColor[theme].text = text.toString()
         }
