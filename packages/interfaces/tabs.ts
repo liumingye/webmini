@@ -1,9 +1,10 @@
 import type { LoadURLOptions } from 'electron'
+import type { LocalPluginInfo } from './plugin'
 
 export type TabEvent = 'url-updated' | 'title-updated' | 'loading'
 
 export interface CreateProperties {
-  pluginName: string | undefined
+  plugin: LocalPluginInfo | undefined
   url: string
   active?: boolean
   options?: LoadURLOptions

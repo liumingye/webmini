@@ -4,7 +4,6 @@ import Net from '~/common/net'
 import type { PluginMetadata, PluginDataProvider } from '~/interfaces/plugin'
 import { Application } from '../../application'
 import { hookThemeColor, matchPattern } from '../../utils'
-import { MainWindow } from '../../windows/main'
 import { addData, clearData, registerData } from './data'
 import { addHook, clearHook } from './hook'
 import { Plugin } from './index'
@@ -17,7 +16,7 @@ export class TabPlugin {
 
   public readonly plugins: Plugin
 
-  public constructor(private window: MainWindow, public webContents: WebContents) {
+  public constructor(public webContents: WebContents) {
     this.plugins = Plugin.instance
   }
 
@@ -104,13 +103,23 @@ export class TabPlugin {
   /**
    * 卸载所有插件
    */
-  public unloadTabPlugins(): void {
+  public unloadTabPlugins(plugins?: PluginMetadata[]): void {
     clearHook()
-    clearData()
-    this.enablePlugins.forEach((x) => {
-      if (!x) return
-      x.unload()
-    })
+    if (plugins) {
+      // 释放指定插件
+      plugins.forEach((item) => {
+        clearData(item.name)
+        item.unload()
+      })
+    } else {
+      // 释放全部插件
+      clearData()
+      this.enablePlugins.forEach((x) => {
+        if (!x) return
+        x.unload()
+      })
+    }
+
     this.webContents.session.setPreloads([])
     this.enablePlugins = []
   }

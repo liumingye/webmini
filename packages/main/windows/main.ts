@@ -11,7 +11,7 @@ import { getUrl } from '../utils/getUrl'
 export class MainWindow extends CommonWindow {
   public viewManager: ViewManager
 
-  private sess: Sessions | undefined
+  private crossDomainSess: Sessions | undefined
 
   public constructor() {
     const window = new BrowserWindow({
@@ -93,17 +93,25 @@ export class MainWindow extends CommonWindow {
 
   private eventDomReady() {
     // 处理跨域
-    this.sess = new Sessions(this.session)
-    this.sess.register('onHeadersReceived', (details) => {
+    this.crossDomainSess = new Sessions(this.session, [
+      'https://gitee.com/liumingye/webmini-database/raw/master/*',
+    ])
+    this.crossDomainSess.register('onBeforeSendHeaders', (details) => {
+      if (details.resourceType === 'xhr' && details.requestHeaders) {
+        details.requestHeaders['Referer'] = 'https://gitee.com'
+        return { requestHeaders: details.requestHeaders }
+      }
+    })
+    this.crossDomainSess.register('onHeadersReceived', (details) => {
       if (details.resourceType === 'xhr' && details.responseHeaders) {
         details.responseHeaders['Access-Control-Allow-Origin'] = ['*']
+        return { responseHeaders: details.responseHeaders }
       }
-      return { responseHeaders: details.responseHeaders }
     })
   }
 
   private eventClose() {
-    this.sess?.destroy()
+    this.crossDomainSess?.destroy()
     this.viewManager.clearViewContainer()
     if (!is.macOS()) {
       process.nextTick(() => {

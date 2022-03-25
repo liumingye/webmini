@@ -1,11 +1,13 @@
 interface Listener {
-  onBeforeRequest: (details: Electron.OnBeforeRequestListenerDetails) => Electron.Response
+  onBeforeRequest: (
+    details: Electron.OnBeforeRequestListenerDetails,
+  ) => Electron.Response | undefined
   onBeforeSendHeaders: (
     details: Electron.OnBeforeSendHeadersListenerDetails,
-  ) => Electron.BeforeSendResponse
+  ) => Electron.BeforeSendResponse | undefined
   onHeadersReceived: (
     details: Electron.OnHeadersReceivedListenerDetails,
-  ) => Electron.HeadersReceivedResponse
+  ) => Electron.HeadersReceivedResponse | undefined
 }
 
 export class Sessions {
@@ -19,8 +21,8 @@ export class Sessions {
    * Sessions 助手
    * @param sess
    */
-  constructor(public sess: Electron.Session) {
-    this.sess.webRequest.onBeforeRequest((details, callback) => {
+  constructor(public sess: Electron.Session, urls: string[] = []) {
+    this.sess.webRequest.onBeforeRequest({ urls }, (details, callback) => {
       let _callback = {}
       for (const beforeRequest of this.beforeRequestList) {
         _callback = { ..._callback, ...beforeRequest(details) }
@@ -28,7 +30,7 @@ export class Sessions {
       callback(_callback)
     })
 
-    this.sess.webRequest.onBeforeSendHeaders((details, callback) => {
+    this.sess.webRequest.onBeforeSendHeaders({ urls }, (details, callback) => {
       let _callback = {}
       for (const beforeSendHeaders of this.beforeSendHeadersList) {
         _callback = { ..._callback, ...beforeSendHeaders(details) }
@@ -36,7 +38,7 @@ export class Sessions {
       callback(_callback)
     })
 
-    this.sess.webRequest.onHeadersReceived((details, callback) => {
+    this.sess.webRequest.onHeadersReceived({ urls }, (details, callback) => {
       let _callback = {}
       for (const headersReceived of this.headersReceivedList) {
         _callback = { ..._callback, ...headersReceived(details) }

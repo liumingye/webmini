@@ -1,4 +1,5 @@
 import { useTabsStore } from '@/store'
+import type { LocalPluginInfo } from '~/interfaces/plugin'
 
 export const callViewMethod = async (
   webContentsId: number,
@@ -13,11 +14,11 @@ export const callViewMethod = async (
   })
 }
 
-export const loadURL = (pluginName: string | undefined, url: string, ...args: any[]): void => {
+export const loadURL = (plugin: LocalPluginInfo | undefined, url: string, ...args: any[]): void => {
   const tabsStore = useTabsStore()
   const tab = tabsStore.getFocusedTab()
   if (!tab) {
-    tabsStore.addTabs([{ pluginName, url, active: true, ...args }])
+    tabsStore.addTabs([{ plugin, url, active: true, ...args }])
   } else {
     tab.url = url
     tab.callViewMethod('loadURL', url, ...args)

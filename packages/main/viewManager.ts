@@ -10,7 +10,7 @@ export class ViewManager {
 
   private window: MainWindow
 
-  private showTopBar = false
+  private showTopBar = true
 
   private autoHideBar = false
 

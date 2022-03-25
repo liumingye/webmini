@@ -2,6 +2,7 @@
   import { useAppStore, useTabsStore } from '@/store'
   import { resizeMainWindow } from '@/utils'
 
+  const route = useRoute()
   const router = useRouter()
   const appStore = useAppStore()
   const tabsStore = useTabsStore()
@@ -35,7 +36,9 @@
   onActivated(() => {
     search.value = nav.value = replace.value = undefined
 
-    window.ipcRenderer.invoke('plugin-get-data', 'webNav').then((data) => {
+    const { pluginName } = route.params
+
+    window.ipcRenderer.invoke('plugin-get-data', pluginName, 'webNav').then((data) => {
       if (!data || data.length === 0) return
 
       const _data = data[0]

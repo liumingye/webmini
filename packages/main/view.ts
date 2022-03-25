@@ -115,7 +115,7 @@ export class View {
       return { action: 'deny' }
     })
 
-    this.tabPlugin = new TabPlugin(this.window, this.browserView.webContents)
+    this.tabPlugin = new TabPlugin(this.browserView.webContents)
 
     this.webContents.loadURL(details.url, details.options)
 
@@ -137,7 +137,7 @@ export class View {
 
         if (this.lastHostName !== url.hostname) {
           this.lastHostName = url.hostname
-          this.tabPlugin.unloadTabPlugins()
+          this.tabPlugin.unloadTabPlugins(this.plugins)
           this.plugins = this.tabPlugin.loadTabPlugins(url.href)
         }
 

@@ -3,6 +3,7 @@ import { replaceTitle } from '@/utils'
 import { callViewMethod } from '@/utils/view'
 import NProgress from 'nprogress' // progress bar
 import type { CreateProperties } from '~/interfaces/tabs'
+import type { LocalPluginInfo } from '~/interfaces/plugin'
 
 export class ITab {
   public id = -1
@@ -11,10 +12,10 @@ export class ITab {
 
   public _title = 'webmini'
 
-  public pluginName: string | undefined = undefined
+  public plugin: LocalPluginInfo | undefined
 
-  public constructor({ active, url, pluginName }: CreateProperties, id: number) {
-    this.pluginName = pluginName
+  public constructor({ active, url, plugin }: CreateProperties, id: number) {
+    this.plugin = plugin
     this.url = url
     this.id = id
     if (active) {

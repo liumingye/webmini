@@ -22,7 +22,7 @@
       go(item.start)
     } else {
       go('Browser')
-      appStore.go(item.start, item.name)
+      appStore.go(item.start, item)
     }
   }
 </script>

@@ -72,7 +72,6 @@ export const saveWindowSize = (): void => {
 export const initMouseStateDirtyCheck = (): void => {
   // console.log('initMouseStateDirtyCheck')
   const appStore = useAppStore()
-  const autoHideBar = computed(() => appStore.autoHideBar)
   let lastStatus: 'OUT' | 'IN'
 
   const Fn = () => {
@@ -110,7 +109,7 @@ export const initMouseStateDirtyCheck = (): void => {
   const time = new Timer(Fn, 150, { mode: 'interval' })
 
   watch(
-    () => autoHideBar.value,
+    () => appStore.autoHideBar,
     (value) => {
       logger.debug(`watchEffect - autoHideBar - ${value}`, { label: 'Main.vue' })
 

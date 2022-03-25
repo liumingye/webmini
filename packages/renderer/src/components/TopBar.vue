@@ -1,5 +1,6 @@
 <script setup lang="ts">
   import { useAppStore, useTabsStore } from '@/store'
+  import type { AppStateTypes } from '@/store/modules/app/types'
   import { resizeMainWindow } from '@/utils'
   import { callViewMethod } from '@/utils/view'
   import {
@@ -20,21 +21,25 @@
   const disablePartButton = computed(() => appStore.disablePartButton)
   const title = computed(() => appStore.title)
 
-  const tempStore: Record<string, any> = {}
+  const tempStore: Partial<AppStateTypes> = {}
+
   router.beforeEach((to, from) => {
     // 恢复状态
     if (to.name === 'Browser') {
       window.ipcRenderer.invoke(`browserview-show-${appStore.currentWindowID}`)
-      appStore.autoHideBar = tempStore.autoHideBar
+      if (tempStore.autoHideBar !== undefined) {
+        appStore.autoHideBar = tempStore.autoHideBar
+      }
     }
     // 保存状态
-    if (from.name === 'Browser') {
+    else if (from.name === 'Browser') {
       window.ipcRenderer.invoke(`browserview-hide-${appStore.currentWindowID}`)
       tempStore.autoHideBar = appStore.autoHideBar
       resizeMainWindow('mobile')
       appStore.autoHideBar = false
     }
   })
+
   router.afterEach((to) => {
     if (to.name === 'Browser') {
       resizeMainWindow()
@@ -59,38 +64,49 @@
     })
   }
 
-  const naviGoBrowser = () => {
+  const showWebNav = () => {
     const is = isBrowser()
-    if (!is) {
-      go('Browser')
+    if (is) {
+      const focusedTab = tabsStore.getFocusedTab()
+      if (focusedTab && focusedTab.plugin) {
+        return true
+      }
+    }
+    return false
+  }
+
+  const goWebNav = () => {
+    const focusedTab = tabsStore.getFocusedTab()
+    if (focusedTab && focusedTab.plugin) {
+      go('WebNav', { pluginName: focusedTab.plugin.name })
     }
   }
 
-  const disableBrowser = computed(() => {
-    return tabsStore.list.length === 0 || isBrowser()
-  })
+  const showBrowser = () => {
+    return tabsStore.list.length !== 0 && !isBrowser()
+  }
 
-  const disableBack = computed(() => {
+  const showBack = () => {
     const is = isBrowser()
     if (is) {
-      return !appStore.navigationState.canGoBack
+      return appStore.navigationState.canGoBack
     }
     // use _path as dependency to force computed update
     // eslint-disable-next-line
     const _path = route.path
-    return window.history.state.back === null
-  })
+    return window.history.state.back !== null
+  }
 
-  const disableForward = computed(() => {
+  const showForward = () => {
     const is = isBrowser()
     if (is) {
-      return !appStore.navigationState.canGoForward
+      return appStore.navigationState.canGoForward
     }
     // use _path as dependency to force computed update
     // eslint-disable-next-line
     const _path = route.path
-    return window.history.state.forward === null
-  })
+    return window.history.state.forward !== null
+  }
 
   const goBack = () => {
     const is = isBrowser()
@@ -135,13 +151,13 @@
     :class="route.name"
   >
     <div class="flex-1 flex gap-1.5">
-      <b-button id="navi-back" title="后退" :disabled="disableBack" @click="goBack">
+      <b-button id="navi-back" title="后退" :disabled="!showBack()" @click="goBack">
         <IconLeft size=".8em" />
       </b-button>
-      <b-button v-if="!disableForward" title="前进" @click="goForward">
+      <b-button v-if="showForward()" title="前进" @click="goForward">
         <IconRight size=".8em" />
       </b-button>
-      <b-button v-if="isBrowser()" title="导航" @click="go('WebNav')">
+      <b-button v-if="showWebNav()" title="导航" @click="goWebNav">
         <IconBookmark size=".7em" />
       </b-button>
       <b-button
@@ -165,7 +181,7 @@
       {{ title }}
     </div>
     <div class="flex-1 flex gap-1.5 justify-end">
-      <b-button v-if="!disableBrowser" title="浏览器" @click="naviGoBrowser">
+      <b-button v-if="showBrowser()" title="浏览器" @click="go('Browser')">
         <IconCompass size=".8em" />
       </b-button>
       <b-button v-if="route.name !== 'Home'" title="主页" @click="go('Home')">
