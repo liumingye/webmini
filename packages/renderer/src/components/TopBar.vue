@@ -52,9 +52,10 @@
     return false
   }
 
-  const go = (name: string | symbol) => {
+  const go = (name: string | symbol, params = {}) => {
     router.push({
       name: name,
+      params,
     })
   }
 

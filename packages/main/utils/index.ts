@@ -17,15 +17,17 @@ export const matchPattern = (str: string) => {
 /**
  * 主题色更改
  */
-export const hookThemeColor = (): void => {
+export const hookThemeColor = (pluginName?: string): void => {
   type Color = {
     bg: string
     text: string
   }
+
   type Theme = {
     light: Color
     dark: Color
   }
+
   const themeColorProvider = {
     light: {
       bg: '',
@@ -36,7 +38,13 @@ export const hookThemeColor = (): void => {
       text: '',
     },
   }
-  const [themeColor]: Theme[] = registerAndGetData('themeColor', themeColorProvider)
+
+  let themeColor: Theme = themeColorProvider
+
+  if (pluginName) {
+    themeColor = registerAndGetData(pluginName, 'themeColor', themeColorProvider)[0]
+  }
+
   const onDarkModeChange = () => {
     if (Application.instance.mainWindow?.isDestroyed()) return
 

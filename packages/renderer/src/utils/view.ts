@@ -13,11 +13,11 @@ export const callViewMethod = async (
   })
 }
 
-export const loadURL = (url: string, ...args: any[]): void => {
+export const loadURL = (pluginName: string | undefined, url: string, ...args: any[]): void => {
   const tabsStore = useTabsStore()
   const tab = tabsStore.getFocusedTab()
   if (!tab) {
-    tabsStore.addTabs([{ url, active: true, ...args }])
+    tabsStore.addTabs([{ pluginName, url, active: true, ...args }])
   } else {
     tab.url = url
     tab.callViewMethod('loadURL', url, ...args)

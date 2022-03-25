@@ -11,7 +11,10 @@ export class ITab {
 
   public _title = 'webmini'
 
-  public constructor({ active, url }: CreateProperties, id: number) {
+  public pluginName: string | undefined = undefined
+
+  public constructor({ active, url, pluginName }: CreateProperties, id: number) {
+    this.pluginName = pluginName
     this.url = url
     this.id = id
     if (active) {

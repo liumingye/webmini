@@ -55,12 +55,12 @@ export const useAppStore = defineStore('app', {
     updateURL(url: string, tabId: number) {
       window.app.logger.info(`updateURL - ${url} - tabId - ${tabId}`, { label: 'appStore' })
     },
-    go(value: string) {
+    go(value: string, pluginName: string | undefined = undefined) {
       let url = value
       if (isURI(url)) {
         url = value.indexOf('://') === -1 ? `http://${value}` : value
       }
-      loadURL(url)
+      loadURL(pluginName, url)
     },
     getLocalPlugins() {
       window.ipcRenderer.invoke('get-local-plugins').then((localPlugins: LocalPluginInfo[]) => {

@@ -1,7 +1,7 @@
 import { app, WebContents } from 'electron'
 import { negate } from 'lodash'
 import Net from '~/common/net'
-import type { PluginMetadata } from '~/interfaces/plugin'
+import type { PluginMetadata, PluginDataProvider } from '~/interfaces/plugin'
 import { Application } from '../../application'
 import { hookThemeColor, matchPattern } from '../../utils'
 import { MainWindow } from '../../windows/main'
@@ -42,14 +42,19 @@ export class TabPlugin {
           ...plugin.preloads,
         ])
 
-        registerData('webNav', {
+        registerData(plugin.name, 'webNav', {
           search: {},
           nav: {},
         })
 
         plugin.load({
+          // addHook: (key: string, ...data: any[]) => {
+          //   addHook(plugin.name, key, data)
+          // },
           addHook,
-          addData,
+          addData: (key: string, provider: PluginDataProvider) => {
+            addData(plugin.name, key, provider)
+          },
           net: new Net(),
           application: {
             mainWindow: {
@@ -87,9 +92,13 @@ export class TabPlugin {
 
     this.enablePlugins = res
 
-    hookThemeColor()
+    if (res.length !== 0) {
+      hookThemeColor(res[0].name)
+    } else {
+      hookThemeColor()
+    }
 
-    return Promise.all(res)
+    return res
   }
 
   /**

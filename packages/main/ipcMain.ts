@@ -37,8 +37,8 @@ export default () => {
   ipcMain.handle('plugin-uninstall', async (e, plugin: AdapterInfo) => {
     return await Plugin.instance.uninstall(plugin)
   })
-  ipcMain.handle('plugin-get-data', async (e, key: string) => {
-    return getData(key)
+  ipcMain.handle('plugin-get-data', async (e, name: string, key: string) => {
+    return getData(name, key)
   })
 
   // db 数据库

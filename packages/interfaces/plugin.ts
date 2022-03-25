@@ -1,6 +1,5 @@
 import type { WebContents } from 'electron'
 import type Net from '../common/net'
-import type { addData } from '../main/core/plugin/data'
 import type { addHook } from '../main/core/plugin/hook'
 import type { CommonWindow } from '../main/windows/common'
 import type { ShallowRef } from 'vue'
@@ -19,7 +18,7 @@ export interface PluginHookProvider {
 
 /** 插件初始化时的传入参数, 可以解构并调用 */
 export interface PluginLoadParameters {
-  addData: typeof addData
+  addData: (key: string, provider: PluginDataProvider) => void
   addHook: typeof addHook
   application: {
     mainWindow: {

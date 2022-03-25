@@ -11,6 +11,7 @@ import { Sessions } from './models/sessions'
 import { StorageService } from './services/storage'
 import { getDisplayBounds, matchPattern, hookThemeColor } from './utils'
 import type { MainWindow } from './windows/main'
+import type { PluginMetadata } from '~/interfaces/plugin'
 
 export class View {
   public windowType: windowType = 'mobile'
@@ -19,7 +20,9 @@ export class View {
 
   private window: MainWindow
 
-  private plugins: TabPlugin
+  private tabPlugin: TabPlugin
+
+  public plugins: PluginMetadata[] = []
 
   private sess: Sessions
 
@@ -85,7 +88,11 @@ export class View {
 
     this.webContents.addListener('did-change-theme-color', (e, data) => {
       this.themeColor = data
-      hookThemeColor()
+      if (this.plugins.length === 0) {
+        hookThemeColor()
+        return
+      }
+      hookThemeColor(this.plugins[0].name)
       // console.log('did-change-theme-color', data)
     })
 
@@ -108,7 +115,7 @@ export class View {
       return { action: 'deny' }
     })
 
-    this.plugins = new TabPlugin(this.window, this.browserView.webContents)
+    this.tabPlugin = new TabPlugin(this.window, this.browserView.webContents)
 
     this.webContents.loadURL(details.url, details.options)
 
@@ -130,36 +137,42 @@ export class View {
 
         if (this.lastHostName !== url.hostname) {
           this.lastHostName = url.hostname
-          this.plugins.unloadTabPlugins()
-          this.plugins.loadTabPlugins(url.href)
+          this.tabPlugin.unloadTabPlugins()
+          this.plugins = this.tabPlugin.loadTabPlugins(url.href)
         }
 
-        type UserAgent = {
-          mobile: string[]
-          desktop: string[]
+        if (this.plugins.length !== 0) {
+          type UserAgent = {
+            mobile: string[]
+            desktop: string[]
+          }
+
+          const userAgentProvider = {
+            mobile: [],
+            desktop: [],
+          }
+
+          const [_userAgent]: UserAgent[] = registerAndGetData(
+            this.plugins[0].name,
+            'userAgent',
+            userAgentProvider,
+          )
+
+          // the desktop
+          if (_userAgent.desktop.some((value) => completeURL.includes(value))) {
+            this.userAgent = userAgent.desktop
+          }
+          // the mobile
+          else if (_userAgent.mobile.some((value) => completeURL.includes(value))) {
+            this.userAgent = userAgent.mobile
+          } else {
+            this.userAgent = userAgent.desktop
+          }
+
+          details.requestHeaders['User-Agent'] = this.userAgent
+
+          this.sess.userAgent = this.userAgent
         }
-
-        const userAgentProvider = {
-          mobile: [],
-          desktop: [],
-        }
-
-        const [_userAgent]: UserAgent[] = registerAndGetData('userAgent', userAgentProvider)
-
-        // the desktop
-        if (_userAgent.desktop.some((value) => completeURL.includes(value))) {
-          this.userAgent = userAgent.desktop
-        }
-        // the mobile
-        else if (_userAgent.mobile.some((value) => completeURL.includes(value))) {
-          this.userAgent = userAgent.mobile
-        } else {
-          this.userAgent = userAgent.desktop
-        }
-
-        details.requestHeaders['User-Agent'] = this.userAgent
-
-        this.sess.userAgent = this.userAgent
 
         this.resizeWindowSize()
       }
@@ -216,17 +229,19 @@ export class View {
     this.window.send('setCurrentWindowType', targetWindowType)
   }
 
-  private getWindowType() {
+  private getWindowType(pluginName?: string) {
     const _URL = new URL(this.url)
     const completeURL = _URL.hostname + _URL.pathname + _URL.search
 
     const windowTypeProvider = {
       mini: [],
     }
-    const [windowType]: Record<string, (string | RegExp)[]>[] = registerAndGetData(
-      'windowType',
-      windowTypeProvider,
-    )
+
+    let windowType: Record<string, (string | RegExp)[]> = windowTypeProvider
+
+    if (pluginName) {
+      windowType = registerAndGetData(pluginName, 'windowType', windowTypeProvider)[0]
+    }
 
     if (windowType.mini.some(matchPattern(completeURL))) {
       return 'mini'
@@ -261,7 +276,7 @@ export class View {
     // unregister session
     this.sess.destroy()
     // unload plugins
-    this.plugins.unloadTabPlugins()
+    this.tabPlugin.unloadTabPlugins()
     // destroy
     ;(this.browserView.webContents as any).destroy()
     this.browserView = null as any
