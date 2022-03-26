@@ -168,12 +168,11 @@ export class View {
           } else {
             this.userAgent = userAgent.desktop
           }
-
-          details.requestHeaders['User-Agent'] = this.userAgent
         } else {
           this.userAgent = userAgent.desktop
         }
 
+        details.requestHeaders['User-Agent'] = this.userAgent
         this.sess.userAgent = this.userAgent
 
         this.resizeWindowSize()

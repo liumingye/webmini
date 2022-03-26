@@ -37,9 +37,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@arco-design/web-vue@npm:^2.20.2":
-  version: 2.20.2
-  resolution: "@arco-design/web-vue@npm:2.20.2::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2F%40arco-design%2Fweb-vue%2F-%2Fweb-vue-2.20.2.tgz"
+"@arco-design/web-vue@npm:^2.21.1":
+  version: 2.21.1
+  resolution: "@arco-design/web-vue@npm:2.21.1::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2F%40arco-design%2Fweb-vue%2F-%2Fweb-vue-2.21.1.tgz"
   dependencies:
     "@arco-design/color": ^0.4.0
     b-tween: ^0.3.3
@@ -51,7 +51,7 @@ __metadata:
     scroll-into-view-if-needed: ^2.2.28
   peerDependencies:
     vue: ^3.1.0
-  checksum: 4656b10352c53bb38d63c76e7cc31f202a689c701d61f93722c336f44a990e1cbbc7f6050ddcc99877621d7497d8c9d91b4dccf5f0dcfb31546f08bc67660b7e
+  checksum: cf2997931e3c6275116dccc91c6b207a470d93d7a62c1ecc0dbdbd43e300a5bac15b1996c0fb75245719e10f56a68157dc7d626ea5725578e2d3036afb60b0dd
   languageName: node
   linkType: hard
 
@@ -3261,6 +3261,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"debug@npm:^4.3.4":
+  version: 4.3.4
+  resolution: "debug@npm:4.3.4::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Fdebug%2F-%2Fdebug-4.3.4.tgz"
+  dependencies:
+    ms: 2.1.2
+  peerDependenciesMeta:
+    supports-color:
+      optional: true
+  checksum: 3dbad3f94ea64f34431a9cbf0bafb61853eda57bff2880036153438f50fb5a84f27683ba0d8e5426bf41a8c6ff03879488120cf5b3a761e77953169c0600a708
+  languageName: node
+  linkType: hard
+
 "decamelize-keys@npm:^1.0.0, decamelize-keys@npm:^1.1.0":
   version: 1.1.0
   resolution: "decamelize-keys@npm:1.1.0::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Fdecamelize-keys%2F-%2Fdecamelize-keys-1.1.0.tgz"
@@ -4185,9 +4197,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint@npm:^8.11.0":
-  version: 8.11.0
-  resolution: "eslint@npm:8.11.0::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Feslint%2F-%2Feslint-8.11.0.tgz"
+"eslint@npm:^8.12.0":
+  version: 8.12.0
+  resolution: "eslint@npm:8.12.0::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Feslint%2F-%2Feslint-8.12.0.tgz"
   dependencies:
     "@eslint/eslintrc": ^1.2.1
     "@humanwhocodes/config-array": ^0.9.2
@@ -4226,7 +4238,7 @@ __metadata:
     v8-compile-cache: ^2.0.3
   bin:
     eslint: bin/eslint.js
-  checksum: a06a2ea37002d6c0a4f462fe31b4411185dc3da7857fafb896eb392ba95a1289cc3538056474b2f44f08012f265bede01a39d46df4ac39ebc6d7be90e2c8f9fa
+  checksum: 111bf9046b7a463049788dd00d7f4cd91e024029982352dff4811ce5dfa8cb1136aa127cd8a7a91508234d3e1b4fb6f638a1f5ef9ea08b1af93a18703a4a8dc1
   languageName: node
   linkType: hard
 
@@ -7865,12 +7877,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prettier@npm:^2.6.0":
-  version: 2.6.0
-  resolution: "prettier@npm:2.6.0::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Fprettier%2F-%2Fprettier-2.6.0.tgz"
+"prettier@npm:^2.6.1":
+  version: 2.6.1
+  resolution: "prettier@npm:2.6.1::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Fprettier%2F-%2Fprettier-2.6.1.tgz"
   bin:
     prettier: bin-prettier.js
-  checksum: 3e527ad62279676778a8404d18174d7ca2365ada4caba6eebbcdd9907d1187afd3bc6ade5b4e5f5d4549bb9fb71e45ca8930d71500017635524f8fc05bc52e93
+  checksum: 78be1f8a3ddfad7c3d8a854b6c8941a3bb1ddfca4225c38d778e0fe1029a55368f71b3bbefff82c689015fbb4d391ec44add957f01308ad2725e01a7c1f37cb6
   languageName: node
   linkType: hard
 
@@ -9082,15 +9094,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"stylelint@npm:^14.6.0":
-  version: 14.6.0
-  resolution: "stylelint@npm:14.6.0::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Fstylelint%2F-%2Fstylelint-14.6.0.tgz"
+"stylelint@npm:^14.6.1":
+  version: 14.6.1
+  resolution: "stylelint@npm:14.6.1::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Fstylelint%2F-%2Fstylelint-14.6.1.tgz"
   dependencies:
     balanced-match: ^2.0.0
     colord: ^2.9.2
     cosmiconfig: ^7.0.1
     css-functions-list: ^3.0.1
-    debug: ^4.3.3
+    debug: ^4.3.4
     execall: ^2.0.0
     fast-glob: ^3.2.11
     fastest-levenshtein: ^1.0.12
@@ -9129,7 +9141,7 @@ __metadata:
     write-file-atomic: ^4.0.1
   bin:
     stylelint: bin/stylelint.js
-  checksum: cb28abd153b0edea03ad0133bc9be789a315f9138e7254f5da372677cef67954da081cffb696a59fee7958d3d3781566acb9e8ab99e453fe4398ef91f0495378
+  checksum: 8fb3b94bcec5ee7e09e352dd89f4a52ad900125687a671842e28b4489ddba4b12e28d1883bc25f92590e0c8174cb25d073b2cbe37d409faed0f8f8928ed43b87
   languageName: node
   linkType: hard
 
@@ -9626,7 +9638,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@npm:^4.4.3, typescript@npm:^4.6.2":
+"typescript@npm:^4.4.3":
   version: 4.6.2
   resolution: "typescript@npm:4.6.2::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Ftypescript%2F-%2Ftypescript-4.6.2.tgz"
   bin:
@@ -9636,13 +9648,33 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@^4.4.3#~builtin<compat/typescript>, typescript@patch:typescript@^4.6.2#~builtin<compat/typescript>":
+"typescript@npm:^4.6.3":
+  version: 4.6.3
+  resolution: "typescript@npm:4.6.3::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Ftypescript%2F-%2Ftypescript-4.6.3.tgz"
+  bin:
+    tsc: bin/tsc
+    tsserver: bin/tsserver
+  checksum: 255bb26c8cb846ca689dd1c3a56587af4f69055907aa2c154796ea28ee0dea871535b1c78f85a6212c77f2657843a269c3a742d09d81495b97b914bf7920415b
+  languageName: node
+  linkType: hard
+
+"typescript@patch:typescript@^4.4.3#~builtin<compat/typescript>":
   version: 4.6.2
   resolution: "typescript@patch:typescript@npm%3A4.6.2%3A%3A__archiveUrl=https%253A%252F%252Fregistry.npmmirror.com%252Ftypescript%252F-%252Ftypescript-4.6.2.tgz#~builtin<compat/typescript>::version=4.6.2&hash=bda367"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
   checksum: 40b493a71747fb89fa70df104e2c4a5e284b43750af5bea024090a5261cefa387f7a9372411b13030f7bf5555cee4275443d08805642ae5c74ef76740854a4c7
+  languageName: node
+  linkType: hard
+
+"typescript@patch:typescript@^4.6.3#~builtin<compat/typescript>":
+  version: 4.6.3
+  resolution: "typescript@patch:typescript@npm%3A4.6.3%3A%3A__archiveUrl=https%253A%252F%252Fregistry.npmmirror.com%252Ftypescript%252F-%252Ftypescript-4.6.3.tgz#~builtin<compat/typescript>::version=4.6.3&hash=bda367"
+  bin:
+    tsc: bin/tsc
+    tsserver: bin/tsserver
+  checksum: 6bf45caf847062420592e711bc9c28bf5f9a9a7fa8245343b81493e4ededae33f1774009d1234d911422d1646a2c839f44e1a23ecb111b40a60ac2ea4c1482a8
   languageName: node
   linkType: hard
 
@@ -10157,7 +10189,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "webmini@workspace:."
   dependencies:
-    "@arco-design/web-vue": ^2.20.2
+    "@arco-design/web-vue": ^2.21.1
     "@cliqz/adblocker-electron": ^1.23.7
     "@commitlint/cli": ^16.2.3
     "@commitlint/config-conventional": ^16.2.1
@@ -10178,7 +10210,7 @@ __metadata:
     electron-fetch: ^1.8.0
     electron-is: ^3.0.0
     electron-updater: ^4.6.5
-    eslint: ^8.11.0
+    eslint: ^8.12.0
     eslint-config-prettier: ^8.5.0
     eslint-plugin-prettier: ^4.0.0
     eslint-plugin-vue: ^8.5.0
@@ -10192,13 +10224,13 @@ __metadata:
     postcss-html: ^1.3.0
     postcss-less: ^6.0.0
     pouchdb: ^7.2.2
-    prettier: ^2.6.0
-    stylelint: ^14.6.0
+    prettier: ^2.6.1
+    stylelint: ^14.6.1
     stylelint-config-rational-order: ^0.1.2
     stylelint-config-recommended-vue: ^1.4.0
     stylelint-config-standard: ^25.0.0
     stylelint-order: ^5.0.0
-    typescript: ^4.6.2
+    typescript: ^4.6.3
     unplugin-auto-import: ^0.6.6
     unplugin-vue-components: ^0.18.4
     vite: ^2.8.6
