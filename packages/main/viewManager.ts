@@ -46,6 +46,7 @@ export class ViewManager {
     ipcMain.handle(`top-bar-status-${id}`, (e, { autoHideBar, showTopBar }) => {
       this.autoHideBar = autoHideBar
       this.showTopBar = showTopBar
+      // console.log(autoHideBar, showTopBar)
       this.fixBounds()
     })
 

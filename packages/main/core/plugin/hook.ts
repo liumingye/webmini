@@ -1,12 +1,11 @@
 /** 针对某种事件进行的代码注入 */
 import type { PluginHookProvider } from '~/interfaces/plugin'
 
-const pluginHookMap = new Map<
-  string,
-  {
-    providers: PluginHookProvider[]
-  }
->()
+interface HookItems {
+  providers: PluginHookProvider[]
+}
+
+const pluginHookMap = new Map<string, HookItems>()
 
 /**
  * 向由`key`指定的目标注入代码
@@ -45,6 +44,10 @@ export const getHook = (key: string, ...fixedArgs: any[]) => {
     before: async () => Promise.all<void>([]),
     after: async () => Promise.all<void>([]),
   }
+}
+
+export const removeHook = (key: string): boolean => {
+  return pluginHookMap.delete(key)
 }
 
 export const clearHook = (): void => {

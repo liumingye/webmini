@@ -44,9 +44,6 @@ export class TabPlugin {
         registerData(plugin.name, 'webNav', {})
 
         plugin.load({
-          // addHook: (key: string, ...data: any[]) => {
-          //   addHook(plugin.name, key, data)
-          // },
           addHook,
           addData: (key: string, provider: PluginDataProvider) => {
             addData(plugin.name, key, provider)
@@ -88,7 +85,7 @@ export class TabPlugin {
 
     this.enablePlugins = res
 
-    if (res.length !== 0) {
+    if (res.length) {
       hookThemeColor(res[0].name)
     } else {
       hookThemeColor()
