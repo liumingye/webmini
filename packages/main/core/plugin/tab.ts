@@ -1,5 +1,5 @@
 import { app, WebContents } from 'electron'
-import { negate } from 'lodash'
+import { negate, isEmpty } from 'lodash'
 import Net from '~/common/net'
 import type { PluginMetadata, PluginDataProvider } from '~/interfaces/plugin'
 import { Application } from '../../application'
@@ -85,7 +85,7 @@ export class TabPlugin {
 
     this.enablePlugins = res
 
-    if (res.length) {
+    if (!isEmpty(res)) {
       hookThemeColor(res[0].name)
     } else {
       hookThemeColor()

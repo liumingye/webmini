@@ -32,6 +32,9 @@ export const useAppStore = defineStore('app', {
     totalPlugins: [],
   }),
   actions: {
+    /**
+     * 初始化
+     */
     async init() {
       // console.log('init')
       const appDb = await window.ipcRenderer.invoke('db-get', 'appDb')
@@ -44,6 +47,11 @@ export const useAppStore = defineStore('app', {
         this.saveConfig('windowSize', toRaw(this.windowSize))
       }
     },
+    /**
+     * 保存配置
+     * @param key 配置项
+     * @param value 配置值
+     */
     async saveConfig<T extends keyof AppConfig>(key: T, value: AppConfig[T]) {
       const oldDb = await window.ipcRenderer.invoke('db-get', 'appDb')
       const newDb = oldDb ? { ...oldDb.data, [key]: value } : { [key]: value }
@@ -55,14 +63,17 @@ export const useAppStore = defineStore('app', {
     updateURL(url: string, tabId: number) {
       window.app.logger.info(`updateURL - ${url} - tabId - ${tabId}`, { label: 'appStore' })
     },
-    go(value: string, plugin: LocalPluginInfo | undefined = undefined) {
+    go(value: string, plugin?: LocalPluginInfo) {
       let url = value
       if (isURI(url)) {
         url = value.indexOf('://') === -1 ? `http://${value}` : value
       }
       loadURL(plugin, url)
     },
-    getLocalPlugins() {
+    /**
+     * 获取本地插件列表
+     */
+    getLocalPlugins(): void {
       window.ipcRenderer.invoke('get-local-plugins').then((localPlugins: LocalPluginInfo[]) => {
         localPlugins.push({
           name: 'Router',
@@ -81,7 +92,11 @@ export const useAppStore = defineStore('app', {
         this.localPlugins = localPlugins
       })
     },
-    getTotalPlugins() {
+    /**
+     * 获取远程插件列表
+     * @returns {Promise<AdapterInfo[]>}
+     */
+    getTotalPlugins(): Promise<AdapterInfo[]> {
       if (this.localPlugins.length === 0) {
         Promise.all([this.getLocalPlugins()])
       }
@@ -113,7 +128,7 @@ export const useAppStore = defineStore('app', {
               }
               return info
             })
-            resolve(this.localPlugins)
+            resolve(this.totalPlugins)
           },
           onError(error) {
             window.app.logger.error(error)

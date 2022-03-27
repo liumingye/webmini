@@ -19,7 +19,8 @@ export class Application {
   public start(): void {
     app.on('second-instance', () => {
       // Focus on the main window if the user tried to open another
-      const win = this.mainWindow?.win
+      if (!this.mainWindow) return
+      const win = this.mainWindow.win
       if (win) {
         if (win.isDestroyed()) {
           return this.createAllWindow()
@@ -32,6 +33,8 @@ export class Application {
     })
 
     app.on('activate', () => {
+      // On macOS it's common to re-create a window in the app when the
+      // dock icon is clicked and there are no other windows open.
       this.createAllWindow()
     })
 

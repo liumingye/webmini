@@ -1,19 +1,12 @@
-import type { AxiosRequestConfig, AxiosResponse } from 'axios'
+import type { AxiosRequestConfig } from 'axios'
 
 const request = axios.create({
   timeout: 10000,
 })
 
-export interface HttpResponse<T = unknown> {
-  status: number
-  msg: string
-  code: number
-  data: T
-}
-
 // axios实例拦截响应
 request.interceptors.response.use(
-  (response: AxiosResponse<HttpResponse>) => {
+  (response) => {
     return response
   },
   (error: any) => {

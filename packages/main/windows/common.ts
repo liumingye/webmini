@@ -18,7 +18,7 @@ export abstract class CommonWindow {
   }
 
   public toggle(): void {
-    if (!this.win || this.isDestroyed()) return
+    if (this.isDestroyed()) return
     if (this.win.isVisible()) {
       this.hide()
     } else {
@@ -27,7 +27,6 @@ export abstract class CommonWindow {
   }
 
   public isDestroyed() {
-    if (!this.win) return true
     return this.win.isDestroyed()
   }
 

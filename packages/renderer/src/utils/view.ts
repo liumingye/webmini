@@ -14,6 +14,12 @@ export const callViewMethod = async (
   })
 }
 
+/**
+ * 载入url
+ * @param plugin 插件信息
+ * @param url 要载入的url
+ * @param args 要传递的参数
+ */
 export const loadURL = (plugin: LocalPluginInfo | undefined, url: string, ...args: any[]): void => {
   const tabsStore = useTabsStore()
   const tab = tabsStore.getFocusedTab()

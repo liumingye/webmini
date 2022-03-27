@@ -11,9 +11,15 @@ export default () => {
   // UI
   ipcMain.on('close-main-window', () => {
     if (is.macOS()) {
-      Application.instance.mainWindow?.viewManager.clearViewContainer()
-      Application.instance.mainWindow?.win.close()
-      Application.instance.selectPartWindow?.win.close()
+      if (Application.instance.mainWindow) {
+        Application.instance.mainWindow.viewManager.clearViewContainer()
+        Application.instance.mainWindow.win.close()
+        Application.instance.mainWindow = undefined
+      }
+      if (Application.instance.selectPartWindow) {
+        Application.instance.selectPartWindow.win.close()
+        Application.instance.selectPartWindow = undefined
+      }
     } else {
       app.quit()
     }

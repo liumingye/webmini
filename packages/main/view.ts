@@ -1,5 +1,5 @@
 import { app, BrowserView, nativeTheme } from 'electron'
-import { clamp } from 'lodash'
+import { clamp, isEmpty } from 'lodash'
 import { ERROR_PROTOCOL, NETWORK_ERROR_HOST, userAgent } from '~/common/constant'
 import type { CreateProperties, TabEvent } from '~/interfaces/tabs'
 import type { windowType } from '~/interfaces/view'
@@ -60,7 +60,7 @@ export class View {
 
     this.webContents.on('context-menu', (e, params) => {
       const menu = getViewMenu(this.window, params, this.webContents)
-      menu.popup()
+      menu.popup({ window: this.window.win })
     })
 
     this.webContents.addListener('page-title-updated', () => {
@@ -86,14 +86,13 @@ export class View {
       this.updateURL(this.webContents.getURL())
     })
 
-    this.webContents.addListener('did-change-theme-color', (e, data) => {
-      this.themeColor = data
-      if (this.plugins.length) {
-        hookThemeColor(this.plugins[0].name)
+    this.webContents.addListener('did-change-theme-color', (_e, color) => {
+      this.themeColor = color
+      if (isEmpty(this.plugins)) {
+        hookThemeColor()
         return
       }
-      hookThemeColor()
-      // console.log('did-change-theme-color', data)
+      hookThemeColor(this.plugins[0].name)
     })
 
     this.webContents.addListener(
@@ -141,7 +140,9 @@ export class View {
           this.plugins = this.tabPlugin.loadTabPlugins(url.href)
         }
 
-        if (this.plugins.length) {
+        if (isEmpty(this.plugins)) {
+          this.userAgent = userAgent.desktop
+        } else {
           type UserAgent = {
             mobile: string[]
             desktop: string[]
@@ -168,8 +169,6 @@ export class View {
           } else {
             this.userAgent = userAgent.desktop
           }
-        } else {
-          this.userAgent = userAgent.desktop
         }
 
         details.requestHeaders['User-Agent'] = this.userAgent
@@ -183,7 +182,7 @@ export class View {
 
   private onDarkModeChange() {
     if (!this.browserView) return
-    const backgroundColor = nativeTheme.shouldUseDarkColors ? '#000' : '#FFF'
+    const backgroundColor = nativeTheme.shouldUseDarkColors ? '#1e1e1e' : '#FFF'
     this.browserView.setBackgroundColor(backgroundColor)
   }
 
@@ -213,16 +212,20 @@ export class View {
       x: leftTopPosition[0] + currentSize[0],
       y: leftTopPosition[1] + currentSize[1],
     }
+
     const appDb = await StorageService.instance.get('appDb')
     if (!appDb) return
+
     const width = appDb.data.windowSize[targetWindowType][0]
     const height = appDb.data.windowSize[targetWindowType][1]
     const x = displayBounds.x + rightBottomPosition.x - width
     const y = displayBounds.y + rightBottomPosition.y - height
     const bounds: Required<Electron.Rectangle> = { width, height, x, y }
+
     // 防止超出屏幕可视范围
     bounds.x = clamp(bounds.x, displayBounds.x, displayBounds.width - bounds.width)
     bounds.y = clamp(bounds.y, displayBounds.y, displayBounds.height - bounds.height)
+
     this.window.win.setBounds(bounds, true)
 
     this.windowType = targetWindowType
@@ -234,7 +237,7 @@ export class View {
     const _URL = new URL(this.url)
     const completeURL = _URL.hostname + _URL.pathname + _URL.search
 
-    if (this.plugins.length) {
+    if (!isEmpty(this.plugins)) {
       const windowTypeProvider = {
         mini: [],
       }

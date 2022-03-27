@@ -142,6 +142,7 @@ export class ViewManager {
     if (sendMessage) {
       this.window.send('create-tab', { ...details }, isNext, id)
     }
+
     return view
   }
 

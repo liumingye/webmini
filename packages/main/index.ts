@@ -29,14 +29,11 @@ app.commandLine.appendSwitch('--enable-features', 'OverlayScrollbar')
 
 ipcMain.setMaxListeners(0)
 
-// set current data path
-// Storage.setDataPath(app.getPath('userData'))
-
 // start app
 const application = Application.instance
 application.start()
 
-ipcMain.handle(`web-contents-call`, async (e, { webContentsId, method, args = [] }) => {
+ipcMain.handle(`web-contents-call`, async (_e, { webContentsId, method, args = [] }) => {
   const wc = webContents.fromId(webContentsId)
   const result = (wc as any)[method](...args)
 

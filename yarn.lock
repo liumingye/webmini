@@ -1092,6 +1092,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/minipass@npm:*":
+  version: 3.1.2
+  resolution: "@types/minipass@npm:3.1.2::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2F%40types%2Fminipass%2F-%2Fminipass-3.1.2.tgz"
+  dependencies:
+    "@types/node": "*"
+  checksum: 0d01e11b5b959625385a482ad29ea16352be42506b459555b0f77fd82235e9c540946cc9c05a73fed1ae30b132914baaa4ccf257ed2cad20bc9773f0a06f4bac
+  languageName: node
+  linkType: hard
+
 "@types/ms@npm:*":
   version: 0.7.31
   resolution: "@types/ms@npm:0.7.31::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2F%40types%2Fms%2F-%2Fms-0.7.31.tgz"
@@ -1344,6 +1353,16 @@ __metadata:
   version: 7.3.9
   resolution: "@types/semver@npm:7.3.9::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2F%40types%2Fsemver%2F-%2Fsemver-7.3.9.tgz"
   checksum: 60bfcfdfa7f937be2c6f4b37ddb6714fb0f27b05fe4cbdfdd596a97d35ed95d13ee410efdd88e72a66449d0384220bf20055ab7d6b5df10de4990fbd20e5cbe0
+  languageName: node
+  linkType: hard
+
+"@types/tar@npm:^6.1.1":
+  version: 6.1.1
+  resolution: "@types/tar@npm:6.1.1::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2F%40types%2Ftar%2F-%2Ftar-6.1.1.tgz"
+  dependencies:
+    "@types/minipass": "*"
+    "@types/node": "*"
+  checksum: 06cfffc606525fab223f7e7cae74b88347a6c21de39454a9b85a56c61b4cab034e9cefacd6a053c7ac2a07e29bed71ce72bc4ca8bc101f61e2e5248950508b7d
   languageName: node
   linkType: hard
 
@@ -9287,7 +9306,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tar@npm:^6.0.2, tar@npm:^6.1.2":
+"tar@npm:^6.0.2, tar@npm:^6.1.11, tar@npm:^6.1.2":
   version: 6.1.11
   resolution: "tar@npm:6.1.11::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Ftar%2F-%2Ftar-6.1.11.tgz"
   dependencies:
@@ -10198,6 +10217,7 @@ __metadata:
     "@types/nprogress": ^0.2.0
     "@types/overlayscrollbars": ^1.12.1
     "@types/pouchdb": ^6.4.0
+    "@types/tar": ^6.1.1
     "@typescript-eslint/eslint-plugin": ^5.16.0
     "@typescript-eslint/parser": ^5.16.0
     "@vitejs/plugin-vue": ^2.2.4
@@ -10230,6 +10250,7 @@ __metadata:
     stylelint-config-recommended-vue: ^1.4.0
     stylelint-config-standard: ^25.0.0
     stylelint-order: ^5.0.0
+    tar: ^6.1.11
     typescript: ^4.6.3
     unplugin-auto-import: ^0.6.6
     unplugin-vue-components: ^0.18.4

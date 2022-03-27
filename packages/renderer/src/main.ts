@@ -39,6 +39,6 @@ NProgress.configure({ easing: 'ease', speed: 200, trickleSpeed: 50, showSpinner:
 // VueRequest
 setGlobalOptions({
   manual: true,
-  errorRetryCount: 1,
+  errorRetryCount: 2,
   debounceInterval: 150,
 })

@@ -36,6 +36,7 @@
     "electron-is": "^3.0.0",
     "lodash": "^4.17.21",
     "pouchdb": "^7.2.2",
+    "tar": "^6.1.11",
     "vue-request": "^1.2.4",
     "winston": "^3.6.0",
     "winston-daily-rotate-file": "^4.6.1"
@@ -48,6 +49,7 @@
     "@types/nprogress": "^0.2.0",
     "@types/overlayscrollbars": "^1.12.1",
     "@types/pouchdb": "^6.4.0",
+    "@types/tar": "^6.1.1",
     "@typescript-eslint/eslint-plugin": "^5.16.0",
     "@typescript-eslint/parser": "^5.16.0",
     "@vitejs/plugin-vue": "^2.2.4",

@@ -10,7 +10,13 @@ export const useTabsStore = defineStore('tabs', {
     tabId: -1, // webContentsId
   }),
   actions: {
-    createTab(options: CreateProperties, id: number) {
+    /**
+     * 创建新的标签页
+     * @param options 创建标签页的参数
+     * @param id 创建的标签页的 webContentsId
+     * @returns {ITab}
+     */
+    createTab(options: CreateProperties, id: number): ITab {
       const tab = new ITab(options, id)
       if (options.index !== undefined) {
         this.list.splice(options.index, 0, tab)
@@ -19,7 +25,13 @@ export const useTabsStore = defineStore('tabs', {
       }
       return tab
     },
-    createTabs(options: CreateProperties[], ids: number[]) {
+    /**
+     * 创建多个标签页
+     * @param options 创建标签页的参数
+     * @param ids 创建的标签页的 webContentsId
+     * @returns {Promise<ITab[]>}
+     */
+    createTabs(options: CreateProperties[], ids: number[]): ITab[] {
       const tabs = options.map((option, i) => {
         const tab = new ITab(option, ids[i])
         this.list.push(tab)
@@ -27,7 +39,12 @@ export const useTabsStore = defineStore('tabs', {
       })
       return tabs
     },
-    async addTab(options: CreateProperties) {
+    /**
+     * 添加标签页
+     * @param options 添加标签页的参数
+     * @returns {Promise<ITab>}
+     */
+    async addTab(options: CreateProperties): Promise<ITab> {
       const appStore = useAppStore()
       const opts = { ...{ active: true }, ...options }
       const id: number = await window.ipcRenderer.invoke(
@@ -36,7 +53,12 @@ export const useTabsStore = defineStore('tabs', {
       )
       return this.createTab(opts, id)
     },
-    async addTabs(options: CreateProperties[]) {
+    /**
+     * 添加多个标签页
+     * @param options 添加标签页的参数
+     * @returns {Promise<ITab[]>}
+     */
+    async addTabs(options: CreateProperties[]): Promise<ITab[]> {
       const appStore = useAppStore()
       for (let i = 0; i < options.length; i++) {
         if (i === options.length - 1) {
@@ -51,9 +73,18 @@ export const useTabsStore = defineStore('tabs', {
       )
       return this.createTabs(options, ids)
     },
+    /**
+     * 获取集中标签页
+     * @returns {ITab | undefined}
+     */
     getFocusedTab(): ITab | undefined {
       return this.getTabById(this.tabId)
     },
+    /**
+     * 获取标签页
+     * @param tabId  标签页id
+     * @returns {ITab | undefined}
+     */
     getTabById(tabId: number): ITab | undefined {
       return this.list.find((tab) => tab.id === tabId)
     },

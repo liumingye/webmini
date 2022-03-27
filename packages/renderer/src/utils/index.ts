@@ -13,11 +13,19 @@ export const resizeMainWindow = (windowType?: windowType): void => {
   window.ipcRenderer.invoke(`resize-window-size-${appStore.currentWindowID}`, windowType)
 }
 
+/**
+ * 批量替换字符串
+ * @param text 字符串
+ * @param map 字符串替换的映射
+ * @param replacer 替换的字符串
+ * @returns 替换后的字符串
+ */
 export const replace = (text: string, map: string[], replacer: string): string => {
-  map.forEach((value) => {
-    text = text.replace(value, replacer)
+  let result = text
+  map.forEach((item) => {
+    result = result.replace(item, replacer)
   })
-  return text
+  return result
 }
 
 // todo 移动到插件里 使用hook
@@ -134,6 +142,21 @@ export const initMouseStateDirtyCheck = (): void => {
   )
 }
 
+const watchWindowType = (): WatchStopHandle => {
+  return watch(
+    () => currentWindowType.value,
+    (value) => {
+      if (value === 'mini') {
+        return currentWindow.setAlwaysOnTop(true)
+      }
+      currentWindow.setAlwaysOnTop(false)
+    },
+    {
+      immediate: true,
+    },
+  )
+}
+
 export const watchAlwaysOnTop = (): void => {
   const appStore = useAppStore()
 
@@ -152,18 +175,7 @@ export const watchAlwaysOnTop = (): void => {
         currentWindow.setAlwaysOnTop(false)
         break
       default:
-        stopWatchWindowType = watch(
-          () => currentWindowType.value,
-          (value) => {
-            if (value === 'mini') {
-              return currentWindow.setAlwaysOnTop(true)
-            }
-            currentWindow.setAlwaysOnTop(false)
-          },
-          {
-            immediate: true,
-          },
-        )
+        stopWatchWindowType = watchWindowType()
         break
     }
   })

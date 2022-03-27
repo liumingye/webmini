@@ -136,28 +136,22 @@ export class Plugin {
    * @returns
    */
   public async install(plugin: AdapterInfo) {
-    Logger.info(`开始安装 - ${plugin.name}`)
+    Logger.info(`${plugin.name}@${plugin.version} 开始安装`)
     await this.updateStatus(plugin, PluginStatus.INSTALLING)
 
-    await this.handler.install([`${plugin.name}@${plugin.version}`])
+    // await this.handler.install([`${plugin.name}@${plugin.version}`])
 
-    const pluginPath = this.getPluginPath(plugin.name)
-
-    // 安装失败
-    if (!fs.existsSync(pluginPath)) {
-      Logger.info(`安装失败 - ${plugin.name}`)
-      await this.updateStatus(plugin, PluginStatus.INSTALL_FAIL)
-
-      return false
-    }
-
-    // 安装成功
-    Logger.info(`安装成功 - ${plugin.name}`)
-    await this.updateStatus(plugin, PluginStatus.INSTALLING_COMPLETE)
-
-    this.addPlugin(plugin.name)
-
-    return true
+    await this.handler
+      .install(plugin.name, plugin.version)
+      .then(() => {
+        Logger.info(`${plugin.name}@${plugin.version} 安装成功`)
+        this.updateStatus(plugin, PluginStatus.INSTALLING_COMPLETE)
+        this.addPlugin(plugin.name)
+      })
+      .catch(() => {
+        Logger.info(`${plugin.name}@${plugin.version} 安装失败`)
+        this.updateStatus(plugin, PluginStatus.INSTALL_FAIL)
+      })
   }
 
   /**
@@ -169,24 +163,16 @@ export class Plugin {
     Logger.info(`开始卸载 - ${plugin.name}`)
     await this.updateStatus(plugin, PluginStatus.UNINSTALLING)
 
-    await this.handler.uninstall([plugin.name])
-
-    const pluginPath = this.getPluginPath(plugin.name)
-
-    // 卸载失败
-    if (fs.existsSync(pluginPath)) {
-      Logger.info(`卸载失败 - ${plugin.name}`)
-      await this.updateStatus(plugin, PluginStatus.UNINSTALL_FAIL)
-
-      return false
-    }
-
-    // 卸载成功
-    Logger.info(`卸载成功 - ${plugin.name}`)
-    await this.updateStatus(plugin, PluginStatus.UNINSTALL_COMPLETE)
-
-    this.deletePlugin(plugin.name)
-
-    return true
+    await this.handler
+      .uninstall(plugin.name)
+      .then(() => {
+        Logger.info(`卸载成功 - ${plugin.name}`)
+        this.updateStatus(plugin, PluginStatus.UNINSTALL_COMPLETE)
+        this.deletePlugin(plugin.name)
+      })
+      .catch(() => {
+        Logger.info(`卸载失败 - ${plugin.name}`)
+        this.updateStatus(plugin, PluginStatus.UNINSTALL_FAIL)
+      })
   }
 }

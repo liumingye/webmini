@@ -51,10 +51,7 @@
   }
 
   const isBrowser = () => {
-    if (route.name === 'Browser') {
-      return true
-    }
-    return false
+    return route.name === 'Browser'
   }
 
   const go = (name: string | symbol, params = {}) => {
@@ -64,7 +61,7 @@
     })
   }
 
-  const showWebNav = () => {
+  const isShowWebNav = () => {
     const is = isBrowser()
     if (is) {
       const focusedTab = tabsStore.getFocusedTab()
@@ -82,11 +79,11 @@
     }
   }
 
-  const showBrowser = () => {
+  const isShowBrowser = () => {
     return tabsStore.list.length !== 0 && !isBrowser()
   }
 
-  const showBack = () => {
+  const isShowBack = () => {
     const is = isBrowser()
     if (is) {
       return appStore.navigationState.canGoBack
@@ -97,7 +94,7 @@
     return window.history.state.back !== null
   }
 
-  const showForward = () => {
+  const isShowForward = () => {
     const is = isBrowser()
     if (is) {
       return appStore.navigationState.canGoForward
@@ -111,9 +108,7 @@
   const goBack = () => {
     const is = isBrowser()
     if (is) {
-      tabsStore.getFocusedTab()?.callViewMethod('goBack')
-      // historyStore.goBack()
-      return
+      return tabsStore.getFocusedTab()?.callViewMethod('goBack')
     }
     router.back()
   }
@@ -121,9 +116,7 @@
   const goForward = () => {
     const is = isBrowser()
     if (is) {
-      tabsStore.getFocusedTab()?.callViewMethod('goForward')
-      // historyStore.goForward()
-      return
+      return tabsStore.getFocusedTab()?.callViewMethod('goForward')
     }
     router.forward()
   }
@@ -151,13 +144,13 @@
     :class="route.name"
   >
     <div class="flex-1 flex gap-1.5">
-      <b-button id="navi-back" title="后退" :disabled="!showBack()" @click="goBack">
+      <b-button id="navi-back" title="后退" :disabled="!isShowBack()" @click="goBack">
         <IconLeft size=".8em" />
       </b-button>
-      <b-button v-if="showForward()" title="前进" @click="goForward">
+      <b-button v-if="isShowForward()" title="前进" @click="goForward">
         <IconRight size=".8em" />
       </b-button>
-      <b-button v-if="showWebNav()" title="导航" @click="goWebNav">
+      <b-button v-if="isShowWebNav()" title="导航" @click="goWebNav">
         <IconBookmark size=".7em" />
       </b-button>
       <b-button
@@ -181,7 +174,7 @@
       {{ title }}
     </div>
     <div class="flex-1 flex gap-1.5 justify-end">
-      <b-button v-if="showBrowser()" title="浏览器" @click="go('Browser')">
+      <b-button v-if="isShowBrowser()" title="浏览器" @click="go('Browser')">
         <IconCompass size=".8em" />
       </b-button>
       <b-button v-if="route.name !== 'Home'" title="主页" @click="go('Home')">

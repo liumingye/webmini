@@ -1,18 +1,9 @@
-import { spawn } from 'child_process'
 import fs from 'fs-extra'
 import path from 'path'
 import Logger from '~/common/logger'
-import Net from '~/common/net'
-import type { AdapterHandlerOptions, AdapterInfo } from '~/interfaces/plugin'
-import fixPath from '../../utils/shell/fixPath'
-
-const npm = /^win/.test(process.platform) ? 'npm.cmd' : 'npm'
-
-fixPath()
-
-// https://registry.npmmirror.com/webmini-bilibili
-// "tarball":"https://registry.npmmirror.com/webmini-bilibili/-/webmini-bilibili-0.0.10.tgz",
-// https://cdn.npmmirror.com/packages/webmini-bilibili/0.0.10/webmini-bilibili-0.0.10.tgz
+import type { AdapterHandlerOptions } from '~/interfaces/plugin'
+import axios from 'axios'
+import tar from 'tar'
 
 /**
  * 系统插件管理器
@@ -22,7 +13,7 @@ export class AdapterHandler {
   // 插件安装地址
   public baseDir: string
   // 插件源地址
-  readonly registry: string
+  // readonly registry: string
 
   /**
    * Creates an instance of AdapterHandler.
@@ -31,120 +22,148 @@ export class AdapterHandler {
    */
   constructor(options: AdapterHandlerOptions) {
     // 初始化插件存放
-    if (!fs.existsSync(options.baseDir)) {
-      fs.mkdirsSync(options.baseDir)
-      fs.writeFileSync(`${options.baseDir}/package.json`, '{"dependencies":{}}')
+    const nodeModulesPath = path.resolve(options.baseDir, 'node_modules')
+
+    if (!fs.existsSync(nodeModulesPath)) {
+      fs.mkdirsSync(nodeModulesPath)
+      fs.writeFileSync(`${options.baseDir}/README.md`, '该目录为webmini插件存放目录')
     }
     this.baseDir = options.baseDir
-
-    const register = options.registry || 'https://registry.npmmirror.com'
-
-    this.registry = register
   }
 
   /**
-   * 获取插件信息
-   * @param {string} adapter 插件名称
-   * @param {string} adapterPath 插件指定路径
-   * @memberof PluginHandler
+   * 测试url是否可用
+   * @param url url地址
+   * @returns {Promise<boolean>}
    */
-  async getAdapterInfo(adapter: string, adapterPath: string): Promise<AdapterInfo> {
-    let adapterInfo: AdapterInfo
-    const infoPath =
-      adapterPath || path.resolve(this.baseDir, 'node_modules', adapter, 'plugin.json')
-    // 从本地获取
-    if (await fs.pathExists(infoPath)) {
-      adapterInfo = JSON.parse(fs.readFileSync(infoPath, 'utf-8')) as AdapterInfo
-    } else {
-      // 本地没有从远程获取
-      const resp = await new Net()
-        .fetch(`https://cdn.jsdelivr.net/npm/${adapter}/package.json`)
-        .then(async (res) => {
-          return await res.json()
-        })
-      // Todo 校验合法性
-      adapterInfo = resp as AdapterInfo
+  private async testUrlStatus(url: string): Promise<boolean> {
+    return await axios.head(url).then((res) => {
+      return res.status === 200
+    })
+  }
+
+  /**
+   * 下载Tar包
+   * @param name 包の名称
+   * @param version 包の版本
+   * @param dist 保存路径
+   * @returns {Promise<boolean>}
+   */
+  private async downloadTarball(name: string, version: string, dist: string): Promise<boolean> {
+    const registrys = [
+      // 淘宝源
+      `https://registry.npmmirror.com`,
+      // 腾讯源
+      `https://mirrors.cloud.tencent.com/npm`,
+      // 中国科学技术大学源
+      `https://npmreg.proxy.ustclug.org`,
+      // npm源
+      `https://registry.npmjs.org`,
+    ]
+
+    // 查询可用的源
+    let usebalUrl = ''
+    for (const registry of registrys) {
+      const tarUrl = `${registry}/${name}/-/${name}-${version}.tgz`
+      if (await this.testUrlStatus(tarUrl)) {
+        usebalUrl = tarUrl
+        break
+      }
     }
-    return adapterInfo
-  }
 
-  // 安装并启动插件
-  async install(adapters: Array<string>, options: { isDev?: boolean } = {}) {
-    const installCmd = options.isDev ? 'link' : 'install'
-    // 安装
-    await this.execCommand(installCmd, adapters)
-  }
-
-  /**
-   * 更新指定插件
-   * @param {...string[]} adapters 插件名称
-   * @memberof AdapterHandler
-   */
-  async update(...adapters: string[]) {
-    await this.execCommand('update', adapters)
-  }
-
-  /**
-   * 卸载指定插件
-   * @param {...string[]} adapters 插件名称
-   * @param options
-   * @memberof AdapterHandler
-   */
-  async uninstall(adapters: string[], options: { isDev?: boolean } = {}) {
-    const installCmd = options.isDev ? 'unlink' : 'uninstall'
-    // 卸载插件
-    await this.execCommand(installCmd, adapters)
-  }
-
-  /**
-   * 列出所有已安装插件
-   * @memberof AdapterHandler
-   */
-  async list() {
-    const installInfo = JSON.parse(await fs.readFile(`${this.baseDir}/package.json`, 'utf-8'))
-    const adapters: string[] = []
-    for (const adapter in installInfo.dependencies) {
-      adapters.push(adapter)
+    // 无可用源
+    if (usebalUrl === '') {
+      return Promise.reject('无可用源')
     }
-    return adapters
-  }
 
-  /**
-   * 运行包管理器
-   * @memberof AdapterHandler
-   */
-  private async execCommand(cmd: string, modules: string[]): Promise<string> {
-    return new Promise((resolve: any, reject: any) => {
-      let args: string[] = [cmd].concat(modules).concat('--color=always').concat('--save')
-
-      if (cmd !== 'uninstall') args = args.concat(`--registry=${this.registry}`)
-
-      const _npm = spawn(npm, args, {
-        cwd: this.baseDir,
-        env: process.env,
+    // 下载
+    const res = await axios
+      .get(usebalUrl, {
+        responseType: 'stream',
+      })
+      .catch(() => {
+        // 下载失败
+        return Promise.reject('下载失败')
       })
 
-      let output = ''
-      _npm.stdout
-        ?.on('data', (data: string) => {
-          output += data // 获取输出日志
-        })
-        .pipe(process.stdout)
+    // 保存
+    const file = fs.createWriteStream(dist)
 
-      _npm.stderr
-        ?.on('data', (data: string) => {
-          output += data // 获取报错日志
-        })
-        .pipe(process.stderr)
+    // 写入
+    res.data.pipe(file)
 
-      _npm.on('close', (code: number) => {
-        if (!code) {
-          resolve({ code: 0, data: output }) // 如果没有报错就输出正常日志
-        } else {
-          Logger.error({ code: code, data: output })
-          reject({ code: code, data: output }) // 如果报错就输出报错日志
-        }
+    return new Promise((resolve, reject) => {
+      // 监听写入完成
+      file.on('finish', () => {
+        file.close()
+        resolve(true)
+      })
+      // 写入错误
+      file.on('error', (err) => {
+        reject(err)
+        fs.unlink(dist)
       })
     })
+  }
+
+  /**
+   * 解压tar包
+   * @param file 包路径
+   * @param name 包名称
+   * @returns {Promise<boolean>}
+   */
+  private async unpack(file: string, name: string): Promise<boolean> {
+    const nodeModulesPath = path.resolve(this.baseDir, 'node_modules')
+    return new Promise((resolve, reject) => {
+      tar
+        .extract({
+          file,
+          cwd: nodeModulesPath,
+        })
+        .then(() => {
+          fs.rename(
+            path.resolve(nodeModulesPath, 'package'),
+            path.resolve(nodeModulesPath, name),
+            (err) => {
+              if (err) {
+                reject(err)
+              }
+            },
+          )
+          fs.remove(file)
+          resolve(true)
+        })
+        .catch((err) => {
+          reject(err)
+        })
+    })
+  }
+
+  public async install(name: string, version: string) {
+    const dist = path.resolve(this.baseDir, 'node_modules', name)
+    if (await fs.pathExists(dist)) {
+      Logger.info(`${name}@${version} 已安装`)
+      return
+    }
+
+    const tarball = path.resolve(this.baseDir, 'node_modules', `${name}-${version}.tgz`)
+    if (await fs.pathExists(tarball)) {
+      Logger.info(`${name}@${version} 已下载`)
+      await this.unpack(tarball, name)
+      return
+    }
+
+    await this.downloadTarball(name, version, tarball)
+
+    await this.unpack(tarball, name)
+  }
+
+  public async uninstall(name: string) {
+    const dist = path.resolve(this.baseDir, 'node_modules', name)
+    if (!(await fs.pathExists(dist))) {
+      Logger.info(`${name} 未安装`)
+      return
+    }
+    return fs.remove(dist)
   }
 }
