@@ -12,8 +12,6 @@ import tar from 'tar'
 export class AdapterHandler {
   // 插件安装地址
   public baseDir: string
-  // 插件源地址
-  // readonly registry: string
 
   /**
    * Creates an instance of AdapterHandler.
@@ -26,7 +24,7 @@ export class AdapterHandler {
 
     if (!fs.existsSync(nodeModulesPath)) {
       fs.mkdirsSync(nodeModulesPath)
-      fs.writeFileSync(`${options.baseDir}/README.md`, '该目录为webmini插件存放目录')
+      fs.writeFileSync(path.resolve(options.baseDir, 'README.md'), '该目录为webmini插件存放目录')
     }
     this.baseDir = options.baseDir
   }
