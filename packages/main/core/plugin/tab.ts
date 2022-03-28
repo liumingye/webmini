@@ -1,15 +1,10 @@
 import { app, WebContents } from 'electron'
 import { negate, isEmpty } from 'lodash'
-import Net from '~/common/net'
-import type { PluginMetadata, PluginDataProvider } from '~/interfaces/plugin'
-import { Application } from '../../application'
+import type { PluginMetadata } from '~/interfaces/plugin'
 import { hookThemeColor, matchPattern } from '../../utils'
-import { addData, removeData, destroyData, registerData } from './data'
-import { addHook, clearHook } from './hook'
+import { removeData, destroyData, registerData } from './data'
+import { clearHook } from './hook'
 import { Plugin } from './index'
-import { StorageService } from '../../services/storage'
-import axios from 'axios'
-import Cookies from '~/common/cookies'
 
 export class TabPlugin {
   public enablePlugins: PluginMetadata[] = []
@@ -25,47 +20,28 @@ export class TabPlugin {
    */
   public loadPlugin(url: string) {
     return (plugin: PluginMetadata) => {
-      if (plugin.load) {
-        // 若指定了排除URL, 任意URL匹配就不加载
-        if (plugin.urlExclude && plugin.urlExclude.some(matchPattern(url))) {
-          return undefined
-        }
+      // 若指定了排除URL, 任意URL匹配就不加载
+      if (plugin.urlExclude && plugin.urlExclude.some(matchPattern(url))) {
+        return undefined
+      }
 
-        // 若指定了包含URL, 所有URL都不匹配时不加载
-        if (plugin.urlInclude && plugin.urlInclude.every(negate(matchPattern(url)))) {
-          return undefined
-        }
+      // 若指定了包含URL, 所有URL都不匹配时不加载
+      if (plugin.urlInclude && plugin.urlInclude.every(negate(matchPattern(url)))) {
+        return undefined
+      }
 
+      if (plugin.preloads) {
         this.webContents.session.setPreloads([
           ...this.webContents.session.getPreloads(),
           ...plugin.preloads,
         ])
-
-        registerData(plugin.name, 'webNav', {})
-
-        plugin.load({
-          addHook,
-          addData: (key: string, provider: PluginDataProvider) => {
-            addData(plugin.name, key, provider)
-          },
-          net: new Net(),
-          application: {
-            mainWindow: {
-              send: Application.instance.mainWindow?.send,
-            },
-            selectPartWindow: {
-              send: Application.instance.selectPartWindow?.send,
-            },
-          },
-          webContents: this.webContents,
-          db: new StorageService(plugin.name),
-          axios,
-          cookies: new Cookies(),
-        })
-
-        return plugin
       }
-      return undefined
+
+      registerData(plugin.name, 'webNav', {})
+
+      this.plugins.loadPlugin(plugin, this.webContents)
+
+      return plugin
     }
   }
 
@@ -103,14 +79,16 @@ export class TabPlugin {
       // 释放指定插件
       plugins.forEach((item) => {
         removeData(item.name)
-        item.unload()
+        this.plugins.unloadPlugin(item)
+        // item.unload()
       })
     } else {
       // 释放全部插件
       destroyData()
       this.enablePlugins.forEach((x) => {
-        if (!x) return
-        x.unload()
+        // if (!x) return
+        this.plugins.unloadPlugin(x)
+        // x.unload()
       })
     }
 

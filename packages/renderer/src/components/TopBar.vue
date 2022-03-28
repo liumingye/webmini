@@ -11,7 +11,7 @@
     IconMinus,
     IconBookmark,
   } from '@arco-design/web-vue/es/icon'
-  import {WindowType} from '~/interfaces/view'
+  import { WindowType } from '~/interfaces/view'
 
   const ipc = window.ipcRenderer
   const appStore = useAppStore()

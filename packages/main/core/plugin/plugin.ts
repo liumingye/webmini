@@ -8,6 +8,15 @@ import { PluginStatus } from '~/interfaces/plugin'
 import { Application } from '../../application'
 import { StorageService } from '../../services/storage'
 import { AdapterHandler } from './index'
+import { addHook } from './hook'
+import { addData } from './data'
+import type { PluginDataProvider } from '~/interfaces/plugin'
+import Net from '~/common/net'
+import axios from 'axios'
+import Cookies from '~/common/cookies'
+import { createRequire } from 'module'
+
+const requireFresh = createRequire(import.meta.url)
 
 export class Plugin {
   public static instance = new this()
@@ -34,6 +43,45 @@ export class Plugin {
   }
 
   /**
+   * 运行插件加载方法
+   * @param plugin
+   * @param webContents
+   */
+  public async loadPlugin(plugin: PluginMetadata, webContents: Electron.WebContents) {
+    if (typeof plugin.load === 'function') {
+      await plugin.load({
+        addHook,
+        addData: (key: string, provider: PluginDataProvider) => {
+          addData(plugin.name, key, provider)
+        },
+        net: new Net(),
+        application: {
+          mainWindow: {
+            send: Application.instance.mainWindow?.send,
+          },
+          selectPartWindow: {
+            send: Application.instance.selectPartWindow?.send,
+          },
+        },
+        webContents,
+        db: new StorageService(plugin.name),
+        axios,
+        cookies: new Cookies(),
+      })
+    }
+  }
+
+  /**
+   * 运行插件释放方法
+   * @param plugin
+   */
+  public async unloadPlugin(plugin: PluginMetadata) {
+    if (typeof plugin.unload === 'function') {
+      await plugin.unload()
+    }
+  }
+
+  /**
    * 添加插件
    * @param name
    * @returns
@@ -41,12 +89,14 @@ export class Plugin {
   public async addPlugin(name: string) {
     try {
       const pluginPath = this.getPluginPath(name)
-      const pluginInfo = JSON.parse(fs.readFileSync(join(pluginPath, './package.json'), 'utf8'))
-      const module = import(resolve(pluginPath, pluginInfo.main))
-      module.then((res) => {
-        this.allPlugins.push(res.plugin)
-        return res.plugin
-      })
+
+      const pluginPkg = JSON.parse(fs.readFileSync(join(pluginPath, 'package.json'), 'utf8'))
+
+      const pluginImport = requireFresh(resolve(pluginPath, pluginPkg.main))
+
+      this.allPlugins.push(pluginImport.plugin)
+
+      return pluginImport.plugin
     } catch (error) {
       Logger.error(error)
       return false
@@ -61,7 +111,7 @@ export class Plugin {
   public async deletePlugin(name: string) {
     const index = this.allPlugins.findIndex((p) => name === p.name)
     if (index >= 0) {
-      await this.allPlugins[index].unload()
+      await this.unloadPlugin(this.allPlugins[index])
       this.allPlugins.splice(index, 1)
     }
     return this.allPlugins
@@ -138,8 +188,6 @@ export class Plugin {
   public async install(plugin: AdapterInfo) {
     Logger.info(`${plugin.name}@${plugin.version} 开始安装`)
     await this.updateStatus(plugin, PluginStatus.INSTALLING)
-
-    // await this.handler.install([`${plugin.name}@${plugin.version}`])
 
     await this.handler
       .install(plugin.name, plugin.version)
