@@ -1,14 +1,14 @@
 import { WatchStopHandle } from 'vue'
 import { useAppStore } from '@/store'
-import type { windowType } from '~/interfaces/view'
+import { WindowType } from '~/interfaces/view'
 import { debounce } from 'lodash'
 import { Timer } from '~/common/timer'
 
 const { screen, currentWindow, logger } = window.app
 
-export const currentWindowType = ref<windowType>('mobile')
+export const currentWindowType = ref<WindowType>(WindowType.MOBILE)
 
-export const resizeMainWindow = (windowType?: windowType): void => {
+export const resizeMainWindow = (windowType?: WindowType): void => {
   const appStore = useAppStore()
   window.ipcRenderer.invoke(`resize-window-size-${appStore.currentWindowID}`, windowType)
 }
@@ -63,7 +63,7 @@ export const saveWindowSize = (): void => {
     // 解决full-reload后会重复绑定事件
     if (currentWindow.isDestroyed()) return
     logger.info('moved')
-    if (currentWindowType.value === 'mobile') {
+    if (currentWindowType.value === WindowType.MOBILE) {
       appStore.saveConfig('windowPosition', currentWindow.getPosition())
     }
     currentWindow.once('moved', moved)
@@ -146,7 +146,7 @@ const watchWindowType = (): WatchStopHandle => {
   return watch(
     () => currentWindowType.value,
     (value) => {
-      if (value === 'mini') {
+      if (value === WindowType.MINI) {
         return currentWindow.setAlwaysOnTop(true)
       }
       currentWindow.setAlwaysOnTop(false)

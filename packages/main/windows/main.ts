@@ -7,6 +7,7 @@ import { ViewManager } from '../viewManager'
 import { CommonWindow } from './common'
 import { Sessions } from '../models/sessions'
 import { getUrl } from '../utils/getUrl'
+import { WindowType } from '~/interfaces/view'
 
 export class MainWindow extends CommonWindow {
   public viewManager: ViewManager
@@ -84,8 +85,8 @@ export class MainWindow extends CommonWindow {
         bound.y = appDb.data.windowPosition[1]
       }
       if (appDb.data.windowSize) {
-        bound.width = appDb.data.windowSize['mobile'][0]
-        bound.height = appDb.data.windowSize['mobile'][1]
+        bound.width = appDb.data.windowSize[WindowType.MOBILE][0]
+        bound.height = appDb.data.windowSize[WindowType.MOBILE][1]
       }
       this.win.setBounds(bound)
     }

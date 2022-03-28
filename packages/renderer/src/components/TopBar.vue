@@ -11,6 +11,7 @@
     IconMinus,
     IconBookmark,
   } from '@arco-design/web-vue/es/icon'
+  import {WindowType} from '~/interfaces/view'
 
   const ipc = window.ipcRenderer
   const appStore = useAppStore()
@@ -35,7 +36,7 @@
     else if (from.name === 'Browser') {
       window.ipcRenderer.invoke(`browserview-hide-${appStore.currentWindowID}`)
       tempStore.autoHideBar = appStore.autoHideBar
-      resizeMainWindow('mobile')
+      resizeMainWindow(WindowType.MOBILE)
       appStore.autoHideBar = false
     }
   })

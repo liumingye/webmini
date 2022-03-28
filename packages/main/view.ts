@@ -2,7 +2,7 @@ import { app, BrowserView, nativeTheme } from 'electron'
 import { clamp, isEmpty } from 'lodash'
 import { ERROR_PROTOCOL, NETWORK_ERROR_HOST, userAgent } from '~/common/constant'
 import type { CreateProperties, TabEvent } from '~/interfaces/tabs'
-import type { windowType } from '~/interfaces/view'
+import { WindowType } from '~/interfaces/view'
 import { TabPlugin } from './core/plugin'
 import { registerAndGetData } from './core/plugin/data'
 import { getHook } from './core/plugin/hook'
@@ -14,7 +14,7 @@ import type { MainWindow } from './windows/main'
 import type { PluginMetadata } from '~/interfaces/plugin'
 
 export class View {
-  public windowType: windowType = 'mobile'
+  public windowType: WindowType = WindowType.MOBILE
 
   public browserView: BrowserView
 
@@ -200,7 +200,7 @@ export class View {
     updateUrlHooks?.after(data)
   }
 
-  public async resizeWindowSize(windowType?: windowType): Promise<void> {
+  public async resizeWindowSize(windowType?: WindowType): Promise<void> {
     const targetWindowType = windowType ? windowType : this.getWindowType()
 
     if (this.windowType === targetWindowType) return
@@ -241,25 +241,25 @@ export class View {
       const windowTypeProvider = {
         mini: [],
       }
-      const [windowType] = registerAndGetData(
+      const [windowTypeData] = registerAndGetData(
         this.plugins[0].name,
         'windowType',
         windowTypeProvider,
       )
-      if (windowType.mini.some(matchPattern(completeURL))) {
-        return 'mini'
+      if (windowTypeData.mini.some(matchPattern(completeURL))) {
+        return WindowType.MINI
       }
     }
 
     // todo: 特殊大小窗口判断代码移动到插件内
     if (completeURL.startsWith('passport.bilibili.com/login')) {
-      return 'login'
+      return WindowType.LOGIN
     } else if (completeURL.startsWith('t.bilibili.com/?tab')) {
-      return 'feed'
+      return WindowType.FEED
     } else if (this.sess.userAgent === userAgent.desktop) {
-      return 'desktop'
+      return WindowType.DESKTOP
     }
-    return 'mobile'
+    return WindowType.MOBILE
   }
 
   public updateNavigationState(): void {
