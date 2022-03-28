@@ -1,15 +1,10 @@
 import type { AdapterInfo, LocalPluginInfo } from '~/interfaces/plugin'
+import type { WindowType } from '~/interfaces/view'
 
 export interface AppStateTypes {
   alwaysOnTop: 'on' | 'off' | 'playing'
   title: string
-  windowSize: {
-    mobile: number[]
-    desktop: number[]
-    mini: number[]
-    feed: number[]
-    login: number[]
-  }
+  windowSize: WindowType
   disablePartButton: boolean
   disableDanmakuButton: boolean
   autoHideBar: boolean

@@ -28,8 +28,13 @@ export class StorageService {
    * @returns
    */
   public async put(doc: PouchDB.Core.PutDocument<Model>, key = this.key) {
-    const result = await this.localDb.get(key, doc._id)
-    doc._rev = result ? result._rev : ''
+    const allDocs = await this.localDb.get(key, doc._id)
+    if (allDocs) {
+      doc.data = { ...allDocs.data, ...doc.data }
+      doc._rev = allDocs._rev
+    } else {
+      doc._rev = ''
+    }
     return await this.localDb.put(key, doc)
   }
 

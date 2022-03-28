@@ -7,7 +7,7 @@ import { ViewManager } from '../viewManager'
 import { CommonWindow } from './common'
 import { Sessions } from '../models/sessions'
 import { getUrl } from '../utils/getUrl'
-import { WindowType } from '~/interfaces/view'
+import { WindowTypeEnum, WindowType, WindowTypeDefault } from '~/interfaces/view'
 
 export class MainWindow extends CommonWindow {
   public viewManager: ViewManager
@@ -63,12 +63,45 @@ export class MainWindow extends CommonWindow {
       })
     }
 
-    this.win.on('resized', () => {
-      // const [width, height] = this.win.getSize()
-      // const isMaximized = this.win.isMaximized()
-      // const isFullScreen = this.win.isFullScreen()
-      // if (isMaximized || isFullScreen) return
-      // todo 保存窗口大小 窗口位置
+    this.win.on('moved', () => {
+      const windowType = this.viewManager.selected?.windowType || WindowTypeEnum.MOBILE
+      if (windowType !== WindowTypeEnum.MOBILE) return
+
+      // 获取
+      const windowPosition = this.win.getPosition()
+
+      // 写入
+      StorageService.instance.put({
+        _id: 'appDb',
+        data: { windowPosition },
+      })
+    })
+
+    this.win.on('resized', async () => {
+      // 保存窗口大小
+      const isMaximized = this.win.isMaximized()
+      const isFullScreen = this.win.isFullScreen()
+      if (isMaximized || isFullScreen) return
+
+      const appDb = await StorageService.instance.get('appDb')
+
+      // 查询
+      const windowSize: WindowType = appDb?.data.windowSize || WindowTypeDefault
+      const windowType = this.viewManager.selected?.windowType || WindowTypeEnum.MOBILE
+
+      // 获取
+      windowSize[windowType] = this.win.getSize()
+
+      // 写入
+      StorageService.instance.put({
+        _id: 'appDb',
+        data: { windowSize },
+      })
+
+      // 保存一下窗口位置
+      setTimeout(() => {
+        this.win.emit('moved')
+      }, 15)
     })
   }
 
@@ -85,8 +118,8 @@ export class MainWindow extends CommonWindow {
         bound.y = appDb.data.windowPosition[1]
       }
       if (appDb.data.windowSize) {
-        bound.width = appDb.data.windowSize[WindowType.MOBILE][0]
-        bound.height = appDb.data.windowSize[WindowType.MOBILE][1]
+        bound.width = appDb.data.windowSize[WindowTypeEnum.MOBILE][0]
+        bound.height = appDb.data.windowSize[WindowTypeEnum.MOBILE][1]
       }
       this.win.setBounds(bound)
     }

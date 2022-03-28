@@ -26,7 +26,7 @@ export abstract class CommonWindow {
     }
   }
 
-  public isDestroyed() {
+  public isDestroyed(): boolean {
     return this.win.isDestroyed()
   }
 

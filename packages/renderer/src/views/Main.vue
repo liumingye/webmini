@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import { useAppStore, useTabsStore } from '@/store'
-  import { initMouseStateDirtyCheck, saveWindowSize, watchAlwaysOnTop } from '@/utils'
+  import { initMouseStateDirtyCheck, watchAlwaysOnTop } from '@/utils'
   import { ipcRendererOn } from '@/utils/ipc'
   import { callViewMethod } from '@/utils/view'
   import overlayScrollbars from 'overlayscrollbars'
@@ -15,10 +15,8 @@
   const scrollbars = ref<overlayScrollbars>()
 
   ipcRendererOn()
-  // tabsStore.init()
 
   onMounted(() => {
-    saveWindowSize()
     // windows下frameless window没法正确检测到mouseout事件，只能根据光标位置做个dirtyCheck了
     initMouseStateDirtyCheck()
     watchAlwaysOnTop()

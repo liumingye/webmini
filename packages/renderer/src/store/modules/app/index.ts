@@ -1,6 +1,7 @@
 import { loadURL } from '@/utils/view'
 import { isURI } from '~/common/uri'
 import type { AdapterInfo, LocalPluginInfo } from '~/interfaces/plugin'
+import { WindowTypeDefault } from '~/interfaces/view'
 import { PluginStatus } from '~/interfaces/plugin'
 import type { AppConfig, AppStateTypes } from './types'
 import { fetchTotalPlugins } from '@/apis/plugin'
@@ -11,13 +12,7 @@ export const useAppStore = defineStore('app', {
   state: (): AppStateTypes => ({
     alwaysOnTop: 'on',
     title: 'webmini',
-    windowSize: {
-      mobile: [376, 500],
-      desktop: [1100, 600],
-      mini: [300, 170],
-      feed: [650, 760],
-      login: [490, 394],
-    },
+    windowSize: WindowTypeDefault,
     disablePartButton: true,
     disableDanmakuButton: true,
     autoHideBar: false,
@@ -53,11 +48,12 @@ export const useAppStore = defineStore('app', {
      * @param value 配置值
      */
     async saveConfig<T extends keyof AppConfig>(key: T, value: AppConfig[T]) {
-      const oldDb = await window.ipcRenderer.invoke('db-get', 'appDb')
-      const newDb = oldDb ? { ...oldDb.data, [key]: value } : { [key]: value }
+      // const oldDb = await window.ipcRenderer.invoke('db-get', 'appDb')
+      // const newDb = oldDb ? { ...oldDb.data, [key]: value } : { [key]: value }
       window.ipcRenderer.invoke('db-put', {
         _id: 'appDb',
-        data: newDb,
+        data: { [key]: value },
+        // data: newDb,
       })
     },
     updateURL(url: string, tabId: number) {

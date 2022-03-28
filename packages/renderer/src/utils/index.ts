@@ -1,14 +1,13 @@
 import { WatchStopHandle } from 'vue'
 import { useAppStore } from '@/store'
-import { WindowType } from '~/interfaces/view'
-import { debounce } from 'lodash'
+import { WindowTypeEnum } from '~/interfaces/view'
 import { Timer } from '~/common/timer'
 
 const { screen, currentWindow, logger } = window.app
 
-export const currentWindowType = ref<WindowType>(WindowType.MOBILE)
+export const currentWindowType = ref<WindowTypeEnum>(WindowTypeEnum.MOBILE)
 
-export const resizeMainWindow = (windowType?: WindowType): void => {
+export const resizeMainWindow = (windowType?: WindowTypeEnum): void => {
   const appStore = useAppStore()
   window.ipcRenderer.invoke(`resize-window-size-${appStore.currentWindowID}`, windowType)
 }
@@ -41,37 +40,6 @@ export const replaceTitle = (title: string): string => {
     '',
   )
   return title
-}
-
-export const saveWindowSize = (): void => {
-  const appStore = useAppStore()
-
-  const resized = debounce(() => {
-    // 解决full-reload后会重复绑定事件
-    if (currentWindow.isDestroyed()) return
-    logger.info('resized')
-    const currentSize = appStore.windowSize[currentWindowType.value]
-    const newSize: number[] = [window.innerWidth, window.innerHeight]
-    if (currentSize !== newSize) {
-      appStore.windowSize[currentWindowType.value] = newSize
-      appStore.saveConfig('windowSize', toRaw(appStore.windowSize))
-    }
-    currentWindow.once('resized', resized)
-  }, 500)
-
-  const moved = debounce(() => {
-    // 解决full-reload后会重复绑定事件
-    if (currentWindow.isDestroyed()) return
-    logger.info('moved')
-    if (currentWindowType.value === WindowType.MOBILE) {
-      appStore.saveConfig('windowPosition', currentWindow.getPosition())
-    }
-    currentWindow.once('moved', moved)
-  }, 500)
-
-  // todo 移动到 main 里
-  currentWindow.once('resized', resized)
-  currentWindow.once('moved', moved)
 }
 
 /**
@@ -146,7 +114,7 @@ const watchWindowType = (): WatchStopHandle => {
   return watch(
     () => currentWindowType.value,
     (value) => {
-      if (value === WindowType.MINI) {
+      if (value === WindowTypeEnum.MINI) {
         return currentWindow.setAlwaysOnTop(true)
       }
       currentWindow.setAlwaysOnTop(false)

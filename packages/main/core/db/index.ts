@@ -97,71 +97,68 @@ export default class {
     }
   }
 
-  async bulkDocs(
-    name: string,
-    docs: PouchDB.Core.PutDocument<Model>[],
-  ): Promise<DBError | (PouchDB.Core.Response | PouchDB.Core.Error)[]> {
-    let result
-    try {
-      if (!Array.isArray(docs)) return this.errorInfo('exception', 'not array')
-      if (docs.find((e) => !e._id)) return this.errorInfo('exception', 'doc not _id field')
-      if (new Set(docs.map((e) => e._id)).size !== docs.length)
-        return this.errorInfo('exception', '_id value exists as')
-      for (const doc of docs) {
-        const err = this.checkDocSize(doc)
-        if (err) return err
-        doc._id = this.getDocId(name, doc._id)
-      }
-      result = await this.pouchDB.bulkDocs(docs)
-      result = result.map((res: any) => {
-        res.id = this.replaceDocId(name, res.id)
-        return res.error
-          ? {
-              id: res.id,
-              name: res.name,
-              error: true,
-              message: res.message,
-            }
-          : res
-      })
-      docs.forEach((doc) => {
-        doc._id = this.replaceDocId(name, doc._id)
-      })
-    } catch (e) {
-      //
-    }
-    return result as unknown as Promise<DBError | (PouchDB.Core.Response | PouchDB.Core.Error)[]>
-  }
+  // async bulkDocs(
+  //   name: string,
+  //   docs: PouchDB.Core.PutDocument<Model>[],
+  // ): Promise<DBError | (PouchDB.Core.Response | PouchDB.Core.Error)[]> {
+  //   let result
+  //   try {
+  //     if (!Array.isArray(docs)) return this.errorInfo('exception', 'not array')
+  //     if (docs.find((e) => !e._id)) return this.errorInfo('exception', 'doc not _id field')
+  //     if (new Set(docs.map((e) => e._id)).size !== docs.length)
+  //       return this.errorInfo('exception', '_id value exists as')
+  //     for (const doc of docs) {
+  //       const err = this.checkDocSize(doc)
+  //       if (err) return err
+  //       doc._id = this.getDocId(name, doc._id)
+  //     }
+  //     result = await this.pouchDB.bulkDocs(docs)
+  //     result = result.map((res: any) => {
+  //       res.id = this.replaceDocId(name, res.id)
+  //       return res.error
+  //         ? {
+  //             id: res.id,
+  //             name: res.name,
+  //             error: true,
+  //             message: res.message,
+  //           }
+  //         : res
+  //     })
+  //     docs.forEach((doc) => {
+  //       doc._id = this.replaceDocId(name, doc._id)
+  //     })
+  //   } catch (e) {
+  //     //
+  //   }
+  //   return result as unknown as Promise<DBError | (PouchDB.Core.Response | PouchDB.Core.Error)[]>
+  // }
 
-  async allDocs(
-    name: string,
-    key: string | Array<string>,
-  ): Promise<DBError | Array<PouchDB.Core.Response>> {
-    const config: any = { include_docs: true }
-    if (key) {
-      if ('string' == typeof key) {
-        config.startkey = this.getDocId(name, key)
-        config.endkey = config.startkey + '￰'
-      } else {
-        if (!Array.isArray(key))
-          return this.errorInfo('exception', 'param only key(string) or keys(Array[string])')
-        config.keys = key.map((key) => this.getDocId(name, key))
-      }
-    } else {
-      config.startkey = this.getDocId(name, '')
-      config.endkey = config.startkey + '￰'
-    }
-    const result: Array<any> = []
-    try {
-      ;(await this.pouchDB.allDocs(config)).rows.forEach((res: any) => {
-        if (!res.error && res.doc) {
-          res.doc._id = this.replaceDocId(name, res.doc._id)
-          result.push(res.doc)
-        }
-      })
-    } catch (e) {
-      //
-    }
-    return result
-  }
+  // async allDocs(name: string, key: string | Array<string>): Promise<DBError | Model[]> {
+  //   const config: any = { include_docs: true }
+  //   if (key) {
+  //     if ('string' == typeof key) {
+  //       config.startkey = this.getDocId(name, key)
+  //       config.endkey = config.startkey + '￰'
+  //     } else {
+  //       if (!Array.isArray(key))
+  //         return this.errorInfo('exception', 'param only key(string) or keys(Array[string])')
+  //       config.keys = key.map((key) => this.getDocId(name, key))
+  //     }
+  //   } else {
+  //     config.startkey = this.getDocId(name, '')
+  //     config.endkey = config.startkey + '￰'
+  //   }
+  //   const result: Array<Model> = []
+  //   try {
+  //     ;(await this.pouchDB.allDocs(config)).rows.forEach((res: any) => {
+  //       if (!res.error && res.doc) {
+  //         res.doc._id = this.replaceDocId(name, res.doc._id)
+  //         result.push(res.doc)
+  //       }
+  //     })
+  //   } catch (e) {
+  //     //
+  //   }
+  //   return result
+  // }
 }

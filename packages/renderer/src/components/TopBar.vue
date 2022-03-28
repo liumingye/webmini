@@ -10,8 +10,9 @@
     IconClose,
     IconMinus,
     IconBookmark,
+    IconHome,
   } from '@arco-design/web-vue/es/icon'
-  import { WindowType } from '~/interfaces/view'
+  import { WindowTypeEnum } from '~/interfaces/view'
 
   const ipc = window.ipcRenderer
   const appStore = useAppStore()
@@ -36,7 +37,7 @@
     else if (from.name === 'Browser') {
       window.ipcRenderer.invoke(`browserview-hide-${appStore.currentWindowID}`)
       tempStore.autoHideBar = appStore.autoHideBar
-      resizeMainWindow(WindowType.MOBILE)
+      resizeMainWindow(WindowTypeEnum.MOBILE)
       appStore.autoHideBar = false
     }
   })
@@ -62,15 +63,16 @@
     })
   }
 
+  const isShowStartPage = () => {
+    const focusedTab = tabsStore.getFocusedTab()
+    return focusedTab?.plugin?.start
+  }
+
   const isShowWebNav = () => {
     const is = isBrowser()
-    if (is) {
-      const focusedTab = tabsStore.getFocusedTab()
-      if (focusedTab && focusedTab.plugin) {
-        return true
-      }
-    }
-    return false
+    if (!is) return false
+    const focusedTab = tabsStore.getFocusedTab()
+    return focusedTab && focusedTab.plugin
   }
 
   const goWebNav = () => {
@@ -80,8 +82,15 @@
     }
   }
 
+  const goStartPage = () => {
+    const focusedTab = tabsStore.getFocusedTab()
+    if (focusedTab && focusedTab.plugin) {
+      appStore.go(focusedTab.plugin.start, focusedTab.plugin)
+    }
+  }
+
   const isShowBrowser = () => {
-    return tabsStore.list.length !== 0 && !isBrowser()
+    return tabsStore.list.length && !isBrowser()
   }
 
   const isShowBack = () => {
@@ -150,6 +159,9 @@
       </b-button>
       <b-button v-if="isShowForward()" title="前进" @click="goForward">
         <IconRight size=".8em" />
+      </b-button>
+      <b-button v-if="isShowStartPage()" title="开始页" @click="goStartPage">
+        <IconHome size=".7em" />
       </b-button>
       <b-button v-if="isShowWebNav()" title="导航" @click="goWebNav">
         <IconBookmark size=".7em" />

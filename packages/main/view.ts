@@ -2,7 +2,7 @@ import { app, BrowserView, nativeTheme } from 'electron'
 import { clamp, isEmpty } from 'lodash'
 import { ERROR_PROTOCOL, NETWORK_ERROR_HOST, userAgent } from '~/common/constant'
 import type { CreateProperties, TabEvent } from '~/interfaces/tabs'
-import { WindowType } from '~/interfaces/view'
+import { WindowTypeEnum } from '~/interfaces/view'
 import { TabPlugin } from './core/plugin'
 import { registerAndGetData } from './core/plugin/data'
 import { getHook } from './core/plugin/hook'
@@ -14,7 +14,7 @@ import type { MainWindow } from './windows/main'
 import type { PluginMetadata } from '~/interfaces/plugin'
 
 export class View {
-  public windowType: WindowType = WindowType.MOBILE
+  public windowType: WindowTypeEnum = WindowTypeEnum.MOBILE
 
   public browserView: BrowserView
 
@@ -200,7 +200,7 @@ export class View {
     updateUrlHooks?.after(data)
   }
 
-  public async resizeWindowSize(windowType?: WindowType): Promise<void> {
+  public async resizeWindowSize(windowType?: WindowTypeEnum): Promise<void> {
     const targetWindowType = windowType ? windowType : this.getWindowType()
 
     if (this.windowType === targetWindowType) return
@@ -247,19 +247,19 @@ export class View {
         windowTypeProvider,
       )
       if (windowTypeData.mini.some(matchPattern(completeURL))) {
-        return WindowType.MINI
+        return WindowTypeEnum.MINI
       }
     }
 
     // todo: 特殊大小窗口判断代码移动到插件内
     if (completeURL.startsWith('passport.bilibili.com/login')) {
-      return WindowType.LOGIN
+      return WindowTypeEnum.LOGIN
     } else if (completeURL.startsWith('t.bilibili.com/?tab')) {
-      return WindowType.FEED
+      return WindowTypeEnum.FEED
     } else if (this.sess.userAgent === userAgent.desktop) {
-      return WindowType.DESKTOP
+      return WindowTypeEnum.DESKTOP
     }
-    return WindowType.MOBILE
+    return WindowTypeEnum.MOBILE
   }
 
   public updateNavigationState(): void {
