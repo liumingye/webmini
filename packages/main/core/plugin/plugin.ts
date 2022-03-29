@@ -162,22 +162,25 @@ export class Plugin {
   private async updateStatus(plugin: AdapterInfo, status: PluginStatus) {
     Application.instance.mainWindow?.send('plugin-status-update', plugin, status)
 
-    const oldDb = await StorageService.instance.get('pluginDb')
-
     if (status === PluginStatus.UNINSTALL_FAIL) {
       status = PluginStatus.INSTALLING_COMPLETE
     }
 
-    const newDb = oldDb ? { ...oldDb.data, [plugin.name]: status } : { [plugin.name]: status }
-
     if ([PluginStatus.INSTALL_FAIL, PluginStatus.UNINSTALL_COMPLETE].includes(status)) {
-      delete newDb[plugin.name]
+      const pluginDb = await StorageService.instance.get('pluginDb')
+      if (pluginDb) {
+        delete pluginDb.data[plugin.name]
+        await StorageService.instance.put({
+          _id: 'pluginDb',
+          data: pluginDb.data,
+        })
+      }
+    } else {
+      await StorageService.instance.put({
+        _id: 'pluginDb',
+        data: { [plugin.name]: status },
+      })
     }
-
-    await StorageService.instance.put({
-      _id: 'pluginDb',
-      data: newDb,
-    })
   }
 
   /**
@@ -193,8 +196,8 @@ export class Plugin {
       .install(plugin.name, plugin.version)
       .then(() => {
         Logger.info(`${plugin.name}@${plugin.version} 安装成功`)
-        this.updateStatus(plugin, PluginStatus.INSTALLING_COMPLETE)
         this.addPlugin(plugin.name)
+        this.updateStatus(plugin, PluginStatus.INSTALLING_COMPLETE)
       })
       .catch(() => {
         Logger.info(`${plugin.name}@${plugin.version} 安装失败`)
@@ -215,8 +218,8 @@ export class Plugin {
       .uninstall(plugin.name)
       .then(() => {
         Logger.info(`卸载成功 - ${plugin.name}`)
-        this.updateStatus(plugin, PluginStatus.UNINSTALL_COMPLETE)
         this.deletePlugin(plugin.name)
+        this.updateStatus(plugin, PluginStatus.UNINSTALL_COMPLETE)
       })
       .catch(() => {
         Logger.info(`卸载失败 - ${plugin.name}`)

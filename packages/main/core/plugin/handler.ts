@@ -114,7 +114,7 @@ export class AdapterHandler {
     const nodeModulesPath = path.resolve(this.baseDir, 'node_modules')
     return new Promise((resolve, reject) => {
       tar
-        .extract({
+        .x({
           file,
           cwd: nodeModulesPath,
         })

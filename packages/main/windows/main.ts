@@ -22,7 +22,7 @@ export class MainWindow extends CommonWindow {
       minHeight: 170,
       minWidth: 300,
       frame: false, // 是否有边框
-      maximizable: false, // 加好 保存窗口大小 窗口位置 开启
+      maximizable: true, // 加好 保存窗口大小 窗口位置 开启
       alwaysOnTop: true,
       webPreferences: {
         preload: join(__dirname, '../preload/index.cjs'), // 预先加载指定的脚本

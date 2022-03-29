@@ -1,4 +1,4 @@
-import { getCurrentWindow, screen, session } from '@electron/remote'
+import { getCurrentWindow, screen } from '@electron/remote'
 import { contextBridge, ipcRenderer } from 'electron'
 import { withPrototype } from '~/common'
 import Cookies from '~/common/cookies'
@@ -34,7 +34,6 @@ contextBridge.exposeInMainWorld('app', {
   cookies: new Cookies(),
   versions: new Versions(),
   screen: withPrototype(screen),
-  session: withPrototype(session),
   currentWindow: {
     minimize,
     setBounds,

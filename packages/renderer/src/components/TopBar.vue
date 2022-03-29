@@ -85,6 +85,7 @@
   const goStartPage = () => {
     const focusedTab = tabsStore.getFocusedTab()
     if (focusedTab && focusedTab.plugin) {
+      go('Browser')
       appStore.go(focusedTab.plugin.start, focusedTab.plugin)
     }
   }

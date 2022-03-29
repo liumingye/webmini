@@ -131,8 +131,7 @@ export class View {
         this.url = details.url
 
         const url = new URL(this.url)
-
-        const completeURL = url.hostname + url.pathname + url.search
+        const completeURL = `${url.hostname}${url.pathname}${url.search}`
 
         if (this.lastHostName !== url.hostname) {
           this.lastHostName = url.hostname
@@ -158,13 +157,13 @@ export class View {
             'userAgent',
             userAgentProvider,
           )
-
+          console.log(completeURL)
           // the desktop
-          if (userAgentData.desktop.some((value) => completeURL.includes(value))) {
+          if (userAgentData.desktop.some(matchPattern(completeURL))) {
             this.userAgent = userAgent.desktop
           }
           // the mobile
-          else if (userAgentData.mobile.some((value) => completeURL.includes(value))) {
+          else if (userAgentData.mobile.some(matchPattern(completeURL))) {
             this.userAgent = userAgent.mobile
           } else {
             this.userAgent = userAgent.desktop
