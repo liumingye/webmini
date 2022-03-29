@@ -45,7 +45,7 @@
             </template>
             <template v-else>
               <div
-                class="w-full h-full bg-no-repeat bg-contain"
+                class="w-full h-full bg-no-repeat bg-contain bg-$color-neutral-2"
                 :style="{
                   backgroundImage: `url(${item.icon})`,
                 }"

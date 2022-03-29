@@ -20,14 +20,14 @@ export class ViewManager {
     const { id } = window.win
 
     ipcMain.handle(`view-create-${id}`, (e, details) => {
-      const id = this.registerViewContainer(details, false, false).id
-      return id
+      const view = this.registerViewContainer(details, false, false)
+      return view.id
     })
 
     ipcMain.handle(`views-create-${id}`, (e, options) => {
       return options.map((option: any) => {
-        const id = this.registerViewContainer(option, false, false).id
-        return id
+        const view = this.registerViewContainer(option, false, false)
+        return view.id
       })
     })
 
@@ -46,12 +46,7 @@ export class ViewManager {
     ipcMain.handle(`top-bar-status-${id}`, (e, { autoHideBar, showTopBar }) => {
       this.autoHideBar = autoHideBar
       this.showTopBar = showTopBar
-      // console.log(autoHideBar, showTopBar)
       this.fixBounds()
-    })
-
-    ipcMain.handle(`get-windowType-${id}`, () => {
-      return this.selected?.windowType
     })
 
     ipcMain.handle(`resize-window-size-${id}`, (e, windowType) => {
@@ -160,13 +155,15 @@ export class ViewManager {
 
   public clearViewContainer(): void {
     this.window.win.setBrowserView(null)
-    this.viewContainer.forEach((x) => {
-      this.deregisterViewContainer(x.id)
+    this.viewContainer.forEach((view) => {
+      this.deregisterViewContainer(view.id)
     })
   }
 
   public hide(): void {
-    this.window.win.setBrowserView(null)
+    const browserView = this.selected?.browserView
+    if (!browserView) return
+    this.window.win.removeBrowserView(browserView)
   }
 
   public show(): void {

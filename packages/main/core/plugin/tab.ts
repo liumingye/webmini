@@ -7,7 +7,7 @@ import { clearHook } from './hook'
 import { Plugin } from './index'
 
 export class TabPlugin {
-  public enablePlugins: PluginMetadata[] = []
+  public readonly enablePlugins: PluginMetadata[] = []
 
   public readonly plugins: Plugin
 
@@ -17,6 +17,8 @@ export class TabPlugin {
 
   /**
    * 载入单个插件
+   * @param url
+   * @returns
    */
   public loadPlugin(url: string) {
     return (plugin: PluginMetadata) => {
@@ -41,25 +43,29 @@ export class TabPlugin {
 
       this.plugins.loadPlugin(plugin, this.webContents)
 
+      this.enablePlugins.push(plugin)
+
       return plugin
     }
   }
 
   /**
    * 载入指定url的所有插件
+   * @param url
+   * @returns
    */
   public loadTabPlugins(url: string) {
-    this.webContents.session.setPreloads([
-      ...this.webContents.session.getPreloads(),
-      `${app.getAppPath()}/dist/inject/index.cjs`,
-    ])
+    // 优先将inject加载到webview中
+    const preloads = this.webContents.session.getPreloads()
+    const injectPath = `${app.getAppPath()}/dist/inject/index.cjs`
+    if (preloads.indexOf(injectPath) === -1) {
+      preloads.push(injectPath)
+    }
+    this.webContents.session.setPreloads(preloads)
 
-    // console.log(this.allPlugins)
     const res = this.plugins.allPlugins
       .map(this.loadPlugin(url))
       .filter((it) => it !== undefined) as PluginMetadata[]
-
-    this.enablePlugins = res
 
     if (!isEmpty(res)) {
       hookThemeColor(res[0].name)
@@ -71,28 +77,41 @@ export class TabPlugin {
   }
 
   /**
-   * 卸载所有插件
+   * 释放所有插件或指定插件
+   * @param plugins 需要释放的插件
    */
   public unloadTabPlugins(plugins?: PluginMetadata[]): void {
     clearHook()
     if (plugins) {
       // 释放指定插件
-      plugins.forEach((item) => {
-        removeData(item.name)
-        this.plugins.unloadPlugin(item)
-        // item.unload()
+      plugins.forEach((plugin) => {
+        removeData(plugin.name)
+
+        this.plugins.unloadPlugin(plugin)
+
+        const preloads = this.webContents.session.getPreloads()
+        const newPreloads = preloads.reduce((result, preload) => {
+          const index = plugin.preloads.indexOf(preload)
+          if (index === -1) {
+            result.push(preload)
+          }
+          return result
+        }, [] as string[])
+        this.webContents.session.setPreloads(newPreloads)
+
+        const index = this.enablePlugins.indexOf(plugin)
+        if (index > -1) {
+          this.enablePlugins.splice(index, 1)
+        }
       })
     } else {
       // 释放全部插件
       destroyData()
-      this.enablePlugins.forEach((x) => {
-        // if (!x) return
-        this.plugins.unloadPlugin(x)
-        // x.unload()
+      this.enablePlugins.forEach((plugin) => {
+        this.plugins.unloadPlugin(plugin)
       })
+      this.webContents.session.setPreloads([])
+      this.enablePlugins.length = 0
     }
-
-    this.webContents.session.setPreloads([])
-    this.enablePlugins = []
   }
 }

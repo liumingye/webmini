@@ -21,7 +21,7 @@ export const registerProtocol = (session: Electron.Session) => {
     const _URL = new URL(request.url)
     if (_URL.hostname === 'network-error') {
       return callback({
-        path: join(__dirname, '../../resources/pages/', `network-error.html`),
+        path: join(__dirname, '../../resources/pages/network-error.html'),
       })
     }
   })
