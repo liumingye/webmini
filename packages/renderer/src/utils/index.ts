@@ -2,6 +2,7 @@ import { WatchStopHandle } from 'vue'
 import { useAppStore } from '@/store'
 import { WindowTypeEnum } from '~/interfaces/view'
 import { Timer } from '~/common/timer'
+import { replaceAll } from '~/common/string'
 
 const { screen, currentWindow, logger } = window.app
 
@@ -12,24 +13,9 @@ export const resizeMainWindow = (windowType?: WindowTypeEnum): void => {
   window.ipcRenderer.invoke(`resize-window-size-${appStore.currentWindowID}`, windowType)
 }
 
-/**
- * 批量替换字符串
- * @param text 字符串
- * @param map 字符串替换的映射
- * @param replacer 替换的字符串
- * @returns 替换后的字符串
- */
-export const replace = (text: string, map: string[], replacer: string): string => {
-  let result = text
-  map.forEach((item) => {
-    result = result.replace(item, replacer)
-  })
-  return result
-}
-
 // todo 移动到插件里 使用hook
 export const replaceTitle = (title: string): string => {
-  title = replace(
+  title = replaceAll(
     title,
     [
       '_哔哩哔哩_bilibili',
@@ -46,9 +32,7 @@ export const replaceTitle = (title: string): string => {
  * 监测鼠标进入离开窗口, 显示隐藏 topbar
  */
 export const initMouseStateDirtyCheck = (): void => {
-  // console.log('initMouseStateDirtyCheck')
   const appStore = useAppStore()
-  let lastStatus: 'OUT' | 'IN'
 
   const Fn = () => {
     const { x, y } = screen.getCursorScreenPoint()
@@ -62,23 +46,18 @@ export const initMouseStateDirtyCheck = (): void => {
 
     const getTriggerAreaHeight = () => {
       const h = 0.1 * windowSize[1]
-      const minHeight = lastStatus === 'IN' ? 120 : 32
+      const minHeight = appStore.showTopBar ? 120 : 32
       return h > minHeight ? h : minHeight
     }
 
-    if (
+    const isMouseInWindow =
       x > posX &&
       x < posX + windowSize[0] - getTriggerAreaWidth() &&
       y > posY - 10 &&
       y < posY + getTriggerAreaHeight()
-    ) {
-      if (lastStatus === 'OUT') {
-        appStore.showTopBar = true
-        lastStatus = 'IN'
-      }
-    } else {
-      appStore.showTopBar = false
-      lastStatus = 'OUT'
+
+    if (isMouseInWindow !== appStore.showTopBar) {
+      appStore.showTopBar = isMouseInWindow
     }
   }
 

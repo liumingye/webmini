@@ -29,7 +29,7 @@
     // 恢复状态
     if (to.name === 'Browser') {
       window.ipcRenderer.invoke(`browserview-show-${appStore.currentWindowID}`)
-      if (tempStore.autoHideBar !== undefined) {
+      if (tempStore.autoHideBar) {
         appStore.autoHideBar = tempStore.autoHideBar
       }
     }
@@ -102,7 +102,7 @@
     // use _path as dependency to force computed update
     // eslint-disable-next-line
     const _path = route.path
-    return window.history.state.back !== null
+    return !!window.history.state.back
   }
 
   const isShowForward = () => {
@@ -113,7 +113,7 @@
     // use _path as dependency to force computed update
     // eslint-disable-next-line
     const _path = route.path
-    return window.history.state.forward !== null
+    return !!window.history.state.forward
   }
 
   const goBack = () => {

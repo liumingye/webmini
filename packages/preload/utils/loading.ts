@@ -5,6 +5,12 @@
  * https://matejkustec.github.io/SpinThatShit
  */
 export default () => {
+  let lightColor = '#fff'
+  let darkColor = '#fb7299'
+  if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+    lightColor = '#282c34'
+    darkColor = '#fff'
+  }
   const className = `loaders-css__square-spin`
   const styleContent = `
 @keyframes square-spin {
@@ -17,7 +23,7 @@ export default () => {
   animation-fill-mode: both;
   width: 50px;
   height: 50px;
-  background: #fff;
+  background: ${darkColor};
   animation: square-spin 3s 0s cubic-bezier(0.09, 0.57, 0.49, 0.9) infinite;
 }
 .app-loading-wrap {
@@ -29,7 +35,7 @@ export default () => {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #282c34;
+  background: ${lightColor};
   z-index: 9;
 }
     `

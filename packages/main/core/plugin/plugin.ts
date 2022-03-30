@@ -141,7 +141,7 @@ export class Plugin {
           Logger.error(error)
         }
       })
-      .filter((it) => it !== undefined)
+      .filter((it) => !!it)
     return res
   }
 

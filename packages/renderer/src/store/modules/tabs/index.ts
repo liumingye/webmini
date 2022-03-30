@@ -18,7 +18,7 @@ export const useTabsStore = defineStore('tabs', {
      */
     createTab(options: CreateProperties, id: number): ITab {
       const tab = new ITab(options, id)
-      if (options.index !== undefined) {
+      if (options.index) {
         this.list.splice(options.index, 0, tab)
       } else {
         this.list.push(tab)

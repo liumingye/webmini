@@ -73,7 +73,7 @@ class Net {
           reject(error)
         })
       })
-      if (config.body !== undefined && config.body !== null) {
+      if (config.body) {
         request.write(config.body.toString())
       }
       request.end()

@@ -1,5 +1,5 @@
 import { app, WebContents } from 'electron'
-import { negate, isEmpty } from 'lodash'
+import { negate, isEmpty, clone } from 'lodash'
 import type { PluginMetadata } from '~/interfaces/plugin'
 import { hookThemeColor, matchPattern } from '../../utils'
 import { removeData, destroyData, registerData } from './data'
@@ -65,7 +65,7 @@ export class TabPlugin {
 
     const res = this.plugins.allPlugins
       .map(this.loadPlugin(url))
-      .filter((it) => it !== undefined) as PluginMetadata[]
+      .filter((it) => !!it) as typeof this.plugins.allPlugins
 
     if (!isEmpty(res)) {
       hookThemeColor(res[0].name)
@@ -90,13 +90,12 @@ export class TabPlugin {
         this.plugins.unloadPlugin(plugin)
 
         const preloads = this.webContents.session.getPreloads()
-        const newPreloads = preloads.reduce((result, preload) => {
-          const index = plugin.preloads.indexOf(preload)
-          if (index === -1) {
+        const newPreloads = clone(preloads).reduce((result, preload) => {
+          if (plugin.preloads.indexOf(preload) === -1) {
             result.push(preload)
           }
           return result
-        }, [] as string[])
+        }, [] as typeof preloads)
         this.webContents.session.setPreloads(newPreloads)
 
         const index = this.enablePlugins.indexOf(plugin)

@@ -7,19 +7,13 @@ export class Timer {
 
   private logger
 
-  private fn
-
-  private delay = 0
-
   constructor(
-    fn: <TArgs extends any[]>(...args: TArgs) => void,
-    delay = 0,
-    option: { mode: string; debug?: boolean },
+    private fn: <TArgs extends any[]>(...args: TArgs) => void,
+    private delay = 0,
+    option: { mode?: string; debug?: boolean } = {},
   ) {
-    this.fn = fn
-    this.delay = delay
-    if (option?.mode) this.mode = option.mode
-    if (option?.debug) this.debug = option.debug
+    if (option.mode) this.mode = option.mode
+    if (option.debug) this.debug = option.debug
     if (typeof process !== 'object' && typeof window.app.logger === 'object') {
       this.logger = window.app.logger
     } else {
@@ -33,7 +27,7 @@ export class Timer {
         this.log('timeout start')
         this.timer = setTimeout(() => {
           this.log('timeout run')
-          this.fn?.()
+          this.fn()
           this.clear()
         }, this.delay)
         break
@@ -42,7 +36,7 @@ export class Timer {
         this.log('interval start')
         this.timer = setInterval(() => {
           this.log('interval run')
-          this.fn?.()
+          this.fn()
         }, this.delay)
         break
       }
@@ -50,7 +44,7 @@ export class Timer {
         this.log('immediate start')
         this.timer = setImmediate(() => {
           this.log('immediate run')
-          this.fn?.()
+          this.fn()
         })
         break
       }

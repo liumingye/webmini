@@ -51,6 +51,9 @@ export class Application {
   }
 
   private onReady() {
+    // todo 设置添加主题
+    // nativeTheme.themeSource = 'system'
+
     this.createAllWindow()
 
     Menu.setApplicationMenu(getMainMenu())

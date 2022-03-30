@@ -1,4 +1,4 @@
-import { app, BrowserWindow, BrowserWindowConstructorOptions, shell } from 'electron'
+import { app, BrowserWindow, BrowserWindowConstructorOptions, shell, nativeTheme } from 'electron'
 import is from 'electron-is'
 import { throttle } from 'lodash'
 import { join } from 'path'
@@ -31,6 +31,8 @@ export class MainWindow extends CommonWindow {
 
     super(window)
 
+    this.win.setBackgroundColor(nativeTheme.shouldUseDarkColors ? '#2e2c29' : '#fff')
+
     this.setBoundsFromDb().then(() => {
       this.show()
     })
@@ -45,67 +47,20 @@ export class MainWindow extends CommonWindow {
       return { action: 'deny' }
     })
 
-    this.webContents.on('dom-ready', () => {
-      this.eventDomReady()
-    })
-
-    this.win.on('close', () => {
-      this.eventClose()
-    })
-
+    this.webContents.on('dom-ready', this.eventDomReady.bind(this))
+    this.win.on('close', this.eventClose.bind(this))
+    this.win.on('moved', this.eventMoved.bind(this))
+    this.win.on('resized', this.eventResized.bind(this))
     /**
      * [mac] 下 setAutoResize 会有偏移
      * 这里关闭 setAutoResize 使用 fixBounds 手动改变大小
      */
     if (is.macOS()) {
-      this.win.on('resize', () => {
-        this.resizedThrottled()
-      })
+      this.win.on('resize', this.eventResize.bind(this))
     }
-
-    this.win.on('moved', () => {
-      const windowType = this.viewManager.selected?.windowType || WindowTypeEnum.MOBILE
-      if (windowType !== WindowTypeEnum.MOBILE) return
-
-      // 获取
-      const windowPosition = this.win.getPosition()
-
-      // 写入
-      StorageService.instance.put({
-        _id: 'appDb',
-        data: { windowPosition },
-      })
-    })
-
-    this.win.on('resized', async () => {
-      // 保存窗口大小
-      const isMaximized = this.win.isMaximized()
-      const isFullScreen = this.win.isFullScreen()
-      if (isMaximized || isFullScreen) return
-
-      const appDb = await StorageService.instance.get('appDb')
-
-      // 查询
-      const windowSize: WindowType = appDb?.data.windowSize || WindowTypeDefault
-      const windowType = this.viewManager.selected?.windowType || WindowTypeEnum.MOBILE
-
-      // 获取
-      windowSize[windowType] = this.win.getSize()
-
-      // 写入
-      StorageService.instance.put({
-        _id: 'appDb',
-        data: { windowSize },
-      })
-
-      // 保存一下窗口位置
-      setTimeout(() => {
-        this.win.emit('moved')
-      }, 15)
-    })
   }
 
-  private resizedThrottled = throttle(() => {
+  private eventResize = throttle(() => {
     this.viewManager.fixBounds()
   }, 150)
 
@@ -152,5 +107,46 @@ export class MainWindow extends CommonWindow {
         app.quit()
       })
     }
+  }
+
+  private async eventResized() {
+    // 保存窗口大小
+    const isMaximized = this.win.isMaximized()
+    const isFullScreen = this.win.isFullScreen()
+    if (isMaximized || isFullScreen) return
+
+    const appDb = await StorageService.instance.get('appDb')
+
+    // 查询
+    const windowSize: WindowType = appDb?.data.windowSize || WindowTypeDefault
+    const windowType = this.viewManager.selected?.windowType || WindowTypeEnum.MOBILE
+
+    // 获取
+    windowSize[windowType] = this.win.getSize()
+
+    // 写入
+    StorageService.instance.put({
+      _id: 'appDb',
+      data: { windowSize },
+    })
+
+    // 保存一下窗口位置
+    setTimeout(() => {
+      this.win.emit('moved')
+    }, 15)
+  }
+
+  private eventMoved() {
+    const windowType = this.viewManager.selected?.windowType || WindowTypeEnum.MOBILE
+    if (windowType !== WindowTypeEnum.MOBILE) return
+
+    // 获取
+    const windowPosition = this.win.getPosition()
+
+    // 写入
+    StorageService.instance.put({
+      _id: 'appDb',
+      data: { windowPosition },
+    })
   }
 }

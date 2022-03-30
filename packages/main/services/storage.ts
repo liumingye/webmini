@@ -5,7 +5,7 @@ import type { Model } from '../core/db/types'
 export class StorageService {
   public static instance = new this()
 
-  public localDb: LocalDb
+  public readonly localDb: LocalDb
 
   public constructor(public key = 'WEBMINI_DB_DEFAULT') {
     this.localDb = new LocalDb(app.getPath('userData'))

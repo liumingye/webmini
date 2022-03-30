@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import { useAppStore } from '@/store'
-  import { IconPushpin, IconQuestion } from '@arco-design/web-vue/es/icon'
+  import { IconPushpin } from '@arco-design/web-vue/es/icon'
 
   const appStore = useAppStore()
   const router = useRouter()
