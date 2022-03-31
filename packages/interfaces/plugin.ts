@@ -78,7 +78,7 @@ export interface LocalPluginInfo {
   /** 开始页 */
   readonly start: string
   /** 图标 */
-  readonly icon?: string | ShallowRef<any>
+  icon?: string | ShallowRef<any>
   /** 版本 */
   readonly version: string
   /** 状态 */

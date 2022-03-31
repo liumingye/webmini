@@ -15,6 +15,8 @@ import Net from '~/common/net'
 import axios from 'axios'
 import Cookies from '~/common/cookies'
 import { createRequire } from 'module'
+import { isURI } from '~/common/uri'
+import { isString } from 'lodash'
 
 const requireFresh = createRequire(import.meta.url)
 
@@ -36,8 +38,8 @@ export class Plugin {
 
     //  加载本地插件
     this.getLocalPlugins().then((localPlugins) => {
-      localPlugins.forEach((p) => {
-        this.addPlugin(p.name)
+      localPlugins.forEach((plugin) => {
+        this.addPlugin(plugin.name)
       })
     })
   }
@@ -124,24 +126,26 @@ export class Plugin {
   public async getLocalPlugins(): Promise<LocalPluginInfo[]> {
     const pluginDb = await StorageService.instance.get('pluginDb')
     if (!pluginDb) return []
-    const res = Object.keys(pluginDb.data)
-      .map((name) => {
-        try {
-          if (
-            isValidKey(name, pluginDb.data) &&
-            pluginDb.data[name] === PluginStatus.INSTALLING_COMPLETE
-          ) {
-            const pluginPath = this.getPluginPath(name)
-            const pluginInfo = JSON.parse(
-              fs.readFileSync(join(pluginPath, './package.json'), 'utf8'),
-            )
-            return { ...pluginInfo, status: pluginDb.data[name] }
+    const res = Object.keys(pluginDb.data).reduce((previousValue, currentValue) => {
+      try {
+        if (
+          isValidKey(currentValue, pluginDb.data) &&
+          pluginDb.data[currentValue] === PluginStatus.INSTALLING_COMPLETE
+        ) {
+          const pluginPath = this.getPluginPath(currentValue)
+          const pluginInfo: LocalPluginInfo = JSON.parse(
+            fs.readFileSync(join(pluginPath, 'package.json'), 'utf8'),
+          )
+          if (pluginInfo.icon && isString(pluginInfo.icon) && !isURI(pluginInfo.icon)) {
+            pluginInfo.icon = join(pluginPath, pluginInfo.icon)
           }
-        } catch (error) {
-          Logger.error(error)
+          previousValue.push({ ...pluginInfo, status: pluginDb.data[currentValue] })
         }
-      })
-      .filter((it) => !!it)
+      } catch (error) {
+        Logger.error(error)
+      }
+      return previousValue
+    }, [] as LocalPluginInfo[])
     return res
   }
 
