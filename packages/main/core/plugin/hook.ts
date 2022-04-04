@@ -1,5 +1,5 @@
 /** 针对某种事件进行的代码注入 */
-import type { PluginHookProvider } from '~/interfaces/plugin'
+import type { PluginHookProvider, addHook as addHookType } from '~/interfaces/plugin'
 
 interface HookItems {
   providers: PluginHookProvider[]
@@ -12,7 +12,7 @@ const pluginHookMap = new Map<string, HookItems>()
  * @param key 标识ID
  * @param provider 代码注入的配置对象
  */
-export const addHook = (key: string, provider: PluginHookProvider): void => {
+export const addHook: addHookType = (key, provider) => {
   if (pluginHookMap.has(key)) {
     const map = pluginHookMap.get(key)
     if (!map) return

@@ -1,10 +1,5 @@
 import is from 'electron-is'
-
-export interface FetchOptions {
-  method: string
-  body: string | null
-  headers: { [key: string]: string } | null
-}
+import type { NetApi, FetchOptions, NetReturn } from '../interfaces'
 
 const DEFAULT_FETCH_CONFIG: FetchOptions = {
   method: 'GET',
@@ -12,27 +7,17 @@ const DEFAULT_FETCH_CONFIG: FetchOptions = {
   headers: null,
 }
 
-class Net {
+class Net implements NetApi {
   public electron: typeof Electron = is.renderer()
     ? require('@electron/remote')
     : require('electron')
 
-  public fetch = <T>(
-    url: string,
-    options: Partial<FetchOptions> = {},
-  ): Promise<{
-    ok: boolean
-    status: number
-    statusText: string
-    headers: Record<string, string | string[]>
-    text: () => Promise<string>
-    json: () => Promise<T>
-  }> => {
+  public fetch = <T>(url: string, options = {}) => {
     const config = {
       ...DEFAULT_FETCH_CONFIG,
       ...options,
     }
-    return new Promise((resolve, reject) => {
+    return new Promise<NetReturn<T>>((resolve, reject) => {
       const request = this.electron.net.request({
         url,
         method: config.method,

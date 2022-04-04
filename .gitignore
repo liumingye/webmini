@@ -15,4 +15,6 @@ package-lock.json
 !.yarn/sdks
 !.yarn/versions
 
+packages/interfaces/.yarn
+
 packages/renderer/src/components.d.ts

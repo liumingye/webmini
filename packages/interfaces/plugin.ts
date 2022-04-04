@@ -1,11 +1,12 @@
 import type { WebContents } from 'electron'
-import type Net from '../common/net'
-import type { addHook } from '../main/core/plugin/hook'
-import type { CommonWindow } from '../main/windows/common'
-import type { ShallowRef } from 'vue'
-import type { StorageService } from '../main/services/storage'
 import type axios from 'axios'
-import type Cookies from '../common/cookies'
+import type { ShallowRef } from 'vue'
+import type { NetApi } from './net'
+import type { CommonWindowApi } from './window'
+import type { StorageServiceApi } from './storage'
+import type { CookiesApi } from './cookies'
+
+export type addHook = (key: string, provider: PluginHookProvider) => void
 
 export type PluginDataProvider = (...args: any[]) => void | Promise<void>
 
@@ -19,20 +20,20 @@ export interface PluginHookProvider {
 /** 插件初始化时的传入参数, 可以解构并调用 */
 export interface PluginLoadParameters {
   addData: (key: string, provider: PluginDataProvider) => void
-  addHook: typeof addHook
+  addHook: addHook
   application: {
     mainWindow: {
-      send: CommonWindow['send'] | undefined
+      send: CommonWindowApi['send'] | undefined
     }
     selectPartWindow: {
-      send: CommonWindow['send'] | undefined
+      send: CommonWindowApi['send'] | undefined
     }
   }
   webContents: WebContents
-  net: Net
-  db: StorageService
+  net: NetApi
+  db: StorageServiceApi
   axios: typeof axios
-  cookies: Cookies
+  cookies: CookiesApi
 }
 
 /** 插件基本信息 */

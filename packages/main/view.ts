@@ -14,6 +14,9 @@ import type { MainWindow } from './windows/main'
 import type { PluginMetadata } from '~/interfaces/plugin'
 
 export class View {
+  public firstSelect = true
+
+  /** 当前窗口的类型 */
   public windowType: WindowTypeEnum = WindowTypeEnum.MOBILE
 
   public browserView: BrowserView
@@ -22,6 +25,7 @@ export class View {
 
   private tabPlugin: TabPlugin
 
+  /** 存储加载的插件 */
   public plugins: PluginMetadata[] = []
 
   private sess: Sessions
@@ -35,12 +39,14 @@ export class View {
       }
     | undefined
 
-  public url = ''
+  public url: URL | undefined
 
   private userAgent = userAgent.mobile
 
+  /** 上一个页面的 Url */
   private lastUrl = ''
 
+  /** 上一个页面的 HostName */
   private lastHostName = ''
 
   public themeColor: string | null = null
@@ -127,56 +133,68 @@ export class View {
       // according to the browser plug-in configuration settings for ua
       if (details.resourceType === 'mainFrame' && details.url.startsWith('http')) {
         // set the current url
-        // 给resizeWindowSize使用 使用getUrl获取的不对
-        this.url = details.url
+        // 给getWindowType使用 使用getUrl获取的不对
+        this.url = new URL(details.url)
 
-        const url = new URL(this.url)
-        const completeURL = `${url.hostname}${url.pathname}${url.search}`
-
-        if (this.lastHostName !== url.hostname) {
-          this.lastHostName = url.hostname
-          this.tabPlugin.unloadTabPlugins(this.plugins)
-          this.plugins = this.tabPlugin.loadTabPlugins(url.href)
-        }
-
-        if (isEmpty(this.plugins)) {
-          this.userAgent = userAgent.desktop
-        } else {
-          type UserAgent = {
-            mobile: string[]
-            desktop: string[]
-          }
-
-          const userAgentProvider = {
-            mobile: [],
-            desktop: [],
-          }
-
-          const [userAgentData]: UserAgent[] = registerAndGetData(
-            this.plugins[0].name,
-            'userAgent',
-            userAgentProvider,
-          )
-          console.log(completeURL)
-          // the desktop
-          if (userAgentData.desktop.some(matchPattern(completeURL))) {
-            this.userAgent = userAgent.desktop
-          }
-          // the mobile
-          else if (userAgentData.mobile.some(matchPattern(completeURL))) {
-            this.userAgent = userAgent.mobile
-          } else {
-            this.userAgent = userAgent.desktop
-          }
-        }
+        this.loadPlugins()
+        this.setUserAgent()
 
         details.requestHeaders['User-Agent'] = this.userAgent
-        this.sess.userAgent = this.userAgent
 
         this.resizeWindowSize()
       }
       return { requestHeaders: details.requestHeaders }
     })
+  }
+
+  public loadPlugins() {
+    if (!this.url || this.lastHostName === this.url.hostname) {
+      return
+    }
+    this.lastHostName = this.url.hostname
+    this.tabPlugin.unloadTabPlugins(this.plugins)
+    this.plugins = this.tabPlugin.loadTabPlugins(this.url.href)
+  }
+
+  public setUserAgent() {
+    if (!this.url) {
+      return
+    }
+
+    if (isEmpty(this.plugins)) {
+      this.userAgent = userAgent.desktop
+    } else {
+      const completeURL = `${this.url.hostname}${this.url.pathname}${this.url.search}`
+
+      type UserAgent = {
+        mobile: string[]
+        desktop: string[]
+      }
+
+      const userAgentProvider = {
+        mobile: [],
+        desktop: [],
+      }
+
+      const [userAgentData]: UserAgent[] = registerAndGetData(
+        this.plugins[0].name,
+        'userAgent',
+        userAgentProvider,
+      )
+      // console.log(completeURL)
+      // the desktop
+      if (userAgentData.desktop.some(matchPattern(completeURL))) {
+        this.userAgent = userAgent.desktop
+      }
+      // the mobile
+      else if (userAgentData.mobile.some(matchPattern(completeURL))) {
+        this.userAgent = userAgent.mobile
+      } else {
+        this.userAgent = userAgent.desktop
+      }
+    }
+
+    this.sess.userAgent = this.userAgent
   }
 
   private onDarkModeChange() {
@@ -199,10 +217,10 @@ export class View {
     updateUrlHooks?.after(data)
   }
 
-  public async resizeWindowSize(windowType?: WindowTypeEnum): Promise<void> {
+  public async resizeWindowSize(windowType?: WindowTypeEnum, mandatory?: boolean): Promise<void> {
     const targetWindowType = windowType ? windowType : this.getWindowType()
 
-    if (this.windowType === targetWindowType) return
+    if (!mandatory && this.windowType === targetWindowType) return
 
     const displayBounds = getDisplayBounds()
     const currentSize = this.window.win.getSize()
@@ -230,11 +248,16 @@ export class View {
     this.windowType = targetWindowType
 
     this.window.send('set-currentWindow-type', targetWindowType)
+
+    console.log('resizeWindowSize')
   }
 
-  private getWindowType() {
-    const _URL = new URL(this.url)
-    const completeURL = _URL.hostname + _URL.pathname + _URL.search
+  private getWindowType(): WindowTypeEnum {
+    if (!this.url) {
+      return WindowTypeEnum.MOBILE
+    }
+
+    const completeURL = this.url.hostname + this.url.pathname + this.url.search
 
     if (!isEmpty(this.plugins)) {
       const windowTypeProvider = {

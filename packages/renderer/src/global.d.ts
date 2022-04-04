@@ -1,4 +1,4 @@
-import type Net from '~/common/net'
+import type { NetApi } from '~/interfaces'
 import type Cookies from '~/common/cookies'
 import type Versions from '~/preload/utils/versions'
 import type { Logger } from 'winston'
@@ -15,7 +15,7 @@ declare global {
       versions: Versions
       screen: Electron.Screen
       currentWindow: Electron.BrowserWindow
-      net: Net
+      net: NetApi
       logger: Logger
     }
   }

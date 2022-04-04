@@ -1,8 +1,9 @@
 import { app } from 'electron'
 import LocalDb from '../core/db'
 import type { Model } from '../core/db/types'
+import type { StorageServiceApi } from '~/interfaces'
 
-export class StorageService {
+export class StorageService implements StorageServiceApi {
   public static instance = new this()
 
   public readonly localDb: LocalDb

@@ -1,7 +1,8 @@
 import { enable } from '@electron/remote/main'
 import type { BrowserWindow } from 'electron'
+import type { CommonWindowApi } from '~/interfaces'
 
-export abstract class CommonWindow {
+export abstract class CommonWindow implements CommonWindowApi {
   // abstract name: string
 
   protected constructor(public win: BrowserWindow) {

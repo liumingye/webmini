@@ -1,0 +1,27 @@
+{
+  "name": "webmini-types",
+  "version": "1.0.1",
+  "description": "webmini plugins",
+  "main": "",
+  "types": "index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/liumingye/webmini.git"
+  },
+  "keywords": [
+    "webmini"
+  ],
+  "author": "liumingye",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/liumingye/webmini/issues"
+  },
+  "homepage": "https://github.com/liumingye/webmini#readme",
+  "devDependencies": {
+    "@types/pouchdb": "^6.4.0",
+    "axios": "^0.26.1",
+    "electron": "^18.0.1",
+    "typescript": "^4.4.3",
+    "vue": "^3.2.31"
+  }
+}

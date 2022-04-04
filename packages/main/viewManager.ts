@@ -53,21 +53,25 @@ export class ViewManager {
       this.selected?.resizeWindowSize(windowType)
     })
 
-    this.select(id, true)
+    // this.select(id, true)
   }
 
   public select(id: number, focus = true): void {
+    if (this.selectedId === id) {
+      return
+    }
+
     const view = this.viewContainer.get(id)
 
     if (!view) {
       return
     }
 
+    this.selectedId = id
+
     if (this.selected) {
       this.window.win.removeBrowserView(this.selected.browserView)
     }
-
-    this.selectedId = id
 
     this.window.win.addBrowserView(view.browserView)
 
@@ -78,21 +82,17 @@ export class ViewManager {
       this.window.webContents.focus()
     }
 
-    view.updateTitle()
-
     this.fixBounds()
 
-    view.updateNavigationState()
-
-    /**
-     * [mac] 下 setAutoResize 会有偏移
-     * 这里关闭 setAutoResize 使用 fixBounds 手动改变大小
-     */
-    if (!is.macOS()) {
-      view.browserView.setAutoResize({
-        width: true,
-        height: true,
-      })
+    if (view.firstSelect === true) {
+      view.firstSelect = false
+    } else {
+      view.browserView.webContents.emit('did-change-theme-color')
+      view.loadPlugins()
+      view.setUserAgent()
+      view.updateTitle()
+      view.updateNavigationState()
+      view.resizeWindowSize(undefined, true)
     }
   }
 
@@ -136,6 +136,17 @@ export class ViewManager {
 
     if (sendMessage) {
       this.window.send('create-tab', { ...details }, isNext, id)
+    }
+
+    /**
+     * [mac] 下 setAutoResize 会有偏移
+     * 这里关闭 setAutoResize 使用 fixBounds 手动改变大小
+     */
+    if (!is.macOS()) {
+      view.browserView.setAutoResize({
+        width: true,
+        height: true,
+      })
     }
 
     return view

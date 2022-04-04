@@ -228,7 +228,7 @@ export const getViewMenu = (
           const viewManager = mainWindow.viewManager
           viewManager.registerViewContainer(
             {
-              url: `view-source:${viewManager.selected?.url}`,
+              url: `view-source:${viewManager.selected?.url?.href}`,
               active: true,
             },
             true,

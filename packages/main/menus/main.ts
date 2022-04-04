@@ -1,4 +1,5 @@
 import { app, Menu, MenuItem, MenuItemConstructorOptions, shell } from 'electron'
+import is from 'electron-is'
 import { Application } from '../application'
 
 export const getMainMenu = () => {
@@ -96,7 +97,9 @@ export const getMainMenu = () => {
         },
       ],
     },
-    {
+  ]
+  if (is.dev()) {
+    template.push({
       label: 'DEBUG',
       submenu: [
         {
@@ -121,7 +124,7 @@ export const getMainMenu = () => {
           },
         },
       ],
-    },
-  ]
+    })
+  }
   return Menu.buildFromTemplate(template)
 }

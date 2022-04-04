@@ -71,7 +71,10 @@ export default class {
     }
   }
 
-  async remove(name: string, doc: PouchDB.Core.RemoveDocument) {
+  async remove(
+    name: string,
+    doc: PouchDB.Core.RemoveDocument,
+  ): Promise<DBError | PouchDB.Core.Response> {
     try {
       let target
       if ('object' == typeof doc) {
