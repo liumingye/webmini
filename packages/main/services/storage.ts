@@ -4,7 +4,7 @@ import type { Model } from '../core/db/types'
 import type { StorageServiceApi } from '~/interfaces'
 
 export class StorageService implements StorageServiceApi {
-  public static instance = new this()
+  public static INSTANCE = new this()
 
   public readonly localDb: LocalDb
 

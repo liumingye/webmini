@@ -65,7 +65,7 @@ export class MainWindow extends CommonWindow {
   }, 150)
 
   private async setBoundsFromDb() {
-    const appDb = await StorageService.instance.get('appDb')
+    const appDb = await StorageService.INSTANCE.get('appDb')
     const bound: BrowserWindowConstructorOptions = {}
     if (appDb) {
       if (appDb.data.windowPosition) {
@@ -115,7 +115,7 @@ export class MainWindow extends CommonWindow {
     const isFullScreen = this.win.isFullScreen()
     if (isMaximized || isFullScreen) return
 
-    const appDb = await StorageService.instance.get('appDb')
+    const appDb = await StorageService.INSTANCE.get('appDb')
 
     // 查询
     const windowSize: WindowType = appDb?.data.windowSize || WindowTypeDefault
@@ -125,7 +125,7 @@ export class MainWindow extends CommonWindow {
     windowSize[windowType] = this.win.getSize()
 
     // 写入
-    StorageService.instance.put({
+    StorageService.INSTANCE.put({
       _id: 'appDb',
       data: { windowSize },
     })
@@ -144,7 +144,7 @@ export class MainWindow extends CommonWindow {
     const windowPosition = this.win.getPosition()
 
     // 写入
-    StorageService.instance.put({
+    StorageService.INSTANCE.put({
       _id: 'appDb',
       data: { windowPosition },
     })

@@ -30,7 +30,7 @@ app.commandLine.appendSwitch('--enable-features', 'OverlayScrollbar')
 ipcMain.setMaxListeners(0)
 
 // start app
-const application = Application.instance
+const application = Application.INSTANCE
 application.start()
 
 ipcMain.handle(`web-contents-call`, async (_e, { webContentsId, method, args = [] }) => {

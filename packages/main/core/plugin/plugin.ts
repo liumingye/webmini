@@ -1,36 +1,43 @@
+import axios from 'axios'
 import { app } from 'electron'
 import fs from 'fs'
+import { isString } from 'lodash'
+import { createRequire } from 'module'
 import { join, resolve } from 'path'
+import Cookies from '~/common/cookies'
 import Logger from '~/common/logger'
+import Net from '~/common/net'
 import { isValidKey } from '~/common/object'
+import { isURI } from '~/common/uri'
 import type { AdapterInfo, LocalPluginInfo, PluginMetadata } from '~/interfaces/plugin'
 import { PluginStatus } from '~/interfaces/plugin'
 import { Application } from '../../application'
 import { StorageService } from '../../services/storage'
-import { AdapterHandler } from './index'
-import Net from '~/common/net'
-import axios from 'axios'
-import Cookies from '~/common/cookies'
-import { createRequire } from 'module'
-import { isURI } from '~/common/uri'
-import { isString } from 'lodash'
+import { AdapterHandler } from './handler'
 
 const requireFresh = createRequire(import.meta.url)
+const baseDir = join(app.getPath('userData'), './plugins')
 
 export class Plugin {
-  public static instance = new this()
+  // 插件实例
+  public static INSTANCE = new this()
 
-  public readonly allPlugins: PluginMetadata[]
+  private _allPlugins: PluginMetadata[]
+  public get allPlugins(): PluginMetadata[] {
+    return this._allPlugins
+  }
+  private set allPlugins(value: PluginMetadata[]) {
+    // 更新静态数据
+    this._allPlugins = Plugin.INSTANCE.allPlugins = value
+  }
 
-  public readonly baseDir = join(app.getPath('userData'), './plugins')
-
-  public readonly handler: AdapterHandler
+  private readonly handler: AdapterHandler
 
   public constructor() {
-    this.allPlugins = []
+    this._allPlugins = []
 
     this.handler = new AdapterHandler({
-      baseDir: this.baseDir,
+      baseDir,
     })
 
     //  加载本地插件
@@ -75,20 +82,15 @@ export class Plugin {
       const pluginImport = requireFresh(resolve(pluginPath, pluginPkg.main))
 
       const pluginApi = {
-        // addHook,
-        // addData: (key: string, provider: PluginDataProvider) => {
-        //   addData(plugin.name, key, provider)
-        // },
         net: new Net(),
         application: {
           mainWindow: {
-            send: Application.instance.mainWindow?.send,
+            send: Application.INSTANCE.mainWindow?.send,
           },
           selectPartWindow: {
-            send: Application.instance.selectPartWindow?.send,
+            send: Application.INSTANCE.selectPartWindow?.send,
           },
         },
-        // webContents: Application.instance.mainWindow?.viewManager.selected?.browserView.webContents,
         db: new StorageService(pluginPkg.name),
         axios,
         cookies: new Cookies(),
@@ -126,7 +128,7 @@ export class Plugin {
    * @returns
    */
   public async getLocalPlugins(): Promise<LocalPluginInfo[]> {
-    const pluginDb = await StorageService.instance.get('pluginDb')
+    const pluginDb = await StorageService.INSTANCE.get('pluginDb')
     if (!pluginDb) return []
     const res = Object.keys(pluginDb.data).reduce((previousValue, currentValue) => {
       try {
@@ -157,7 +159,7 @@ export class Plugin {
    * @returns
    */
   public getPluginPath(name: string) {
-    return resolve(this.baseDir, 'node_modules', name)
+    return resolve(baseDir, 'node_modules', name)
   }
 
   /**
@@ -166,23 +168,23 @@ export class Plugin {
    * @param status
    */
   private async updateStatus(plugin: AdapterInfo, status: PluginStatus) {
-    Application.instance.mainWindow?.send('plugin-status-update', plugin, status)
+    Application.INSTANCE.mainWindow?.send('plugin-status-update', plugin, status)
 
     if (status === PluginStatus.UNINSTALL_FAIL) {
       status = PluginStatus.INSTALLING_COMPLETE
     }
 
     if ([PluginStatus.INSTALL_FAIL, PluginStatus.UNINSTALL_COMPLETE].includes(status)) {
-      const pluginDb = await StorageService.instance.get('pluginDb')
+      const pluginDb = await StorageService.INSTANCE.get('pluginDb')
       if (pluginDb) {
         delete pluginDb.data[plugin.name]
-        await StorageService.instance.put({
+        await StorageService.INSTANCE.put({
           _id: 'pluginDb',
           data: pluginDb.data,
         })
       }
     } else {
-      await StorageService.instance.put({
+      await StorageService.INSTANCE.put({
         _id: 'pluginDb',
         data: { [plugin.name]: status },
       })

@@ -2,7 +2,6 @@ import { app, WebContents } from 'electron'
 import { negate } from 'lodash'
 import type { PluginMetadata } from '~/interfaces/plugin'
 import { hookThemeColor, matchPattern } from '../../utils'
-// import { clearHook } from './hook'
 import { Plugin } from './index'
 
 export class TabPlugin {
@@ -11,7 +10,7 @@ export class TabPlugin {
   public readonly plugins: Plugin
 
   public constructor(public webContents: WebContents) {
-    this.plugins = Plugin.instance
+    this.plugins = new Plugin()
   }
 
   /**
@@ -37,8 +36,6 @@ export class TabPlugin {
           ...plugin.preloads,
         ])
       }
-
-      // registerData(plugin.name, 'webNav', {})
 
       this.plugins.loadPlugin(plugin)
 
@@ -66,11 +63,6 @@ export class TabPlugin {
       .map(this.loadPlugin(url))
       .filter((it) => !!it) as typeof this.plugins.allPlugins
 
-    // if (!isEmpty(res)) {
-    //   hookThemeColor(res[0].name)
-    // } else {
-    //   hookThemeColor()
-    // }
     hookThemeColor()
 
     return res
@@ -81,12 +73,9 @@ export class TabPlugin {
    * @param plugins 需要释放的插件
    */
   public unloadTabPlugins(plugins?: PluginMetadata[]): void {
-    // clearHook()
     if (plugins) {
       // 释放指定插件
       plugins.forEach((plugin) => {
-        // removeData(plugin.name)
-
         this.plugins.unloadPlugin(plugin)
 
         const preloads = this.webContents.session.getPreloads()
@@ -105,7 +94,6 @@ export class TabPlugin {
       })
     } else {
       // 释放全部插件
-      // destroyData()
       this.enablePlugins.forEach((plugin) => {
         this.plugins.unloadPlugin(plugin)
       })

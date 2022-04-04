@@ -166,11 +166,11 @@ export class View {
       const userAgentData = this.plugins[0].userAgent
 
       // the desktop
-      if (userAgentData.desktop.some(matchPattern(completeURL))) {
+      if (userAgentData.desktop?.some(matchPattern(completeURL))) {
         this.userAgent = userAgent.desktop
       }
       // the mobile
-      else if (userAgentData.mobile.some(matchPattern(completeURL))) {
+      else if (userAgentData.mobile?.some(matchPattern(completeURL))) {
         this.userAgent = userAgent.mobile
       } else {
         this.userAgent = userAgent.desktop
@@ -196,18 +196,15 @@ export class View {
         const data = {
           url: new URL(url),
         }
-        await this.plugins[0].onUrlChanged(data, this.browserView.webContents)
+        console.log('onUrlChanged')
+        if (this.webContents) {
+          await this.plugins[0].onUrlChanged(data, this.webContents)
+        }
       }
     }
-    // const updateUrlHooks = getHook('updateUrl')
-    // const data = {
-    //   url: new URL(url),
-    // }
-    // updateUrlHooks?.before(data)
     this.webContents.setUserAgent(this.userAgent)
     this.webContents.send('load-commit')
     this.emitEvent('url-updated', url)
-    // updateUrlHooks?.after(data)
   }
 
   public async resizeWindowSize(windowType?: WindowTypeEnum, mandatory?: boolean): Promise<void> {
@@ -223,7 +220,7 @@ export class View {
       y: leftTopPosition[1] + currentSize[1],
     }
 
-    const appDb = await StorageService.instance.get('appDb')
+    const appDb = await StorageService.INSTANCE.get('appDb')
     if (!appDb) return
 
     const width = appDb.data.windowSize[targetWindowType][0]
@@ -292,7 +289,8 @@ export class View {
     // unload plugins
     this.tabPlugin.unloadTabPlugins()
     // destroy
-    ;(this.browserView.webContents as any).destroy()
+    // this.webContents.removeAllListeners()
+    ;(this.webContents as any).destroy()
     this.browserView = null as any
   }
 

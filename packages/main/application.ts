@@ -10,7 +10,7 @@ import { SelectPartWindow } from './windows/selectPart'
 import { registerProtocol } from './models/protocol'
 
 export class Application {
-  public static instance = new this()
+  public static INSTANCE = new this()
 
   public mainWindow: MainWindow | undefined
 

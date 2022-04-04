@@ -18,25 +18,17 @@ export const matchPattern = (str: string) => {
  * 主题色更改
  */
 export const hookThemeColor = (): void => {
-  const mainWindow = Application.instance.mainWindow
+  const mainWindow = Application.INSTANCE.mainWindow
   if (!mainWindow) return
 
-  const view = mainWindow.viewManager.selected
-  if (!view) return
-
-  let themeColor: Theme = {
-    light: {
-      bg: '',
-      text: '',
-    },
-    dark: {
-      bg: '',
-      text: '',
-    },
+  let themeData: Theme = {
+    dark: {},
+    light: {},
   }
 
-  if (!isEmpty(view.plugins) && view.plugins[0].themeColor) {
-    themeColor = view.plugins[0].themeColor
+  const view = mainWindow.viewManager.selected
+  if (view && !isEmpty(view.plugins) && view.plugins[0].themeColor) {
+    themeData = view.plugins[0].themeColor
   }
 
   const onDarkModeChange = () => {
@@ -44,28 +36,30 @@ export const hookThemeColor = (): void => {
 
     const theme = nativeTheme.shouldUseDarkColors ? 'dark' : 'light'
 
+    const themeColor = themeData[theme] || {}
+
     // 未定义背景颜色则获取网页主题色
-    if (!themeColor[theme].bg) {
+    if (!themeColor.bg) {
       const color = mainWindow.viewManager.selected?.themeColor
       if (color) {
-        themeColor[theme].bg = color
+        themeColor.bg = color
       }
     }
 
     // 未定义文字颜色则自动获取文字颜色
-    if (!themeColor[theme].text) {
-      const baseColor = Color.Format.CSS.parseHex(themeColor[theme].bg)
+    if (!themeColor.text && themeColor.bg) {
+      const baseColor = Color.Format.CSS.parseHex(themeColor.bg)
       if (baseColor) {
         const text = baseColor.isDarker() ? baseColor.lighten(100) : baseColor.darken(100)
         if (text) {
-          themeColor[theme].text = text.toString()
+          themeColor.text = text.toString()
         }
       }
     }
 
     mainWindow.send('setThemeColor', {
       theme,
-      ...themeColor[theme],
+      ...themeColor,
     })
   }
 

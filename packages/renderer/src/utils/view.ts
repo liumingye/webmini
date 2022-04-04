@@ -24,9 +24,10 @@ export const loadURL = (plugin: LocalPluginInfo | undefined, url: string, ...arg
   const tabsStore = useTabsStore()
   const tab = tabsStore.getFocusedTab()
   if (!tab) {
-    tabsStore.addTabs([{ plugin, url, active: true, ...args }])
+    tabsStore.addTabs([{ url, plugin, active: true, ...args }])
   } else {
     tab.url = url
+    tab.plugin = plugin
     tab.callViewMethod('loadURL', url, ...args)
   }
 }

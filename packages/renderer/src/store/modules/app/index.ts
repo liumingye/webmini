@@ -63,8 +63,8 @@ export const useAppStore = defineStore('app', {
       let url = value
       if (isURI(url)) {
         url = value.indexOf('://') === -1 ? `http://${value}` : value
+        loadURL(plugin, url)
       }
-      loadURL(plugin, url)
     },
     /**
      * 获取本地插件列表

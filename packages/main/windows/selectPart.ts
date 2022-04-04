@@ -33,7 +33,7 @@ export class SelectPartWindow extends CommonWindow {
   }
 
   public show(): void {
-    const mainWindow = Application.instance.mainWindow
+    const mainWindow = Application.INSTANCE.mainWindow
 
     if (this.isDestroyed() || !mainWindow) return
 

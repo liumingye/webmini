@@ -3,7 +3,7 @@ import is from 'electron-is'
 import { Application } from '../application'
 
 export const getMainMenu = () => {
-  const application = Application.instance
+  const application = Application.INSTANCE
   const template: Array<MenuItemConstructorOptions | MenuItem> = [
     {
       label: app.name,
@@ -92,7 +92,7 @@ export const getMainMenu = () => {
           label: '显示网页检查器',
           accelerator: 'CmdOrCtrl+i',
           click() {
-            Application.instance.mainWindow?.viewManager.selected?.webContents.toggleDevTools()
+            Application.INSTANCE.mainWindow?.viewManager.selected?.webContents.toggleDevTools()
           },
         },
       ],
@@ -105,7 +105,7 @@ export const getMainMenu = () => {
         {
           label: 'New tab',
           click() {
-            Application.instance.mainWindow?.viewManager.registerViewContainer({
+            Application.INSTANCE.mainWindow?.viewManager.registerViewContainer({
               url: 'https://www.baidu.com',
               active: true,
             })
@@ -114,13 +114,13 @@ export const getMainMenu = () => {
         {
           label: 'Select next tab',
           click() {
-            Application.instance.mainWindow?.webContents.send('select-next-tab')
+            Application.INSTANCE.mainWindow?.webContents.send('select-next-tab')
           },
         },
         {
           label: 'Select previous tab',
           click() {
-            Application.instance.mainWindow?.webContents.send('select-previous-tab')
+            Application.INSTANCE.mainWindow?.webContents.send('select-previous-tab')
           },
         },
       ],
