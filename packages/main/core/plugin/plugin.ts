@@ -8,9 +8,6 @@ import { PluginStatus } from '~/interfaces/plugin'
 import { Application } from '../../application'
 import { StorageService } from '../../services/storage'
 import { AdapterHandler } from './index'
-import { addHook } from './hook'
-import { addData } from './data'
-import type { PluginDataProvider } from '~/interfaces/plugin'
 import Net from '~/common/net'
 import axios from 'axios'
 import Cookies from '~/common/cookies'
@@ -47,30 +44,9 @@ export class Plugin {
   /**
    * 运行插件加载方法
    * @param plugin
-   * @param webContents
    */
-  public async loadPlugin(plugin: PluginMetadata, webContents: Electron.WebContents) {
-    if (typeof plugin.load === 'function') {
-      await plugin.load({
-        addHook,
-        addData: (key: string, provider: PluginDataProvider) => {
-          addData(plugin.name, key, provider)
-        },
-        net: new Net(),
-        application: {
-          mainWindow: {
-            send: Application.instance.mainWindow?.send,
-          },
-          selectPartWindow: {
-            send: Application.instance.selectPartWindow?.send,
-          },
-        },
-        webContents,
-        db: new StorageService(plugin.name),
-        axios,
-        cookies: new Cookies(),
-      })
-    }
+  public async loadPlugin(plugin: PluginMetadata) {
+    console.log(plugin.name)
   }
 
   /**
@@ -78,9 +54,7 @@ export class Plugin {
    * @param plugin
    */
   public async unloadPlugin(plugin: PluginMetadata) {
-    if (typeof plugin.unload === 'function') {
-      await plugin.unload()
-    }
+    console.log(plugin.name)
   }
 
   /**
@@ -96,9 +70,33 @@ export class Plugin {
 
       const pluginImport = requireFresh(resolve(pluginPath, pluginPkg.main))
 
-      this.allPlugins.push(pluginImport.plugin)
+      const pluginApi = {
+        // addHook,
+        // addData: (key: string, provider: PluginDataProvider) => {
+        //   addData(plugin.name, key, provider)
+        // },
+        net: new Net(),
+        application: {
+          mainWindow: {
+            send: Application.instance.mainWindow?.send,
+          },
+          selectPartWindow: {
+            send: Application.instance.selectPartWindow?.send,
+          },
+        },
+        // webContents: Application.instance.mainWindow?.viewManager.selected?.browserView.webContents,
+        db: new StorageService(pluginPkg.name),
+        axios,
+        cookies: new Cookies(),
+      }
 
-      return pluginImport.plugin
+      const plugin = new pluginImport.extension(pluginApi)
+
+      plugin.name = pluginPkg.name
+
+      this.allPlugins.push(plugin)
+
+      return plugin
     } catch (error) {
       Logger.error(error)
       return false

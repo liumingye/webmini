@@ -39,18 +39,14 @@
     const { pluginName } = route.params
 
     window.ipcRenderer.invoke('plugin-get-data', pluginName, 'webNav').then((data) => {
-      if (!data || data.length === 0) return
-
-      const _data = data[0]
-
-      if (_data.search) {
-        search.value = _data.search
+      if (data.search) {
+        search.value = data.search
       }
-      if (_data.nav) {
-        nav.value = _data.nav
+      if (data.nav) {
+        nav.value = data.nav
       }
-      if (_data.replace) {
-        replace.value = _data.replace
+      if (data.replace) {
+        replace.value = data.replace
       }
     })
   })

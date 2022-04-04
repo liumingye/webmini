@@ -1,9 +1,8 @@
 import { app, WebContents } from 'electron'
-import { negate, isEmpty } from 'lodash'
+import { negate } from 'lodash'
 import type { PluginMetadata } from '~/interfaces/plugin'
 import { hookThemeColor, matchPattern } from '../../utils'
-import { removeData, destroyData, registerData } from './data'
-import { clearHook } from './hook'
+// import { clearHook } from './hook'
 import { Plugin } from './index'
 
 export class TabPlugin {
@@ -39,9 +38,9 @@ export class TabPlugin {
         ])
       }
 
-      registerData(plugin.name, 'webNav', {})
+      // registerData(plugin.name, 'webNav', {})
 
-      this.plugins.loadPlugin(plugin, this.webContents)
+      this.plugins.loadPlugin(plugin)
 
       this.enablePlugins.push(plugin)
 
@@ -67,11 +66,12 @@ export class TabPlugin {
       .map(this.loadPlugin(url))
       .filter((it) => !!it) as typeof this.plugins.allPlugins
 
-    if (!isEmpty(res)) {
-      hookThemeColor(res[0].name)
-    } else {
-      hookThemeColor()
-    }
+    // if (!isEmpty(res)) {
+    //   hookThemeColor(res[0].name)
+    // } else {
+    //   hookThemeColor()
+    // }
+    hookThemeColor()
 
     return res
   }
@@ -81,17 +81,17 @@ export class TabPlugin {
    * @param plugins 需要释放的插件
    */
   public unloadTabPlugins(plugins?: PluginMetadata[]): void {
-    clearHook()
+    // clearHook()
     if (plugins) {
       // 释放指定插件
       plugins.forEach((plugin) => {
-        removeData(plugin.name)
+        // removeData(plugin.name)
 
         this.plugins.unloadPlugin(plugin)
 
         const preloads = this.webContents.session.getPreloads()
         const newPreloads = preloads.reduce((result, preload) => {
-          if (plugin.preloads.indexOf(preload) === -1) {
+          if (plugin.preloads && plugin.preloads.indexOf(preload) === -1) {
             result.push(preload)
           }
           return result
@@ -105,7 +105,7 @@ export class TabPlugin {
       })
     } else {
       // 释放全部插件
-      destroyData()
+      // destroyData()
       this.enablePlugins.forEach((plugin) => {
         this.plugins.unloadPlugin(plugin)
       })

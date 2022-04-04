@@ -3,7 +3,6 @@ import is from 'electron-is'
 import type { AdapterInfo } from '~/interfaces/plugin'
 import { Application } from './application'
 import { Plugin } from './core/plugin'
-import { getData } from './core/plugin/data'
 import { hookThemeColor } from './utils'
 import { StorageService } from './services/storage'
 
@@ -43,8 +42,11 @@ export default () => {
   ipcMain.handle('plugin-uninstall', async (e, plugin: AdapterInfo) => {
     return await Plugin.instance.uninstall(plugin)
   })
-  ipcMain.handle('plugin-get-data', async (e, name: string, key: string) => {
-    return getData(name, key)
+  ipcMain.handle('plugin-get-data', async (e, name: string, key: 'webNav') => {
+    const plugin = Plugin.instance.allPlugins.find((plugin) => plugin.name === name)
+    if (!plugin) return
+    // console.log(plugin)
+    return plugin[key]
   })
 
   // db 数据库

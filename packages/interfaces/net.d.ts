@@ -14,7 +14,7 @@ interface NetReturn<T> {
 }
 
 interface NetApi {
-  fetch: <T>(url: string, options: Partial<FetchOptions>) => Promise<NetReturn<T>>
+  fetch: <T>(url: string, options?: Partial<FetchOptions>) => Promise<NetReturn<T>>
 }
 
 export { NetApi, FetchOptions, NetReturn }

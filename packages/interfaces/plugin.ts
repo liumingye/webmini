@@ -6,6 +6,8 @@ import type { CommonWindowApi } from './window'
 import type { StorageServiceApi } from './storage'
 import type { CookiesApi } from './cookies'
 
+export type { WebContents }
+
 export type addHook = (key: string, provider: PluginHookProvider) => void
 
 export type PluginDataProvider = (...args: any[]) => void | Promise<void>
@@ -18,38 +20,96 @@ export interface PluginHookProvider {
 }
 
 /** 插件初始化时的传入参数, 可以解构并调用 */
-export interface PluginLoadParameters {
-  addData: (key: string, provider: PluginDataProvider) => void
-  addHook: addHook
+export interface PluginApiParameters {
+  // addData: (key: string, provider: PluginDataProvider) => void
+  // addHook: addHook
   application: {
-    mainWindow: {
-      send: CommonWindowApi['send'] | undefined
-    }
-    selectPartWindow: {
-      send: CommonWindowApi['send'] | undefined
-    }
+    mainWindow: CommonWindowApi
+    selectPartWindow: CommonWindowApi
   }
-  webContents: WebContents
+  // webContents: WebContents
   net: NetApi
   db: StorageServiceApi
   axios: typeof axios
   cookies: CookiesApi
 }
 
+export type ThemeColor = {
+  bg?: string
+  text?: string
+}
+
+export type Theme = {
+  light?: ThemeColor
+  dark?: ThemeColor
+}
+
+export type UserAgent = {
+  mobile?: (string | RegExp)[]
+  desktop?: (string | RegExp)[]
+}
+
+export type WindowType = {
+  mini?: (string | RegExp)[]
+}
+
+export type Search = {
+  link: string
+  placeholder?: string
+  links?: {
+    test: RegExp
+    link: string
+  }[]
+}
+
+export type Nav = Record<
+  string,
+  {
+    name: string
+    url: string
+  }[]
+>
+
+export type Replace = {
+  search: string
+  replace: string
+}[]
+
+export type WebNav = {
+  search?: Search
+  nav?: Nav
+  replace?: Replace
+}
+
+export type UrlChangeData = {
+  url: URL
+}
+
 /** 插件基本信息 */
 export interface PluginMinimalData {
   /** 插件名称 */
-  name: string
+  name?: string
   /** preloads */
-  preloads: string[]
+  preloads?: string[]
+
   /** 初始化函数, 可在其中注册数据, 添加代码注入等 */
-  load: (params: PluginLoadParameters) => void | Promise<void>
+  load?: (params: PluginApiParameters) => void | Promise<void>
   /** 卸载函数 */
-  unload: () => void | Promise<void>
+  unload?: () => void | Promise<void>
+
   /** 设置匹配的URL, 不匹配则不运行此组件 */
   urlInclude?: (string | RegExp)[]
   /** 设置不匹配的URL, 不匹配则不运行此组件, 优先级高于`urlInclude` */
   urlExclude?: (string | RegExp)[]
+
+  // 数据
+  themeColor?: Theme
+  userAgent?: UserAgent
+  windowType?: WindowType
+  webNav?: WebNav
+
+  // 事件
+  onUrlChanged?(data: UrlChangeData, webContents: WebContents): void | Promise<void>
 }
 
 type PartialRequired<Target, Props extends keyof Target> = Target & {
@@ -61,13 +121,11 @@ export type PluginMetadata = PartialRequired<PluginMinimalData, 'name'>
 /**
  * 插件管理器配置
  * @param baseDir 插件安装目录
- * @param registry 插件下载源 即 npm 源
  * @export
  * @interface AdapterHandlerOptions
  */
 export interface AdapterHandlerOptions {
   baseDir: string
-  registry?: string
 }
 
 /** 本地插件信息 */

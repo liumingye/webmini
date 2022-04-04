@@ -1,9 +1,9 @@
 import { nativeTheme, screen } from 'electron'
-import { isString } from 'lodash'
+import { isString, isEmpty } from 'lodash'
 import { Color } from '~/common/color'
 import { Application } from '../application'
-import { registerAndGetData } from '../core/plugin/data'
 import is from 'electron-is'
+import { Theme } from '~/interfaces'
 
 export const matchPattern = (str: string) => {
   return (pattern: string | RegExp) => {
@@ -17,18 +17,14 @@ export const matchPattern = (str: string) => {
 /**
  * 主题色更改
  */
-export const hookThemeColor = (pluginName?: string): void => {
-  type Color = {
-    bg: string
-    text: string
-  }
+export const hookThemeColor = (): void => {
+  const mainWindow = Application.instance.mainWindow
+  if (!mainWindow) return
 
-  type Theme = {
-    light: Color
-    dark: Color
-  }
+  const view = mainWindow.viewManager.selected
+  if (!view) return
 
-  const themeColorProvider = {
+  let themeColor: Theme = {
     light: {
       bg: '',
       text: '',
@@ -39,19 +35,18 @@ export const hookThemeColor = (pluginName?: string): void => {
     },
   }
 
-  let themeColor: Theme = themeColorProvider
-
-  if (pluginName) {
-    themeColor = registerAndGetData(pluginName, 'themeColor', themeColorProvider)[0]
+  if (!isEmpty(view.plugins) && view.plugins[0].themeColor) {
+    themeColor = view.plugins[0].themeColor
   }
 
   const onDarkModeChange = () => {
-    if (Application.instance.mainWindow?.isDestroyed()) return
+    if (mainWindow.isDestroyed()) return
 
     const theme = nativeTheme.shouldUseDarkColors ? 'dark' : 'light'
 
+    // 未定义背景颜色则获取网页主题色
     if (!themeColor[theme].bg) {
-      const color = Application.instance.mainWindow?.viewManager.selected?.themeColor
+      const color = mainWindow.viewManager.selected?.themeColor
       if (color) {
         themeColor[theme].bg = color
       }
@@ -62,21 +57,20 @@ export const hookThemeColor = (pluginName?: string): void => {
       const baseColor = Color.Format.CSS.parseHex(themeColor[theme].bg)
       if (baseColor) {
         const text = baseColor.isDarker() ? baseColor.lighten(100) : baseColor.darken(100)
-        // console.log('isDarker', baseColor.isDarker())
         if (text) {
           themeColor[theme].text = text.toString()
         }
       }
     }
 
-    // console.log('主题色更改', themeColor)
-
-    Application.instance.mainWindow?.send('setThemeColor', {
+    mainWindow.send('setThemeColor', {
       theme,
       ...themeColor[theme],
     })
   }
+
   nativeTheme.removeListener('updated', onDarkModeChange).addListener('updated', onDarkModeChange)
+
   onDarkModeChange()
 }
 

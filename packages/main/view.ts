@@ -4,8 +4,6 @@ import { ERROR_PROTOCOL, NETWORK_ERROR_HOST, userAgent } from '~/common/constant
 import type { CreateProperties, TabEvent } from '~/interfaces/tabs'
 import { WindowTypeEnum } from '~/interfaces/view'
 import { TabPlugin } from './core/plugin'
-import { registerAndGetData } from './core/plugin/data'
-import { getHook } from './core/plugin/hook'
 import { getViewMenu } from './menus/view'
 import { Sessions } from './models/sessions'
 import { StorageService } from './services/storage'
@@ -94,11 +92,12 @@ export class View {
 
     this.webContents.addListener('did-change-theme-color', (_e, color) => {
       this.themeColor = color
-      if (isEmpty(this.plugins)) {
-        hookThemeColor()
-        return
-      }
-      hookThemeColor(this.plugins[0].name)
+      // if (isEmpty(this.plugins)) {
+      //   hookThemeColor()
+      //   return
+      // }
+      hookThemeColor()
+      // hookThemeColor(this.plugins[0].name)
     })
 
     this.webContents.addListener(
@@ -161,27 +160,11 @@ export class View {
       return
     }
 
-    if (isEmpty(this.plugins)) {
-      this.userAgent = userAgent.desktop
-    } else {
+    if (!isEmpty(this.plugins) && this.plugins[0].userAgent) {
       const completeURL = `${this.url.hostname}${this.url.pathname}${this.url.search}`
 
-      type UserAgent = {
-        mobile: string[]
-        desktop: string[]
-      }
+      const userAgentData = this.plugins[0].userAgent
 
-      const userAgentProvider = {
-        mobile: [],
-        desktop: [],
-      }
-
-      const [userAgentData]: UserAgent[] = registerAndGetData(
-        this.plugins[0].name,
-        'userAgent',
-        userAgentProvider,
-      )
-      // console.log(completeURL)
       // the desktop
       if (userAgentData.desktop.some(matchPattern(completeURL))) {
         this.userAgent = userAgent.desktop
@@ -192,6 +175,8 @@ export class View {
       } else {
         this.userAgent = userAgent.desktop
       }
+    } else {
+      this.userAgent = userAgent.desktop
     }
 
     this.sess.userAgent = this.userAgent
@@ -203,18 +188,26 @@ export class View {
     this.browserView.setBackgroundColor(backgroundColor)
   }
 
-  public updateURL(url: string): void {
+  public async updateURL(url: string): Promise<void> {
     if (this.lastUrl === url) return
     this.lastUrl = url
-    const updateUrlHooks = getHook('updateUrl')
-    const data = {
-      url: new URL(url),
+    if (!isEmpty(this.plugins)) {
+      if (typeof this.plugins[0].onUrlChanged === 'function') {
+        const data = {
+          url: new URL(url),
+        }
+        await this.plugins[0].onUrlChanged(data, this.browserView.webContents)
+      }
     }
-    updateUrlHooks?.before(data)
+    // const updateUrlHooks = getHook('updateUrl')
+    // const data = {
+    //   url: new URL(url),
+    // }
+    // updateUrlHooks?.before(data)
     this.webContents.setUserAgent(this.userAgent)
     this.webContents.send('load-commit')
     this.emitEvent('url-updated', url)
-    updateUrlHooks?.after(data)
+    // updateUrlHooks?.after(data)
   }
 
   public async resizeWindowSize(windowType?: WindowTypeEnum, mandatory?: boolean): Promise<void> {
@@ -259,16 +252,10 @@ export class View {
 
     const completeURL = this.url.hostname + this.url.pathname + this.url.search
 
-    if (!isEmpty(this.plugins)) {
-      const windowTypeProvider = {
-        mini: [],
-      }
-      const [windowTypeData] = registerAndGetData(
-        this.plugins[0].name,
-        'windowType',
-        windowTypeProvider,
-      )
-      if (windowTypeData.mini.some(matchPattern(completeURL))) {
+    if (!isEmpty(this.plugins) && this.plugins[0].windowType) {
+      const windowTypeData = this.plugins[0].windowType
+
+      if (windowTypeData.mini && windowTypeData.mini.some(matchPattern(completeURL))) {
         return WindowTypeEnum.MINI
       }
     }

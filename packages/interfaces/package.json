@@ -1,6 +1,6 @@
 {
   "name": "webmini-types",
-  "version": "1.0.1",
+  "version": "1.0.7",
   "description": "webmini plugins",
   "main": "",
   "types": "index.d.ts",
@@ -17,11 +17,13 @@
     "url": "https://github.com/liumingye/webmini/issues"
   },
   "homepage": "https://github.com/liumingye/webmini#readme",
-  "devDependencies": {
+  "dependencies": {
     "@types/pouchdb": "^6.4.0",
     "axios": "^0.26.1",
     "electron": "^18.0.1",
-    "typescript": "^4.4.3",
     "vue": "^3.2.31"
+  },
+  "devDependencies": {
+    "typescript": "^4.4.3"
   }
 }

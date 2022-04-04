@@ -1,5 +1,6 @@
 import type Electron from 'electron'
 import is from 'electron-is'
+import type { CookiesApi } from '../interfaces'
 
 const electron: typeof Electron = is.renderer()
   ? // renderer
@@ -10,7 +11,7 @@ const electron: typeof Electron = is.renderer()
 /**
  * A `Cookies` object for this session.
  */
-class Cookies {
+class Cookies implements CookiesApi {
   private cookies
 
   constructor(cookies = electron.session.defaultSession.cookies) {
