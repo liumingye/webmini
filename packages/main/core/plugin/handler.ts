@@ -35,9 +35,14 @@ export class AdapterHandler {
    * @returns {Promise<boolean>}
    */
   private async testUrlStatus(url: string): Promise<boolean> {
-    return await axios.head(url).then((res) => {
-      return res.status === 200
-    })
+    return await axios.head(url).then(
+      (res) => {
+        return res.status === 200
+      },
+      () => {
+        return false
+      },
+    )
   }
 
   /**
@@ -70,6 +75,7 @@ export class AdapterHandler {
     }
 
     // 无可用源
+    console.log(usebalUrl)
     if (usebalUrl === '') {
       return Promise.reject('无可用源')
     }
