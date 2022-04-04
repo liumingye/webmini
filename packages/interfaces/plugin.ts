@@ -93,7 +93,7 @@ export interface PluginMinimalData {
   preloads?: string[]
 
   /** 初始化函数, 可在其中注册数据, 添加代码注入等 */
-  load?: (params: PluginApiParameters) => void | Promise<void>
+  load?: () => void | Promise<void>
   /** 卸载函数 */
   unload?: () => void | Promise<void>
 

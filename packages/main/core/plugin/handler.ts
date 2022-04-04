@@ -147,7 +147,8 @@ export class AdapterHandler {
     const dist = path.resolve(this.baseDir, 'node_modules', name)
     if (await fs.pathExists(dist)) {
       Logger.info(`${name}@${version} 已安装`)
-      return
+      this.uninstall(name)
+      // return
     }
 
     const tarball = path.resolve(this.baseDir, 'node_modules', `${name}-${version}.tgz`)

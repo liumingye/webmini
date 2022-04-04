@@ -46,7 +46,9 @@ export class Plugin {
    * @param plugin
    */
   public async loadPlugin(plugin: PluginMetadata) {
-    console.log(plugin.name)
+    if (typeof plugin.load === 'function') {
+      await plugin.load()
+    }
   }
 
   /**
@@ -54,7 +56,9 @@ export class Plugin {
    * @param plugin
    */
   public async unloadPlugin(plugin: PluginMetadata) {
-    console.log(plugin.name)
+    if (typeof plugin.unload === 'function') {
+      await plugin.unload()
+    }
   }
 
   /**
