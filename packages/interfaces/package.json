@@ -1,7 +1,7 @@
 {
   "name": "webmini-types",
   "version": "1.0.7",
-  "description": "webmini plugins",
+  "description": "webmini plugin types",
   "main": "",
   "types": "index.d.ts",
   "repository": {

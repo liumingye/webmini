@@ -7,7 +7,7 @@ export const isURI = (uriOrPath: string): boolean => {
   try {
     return !!new URL(uriOrPath)
   } catch (e) {
-    return /^(?<host>[\w\d+.-]+)+\/(?<path>[\w\d+.-]+)+/.test(uriOrPath)
+    return false
   }
 }
 

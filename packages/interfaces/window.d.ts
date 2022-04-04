@@ -1,6 +1,6 @@
 import type { WebContents, Session } from 'electron'
 
-interface CommonWindowApi {
+export interface CommonWindowApi {
   id: number
   show(): void
   hide(): void
@@ -10,5 +10,3 @@ interface CommonWindowApi {
   session: Session
   send(channel: string, ...args: any[]): void
 }
-
-export { CommonWindowApi }
