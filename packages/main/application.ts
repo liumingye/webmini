@@ -146,6 +146,7 @@ export class Application {
       message: `确认重置应用?`,
       detail: `你的浏览器数据将被清空，包括缓存、本地存储、登录状态`,
       buttons: ['确认', '取消'],
+      defaultId: 1,
     })
 
     if (answer === 1) {
@@ -196,7 +197,7 @@ export class Application {
     dialog.showMessageBoxSync(focusedWindow, {
       type: 'info',
       title: `提示`,
-      message: `清除完成`,
+      message: `清理缓存完成`,
       buttons: ['好的'],
     })
   }

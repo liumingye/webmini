@@ -21,10 +21,7 @@ export const hookThemeColor = (): void => {
   const mainWindow = Application.INSTANCE.mainWindow
   if (!mainWindow) return
 
-  let themeData: Theme = {
-    dark: {},
-    light: {},
-  }
+  let themeData: Theme = { light: { bg: '', text: '' }, dark: { bg: '', text: '' } }
 
   const view = mainWindow.viewManager.selected
   if (view && !isEmpty(view.plugins) && view.plugins[0].themeColor) {
@@ -36,10 +33,10 @@ export const hookThemeColor = (): void => {
 
     const theme = nativeTheme.shouldUseDarkColors ? 'dark' : 'light'
 
-    const themeColor = themeData[theme] || {}
+    const themeColor = themeData[theme]
 
     // 未定义背景颜色则获取网页主题色
-    if (!themeColor.bg) {
+    if (themeColor && !themeColor.bg) {
       const color = mainWindow.viewManager.selected?.themeColor
       if (color) {
         themeColor.bg = color
@@ -47,7 +44,7 @@ export const hookThemeColor = (): void => {
     }
 
     // 未定义文字颜色则自动获取文字颜色
-    if (!themeColor.text && themeColor.bg) {
+    if (themeColor && !themeColor.text && themeColor.bg) {
       const baseColor = Color.Format.CSS.parseHex(themeColor.bg)
       if (baseColor) {
         const text = baseColor.isDarker() ? baseColor.lighten(100) : baseColor.darken(100)

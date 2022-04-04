@@ -8,26 +8,12 @@ import type { CookiesApi } from './cookies'
 
 export type { WebContents }
 
-export type addHook = (key: string, provider: PluginHookProvider) => void
-
-export type PluginDataProvider = (...args: any[]) => void | Promise<void>
-
-export interface PluginHookProvider {
-  /** 事件发生前执行 */
-  before?: (...args: any[]) => void | Promise<void>
-  /** 事件发生后执行 */
-  after?: (...args: any[]) => void | Promise<void>
-}
-
 /** 插件初始化时的传入参数, 可以解构并调用 */
 export interface PluginApiParameters {
-  // addData: (key: string, provider: PluginDataProvider) => void
-  // addHook: addHook
   application: {
     mainWindow: CommonWindowApi
     selectPartWindow: CommonWindowApi
   }
-  // webContents: WebContents
   net: NetApi
   db: StorageServiceApi
   axios: typeof axios
