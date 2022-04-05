@@ -63,7 +63,11 @@ const initUpdater = (opts: IUpdateElectronAppOptions) => {
   autoUpdater.netSession.webRequest.onBeforeRequest(
     { urls: ['https://github.com/*/releases/download/*'] },
     ({ url }, callback) => {
-      const proxyNode = ['https://ghproxy.com/', 'https://mirror.ghproxy.com/']
+      const proxyNode = [
+        'https://ghproxy.com/',
+        'https://mirror.ghproxy.com/',
+        'https://endpoint.fastgit.org/',
+      ]
       return callback({ redirectURL: `${sample(proxyNode)}${url}` })
     },
   )

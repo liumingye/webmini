@@ -1,55 +1,46 @@
 import { ElectronBlocker } from '@cliqz/adblocker-electron'
 import { app, Session } from 'electron'
 import fetch from 'electron-fetch'
-import { readFileSync, writeFileSync } from 'fs'
+import { promises } from 'fs'
+import { join } from 'path'
 
-const PREFIX = 'https://liumingye.coding.net/p/bilimini/d'
+export class AdblockerService {
+  public blocker: ElectronBlocker | null = null
 
-export const adsLists = [
-  `${PREFIX}/easylistchina/git/raw/master/easylistchina.txt`,
-  `${PREFIX}/AdRules/git/raw/main/rules/ADgk.txt`,
-]
+  private PREFIX = 'https://liumingye.coding.net/p/bilimini/d'
 
-const adblockerService = async (session: Session) => {
-  const blocker = await ElectronBlocker.fromLists(
-    fetch,
-    adsLists,
-    {
-      enableCompression: true,
-    },
-    {
-      path: `${app.getPath('userData')}/engine.bin`,
-      read: async (...args) => readFileSync(...args),
-      write: async (...args) => writeFileSync(...args),
-    },
-  )
-  console.log('blocked load complete')
+  private adsLists = [
+    `${this.PREFIX}/easylistchina/git/raw/master/easylistchina.txt`,
+    `${this.PREFIX}/AdRules/git/raw/main/rules/ADgk.txt`,
+  ]
 
-  blocker.enableBlockingInSession(session)
+  private config = {
+    enableCompression: true,
+  }
 
-  // blocker.on('request-blocked', (request: Request) => {
-  //   console.log('blocked', request.tabId, request.url)
-  // })
+  private enginePath = join(app.getPath('userData'), 'engine.bin')
 
-  // blocker.on('request-redirected', (request: Request) => {
-  //   console.log('redirected', request.tabId, request.url)
-  // })
+  private caching = {
+    path: this.enginePath,
+    read: promises.readFile,
+    write: promises.writeFile,
+  }
 
-  // blocker.on('request-whitelisted', (request: Request) => {
-  //   console.log('whitelisted', request.tabId, request.url)
-  // })
+  constructor(private session: Session) {}
 
-  // blocker.on('csp-injected', (request: Request) => {
-  //   console.log('csp', request.url)
-  // })
+  public enable() {
+    ElectronBlocker.fromLists(fetch, this.adsLists, this.config, this.caching).then((blocker) => {
+      this.blocker = blocker
+      this.blocker.enableBlockingInSession(this.session)
+      console.log('blocked load complete')
+    })
+  }
 
-  // blocker.on('script-injected', (script: string, url: string) => {
-  //   console.log('script', script.length, url)
-  // })
-
-  // blocker.on('style-injected', (style: string, url: string) => {
-  //   console.log('style', style.length, url)
-  // })
+  public disable() {
+    if (!this.blocker) {
+      return
+    }
+    this.blocker.disableBlockingInSession(this.session)
+    this.blocker = null
+  }
 }
-
-export default adblockerService

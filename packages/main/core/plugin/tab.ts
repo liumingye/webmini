@@ -30,13 +30,18 @@ export class TabPlugin {
         return undefined
       }
 
+      // 插入插件的preloads, 并且过滤已存在的preload
       if (plugin.preloads) {
-        this.webContents.session.setPreloads([
-          ...this.webContents.session.getPreloads(),
-          ...plugin.preloads,
-        ])
+        const preloads = this.webContents.session.getPreloads()
+        plugin.preloads.forEach((preload) => {
+          if (preloads.indexOf(preload) === -1) {
+            preloads.push(preload)
+          }
+        })
+        this.webContents.session.setPreloads(preloads)
       }
 
+      // 加载插件
       this.plugins.loadPlugin(plugin)
 
       this.enablePlugins.push(plugin)
@@ -73,32 +78,38 @@ export class TabPlugin {
    * @param plugins 需要释放的插件
    */
   public unloadTabPlugins(plugins?: PluginMetadata[]): void {
+    let _plugins = []
+
     if (plugins) {
-      // 释放指定插件
+      _plugins = plugins
+      // 从enablePlugins中移除
       plugins.forEach((plugin) => {
-        this.plugins.unloadPlugin(plugin)
-
-        const preloads = this.webContents.session.getPreloads()
-        const newPreloads = preloads.reduce((result, preload) => {
-          if (plugin.preloads && plugin.preloads.indexOf(preload) === -1) {
-            result.push(preload)
-          }
-          return result
-        }, [] as typeof preloads)
-        this.webContents.session.setPreloads(newPreloads)
-
         const index = this.enablePlugins.indexOf(plugin)
         if (index > -1) {
           this.enablePlugins.splice(index, 1)
         }
       })
     } else {
-      // 释放全部插件
-      this.enablePlugins.forEach((plugin) => {
-        this.plugins.unloadPlugin(plugin)
-      })
-      this.webContents.session.setPreloads([])
+      _plugins = this.enablePlugins
+      // 清空enablePlugins
       this.enablePlugins.length = 0
+    }
+
+    // 释放插件 & 移除preloads
+    for (const plugin of _plugins) {
+      // 释放插件
+      this.plugins.unloadPlugin(plugin)
+
+      // 移除插件的preloads
+      if (plugin.preloads) {
+        const preloads = this.webContents.session.getPreloads()
+        for (const preload of plugin.preloads) {
+          const index = preloads.indexOf(preload)
+          if (index === -1) continue
+          preloads.splice(index, 1)
+        }
+        this.webContents.session.setPreloads(preloads)
+      }
     }
   }
 }

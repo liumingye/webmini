@@ -3,7 +3,7 @@ import installExtension, { VUEJS3_DEVTOOLS } from 'electron-devtools-installer'
 import is from 'electron-is'
 import ipcMainInit from './ipcMain'
 import { getMainMenu } from './menus/main'
-import adblockerService from './services/adblocker'
+import { AdblockerService } from './services/adblocker'
 import autoUpdaterService from './services/autoUpdater'
 import { MainWindow } from './windows/main'
 import { SelectPartWindow } from './windows/selectPart'
@@ -61,7 +61,7 @@ export class Application {
     ipcMainInit()
 
     // service
-    adblockerService(session.defaultSession)
+    new AdblockerService(session.defaultSession).enable()
     autoUpdaterService()
 
     // protocol

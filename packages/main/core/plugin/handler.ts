@@ -30,14 +30,14 @@ export class AdapterHandler {
   }
 
   /**
-   * 测试url是否可用
+   * 检查链接地址是否可用
    * @param url url地址
    * @returns {Promise<boolean>}
    */
-  private async testUrlStatus(url: string): Promise<boolean> {
+  private async isUrlValid(url: string): Promise<boolean> {
     return await axios.head(url).then(
-      (res) => {
-        return res.status === 200
+      (response) => {
+        return response.status === 200
       },
       () => {
         return false
@@ -68,7 +68,7 @@ export class AdapterHandler {
     let usebalUrl = ''
     for (const registry of registrys) {
       const tarUrl = `${registry}/${name}/-/${name}-${version}.tgz`
-      if (await this.testUrlStatus(tarUrl)) {
+      if (await this.isUrlValid(tarUrl)) {
         usebalUrl = tarUrl
         break
       }
