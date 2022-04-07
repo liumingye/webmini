@@ -24,6 +24,7 @@ export const hookThemeColor = (): void => {
   let themeData: Theme = { light: { bg: '', text: '' }, dark: { bg: '', text: '' } }
 
   const view = mainWindow.viewManager.selected
+  // console.log(view)
   if (view && !isEmpty(view.plugins) && view.plugins[0].themeColor) {
     themeData = view.plugins[0].themeColor
   }

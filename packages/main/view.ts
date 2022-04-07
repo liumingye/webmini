@@ -153,6 +153,8 @@ export class View {
     this.lastHostName = this.url.hostname
     this.tabPlugin.unloadTabPlugins(this.plugins)
     this.plugins = this.tabPlugin.loadTabPlugins(this.url.href)
+
+    hookThemeColor()
   }
 
   public setUserAgent() {
@@ -196,7 +198,7 @@ export class View {
         const data = {
           url: new URL(url),
         }
-        console.log('onUrlChanged')
+        // console.log('onUrlChanged')
         if (this.webContents) {
           await this.plugins[0].onUrlChanged(data, this.webContents)
         }
@@ -239,7 +241,7 @@ export class View {
 
     this.window.send('set-currentWindow-type', targetWindowType)
 
-    console.log('resizeWindowSize')
+    // console.log('resizeWindowSize')
   }
 
   private getWindowType(): WindowTypeEnum {

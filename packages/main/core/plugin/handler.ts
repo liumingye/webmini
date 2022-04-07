@@ -75,7 +75,7 @@ export class AdapterHandler {
     }
 
     // 无可用源
-    console.log(usebalUrl)
+    // console.log(usebalUrl)
     if (usebalUrl === '') {
       return Promise.reject('无可用源')
     }

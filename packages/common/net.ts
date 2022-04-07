@@ -1,5 +1,6 @@
 import is from 'electron-is'
 import type { NetApi, FetchOptions, NetReturn } from '../interfaces'
+import { merge } from 'lodash'
 
 const DEFAULT_FETCH_CONFIG: FetchOptions = {
   method: 'GET',
@@ -13,10 +14,7 @@ class Net implements NetApi {
     : require('electron')
 
   public fetch = <T>(url: string, options = {}) => {
-    const config = {
-      ...DEFAULT_FETCH_CONFIG,
-      ...options,
-    }
+    const config = merge(DEFAULT_FETCH_CONFIG, options)
     return new Promise<NetReturn<T>>((resolve, reject) => {
       const request = this.electron.net.request({
         url,

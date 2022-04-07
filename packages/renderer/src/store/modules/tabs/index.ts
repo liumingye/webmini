@@ -2,7 +2,7 @@ import type { TabsStateTypes } from './type'
 import { ITab } from './model'
 import { useAppStore } from '@/store'
 import type { CreateProperties } from '~/interfaces/tabs'
-import { cloneDeep } from 'lodash'
+import { cloneDeep, merge } from 'lodash'
 
 export const useTabsStore = defineStore('tabs', {
   state: (): TabsStateTypes => ({
@@ -46,7 +46,7 @@ export const useTabsStore = defineStore('tabs', {
      */
     async addTab(options: CreateProperties): Promise<ITab> {
       const appStore = useAppStore()
-      const opts = { ...{ active: true }, ...options }
+      const opts = merge({ active: true }, options)
       const id: number = await window.ipcRenderer.invoke(
         `view-create-${appStore.currentWindowID}`,
         cloneDeep(opts),

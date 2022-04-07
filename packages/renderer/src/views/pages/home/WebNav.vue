@@ -39,7 +39,7 @@
     const { pluginName } = route.params
 
     window.ipcRenderer.invoke('plugin-get-data', pluginName, 'webNav').then((data) => {
-      console.log(data)
+      // console.log(data)
       if (data.search) {
         search.value = data.search
       }

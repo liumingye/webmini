@@ -14,15 +14,10 @@ export class ITab {
 
   public plugin: LocalPluginInfo | undefined
 
-  public constructor({ active, url, plugin }: CreateProperties, id: number) {
+  public constructor({ url, plugin }: CreateProperties, id: number) {
     this.plugin = plugin
     this.url = url
     this.id = id
-    if (active) {
-      requestAnimationFrame(() => {
-        this.select()
-      })
-    }
   }
 
   /**

@@ -130,12 +130,16 @@ export class ViewManager {
 
     this.viewContainer.set(id, view)
 
+    if (details.active) {
+      this.select(id, true)
+    }
+
     webContents.once('destroyed', () => {
       this.viewContainer.delete(id)
     })
 
     if (sendMessage) {
-      this.window.send('create-tab', { ...details }, isNext, id)
+      this.window.send('create-tab', details, isNext, id)
     }
 
     /**

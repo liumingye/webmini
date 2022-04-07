@@ -1,7 +1,7 @@
 import { app, WebContents } from 'electron'
 import { negate } from 'lodash'
 import type { PluginMetadata } from '~/interfaces/plugin'
-import { hookThemeColor, matchPattern } from '../../utils'
+import { matchPattern } from '../../utils'
 import { Plugin } from './index'
 
 export class TabPlugin {
@@ -67,8 +67,6 @@ export class TabPlugin {
     const res = this.plugins.allPlugins
       .map(this.loadPlugin(url))
       .filter((it) => !!it) as typeof this.plugins.allPlugins
-
-    hookThemeColor()
 
     return res
   }
