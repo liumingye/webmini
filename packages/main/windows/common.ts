@@ -45,7 +45,7 @@ export abstract class CommonWindow implements CommonWindowApi {
     return this.win.webContents.session
   }
 
-  public send = (channel: string, ...args: any[]): void => {
+  public send(channel: string, ...args: any[]): void {
     this.webContents.send(channel, ...args)
   }
 }

@@ -85,10 +85,12 @@ export class Plugin {
         net: new Net(),
         application: {
           mainWindow: {
-            send: Application.INSTANCE.mainWindow?.send,
+            send: Application.INSTANCE.mainWindow?.send.bind(Application.INSTANCE.mainWindow),
           },
           selectPartWindow: {
-            send: Application.INSTANCE.selectPartWindow?.send,
+            send: Application.INSTANCE.selectPartWindow?.send.bind(
+              Application.INSTANCE.selectPartWindow,
+            ),
           },
         },
         db: new StorageService(pluginPkg.name),

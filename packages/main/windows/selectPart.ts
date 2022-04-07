@@ -53,6 +53,6 @@ export class SelectPartWindow extends CommonWindow {
     }
 
     this.win.setPosition(x, y)
-    this.win.show()
+    super.show()
   }
 }
