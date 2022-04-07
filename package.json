@@ -1,8 +1,8 @@
 {
   "name": "webmini",
   "version": "1.0.8-beta.1",
-  "main": "dist/main/index.cjs",
   "author": "liumingye <liumingye2015@gmail.com>",
+  "main": "dist/main/index.cjs",
   "license": "MIT",
   "repository": {
     "type": "git",
