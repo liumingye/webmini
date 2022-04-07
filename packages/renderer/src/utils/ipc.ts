@@ -36,7 +36,7 @@ export const ipcRendererOn = (): void => {
 
   // 收到选p消息时跳p
   window.ipcRenderer.on('go', (ev, url) => {
-    appStore.go(url)
+    appStore.go(url, tabsStore.getFocusedTab()?.plugin)
   })
 
   // 用户按↑、↓键时，把事件传递到webview里去实现修改音量功能

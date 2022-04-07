@@ -79,8 +79,8 @@ export class Application {
 
   private getAllWindowID() {
     const winIDs: Record<string, number> = {}
-    if (this.mainWindow) winIDs.mainWindow = this.mainWindow.win.id
-    if (this.selectPartWindow) winIDs.selectPartWindow = this.selectPartWindow.win.id
+    if (this.mainWindow) winIDs.mainWindow = this.mainWindow.id
+    if (this.selectPartWindow) winIDs.selectPartWindow = this.selectPartWindow.id
     return winIDs
   }
 
