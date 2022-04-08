@@ -306,7 +306,7 @@ export class View {
 
   /**
    * 网页是否被摧毁
-   * @returns {boolean}
+   * @returns {boolean} 是否被摧毁
    */
   public isDestroyed(): boolean {
     return this.browserView.webContents.isDestroyed()

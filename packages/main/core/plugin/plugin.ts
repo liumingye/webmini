@@ -7,7 +7,6 @@ import { join, resolve } from 'path'
 import Cookies from '~/common/cookies'
 import Logger from '~/common/logger'
 import Net from '~/common/net'
-import { isValidKey } from '~/common/object'
 import { isURI } from '~/common/uri'
 import type { AdapterInfo, LocalPluginInfo, PluginMetadata } from '~/interfaces/plugin'
 import { PluginStatus } from '~/interfaces/plugin'
@@ -132,20 +131,18 @@ export class Plugin {
   public async getLocalPlugins(): Promise<LocalPluginInfo[]> {
     const pluginDb = await StorageService.INSTANCE.get('pluginDb')
     if (!pluginDb) return []
-    const res = Object.keys(pluginDb.data).reduce((previousValue, currentValue) => {
+    const res = Object.entries(pluginDb.data).reduce((previousValue, currentValue) => {
       try {
-        if (
-          isValidKey(currentValue, pluginDb.data) &&
-          pluginDb.data[currentValue] === PluginStatus.INSTALLING_COMPLETE
-        ) {
-          const pluginPath = this.getPluginPath(currentValue)
+        const [name, status] = currentValue
+        if (status === PluginStatus.INSTALLING_COMPLETE) {
+          const pluginPath = this.getPluginPath(name)
           const pluginInfo: LocalPluginInfo = JSON.parse(
             fs.readFileSync(join(pluginPath, 'package.json'), 'utf8'),
           )
           if (pluginInfo.icon && isString(pluginInfo.icon) && !isURI(pluginInfo.icon)) {
             pluginInfo.icon = join(pluginPath, pluginInfo.icon)
           }
-          previousValue.push({ ...pluginInfo, status: pluginDb.data[currentValue] })
+          previousValue.push({ ...pluginInfo, status })
         }
       } catch (error) {
         Logger.error(error)

@@ -14,7 +14,7 @@ export const useTabsStore = defineStore('tabs', {
      * 创建新的标签页
      * @param options 创建标签页的参数
      * @param id 创建的标签页的 webContentsId
-     * @returns {ITab}
+     * @returns ITab
      */
     createTab(options: CreateProperties, id: number): ITab {
       const tab = new ITab(options, id)
@@ -29,7 +29,7 @@ export const useTabsStore = defineStore('tabs', {
      * 创建多个标签页
      * @param options 创建标签页的参数
      * @param ids 创建的标签页的 webContentsId
-     * @returns {Promise<ITab[]>}
+     * @returns Promise<ITab[]>
      */
     createTabs(options: CreateProperties[], ids: number[]): ITab[] {
       const tabs = options.map((option, i) => {
@@ -42,7 +42,7 @@ export const useTabsStore = defineStore('tabs', {
     /**
      * 添加标签页
      * @param options 添加标签页的参数
-     * @returns {Promise<ITab>}
+     * @returns Promise<ITab>
      */
     async addTab(options: CreateProperties): Promise<ITab> {
       const appStore = useAppStore()
@@ -56,7 +56,7 @@ export const useTabsStore = defineStore('tabs', {
     /**
      * 添加多个标签页
      * @param options 添加标签页的参数
-     * @returns {Promise<ITab[]>}
+     * @returns Promise<ITab[]>
      */
     async addTabs(options: CreateProperties[]): Promise<ITab[]> {
       const appStore = useAppStore()
@@ -75,7 +75,7 @@ export const useTabsStore = defineStore('tabs', {
     },
     /**
      * 获取集中标签页
-     * @returns {ITab | undefined}
+     * @returns ITab | undefined
      */
     getFocusedTab(): ITab | undefined {
       return this.getTabById(this.tabId)
@@ -83,7 +83,7 @@ export const useTabsStore = defineStore('tabs', {
     /**
      * 获取标签页
      * @param tabId  标签页id
-     * @returns {ITab | undefined}
+     * @returns ITab | undefined
      */
     getTabById(tabId: number): ITab | undefined {
       return this.list.find((tab) => tab.id === tabId)

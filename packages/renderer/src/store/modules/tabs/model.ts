@@ -14,10 +14,13 @@ export class ITab {
 
   public plugin: LocalPluginInfo | undefined
 
-  public constructor({ url, plugin }: CreateProperties, id: number) {
+  public constructor({ url, plugin, active }: CreateProperties, id: number) {
     this.plugin = plugin
     this.url = url
     this.id = id
+    if (active) {
+      this.select()
+    }
   }
 
   /**
@@ -61,9 +64,9 @@ export class ITab {
    * 调用标签页的方法
    * @param scope 方法的作用域
    * @param args 方法的参数
-   * @returns {Promise<any>}
+   * @returns Promise<any>
    */
-  public callViewMethod = (scope: string, ...args: any[]): Promise<any> => {
+  public callViewMethod(scope: string, ...args: any[]): Promise<any> {
     return callViewMethod(this.id, scope, ...args)
   }
 }

@@ -90,7 +90,7 @@ export const useAppStore = defineStore('app', {
     },
     /**
      * 获取远程插件列表
-     * @returns {Promise<AdapterInfo[]>}
+     * @returns Promise<AdapterInfo[]>
      */
     getTotalPlugins(): Promise<AdapterInfo[]> {
       if (this.localPlugins.length === 0) {

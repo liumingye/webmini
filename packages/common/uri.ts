@@ -1,7 +1,7 @@
 /**
  * isURI
  * @param {string} uriOrPath
- * @returns {boolean}
+ * @returns {boolean} 是否为uri
  */
 export const isURI = (uriOrPath: string): boolean => {
   try {
@@ -14,7 +14,7 @@ export const isURI = (uriOrPath: string): boolean => {
 /**
  * prefixHttp
  * @param {string} url
- * @returns {string}
+ * @returns string
  */
 export const prefixHttp = (url: string): string => {
   url = url.trim()

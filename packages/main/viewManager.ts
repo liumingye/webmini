@@ -52,11 +52,10 @@ export class ViewManager {
     ipcMain.handle(`resize-window-size-${id}`, (e, windowType) => {
       this.selected?.resizeWindowSize(windowType)
     })
-
-    // this.select(id, true)
   }
 
   public select(id: number, focus = true): void {
+    // 防止重复执行
     if (this.selectedId === id) {
       return
     }
@@ -85,6 +84,7 @@ export class ViewManager {
     this.fixBounds()
 
     if (view.firstSelect === true) {
+      // 第一次选择时跳过，避免重复执行
       view.firstSelect = false
     } else {
       view.browserView.webContents.emit('did-change-theme-color')
@@ -96,6 +96,11 @@ export class ViewManager {
     }
   }
 
+  /**
+   * fixBounds
+   * @description 修复浏览器窗口大小
+   * @returns void
+   */
   public fixBounds(): void {
     const view = this.selected
 

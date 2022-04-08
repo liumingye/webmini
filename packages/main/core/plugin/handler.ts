@@ -32,7 +32,7 @@ export class AdapterHandler {
   /**
    * 检查链接地址是否可用
    * @param url url地址
-   * @returns {Promise<boolean>}
+   * @returns Promise<boolean>
    */
   private async isUrlValid(url: string): Promise<boolean> {
     return await axios.head(url).then(
@@ -50,7 +50,7 @@ export class AdapterHandler {
    * @param name 包の名称
    * @param version 包の版本
    * @param dist 保存路径
-   * @returns {Promise<boolean>}
+   * @returns Promise<boolean>
    */
   private async downloadTarball(name: string, version: string, dist: string): Promise<boolean> {
     const registrys = [
@@ -114,7 +114,7 @@ export class AdapterHandler {
    * 解压tar包
    * @param file 包路径
    * @param name 包名称
-   * @returns {Promise<boolean>}
+   * @returns Promise<boolean>
    */
   private async unpack(file: string, name: string): Promise<boolean> {
     const nodeModulesPath = path.resolve(this.baseDir, 'node_modules')

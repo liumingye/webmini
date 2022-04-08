@@ -66,7 +66,7 @@ export class TabPlugin {
 
     const res = this.plugins.allPlugins
       .map(this.loadPlugin(url))
-      .filter((it) => !!it) as typeof this.plugins.allPlugins
+      .filter(Boolean) as typeof this.plugins.allPlugins
 
     return res
   }
