@@ -1,14 +1,14 @@
 import { app } from '@electron/remote'
 import is from 'electron-is'
 import { arch, release, type } from 'os'
-import { version } from 'vue'
+import { version as VueVersion } from 'vue'
 
 class Versions {
   private isLinuxSnap() {
     return is.linux() && !!process.env['SNAP'] && !!process.env['SNAP_REVISION']
   }
   public App = app.getVersion()
-  public 'Vue.js' = version
+  public 'Vue.js' = VueVersion
   public Electron = process.versions.electron
   public Chromium = process.versions.chrome
   public 'Node.js' = process.versions.node

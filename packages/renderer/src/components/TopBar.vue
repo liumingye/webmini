@@ -150,10 +150,7 @@
 </script>
 
 <template>
-  <header
-    class="drag flex flex-shrink-0 px-2 h-8 gap-1.5 items-center transition-colors duration-300"
-    :class="route.name"
-  >
+  <header class="drag flex flex-shrink-0 px-2 h-8 gap-1.5 items-center" :class="route.name">
     <div class="flex-1 flex gap-1.5">
       <b-button id="navi-back" title="后退" :disabled="!isShowBack()" @click="goBack">
         <IconLeft size=".8em" />

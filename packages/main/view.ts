@@ -67,8 +67,8 @@ export class View {
       menu.popup({ window: this.window.win })
     })
 
-    this.webContents.addListener('page-title-updated', () => {
-      this.updateTitle()
+    this.webContents.addListener('page-title-updated', (e, title) => {
+      this.title = title
     })
 
     this.webContents.addListener('did-start-loading', () => {
@@ -335,14 +335,15 @@ export class View {
     return this.webContents.getTitle()
   }
 
+  public set title(title: string) {
+    this.updateTitle(title)
+  }
+
   /**
-   * 发送更新标题事件
+   * 更新网页标题
+   * @param title 网页标题
    */
-  public updateTitle(): void {
-    const selected = this.window.viewManager.selected
-
-    if (!selected) return
-
-    this.emitEvent('title-updated', selected.title.trim() === '' ? app.name : selected.title)
+  public updateTitle(title = this.title): void {
+    this.emitEvent('title-updated', title.trim() || app.name)
   }
 }

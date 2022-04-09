@@ -52,9 +52,15 @@
   })
 
   router.afterEach((to, from) => {
-    const toDepth = to.path.split('/').length
-    const fromDepth = from.path.split('/').length
-    to.meta.transition = toDepth < fromDepth ? 'slide-right' : 'slide-left'
+    to.meta.transition = (() => {
+      // 从浏览器到其他页面取消动画
+      if (from.name === 'Browser') {
+        return undefined
+      }
+      const toDepth = to.path.split('/').length
+      const fromDepth = from.path.split('/').length
+      return toDepth < fromDepth ? 'slide-right' : 'slide-left'
+    })()
   })
 
   // router.beforeEach(() => {
