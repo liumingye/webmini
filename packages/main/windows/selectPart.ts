@@ -40,17 +40,19 @@ export class SelectPartWindow extends CommonWindow {
     const mainPos = mainWindow.win.getPosition()
     const selectPartSize = this.win.getSize()
 
-    // 默认显示在窗口左面
-    // the default display in the window on the left
-    let x: number = mainPos[0] - selectPartSize[0]
+    const x: number = (() => {
+      // 默认显示在窗口左面
+      // the default display in the window on the left
+      const x = mainPos[0] - selectPartSize[0]
+      // 超出显示器 显示在窗口右面
+      // beyond the display in the window is on the right
+      if (x < getDisplayBounds().x) {
+        const mainSize = mainWindow.win.getSize()
+        return mainPos[0] + mainSize[0]
+      }
+      return x
+    })()
     const y: number = mainPos[1]
-
-    // 超出显示器 显示在窗口右面
-    // beyond the display in the window is on the right
-    if (x < getDisplayBounds().x) {
-      const mainSize = mainWindow.win.getSize()
-      x = mainPos[0] + mainSize[0]
-    }
 
     this.win.setPosition(x, y)
     super.show()
