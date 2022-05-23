@@ -18,7 +18,10 @@ export interface AppStateTypes {
   localPlugins: LocalPluginInfo[]
   totalPlugins: AdapterInfo[]
 }
-
-export interface AppConfig extends AppStateTypes {
+export interface AppConfig
+  extends Omit<
+    AppStateTypes,
+    'title' | 'currentWindowID' | 'windowID' | 'navigationState' | 'localPlugins' | 'totalPlugins'
+  > {
   windowPosition: number[]
 }
