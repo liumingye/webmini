@@ -1,7 +1,9 @@
 import type { LoadURLOptions } from 'electron'
 import type { LocalPluginInfo } from './plugin'
 
-export type TabEvent = 'url-updated' | 'title-updated' | 'loading'
+type EventName<T extends string> = `${T}-updated`
+
+export type TabEvent = EventName<'url' | 'title'> | 'loading'
 
 export interface CreateProperties {
   plugin: LocalPluginInfo | undefined
